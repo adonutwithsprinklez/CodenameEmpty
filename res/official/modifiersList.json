@@ -1,0 +1,32 @@
+{
+	"strong":{
+		"name":["Strong","Fit","Quick"],
+		"effect":"damage",
+		"strength":"1d2-1"
+	},
+	"veryStrong":{
+		"name":["Very Strong","Fast","Rugged"],
+		"effect":"damage",
+		"strength":"1d3-1"
+	},
+	"weak":{
+		"name":["Weak","Small","Lesser"],
+		"effect":"damage",
+		"strength":"-1d2-1"
+	},
+	"veryWeak":{
+		"name":["Very Weak","Tiny","Very Slow"],
+		"effect":"damage",
+		"strength":"-1d3-1"
+	},
+	"sick":{
+		"name":["Sickly","Unhealthy","Hurt"],
+		"effect":"health",
+		"strength":"-1d3"
+	},
+	"dying":{
+		"name":["Very Sick","Dying","Bloody"],
+		"effect":"health",
+		"strength":"-2d2"
+	}
+}
