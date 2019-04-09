@@ -1,0 +1,17 @@
+{
+	"name":[
+		"Scratched Iron Sword",
+		"Iron Sword"
+	],
+	"damage":"1d4+2",
+	"worthMin":40,
+	"worthMax":60,
+	"desc":[
+		"The iron gleams when light hits it.",
+		"The blade is scratched on the sides."
+	],
+	"actionText":[
+		"There is a blur as the sword swings through the air.",
+		"The sword is silent as is is jabbed into its target."
+	]
+}
