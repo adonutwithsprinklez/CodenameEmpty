@@ -33,7 +33,7 @@ class Player(object):
                     x += 1
                     self.disp.display("     %d. %s" %
                                       (x, item.name), 0)
-            self.disp.display("0 to exit")
+            self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
                 cmd = int(input())
@@ -61,8 +61,8 @@ class Player(object):
             self.disp.display("%s - %s damage" %
                               (self.weapon.name, self.weapon.damage), 0)
             self.disp.display(self.weapon.desc, 0, 1)
-            self.disp.display("1 to equip", 0)
-            self.disp.display("2 to drop", 0)
+            self.disp.display("1. Equip", 0)
+            self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "a":
             self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
@@ -73,14 +73,14 @@ class Player(object):
             self.disp.display("%s - %d defence" %
                               (self.armor.name, self.armor.defence), 0)
             self.disp.display(self.armor.desc, 0, 1)
-            self.disp.display("1 to equip", 0)
-            self.disp.display("2 to drop", 0)
+            self.disp.display("1. Equip", 0)
+            self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         else:
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth)
-            self.disp.display("2 to drop", 0)
+            self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
 
         self.disp.closeDisplay()
@@ -103,6 +103,28 @@ class Player(object):
             self.disp.closeDisplay()
             input("\nEnter to continue")
             self.disp.clearScreen()
+    
+    def playerMenu(self, currentQuests, completedQuests):
+        cmd = -1
+        while cmd != 0:
+            self.disp.clearScreen()
+            self.disp.displayHeader("{} Info".format(self.name))
+            self.disp.display("Stats:")
+            for stat in self.getStats():
+                self.disp.display(
+                    "\t{} - {}".format(stat[0], stat[1]), 0, 0)
+            self.disp.display("Currently Equipped:", 1, 0)
+            self.disp.display("\t{}".format(
+                self.getEquipmentString()), 0)
+            self.disp.display("1. View Inventory")
+            self.disp.display("0. Exit", 0)
+            self.disp.closeDisplay()
+            try:
+                cmd = int(input())
+            except:
+                cmd = -1
+            if cmd == 1:
+                self.viewInventory()
 
     def getEquipmentString(self):
         equipstr = ""
