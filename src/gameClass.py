@@ -321,6 +321,7 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %-32s %17s   Hostility - %2d" %
                                   (x, area.name, area.aType, area.hostility), 0)
+            self.disp.display("0 - Player Menu")
             self.disp.closeDisplay()
             try:
                 cmd = int(input())
@@ -332,6 +333,27 @@ class Game(object):
                 cmd = -1
                 time.sleep(DELAY)
                 input("\nEnter to continue")
+            
+            if cmd == 0:
+                cmd2 = -1
+                while cmd2 != 0:
+                    self.disp.clearScreen()
+                    self.disp.displayHeader("{} Info".format(self.player.name))
+                    self.disp.display("Stats:")
+                    for stat in self.player.getStats():
+                        self.disp.display(
+                            "\t{} - {}".format(stat[0], stat[1]), 0, 0)
+                    self.disp.display("Currently Equipped:",1,0)
+                    self.disp.display("\t{}".format(self.player.getEquipmentString()),0)
+                    self.disp.display("1 - View Inventory")
+                    self.disp.display("0 - Exit",0)
+                    self.disp.closeDisplay()
+                    try:
+                        cmd2 = int(input())
+                    except:
+                        cmd2=-1
+                    if cmd2 == 1:
+                        self.player.viewInventory()
 
         # Load the new area
         self.currentArea = choices[cmd - 1]
