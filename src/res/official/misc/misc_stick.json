@@ -1,0 +1,12 @@
+{
+	"name":[
+		"Stick",
+		"Wooden Stick"
+	],
+	"desc":[
+		"It is a basic chunk of wood from a tree.",
+		"There does not seem like you can do anything with it."
+	],
+	"worthMin":1,
+	"worthMax":5
+}

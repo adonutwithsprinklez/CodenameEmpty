@@ -1,0 +1,19 @@
+{
+	"name":[
+		"Orcish Sword",
+		"Bent Sword",
+		"Bloodied Sword",
+		"Broken Sword"
+	],
+	"damage":"2d4",
+	"worthMin":50,
+	"worthMax":55,
+	"desc":[
+		"The blade is old and bloodied. It is a wonder how anyone used it.",
+		"The sword is dull and bent. It will make hitting with it hard."
+	],
+	"actionText":[
+		"There is a blur as the sword swings through the air.",
+		"The dull blade smashes against the opponent."
+	]
+}

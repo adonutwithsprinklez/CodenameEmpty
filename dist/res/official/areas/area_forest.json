@@ -1,0 +1,36 @@
+{
+	"name":[
+		"Wooded Area",
+		"Heavily Forested Area",
+		"Overgrown Area",
+		"Forrested Ruins",
+		"Heavily Wooded Area"
+	],
+	"desc":[
+		"Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
+		"It is almost impossible to see past the trees.\nYou continue to push on.",
+		"Next to no light is able to pass through the thick layer of leaves above.\nThe few beams of light guide you as you go on.",
+		"There is a slight chill to the air, probably because of the lack of sunlight.\nAt least you won't sweat as you hike on."
+	],
+	"aType":"Forest",
+	"hostilityMin":1,
+	"hostilityMax":5,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":10,
+	"enemies":[
+		["enemy_wolf",10],
+		["enemy_greatWolf",1]
+	],
+	"npcChance":0,
+	"npcs":[
+		"npc_defNPC"
+	],
+	"minNewAreas":3,
+	"maxNewAreas":6,
+	"areas":[
+		["area_forest",8],
+		["area_strongHold",2]
+	]
+}
