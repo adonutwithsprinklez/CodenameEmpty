@@ -194,35 +194,7 @@ class Game(object):
                             cmd = -1
 
                         if cmd == 3:
-                            cmd2 = -1
-                            while cmd2 != 0:
-                                self.disp.clearScreen()
-                                self.disp.displayHeader("Inventory")
-                                self.disp.display("Contents %d / %d" %
-                                                  (len(self.player.inv), self.player.maxInv), 1)
-                                if len(self.player.inv) > 0:
-                                    self.disp.display("")
-                                    x = 0
-                                    for item in self.player.inv:
-                                        x += 1
-                                        self.disp.display("     %d. %s" %
-                                                          (x, item.name), 0)
-                                self.disp.display("0 to exit")
-                                self.disp.closeDisplay()
-                                time.sleep(DELAY)
-                                try:
-                                    cmd2 = int(input())
-                                except ValueError:
-                                    self.disp.clearScreen()
-                                    self.disp.displayHeader("Error")
-                                    self.disp.display(
-                                        "That was not a valid response.", 1, 0)
-                                    self.disp.closeDisplay()
-                                    input()
-                                    cmd2 = -1
-                                self.disp.clearScreen()
-                                if 0 < cmd2 <= len(self.player.inv):
-                                    self.player.attemptEquip(cmd2)
+                            self.player.viewInventory()
                         elif cmd == 9 and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.hpMax

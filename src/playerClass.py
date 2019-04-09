@@ -17,6 +17,36 @@ class Player(object):
 		self.inv = []
 		self.maxInv = 10
 		self.disp = None
+	
+	def viewInventory(self):
+		cmd = -1
+		while cmd != 0:
+			self.disp.clearScreen()
+			self.disp.displayHeader("Inventory")
+			self.disp.display("Contents %d / %d" %
+								(len(self.inv), self.maxInv), 1)
+			if len(self.inv) > 0:
+				self.disp.display("")
+				x = 0
+				for item in self.inv:
+					x += 1
+					self.disp.display("     %d. %s" %
+										(x, item.name), 0)
+			self.disp.display("0 to exit")
+			self.disp.closeDisplay()
+			try:
+				cmd = int(input())
+			except ValueError:
+				self.disp.clearScreen()
+				self.disp.displayHeader("Error")
+				self.disp.display(
+					"That was not a valid response.", 1, 0)
+				self.disp.closeDisplay()
+				input()
+				cmd = -1
+			self.disp.clearScreen()
+			if 0 < cmd <= len(self.inv):
+				self.attemptEquip(cmd)
 
 	def attemptEquip(self,cmd):
 		if self.inv[cmd-1].t == "w":
@@ -32,6 +62,7 @@ class Player(object):
 			self.disp.display(self.weapon.desc, 0, 1)
 			self.disp.display("1 to equip", 0)
 			self.disp.display("2 to drop", 0)
+			self.disp.display("Anything else to continue", 0)
 		elif self.inv[cmd-1].t == "a":
 			self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
 			self.disp.display("%s - %d defence" %
@@ -42,6 +73,7 @@ class Player(object):
 			self.disp.display(self.armor.desc, 0, 1)
 			self.disp.display("1 to equip", 0)
 			self.disp.display("2 to drop", 0)
+			self.disp.display("Anything else to continue", 0)
 		else:
 			self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
 			self.disp.display(self.inv[cmd-1].desc)
