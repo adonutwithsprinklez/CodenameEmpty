@@ -1,7 +1,7 @@
 {
 	"VERSION":0.1,
 	"DEBUG":true,
-	"DEBUGDISPLAY":true,
-	"DELAY":0.0,
+	"DEBUGDISPLAY":false,
+	"DELAY":0.01,
 	"EVENTDELAY":1
 }

@@ -1,3 +1,6 @@
 pyinstaller --onefile --clean ^
     -n GameLauncher ^
-    main.py
+    src/main.py
+
+xcopy /s /y /f src\res dist\res
+pause
