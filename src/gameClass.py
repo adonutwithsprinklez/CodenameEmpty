@@ -155,38 +155,43 @@ class Game(object):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
             for areaEnemy in self.currentArea.enemy:
-                self.disp.clearScreen()
-                self.disp.dprint("Enemy Danger Level:   {}".format(areaEnemy.getDanger()))
-                self.disp.dprint("Enemy Max Health:     {}".format(areaEnemy.hpMax))
-                self.disp.dprint("Enemy Current Health: {}".format(areaEnemy.hp))
-                self.disp.dprint("Enemy Strength:       {}".format(areaEnemy.getStrength()))
-                self.disp.dprint("Enemy Weapon Damage:  {}".format(areaEnemy.getRawWeaponDamage()))
+                self.disp.dprint(
+                    "Enemy Danger Level:   {}".format(areaEnemy.getDanger()))
+                self.disp.dprint(
+                    "Enemy Max Health:     {}".format(areaEnemy.hpMax))
+                self.disp.dprint(
+                    "Enemy Current Health: {}".format(areaEnemy.hp))
+                self.disp.dprint("Enemy Strength:       {}".format(
+                    areaEnemy.getStrength()))
+                self.disp.dprint("Enemy Weapon Damage:  {}".format(
+                    areaEnemy.getRawWeaponDamage()))
                 enemyhp = areaEnemy.getHealth()
                 while enemyhp > 0 and self.player.hp:
-                    self.disp.displayHeader("Enemy Encountered - %s" %
-                                            (areaEnemy.name))
-                    self.disp.display("%s The enemy has a danger level of %d." %
-                                      (areaEnemy.desc, areaEnemy.getDanger()), 1, 1)
-                    self.disp.displayHeader("Info")
-                    self.disp.display("Player: %s - %dHP" %
-                                      (self.player.name, self.player.hp))
-                    self.disp.display("HP: %s" % ("#" * self.player.getHealth()),
-                                      0)
-                    self.disp.display("Weapon: %s" %
-                                      (str(self.player.weapon)), 0)
-                    self.disp.display("Enemy: %s - %dHP" %
-                                      (areaEnemy.name, areaEnemy.hp))
-                    self.disp.display("HP: %s" %
-                                      ("#" * areaEnemy.getHealth()), 0)
-                    self.disp.display("Weapon: %s" %
-                                      (str(areaEnemy.weapon)), 0, 1)
                     cmd = -1
                     while not ((cmd <= 2 and cmd >= 1) or (cmd == 0 and DEBUG)):
+                        self.disp.clearScreen()
+                        self.disp.displayHeader("Enemy Encountered - %s" %
+                                                (areaEnemy.name))
+                        self.disp.display("%s The enemy has a danger level of %d." %
+                                          (areaEnemy.desc, areaEnemy.getDanger()), 1, 1)
+                        self.disp.displayHeader("Info")
+                        self.disp.display("Player: %s - %dHP" %
+                                          (self.player.name, self.player.hp))
+                        self.disp.display("HP: %s" % ("#" * self.player.getHealth()),
+                                          0)
+                        self.disp.display("Weapon: %s" %
+                                          (str(self.player.weapon)), 0)
+                        self.disp.display("Enemy: %s - %dHP" %
+                                          (areaEnemy.name, areaEnemy.hp))
+                        self.disp.display("HP: %s" %
+                                          ("#" * areaEnemy.getHealth()), 0)
+                        self.disp.display("Weapon: %s" %
+                                          (str(areaEnemy.weapon)), 0, 1)
                         self.disp.displayHeader("Actions")
                         self.disp.display("1. Use your weapon (%s)" %
                                           str(self.player.weapon))
                         self.disp.display("2. Attempt to escape", 0)
-                        self.disp.display("3. Inventory", 0)
+                        self.disp.display("3. Player Menu", 0)
                         self.disp.closeDisplay()
                         try:
                             cmd = int(input())
@@ -194,35 +199,7 @@ class Game(object):
                             cmd = -1
 
                         if cmd == 3:
-                            cmd2 = -1
-                            while cmd2 != 0:
-                                self.disp.clearScreen()
-                                self.disp.displayHeader("Inventory")
-                                self.disp.display("Contents %d / %d" %
-                                                  (len(self.player.inv), self.player.maxInv), 1)
-                                if len(self.player.inv) > 0:
-                                    self.disp.display("")
-                                    x = 0
-                                    for item in self.player.inv:
-                                        x += 1
-                                        self.disp.display("     %d. %s" %
-                                                          (x, item.name), 0)
-                                self.disp.display("0 to exit")
-                                self.disp.closeDisplay()
-                                time.sleep(DELAY)
-                                try:
-                                    cmd2 = int(input())
-                                except ValueError:
-                                    self.disp.clearScreen()
-                                    self.disp.displayHeader("Error")
-                                    self.disp.display(
-                                        "That was not a valid response.", 1, 0)
-                                    self.disp.closeDisplay()
-                                    input()
-                                    cmd2 = -1
-                                self.disp.clearScreen()
-                                if 0 < cmd2 <= len(self.player.inv):
-                                    self.player.attemptEquip(cmd2)
+                            self.player.playerMenu(self.currentQuests,self.completedQuests)
                         elif cmd == 9 and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.hpMax
@@ -349,6 +326,7 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %-32s %17s   Hostility - %2d" %
                                   (x, area.name, area.aType, area.hostility), 0)
+            self.disp.display("0. Player Menu")
             self.disp.closeDisplay()
             try:
                 cmd = int(input())
@@ -360,6 +338,9 @@ class Game(object):
                 cmd = -1
                 time.sleep(DELAY)
                 input("\nEnter to continue")
+
+            if cmd == 0:
+                self.player.playerMenu(self.currentQuests, self.completedQuests)
 
         # Load the new area
         self.currentArea = choices[cmd - 1]
@@ -448,4 +429,3 @@ class Game(object):
         for quest in self.completedQuests:
             self.disp.dprint(quest)
         self.importantQuestInfo = []
-
