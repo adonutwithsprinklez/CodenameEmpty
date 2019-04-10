@@ -117,14 +117,45 @@ class Player(object):
             self.disp.display("\t{}".format(
                 self.getEquipmentString()), 0)
             self.disp.display("1. View Inventory")
+            self.disp.display("2. View Quests",0)
             self.disp.display("0. Exit", 0)
             self.disp.closeDisplay()
             try:
                 cmd = int(input())
             except:
                 cmd = -1
-            if cmd == 1:
+            if cmd == 0:
+                pass
+            elif cmd == 1:
                 self.viewInventory()
+            elif cmd == 2:
+                self.viewQuests(currentQuests, completedQuests)
+            else:
+                self.disp.clearScreen()
+                self.disp.displayHeader("Error")
+                self.disp.display("That was not a valid response",1,1)
+            
+    
+    def viewQuests(self, currentQuests, completedQuests):
+        cmd = -1
+        while cmd != 0:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Journal")
+            self.disp.display("Current Quests:")
+            if len(currentQuests) > 0:
+                for quest in currentQuests:
+                    self.disp.display("\t{} - {}".format(quest.title, quest.desc),0)
+            else:
+                self.disp.display("\tNo quests currently started",0)
+            if len(completedQuests) > 0:
+                self.disp.display("Completed Quests")
+                for quest in completedQuests:
+                    self.disp.display("\t{}-{}".format(quest.title,quest.desc),0)
+            self.disp.closeDisplay()
+            try:
+                cmd = int(input())
+            except:
+                cmd = -1
 
     def getEquipmentString(self):
         equipstr = ""
