@@ -155,7 +155,6 @@ class Game(object):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
             for areaEnemy in self.currentArea.enemy:
-                self.disp.clearScreen()
                 self.disp.dprint(
                     "Enemy Danger Level:   {}".format(areaEnemy.getDanger()))
                 self.disp.dprint(
@@ -170,6 +169,7 @@ class Game(object):
                 while enemyhp > 0 and self.player.hp:
                     cmd = -1
                     while not ((cmd <= 2 and cmd >= 1) or (cmd == 0 and DEBUG)):
+                        self.disp.clearScreen()
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
