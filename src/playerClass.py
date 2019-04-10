@@ -151,6 +151,7 @@ class Player(object):
                 self.disp.display("Completed Quests")
                 for quest in completedQuests:
                     self.disp.display("\t{}-{}".format(quest.title,quest.desc),0)
+            self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
                 cmd = int(input())
