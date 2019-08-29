@@ -13,7 +13,6 @@ class Enemy(object):
         self.desc = random.choice(data["desc"])
         self.hpMax = rollDice(data["hp"])
         self.damage = data["damage"]
-        self.hp = self.hpMax
         self.xp = int(random.random()*data["xp"]+0.5)
         if data["weapon"]:
             self.weapon = Weapon(weapons[random.choice(data["weapon"])])
@@ -33,6 +32,10 @@ class Enemy(object):
                 # Gets into the mod's effects
                 if mod["e"] == "damage":
                     self.damage += ";%s" % (mod["s"])
+                elif mod["e"] == "health":
+                    self.hpMax += rollDice(mod["s"])
+        # Wait until modifiers are added to set the starting health
+        self.hp = self.hpMax
 
         self.armor = Armor(armor[random.choice(data["armor"])])
         self.deathMsg = random.choice(data["deathMsg"])
