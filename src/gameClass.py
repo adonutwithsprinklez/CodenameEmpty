@@ -168,8 +168,7 @@ class Game(object):
                 enemyhp = areaEnemy.getHealth()
                 while enemyhp > 0 and self.player.hp:
                     cmd = -1
-                    while not ((cmd <= 2 and cmd >= 1) or (cmd == 0 and DEBUG)):
-                        self.disp.clearScreen()
+                    while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
@@ -191,28 +190,30 @@ class Game(object):
                         self.disp.display("1. Use your weapon (%s)" %
                                           str(self.player.weapon))
                         self.disp.display("2. Attempt to escape", 0)
-                        self.disp.display("3. Player Menu", 0)
+                        self.disp.display("0. Player Menu")
                         self.disp.closeDisplay()
                         try:
                             cmd = int(input())
                         except ValueError:
                             cmd = -1
-
-                        if cmd == 3:
+                        
+                        if cmd == 0:
                             self.player.playerMenu(self.currentQuests,self.completedQuests)
-                        elif cmd == 9 and DEBUG:
+                            self.disp.clearScreen()
+                        elif cmd in (9, 90) and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.hpMax
+                            self.disp.clearScreen()
                         elif cmd not in (1, 2, 9, 0):
                             self.disp.clearScreen()
                             self.disp.displayHeader("Error")
                             self.disp.display("That was not a valid response.",
                                               1, 1)
 
-                    if cmd == 1 or cmd == 0:
+                    if cmd == 1 or cmd == 90:
                         self.disp.clearScreen()
                         damage = self.player.getWeaponDamage()
-                        if DEBUG and cmd == 0:
+                        if DEBUG and cmd == "a":
                             damage *= 10
                         msg = self.player.getWeaponAction()
                         damage -= int(areaEnemy.getArmorDefence())

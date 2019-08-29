@@ -15,6 +15,7 @@ class Player(object):
         self.weapon = None
         self.armor = None
         self.unarmed = 1
+        self.gold = 0
         self.inv = []
         self.maxInv = 10
         self.disp = None
@@ -148,7 +149,7 @@ class Player(object):
             else:
                 self.disp.display("\tNo quests currently started",0)
             if len(completedQuests) > 0:
-                self.disp.display("Completed Quests")
+                self.disp.display("Completed Quests:")
                 for quest in completedQuests:
                     self.disp.display("\t{}-{}".format(quest.title,quest.desc),0)
             self.disp.display("0. Exit")
