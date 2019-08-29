@@ -16,9 +16,10 @@
 		"armor_orcCaptainArmor"
 	],
 	"misc":[
-		"misc_wolfPelt",
-		"misc_stick",
-		"misc_greatWolfPelt"
+		"material_wolfPelt",
+		"material_stick",
+		"material_greatWolfPelt",
+		"consumable_apple"
 	],
 	"areas":[
 		"area_forest",

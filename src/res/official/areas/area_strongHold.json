@@ -34,7 +34,7 @@
 	"minNewAreas":2,
 	"maxNewAreas":5,
 	"areas":[
-		["area_forest",3],
-		["area_strongHold",7]
+		["area_forest","1d6"],
+		["area_strongHold","2d5"]
 	]
 }
