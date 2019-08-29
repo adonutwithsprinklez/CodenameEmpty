@@ -141,16 +141,19 @@ class Player(object):
         while cmd != 0:
             self.disp.clearScreen()
             self.disp.displayHeader("Journal")
-            self.disp.display("Current Quests:")
+            self.disp.display("Quests:")
             if len(currentQuests) > 0:
                 for quest in currentQuests:
-                    self.disp.display("\t{} - {}".format(quest.title, quest.desc),0)
+                    self.disp.display("[ ] - {}".format(quest.title))
+                    self.disp.display("\t{}".format(quest.desc),0)
             else:
                 self.disp.display("\tNo quests currently started",0)
             if len(completedQuests) > 0:
-                self.disp.display("Completed Quests")
-                for quest in completedQuests:
-                    self.disp.display("\t{}-{}".format(quest.title,quest.desc),0)
+                # revereses the array so that the most recently completed quests
+                # come up first
+                for quest in completedQuests: 
+                    self.disp.display("[X] - {}".format(quest.title))
+                    self.disp.display("\t{}".format(quest.desc),0)
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
