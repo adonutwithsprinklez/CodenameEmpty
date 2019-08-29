@@ -5,6 +5,7 @@ import textwrap
 
 from areaClass import Area
 from armorClass import Armor
+from dieClass import rollDice
 from displayClass import Screen
 from enemyClass import Enemy
 from jsonDecoder import loadJson
@@ -152,6 +153,30 @@ class Game(object):
         has occured within the game, such as enemies appearing, or quest
         objectives getting updated.'''
 
+        self.fightEnemies()
+
+        ##### Random event Code #####
+        if self.currentArea.event:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Random Event")
+            self.disp.display(self.currentArea.event.name)
+            self.disp.display(self.currentArea.event.msg, 1, 1)
+            self.disp.displayHeader("Actions", 1)
+            x = 0
+            for choice in self.currentArea.event.actions.keys():
+                x += 1
+                self.disp.display("%d. %s" % (x, choice), 0)
+            self.disp.closeDisplay()
+            time.sleep(DELAY)
+            input()
+
+        ##### Interacting with an NPC Code #####
+        if self.currentArea.npc:
+            self.disp.clearScreen()
+            self.disp.displayHeader(self.currentArea.npc.name)
+            self.disp.display(self.currentArea.npc)
+    
+    def fightEnemies(self):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
             for areaEnemy in self.currentArea.enemy:
@@ -290,27 +315,6 @@ class Game(object):
                 self.updateQuestInfo()
                 self.workOnBacklog()
 
-        ##### Random event Code #####
-        if self.currentArea.event:
-            self.disp.clearScreen()
-            self.disp.displayHeader("Random Event")
-            self.disp.display(self.currentArea.event.name)
-            self.disp.display(self.currentArea.event.msg, 1, 1)
-            self.disp.displayHeader("Actions", 1)
-            x = 0
-            for choice in self.currentArea.event.actions.keys():
-                x += 1
-                self.disp.display("%d. %s" % (x, choice), 0)
-            self.disp.closeDisplay()
-            time.sleep(DELAY)
-            input()
-
-        ##### Interacting with an NPC Code #####
-        if self.currentArea.npc:
-            self.disp.clearScreen()
-            self.disp.displayHeader(self.currentArea.npc.name)
-            self.disp.display(self.currentArea.npc)
-
     def chooseNewArea(self):
         '''This lets the player choose a new area to travel to.'''
         # Create various area choices:
@@ -356,13 +360,18 @@ class Game(object):
     def randomAreaChoices(self):
         '''This randomly generates areas for the player to choose from.'''
         choices = []
-        areatypes = []
-        for area in self.currentArea.newAreaTypes:
-            areatypes += [area[0]] * area[1]
         for i in range(1, self.currentArea.newArea + 1):
-            t = random.choice(areatypes)
-            a = Area(self.areas[t])
-            choices.append(a)
+            areatypes = self.currentArea.newAreaTypes[::]
+            print(areatypes)
+            newArea = areatypes.pop(0)
+            highroll = rollDice(newArea[1])
+            for aType in areatypes:
+                newroll = rollDice(aType[1])
+                if newroll > highroll:
+                    newArea = aType
+                    highroll = newroll
+            generatedArea = Area(self.areas[newArea[0]])
+            choices.append(generatedArea)
         return choices
 
     def workOnBacklog(self):

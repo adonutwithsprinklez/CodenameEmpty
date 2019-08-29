@@ -29,7 +29,7 @@
 	],
 	"itemChance":10,
 	"itemDrops":[
-		["misc_wolfPelt","You skin the wolf and take it as a reward."]
+		["material_wolfPelt","You skin the wolf and take it as a reward."]
 	],
 	"xp":3
 }

@@ -1,0 +1,16 @@
+{
+    "name":[
+        "Apple",
+        "Red Apple",
+        "Bruised Apple"
+    ],
+    "desc":[
+        "The apple looks large and delicious.",
+        "The skin is a little bruised, but still edible."
+    ],
+    "cType":"edible",
+    "effects":[
+        ["heal","1d6"]
+    ],
+    "worth":2
+}

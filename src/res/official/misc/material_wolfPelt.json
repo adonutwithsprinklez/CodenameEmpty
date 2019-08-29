@@ -1,0 +1,13 @@
+{
+	"name":[
+		"Wolf Pelt",
+		"Wolf Hide"
+	],
+	"desc":[
+		"It might fetch a good price.",
+		"The hide seems to be in good shape.",
+		"The fur seems warm and thick enough to be used as an armor. Maybe if you found more..."
+	],
+	"iType":"material",
+	"worth":5
+}

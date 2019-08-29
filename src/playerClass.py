@@ -142,10 +142,11 @@ class Player(object):
         while cmd != 0:
             self.disp.clearScreen()
             self.disp.displayHeader("Journal")
-            self.disp.display("Current Quests:")
+            self.disp.display("Quests:")
             if len(currentQuests) > 0:
                 for quest in currentQuests:
-                    self.disp.display("\t{} - {}".format(quest.title, quest.desc),0)
+                    self.disp.display("[ ] - {}".format(quest.title))
+                    self.disp.display("\t{}".format(quest.desc),0)
             else:
                 self.disp.display("\tNo quests currently started",0)
             if len(completedQuests) > 0:
