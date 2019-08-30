@@ -1,7 +1,29 @@
 {
-	"VERSION":0.1,
-	"DEBUG":true,
-	"DEBUGDISPLAY":false,
-	"DELAY":0.01,
-	"EVENTDELAY":1
+    "VERSION": 0.1,
+    "DEBUG": true,
+    "DEBUGDISPLAY": false,
+    "DELAY": 0.01,
+    "EVENTDELAY": 1,
+    "GAMESETTINGS": [
+        [
+            "DELAYENABLED",
+            "Display Effects",
+            true
+        ],
+        [
+            "test",
+            "Test Option",
+            false
+        ],
+        [
+            "test2",
+            "Another Option",
+            true
+        ]
+    ],
+    "DATAPACKOPTIONS": {
+        "folder": "res/",
+        "packsToLoad": "official",
+        "start": "$default"
+    }
 }

@@ -25,21 +25,12 @@ class Game(object):
     def __init__(self):
         '''Initializes the Game object. This also sets some required variable
         to empty so they can be initialized later.'''
-        self.packs = {}
-        self.weapons = {}
-        self.armor = {}
-        self.misc = {}
-        self.areas = {}
-        self.quests = {}
-        self.events = {}
-        self.npcs = {}
-        self.enemies = {}
-        self.modifiers = {}
+        self.cleanDataPackInfo()
         self.player = Player()
 
         self.disp = Screen()
 
-        self.settingsfile = "res/settings.json"
+        self.loaded = False
         self.settings = {}
 
         self.possibleQuests = []
@@ -50,12 +41,12 @@ class Game(object):
 
         self.currentArea = None
 
-    def initialLoad(self, folder="res/"):
+    def initialLoad(self, folder="res/", settingsdata={}):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
         global VERSION, DELAY, DEBUG
-        self.settings = loadJson(self.settingsfile)
+        self.settings = settingsdata
         VERSION = self.settings["VERSION"]
         DELAY = self.settings["DELAY"]
         EVENTDELAY = self.settings["EVENTDELAY"]
@@ -133,6 +124,19 @@ class Game(object):
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(Weapon(self.weapons["weapon_ironSword"]))
+        self.loaded = True
+    
+    def cleanDataPackInfo(self):
+        self.packs = {}
+        self.weapons = {}
+        self.armor = {}
+        self.misc = {}
+        self.areas = {}
+        self.quests = {}
+        self.events = {}
+        self.npcs = {}
+        self.enemies = {}
+        self.modifiers = {}
 
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
@@ -168,7 +172,7 @@ class Game(object):
                 self.disp.display("%d. %s" % (x, choice), 0)
             self.disp.closeDisplay()
             time.sleep(DELAY)
-            input()
+            input("Enter to continue")
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
@@ -179,6 +183,7 @@ class Game(object):
     def fightEnemies(self):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
+            self.disp.clearScreen()
             for areaEnemy in self.currentArea.enemy:
                 self.disp.dprint(
                     "Enemy Danger Level:   {}".format(areaEnemy.getDanger()))
@@ -438,3 +443,47 @@ class Game(object):
         for quest in self.completedQuests:
             self.disp.dprint(quest)
         self.importantQuestInfo = []
+    
+    def displayMainMenu(self):
+        self.disp.dprint("\nGame Load status: {}".format(self.loaded))
+        self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
+
+        self.disp.clearScreen()
+        self.disp.displayHeader("Main Menu")
+        self.disp.display("PROJECT: EMPTY")
+        self.disp.display("Welcome to the Void.",0)
+        self.disp.display("1. New Game")
+        self.disp.display("2. Settings", 0)
+        self.disp.display("3. Data Packs", 0)
+        self.disp.display("0. Exit")
+        self.disp.closeDisplay()
+
+    def openOptionsWindow(self):
+        settingsOpen = True
+        while settingsOpen:
+            self.displayOptions()
+            try:
+                cmd = int(input())
+            except ValueError:
+                cmd = -1
+            
+            if cmd == 1:
+                pass
+            elif cmd == 0:
+                settingsOpen = False
+    
+    def displayOptions(self):
+        self.disp.clearScreen()
+        self.disp.displayHeader("Settings")
+        
+        listOfOptions = self.settings["GAMESETTINGS"][::]
+        firstOption = listOfOptions.pop(0)
+        self.disp.display("1. {} - {}".format(firstOption[1], firstOption[2]))
+        i = 1
+        for option in listOfOptions:
+            i+=1
+            self.disp.display(("{}. {} - {}".format(i, option[1], option[2])), 0)
+        self.disp.display("Input option # to toggle")
+        self.disp.display("0. to exit", 0)
+
+        self.disp.closeDisplay()
