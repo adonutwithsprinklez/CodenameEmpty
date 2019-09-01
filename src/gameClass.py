@@ -366,7 +366,6 @@ class Game(object):
         choices = []
         for i in range(1, self.currentArea.newArea + 1):
             areatypes = self.currentArea.newAreaTypes[::]
-            print(areatypes)
             newArea = areatypes.pop(0)
             highroll = rollDice(newArea[1])
             for aType in areatypes:
@@ -460,30 +459,50 @@ class Game(object):
 
     def openOptionsWindow(self):
         settingsOpen = True
+        settingsPage = 0
+        settingsNumOfPages = int(len(self.settings["GAMESETTINGS"]) / 9)
+
         while settingsOpen:
-            self.displayOptions()
+            toggleableOptions = self.displayOptions(settingsNumOfPages, settingsPage)
             try:
                 cmd = int(input())
             except ValueError:
                 cmd = -1
             
-            if cmd == 1:
-                pass
+            if cmd in range(1,9) and cmd-1<=len(toggleableOptions):
+                self.settings["GAMESETTINGS"][cmd-1+9*settingsPage][2] ^= True
+            elif cmd == 12 and settingsPage < settingsNumOfPages:
+                settingsPage += 1
+            elif cmd == 11 and settingsPage > 0:
+                settingsPage -= 1
             elif cmd == 0:
                 settingsOpen = False
     
-    def displayOptions(self):
+    def displayOptions(self, numPages=1, page=0):
         self.disp.clearScreen()
         self.disp.displayHeader("Settings")
         
-        listOfOptions = self.settings["GAMESETTINGS"][::]
+        startOptions = page*9
+        endOptions = 9+(page*9)
+
+        listOfOptions = self.settings["GAMESETTINGS"][startOptions:endOptions]
         firstOption = listOfOptions.pop(0)
-        self.disp.display("1. {} - {}".format(firstOption[1], firstOption[2]))
+        enabled = "ENABLED" if firstOption[2] else "DISABLED"
+        self.disp.display(f'1. {firstOption[1]:<20} {enabled:>48}')
         i = 1
         for option in listOfOptions:
             i+=1
-            self.disp.display(("{}. {} - {}".format(i, option[1], option[2])), 0)
+            enabled = "ENABLED" if option[2] else "DISABLED"
+            self.disp.display(f'{i}. {option[1]:<20} {enabled:>48}', 0)
         self.disp.display("Input option # to toggle")
-        self.disp.display("0. to exit", 0)
-
+        pagebreak = 1
+        if page < numPages:
+            self.disp.display("12. for next page of settings")
+            pagebreak = 0
+        if page > 0:
+            self.disp.display("11. for previous page of settings", pagebreak)
+            pagebreak = 0
+        self.disp.display("0. to exit", pagebreak)
         self.disp.closeDisplay()
+
+        return listOfOptions
