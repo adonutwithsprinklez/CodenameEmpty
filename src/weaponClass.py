@@ -2,7 +2,12 @@ import random
 
 
 class Weapon(object):
-	def __init__(self,data):
+	def __init__(self, data=None):
+		# Decides whether or not the item is generated
+		if "generated" in data.keys():
+			self.generated = data["generated"]
+		else:
+			self.generated = False
 		self.name = random.choice(data["name"])
 		self.t="w"
 		self.desc = random.choice(data["desc"])

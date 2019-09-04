@@ -5,7 +5,8 @@
 	"weapons":[
 		"weapon_ironSword",
 		"weapon_wolfClaws",
-		"weapon_orcSword"
+		"weapon_orcSword",
+		"template_IronSword"
 	],
 	"armor":[
 		"armor_wolfHide",

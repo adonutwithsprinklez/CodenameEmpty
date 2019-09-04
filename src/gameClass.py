@@ -8,6 +8,7 @@ from armorClass import Armor
 from dieClass import rollDice
 from displayClass import Screen
 from enemyClass import Enemy
+from itemGeneration import generateWeapon
 from jsonDecoder import loadJson
 from modifierClass import Modifier
 from playerClass import Player
@@ -32,6 +33,7 @@ class Game(object):
 
         self.loaded = False
         self.settings = {}
+        self.gameSettings = {}
 
         self.possibleQuests = []
         self.currentQuests = []
@@ -47,6 +49,7 @@ class Game(object):
         times.'''
         global VERSION, DELAY, DEBUG
         self.settings = settingsdata
+        self.loadGameSettings()
         VERSION = self.settings["VERSION"]
         DELAY = self.settings["DELAY"]
         EVENTDELAY = self.settings["EVENTDELAY"]
@@ -55,6 +58,7 @@ class Game(object):
 
         # Set up the display with a delay and whether or not to debug
         self.disp.debugging = DEBUGDISPLAY
+        self.disp.delay = self.gameSettings["DELAYENABLED"]
         self.disp.printdelay = DELAY
 
         packs = loadJson(folder + "packs.json")
@@ -109,7 +113,7 @@ class Game(object):
             self.possibleQuests.append(Quest(self.quests[quest]))
         if DEBUG:
             for q in self.possibleQuests:
-                print(q)
+                self.disp.dprint(q)
 
         self.currentArea = Area(self.areas[self.packs[starter][
                                 "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
@@ -123,9 +127,9 @@ class Game(object):
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
-        self.player.inv.append(Weapon(self.weapons["weapon_ironSword"]))
+        self.player.inv.append(generateWeapon(self.weapons["template_IronSword"]))
         self.loaded = True
-    
+
     def cleanDataPackInfo(self):
         self.packs = {}
         self.weapons = {}
@@ -137,6 +141,11 @@ class Game(object):
         self.npcs = {}
         self.enemies = {}
         self.modifiers = {}
+
+    def loadGameSettings(self):
+        self.gameSettings = {}
+        for setting in self.settings["GAMESETTINGS"]:
+            self.gameSettings[setting[0]] = setting[2]
 
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
@@ -179,7 +188,7 @@ class Game(object):
             self.disp.clearScreen()
             self.disp.displayHeader(self.currentArea.npc.name)
             self.disp.display(self.currentArea.npc)
-    
+
     def fightEnemies(self):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
@@ -198,7 +207,7 @@ class Game(object):
                 enemyhp = areaEnemy.getHealth()
                 while enemyhp > 0 and self.player.hp:
                     cmd = -1
-                    while not ((cmd <= 2 and cmd >= 1) or (cmd == 0 and DEBUG)):
+                    while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
                         self.disp.clearScreen()
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
@@ -221,16 +230,17 @@ class Game(object):
                         self.disp.display("1. Use your weapon (%s)" %
                                           str(self.player.weapon))
                         self.disp.display("2. Attempt to escape", 0)
-                        self.disp.display("3. Player Menu", 0)
+                        self.disp.display("0. Player Menu")
                         self.disp.closeDisplay()
                         try:
                             cmd = int(input())
                         except ValueError:
                             cmd = -1
 
-                        if cmd == 3:
-                            self.player.playerMenu(self.currentQuests,self.completedQuests)
-                        elif cmd == 9 and DEBUG:
+                        if cmd == 0:
+                            self.player.playerMenu(
+                                self.currentQuests, self.completedQuests)
+                        elif cmd in (9, 90) and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.hpMax
                         elif cmd not in (1, 2, 9, 0):
@@ -239,10 +249,10 @@ class Game(object):
                             self.disp.display("That was not a valid response.",
                                               1, 1)
 
-                    if cmd == 1 or cmd == 0:
+                    if cmd == 1 or cmd == 90:
                         self.disp.clearScreen()
                         damage = self.player.getWeaponDamage()
-                        if DEBUG and cmd == 0:
+                        if DEBUG and cmd == 90:
                             damage *= 10
                         msg = self.player.getWeaponAction()
                         damage -= int(areaEnemy.getArmorDefence())
@@ -349,7 +359,8 @@ class Game(object):
                 input("\nEnter to continue")
 
             if cmd == 0:
-                self.player.playerMenu(self.currentQuests, self.completedQuests)
+                self.player.playerMenu(
+                    self.currentQuests, self.completedQuests)
 
         # Load the new area
         self.currentArea = choices[cmd - 1]
@@ -442,7 +453,7 @@ class Game(object):
         for quest in self.completedQuests:
             self.disp.dprint(quest)
         self.importantQuestInfo = []
-    
+
     def displayMainMenu(self):
         self.disp.dprint("\nGame Load status: {}".format(self.loaded))
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
@@ -450,7 +461,7 @@ class Game(object):
         self.disp.clearScreen()
         self.disp.displayHeader("Main Menu")
         self.disp.display("PROJECT: EMPTY")
-        self.disp.display("Welcome to the Void.",0)
+        self.disp.display("Welcome to the Void.", 0)
         self.disp.display("1. New Game")
         self.disp.display("2. Settings", 0)
         self.disp.display("3. Data Packs", 0)
@@ -463,13 +474,14 @@ class Game(object):
         settingsNumOfPages = int(len(self.settings["GAMESETTINGS"]) / 9)
 
         while settingsOpen:
-            toggleableOptions = self.displayOptions(settingsNumOfPages, settingsPage)
+            toggleableOptions = self.displayOptions(
+                settingsNumOfPages, settingsPage)
             try:
                 cmd = int(input())
             except ValueError:
                 cmd = -1
-            
-            if cmd in range(1,9) and cmd-1<=len(toggleableOptions):
+
+            if cmd in range(1, 9) and cmd-1 <= len(toggleableOptions):
                 self.settings["GAMESETTINGS"][cmd-1+9*settingsPage][2] ^= True
             elif cmd == 12 and settingsPage < settingsNumOfPages:
                 settingsPage += 1
@@ -477,11 +489,11 @@ class Game(object):
                 settingsPage -= 1
             elif cmd == 0:
                 settingsOpen = False
-    
+
     def displayOptions(self, numPages=1, page=0):
         self.disp.clearScreen()
         self.disp.displayHeader("Settings")
-        
+
         startOptions = page*9
         endOptions = 9+(page*9)
 
@@ -491,10 +503,11 @@ class Game(object):
         self.disp.display(f'1. {firstOption[1]:<20} {enabled:>48}')
         i = 1
         for option in listOfOptions:
-            i+=1
+            i += 1
             enabled = "ENABLED" if option[2] else "DISABLED"
             self.disp.display(f'{i}. {option[1]:<20} {enabled:>48}', 0)
-        self.disp.display("Input option # to toggle")
+        self.disp.display(
+            "Input option # to toggle. Settings take effect on screen exit.")
         pagebreak = 1
         if page < numPages:
             self.disp.display("12. for next page of settings")

@@ -1,6 +1,7 @@
 import random
+import copy
 
-from weaponClass import Weapon
+from itemGeneration import generateWeapon
 from armorClass import Armor
 from miscClass import Misc
 from dieClass import rollDice, maxRoll
@@ -16,7 +17,7 @@ class Enemy(object):
         self.hp = self.hpMax
         self.xp = int(random.random()*data["xp"]+0.5)
         if data["weapon"]:
-            self.weapon = Weapon(weapons[random.choice(data["weapon"])])
+            self.weapon = generateWeapon(weapons[random.choice(data["weapon"])])
         # Adds modifiers to the enemy
         if data["modifier"]:
             # Calculates the chance for each mod
@@ -38,10 +39,10 @@ class Enemy(object):
         self.deathMsg = random.choice(data["deathMsg"])
         self.itemChance = data["itemChance"]
         if self.itemChance > 0:
-            self.itemDrop = random.choice(data["itemDrops"])
+            self.itemDrop = copy.copy(random.choice(data["itemDrops"]))
             try:
                 if self.itemDrop[0] in weapons.keys():
-                    self.itemDrop[0] = Weapon(weapons[self.itemDrop[0]])
+                    self.itemDrop[0] = generateWeapon(weapons[self.itemDrop[0]])
                 elif self.itemDrop[0] in armor.keys():
                     self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
                 elif self.itemDrop[0] in misc.keys():

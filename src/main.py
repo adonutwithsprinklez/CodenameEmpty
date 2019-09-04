@@ -15,6 +15,7 @@ def startGame(game):
 def openSettings(game, settingsFile):
 	game.openOptionsWindow()
 	saveJson(settingsFile, game.settings)
+	game.initialLoad(RES_FOLDER, SETTINGS)
 
 def openDataPacks():
 	pass

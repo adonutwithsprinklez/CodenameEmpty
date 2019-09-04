@@ -1,0 +1,66 @@
+{
+	"name":[
+		"$names the $title's $adjs Sword",
+        "$title $names's $adjs $weapon"
+	],
+	"damage":"1d4+2",
+	"worthMin":40,
+	"worthMax":60,
+	"generated":true,
+	"desc":[
+		"The iron gleams when light hits it.",
+		"The blade is scratched on the sides."
+	],
+	"actionText":[ 
+		"There is a blur as the sword swings through the air.",
+		"The sword is silent as is is jabbed into its target."
+	],
+	"names":{
+		"type":"markov",
+		"markovType":"data",
+		"starters":["Ra", "Ro"],
+		"middles":{
+			"ra":["m","sk"],
+			"am":["se","ir"],
+			"ro":["r", "sk"],
+			"sk":["am","e"],
+            "ke":["or"]
+		},
+		"ends":{
+			"ra":["ul", "im", "l"],
+            "am":["", "ok"],
+			"se":["s"],
+			"sk":["e", "o", "ir"],
+			"or":["rik"]
+		},
+		"maxMiddleLength":5,
+        "allowFailed":true
+	},
+    "title":{
+        "type":"choose",
+        "choices":[
+            "Master",
+            "Honored",
+            "Priest",
+            "Father",
+            "Brother"
+        ]
+    },
+    "weapon":{
+        "type":"choose",
+        "choices":[
+            "Sword",
+            "Blade",
+            "Rapier"
+        ]
+    },
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Sacred",
+			"Blessed",
+			"Hallowed",
+			"Holy"
+		]
+	}
+}
