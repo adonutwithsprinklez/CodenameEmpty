@@ -1,7 +1,12 @@
 {
 	"name":[
 		"$names the $title's $adjs Sword",
-        "$title $names's $adjs $weapon"
+		"$title $names's $adjs $weapon",
+		"$names's $adjs $material $weapon",
+		"The $title's $adjs $weapon",
+		"The $title's $material $weapon",
+		"$names's $adjs $weapon",
+		"$adjs $material $weapon"
 	],
 	"damage":"1d4+2",
 	"worthMin":40,
@@ -18,28 +23,37 @@
 	"names":{
 		"type":"markov",
 		"markovType":"data",
-		"starters":["Ra", "Ro"],
+		"starters":["Ha", "Ra", "Ro", "Sk"],
 		"middles":{
-			"ra":["m","sk"],
+			"ha":["rk", "l", "r"],
+			"al":["b", "sk"],
+			"lb":["er","ro"],
+			"ar":["ra", "ro"],
+			"rk":["on", "e"],
+			"ra":["m","sk","l"],
 			"am":["se","ir"],
-			"ro":["r", "sk"],
-			"sk":["am","e"],
-            "ke":["or"]
+			"ro":["r", "sk", "w"],
+			"sk":["am","e", "ar"],
+            "ke":["or", "n"]
 		},
 		"ends":{
 			"ra":["ul", "im", "l"],
             "am":["", "ok"],
-			"se":["s"],
+			"se":["", "s"],
 			"sk":["e", "o", "ir"],
-			"or":["rik"]
+			"or":["", "rik"],
+			"al":["", "e"],
+			"ar":["", "k", "o"]
 		},
+		"minMiddleLength":3,
 		"maxMiddleLength":5,
-        "allowFailed":true
+        "allowFailed":false
 	},
     "title":{
         "type":"choose",
         "choices":[
-            "Master",
+			"Master",
+			"Prophet",
             "Honored",
             "Priest",
             "Father",
@@ -53,14 +67,27 @@
             "Blade",
             "Rapier"
         ]
-    },
+	},
+	"material":{
+		"type":"choose",
+		"choices":[
+			"Iron",
+			"Bronze",
+			"Silver",
+			"Glass",
+			"Gold"
+		]
+	},
 	"adjs":{
 		"type":"choose",
 		"choices":[
 			"Sacred",
 			"Blessed",
 			"Hallowed",
-			"Holy"
+			"Holy",
+			"True",
+			"Damning",
+			"Searing"
 		]
 	}
 }

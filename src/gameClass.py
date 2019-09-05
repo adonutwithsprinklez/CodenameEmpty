@@ -85,6 +85,10 @@ class Game(object):
                 self.areas[a] = loadJson(
                     "%s%s/areas/%s.json" % (folder, pack, a))
                 self.disp.dprint("Loaded asset %s" % a)
+            for r in self.packs[pack]["races"]:
+                self.races[r] = loadJson(
+                    "%s%s/races/%s.json" % (folder, pack, r))
+                self.disp.dprint("Loaded asset %s" % r)
             for n in self.packs[pack]["npcs"]:
                 self.npcs[n] = loadJson(
                     "%s%s/npcs/%s.json" % (folder, pack, n))
@@ -136,6 +140,7 @@ class Game(object):
         self.armor = {}
         self.misc = {}
         self.areas = {}
+        self.races = {}
         self.quests = {}
         self.events = {}
         self.npcs = {}
@@ -413,6 +418,18 @@ class Game(object):
                 self.disp.display("You gained %d experience." %
                                   action[1])
                 self.disp.dprint("Processed giveXP condition.")
+            elif action[0] == "giveItem":
+                itemKey = action[1]
+                item = None
+                if itemKey in self.weapons.keys():
+                    item = self.weapons[itemKey]
+                elif itemKey in self.misc.keys():
+                    item = self.misc[itemKey]
+                elif itemKey in self.armor.keys():
+                    item = self.armor[itemKey]
+                if item:
+                    self.disp.display("You recieved {}.".format(item.name))
+                    self.player.inv.append(item)
             elif action[0] == "questComplete":
                 for quest in self.currentQuests:
                     self.disp.dprint(action)

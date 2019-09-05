@@ -9,15 +9,19 @@ class Player(object):
     def __init__(self):
         self.name = "Player name"
         self.hp = 50
+        self.energy = 50
         self.level = 1
         self.xp = 0
-        self.hpMax = self.hp
         self.weapon = None
         self.armor = None
         self.unarmed = 1
         self.inv = []
         self.maxInv = 10
         self.disp = None
+    
+    def getMaxHP(self):
+        # TODO return a real maximum health number
+        return 50
 
     def viewInventory(self):
         cmd = -1
@@ -178,11 +182,11 @@ class Player(object):
     def getStats(self):
         stats = []
         stats.append(("Health", self.hp))
-        stats.append(("Max Health", self.hpMax))
+        stats.append(("Max Health", self.getMaxHP()))
         return stats
 
     def getHealth(self):
-        return int(((1.0*self.hp)/self.hpMax)*68 + 0.5)
+        return int(((1.0*self.hp)/self.getMaxHP)*68 + 0.5)
 
     def getWeaponDamage(self):
         if self.weapon:

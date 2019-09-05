@@ -46,16 +46,18 @@ def _makeMarkovChainFromData(data=None):
 
         # Make the middle of the string
         addSection = True
-        while addSection:
+        addedSections = 0
+        while addSection and addedSections < data["maxMiddleLength"]:
             lastCharacters = finalString[-2:]
             if not lastCharacters.lower() in data["middles"].keys() and lastCharacters.lower() in data["ends"].keys():
                 addSection = False
                 stringFinished = True
-            elif lastCharacters.lower() in data["ends"].keys() and random.random() < 0.20:
+            elif lastCharacters.lower() in data["ends"].keys() and random.random() < 0.30 and addedSections > data["minMiddleLength"]:
                 addSection = False
                 stringFinished = True
             elif lastCharacters.lower() in data["middles"].keys():
                 finalString += random.choice(data["middles"][lastCharacters.lower()])
+                addedSections += 1
             else:
                 # The string failed to be finished properly
                 addSection = False
