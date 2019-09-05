@@ -2,7 +2,6 @@ import random
 
 
 from dieClass import rollDice
-from weaponClass import Weapon
 
 
 class Player(object):
@@ -12,16 +11,12 @@ class Player(object):
         self.energy = 50
         self.level = 1
         self.xp = 0
-        self.weapon = None
+        self.race = None
+        self.weapon = []
         self.armor = None
         self.unarmed = 1
         self.inv = []
-        self.maxInv = 10
         self.disp = None
-    
-    def getMaxHP(self):
-        # TODO return a real maximum health number
-        return 50
 
     def viewInventory(self):
         cmd = -1
@@ -29,7 +24,7 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader("Inventory")
             self.disp.display("Contents %d / %d" %
-                              (len(self.inv), self.maxInv), 1)
+                              (len(self.inv), self.getMaxInventorySlots()), 1)
             if len(self.inv) > 0:
                 self.disp.display("")
                 x = 0
@@ -84,7 +79,7 @@ class Player(object):
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth)
-            self.disp.display("2. Drop", 0)
+            self.disp.display("2. Drop")
             self.disp.display("Anything else to continue", 0)
 
         self.disp.closeDisplay()
@@ -186,7 +181,7 @@ class Player(object):
         return stats
 
     def getHealth(self):
-        return int(((1.0*self.hp)/self.getMaxHP)*68 + 0.5)
+        return int(((1.0*self.hp)/self.getMaxHP())*68 + 0.5)
 
     def getWeaponDamage(self):
         if self.weapon:
@@ -207,3 +202,11 @@ class Player(object):
             return armor
         else:
             return 0
+    
+    def getMaxHP(self):
+        # TODO return a real maximum health number
+        return 50
+    
+    def getMaxInventorySlots(self):
+        # TODO return a real number of inventory slots
+        return 10

@@ -1,14 +1,23 @@
 {
     "VERSION": 0.1,
     "DEBUG": true,
-    "DEBUGDISPLAY": true,
     "DELAY": 0.01,
-    "EVENTDELAY": 1,
+    "EVENTDELAY": 3,
     "GAMESETTINGS": [
         [
             "DELAYENABLED",
             "Display Effects",
             true
+        ],
+        [
+            "EVENTDELAYENABLED",
+            "Delay After Random Event",
+            true
+        ],
+        [
+            "DEBUGDISPLAY",
+            "Developer Display (Used for debugging)",
+            false
         ]
     ],
     "DATAPACKOPTIONS": {

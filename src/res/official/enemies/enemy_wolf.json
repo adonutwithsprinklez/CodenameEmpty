@@ -27,7 +27,7 @@
 	"armor":[
 		"armor_wolfHide"
 	],
-	"itemChance":100,
+	"itemChance":10,
 	"itemDrops":[
 		["material_wolfPelt","You skin the wolf and take it as a reward."]
 	],

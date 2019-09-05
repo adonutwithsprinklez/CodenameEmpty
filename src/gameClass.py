@@ -19,6 +19,7 @@ from weaponClass import Weapon
 DEBUG = 0
 VERSION = 0
 DELAY = 0
+EVENTDELAY = 0
 
 
 class Game(object):
@@ -26,7 +27,6 @@ class Game(object):
     def __init__(self):
         '''Initializes the Game object. This also sets some required variable
         to empty so they can be initialized later.'''
-        self.cleanDataPackInfo()
         self.player = Player()
 
         self.disp = Screen()
@@ -35,18 +35,15 @@ class Game(object):
         self.settings = {}
         self.gameSettings = {}
 
-        self.possibleQuests = []
-        self.currentQuests = []
-        self.completedQuests = []
-        self.backlog = []
-        self.importantQuestInfo = []
-
         self.currentArea = None
 
     def initialLoad(self, folder="res/", settingsdata={}):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
+        
+        self.cleanDataPackInfo()
+
         global VERSION, DELAY, DEBUG
         self.settings = settingsdata
         self.loadGameSettings()
@@ -54,7 +51,7 @@ class Game(object):
         DELAY = self.settings["DELAY"]
         EVENTDELAY = self.settings["EVENTDELAY"]
         DEBUG = self.settings["DEBUG"]
-        DEBUGDISPLAY = self.settings["DEBUGDISPLAY"]
+        DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
 
         # Set up the display with a delay and whether or not to debug
         self.disp.debugging = DEBUGDISPLAY
@@ -147,6 +144,12 @@ class Game(object):
         self.enemies = {}
         self.modifiers = {}
 
+        self.possibleQuests = []
+        self.currentQuests = []
+        self.completedQuests = []
+        self.backlog = []
+        self.importantQuestInfo = []
+
     def loadGameSettings(self):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
@@ -185,7 +188,7 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %s" % (x, choice), 0)
             self.disp.closeDisplay()
-            time.sleep(DELAY)
+            time.sleep(EVENTDELAY)
             input("Enter to continue")
 
         ##### Interacting with an NPC Code #####
@@ -199,18 +202,19 @@ class Game(object):
         if self.currentArea.enemy != []:
             self.disp.clearScreen()
             for areaEnemy in self.currentArea.enemy:
-                self.disp.dprint(
-                    "Enemy Danger Level:   {}".format(areaEnemy.getDanger()))
-                self.disp.dprint(
-                    "Enemy Max Health:     {}".format(areaEnemy.hpMax))
-                self.disp.dprint(
-                    "Enemy Current Health: {}".format(areaEnemy.hp))
-                self.disp.dprint("Enemy Strength:       {}".format(
-                    areaEnemy.getStrength()))
-                self.disp.dprint("Enemy Weapon Damage:  {}".format(
-                    areaEnemy.getRawWeaponDamage()))
                 enemyhp = areaEnemy.getHealth()
                 while enemyhp > 0 and self.player.hp:
+                    self.disp.dprint(
+                        "Enemy Danger Level:   {}".format(areaEnemy.getDanger()))
+                    self.disp.dprint(
+                        "Enemy Max Health:     {}".format(areaEnemy.hpMax))
+                    self.disp.dprint(
+                        "Enemy Current Health: {}".format(areaEnemy.hp))
+                    self.disp.dprint("Enemy Strength:       {}".format(
+                        areaEnemy.getStrength()))
+                    self.disp.dprint("Enemy Weapon Damage:  {}".format(
+                        areaEnemy.getRawWeaponDamage()))
+
                     cmd = -1
                     while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
                         self.disp.clearScreen()
@@ -247,7 +251,7 @@ class Game(object):
                                 self.currentQuests, self.completedQuests)
                         elif cmd in (9, 90) and DEBUG:
                             self.disp.dprint("Healing player fully.")
-                            self.player.hp = self.player.hpMax
+                            self.player.hp = self.player.getMaxHP()
                         elif cmd not in (1, 2, 9, 0):
                             self.disp.clearScreen()
                             self.disp.displayHeader("Error")
@@ -409,7 +413,7 @@ class Game(object):
                 self.disp.displayHeader("Event")
                 self.disp.display(action[1])
                 self.disp.closeDisplay()
-                if not DEBUG:
+                if self.gameSettings["EVENTDELAYENABLED"]:
                     time.sleep(1)
                 input("\nEnter to continue")
                 self.disp.dprint("Processed say condition.")
@@ -472,7 +476,6 @@ class Game(object):
         self.importantQuestInfo = []
 
     def displayMainMenu(self):
-        self.disp.dprint("\nGame Load status: {}".format(self.loaded))
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
 
         self.disp.clearScreen()
@@ -517,12 +520,12 @@ class Game(object):
         listOfOptions = self.settings["GAMESETTINGS"][startOptions:endOptions]
         firstOption = listOfOptions.pop(0)
         enabled = "ENABLED" if firstOption[2] else "DISABLED"
-        self.disp.display(f'1. {firstOption[1]:<20} {enabled:>48}')
+        self.disp.display(f'1. {firstOption[1]:<50} {enabled:>18}')
         i = 1
         for option in listOfOptions:
             i += 1
             enabled = "ENABLED" if option[2] else "DISABLED"
-            self.disp.display(f'{i}. {option[1]:<20} {enabled:>48}', 0)
+            self.disp.display(f'{i}. {option[1]:<50} {enabled:>18}', 0)
         self.disp.display(
             "Input option # to toggle. Settings take effect on screen exit.")
         pagebreak = 1
