@@ -188,24 +188,16 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %s" % (x, choice), 0)
             self.disp.closeDisplay()
-<<<<<<< HEAD
+            
             time.sleep(EVENTDELAY)
             input("Enter to continue")
-=======
-            time.sleep(DELAY)
-            input()
->>>>>>> MainDev
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
             self.disp.clearScreen()
             self.disp.displayHeader(self.currentArea.npc.name)
             self.disp.display(self.currentArea.npc)
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> MainDev
+            
     def fightEnemies(self):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
@@ -226,10 +218,7 @@ class Game(object):
 
                     cmd = -1
                     while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
-<<<<<<< HEAD
                         self.disp.clearScreen()
-=======
->>>>>>> MainDev
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
@@ -257,7 +246,6 @@ class Game(object):
                             cmd = int(input())
                         except ValueError:
                             cmd = -1
-<<<<<<< HEAD
 
                         if cmd == 0:
                             self.player.playerMenu(
@@ -265,16 +253,6 @@ class Game(object):
                         elif cmd in (9, 90) and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.getMaxHP()
-=======
-                        
-                        if cmd == 0:
-                            self.player.playerMenu(self.currentQuests,self.completedQuests)
-                            self.disp.clearScreen()
-                        elif cmd in (9, 90) and DEBUG:
-                            self.disp.dprint("Healing player fully.")
-                            self.player.hp = self.player.hpMax
-                            self.disp.clearScreen()
->>>>>>> MainDev
                         elif cmd not in (1, 2, 9, 0):
                             self.disp.clearScreen()
                             self.disp.displayHeader("Error")
@@ -284,11 +262,7 @@ class Game(object):
                     if cmd == 1 or cmd == 90:
                         self.disp.clearScreen()
                         damage = self.player.getWeaponDamage()
-<<<<<<< HEAD
                         if DEBUG and cmd == 90:
-=======
-                        if DEBUG and cmd == "a":
->>>>>>> MainDev
                             damage *= 10
                         msg = self.player.getWeaponAction()
                         damage -= int(areaEnemy.getArmorDefence())
@@ -413,10 +387,6 @@ class Game(object):
         choices = []
         for i in range(1, self.currentArea.newArea + 1):
             areatypes = self.currentArea.newAreaTypes[::]
-<<<<<<< HEAD
-=======
-            print(areatypes)
->>>>>>> MainDev
             newArea = areatypes.pop(0)
             highroll = rollDice(newArea[1])
             for aType in areatypes:
