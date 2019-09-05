@@ -15,6 +15,7 @@ class Player(object):
         self.weapon = []
         self.armor = None
         self.unarmed = 1
+        self.gold = 0
         self.inv = []
         self.disp = None
 
@@ -148,11 +149,17 @@ class Player(object):
             else:
                 self.disp.display("\tNo quests currently started",0)
             if len(completedQuests) > 0:
+<<<<<<< HEAD
                 # revereses the array so that the most recently completed quests
                 # come up first
                 for quest in completedQuests: 
                     self.disp.display("[X] - {}".format(quest.title))
                     self.disp.display("\t{}".format(quest.desc),0)
+=======
+                self.disp.display("Completed Quests:")
+                for quest in completedQuests:
+                    self.disp.display("\t{}-{}".format(quest.title,quest.desc),0)
+>>>>>>> MainDev
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
