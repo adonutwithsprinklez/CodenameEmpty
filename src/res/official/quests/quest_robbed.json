@@ -32,6 +32,7 @@
 				"do":[
 					["say","You find the old man and return his bag."],
 					["giveXP",50],
+					["giveItem", "template_IronSword"],
 					["questComplete",true]
 				]
 			}

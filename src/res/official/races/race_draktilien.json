@@ -1,0 +1,93 @@
+{
+    "name":"Draktilien",
+    "id":"drakt",
+    "baseStats":{
+        "strength":7,
+        "vitality":6,
+        "physique":6,
+        "intelligence":3
+    },
+    "baseSkills":[],
+    "standing":{
+        "elf":-3,
+        "human":-5,
+        "orc":5,
+        "dwarf":3
+    },
+    "playable":true,
+    "playerCreationDescription":"Draktilien's lizard-like appearance and tendency to attack other kingdoms has caused them to be hated by most other races of the land. Their lack of intelligence is made up for by their strength, vitality, and physique.",
+    "limbs":[
+        {
+            "type":"head",
+            "name":"Head",
+            "hitChance":"2d8",
+            "maxHealth":25,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"torso",
+            "name":"Torso",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"arm",
+            "name":"Left Arm",
+            "hitChance":"1d6",
+            "maxHealth":50,
+            "attacks":[
+                ["Punch", "$user punches the target.", "1d3"]
+            ],
+            "flags":[
+                "equippable"
+            ]
+        },
+        {
+            "type":"arm",
+            "name":"Right Arm",
+            "hitChance":"1d6",
+            "maxHealth":50,
+            "attacks":[
+                ["Punch", "$user punches the target.", "1d3"]
+            ],
+            "flags":[
+                "equippable"
+            ]
+        },
+        {
+            "type":"leg",
+            "name":"Left Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Right Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "flags":[]
+        },
+        {
+            "type":"tail",
+            "name":"Tail",
+            "hitChance":"1d3",
+            "maxHealth":50,
+            "attacks":[
+                ["Sweep", "$user sweeps at the target with its tail.", "1d5"]
+            ],
+            "flags":[
+                "specialArmor"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,93 @@
+{
+	"name":[
+		"$names the $title's $adjs Sword",
+		"$title $names's $adjs $weapon",
+		"$names's $adjs $material $weapon",
+		"The $title's $adjs $weapon",
+		"The $title's $material $weapon",
+		"$names's $adjs $weapon",
+		"$adjs $material $weapon"
+	],
+	"damage":"1d4+2",
+	"worthMin":40,
+	"worthMax":60,
+	"generated":true,
+	"desc":[
+		"The iron gleams when light hits it.",
+		"The blade is scratched on the sides."
+	],
+	"actionText":[ 
+		"There is a blur as the sword swings through the air.",
+		"The sword is silent as is is jabbed into its target."
+	],
+	"names":{
+		"type":"markov",
+		"markovType":"data",
+		"starters":["Ha", "Ra", "Ro", "Sk"],
+		"middles":{
+			"ha":["rk", "l", "r"],
+			"al":["b", "sk"],
+			"lb":["er","ro"],
+			"ar":["ra", "ro"],
+			"rk":["on", "e"],
+			"ra":["m","sk","l"],
+			"am":["se","ir"],
+			"ro":["r", "sk", "w"],
+			"sk":["am","e", "ar"],
+            "ke":["or", "n"]
+		},
+		"ends":{
+			"ra":["ul", "im", "l"],
+            "am":["", "ok"],
+			"se":["", "s"],
+			"sk":["e", "o", "ir"],
+			"or":["", "rik"],
+			"al":["", "e"],
+			"ar":["", "k", "o"]
+		},
+		"minMiddleLength":3,
+		"maxMiddleLength":5,
+        "allowFailed":false
+	},
+    "title":{
+        "type":"choose",
+        "choices":[
+			"Master",
+			"Prophet",
+            "Honored",
+            "Priest",
+            "Father",
+            "Brother"
+        ]
+    },
+    "weapon":{
+        "type":"choose",
+        "choices":[
+            "Sword",
+            "Blade",
+            "Rapier"
+        ]
+	},
+	"material":{
+		"type":"choose",
+		"choices":[
+			"Iron",
+			"Bronze",
+			"Silver",
+			"Glass",
+			"Gold"
+		]
+	},
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Sacred",
+			"Blessed",
+			"Hallowed",
+			"Holy",
+			"True",
+			"Damning",
+			"Searing"
+		]
+	}
+}

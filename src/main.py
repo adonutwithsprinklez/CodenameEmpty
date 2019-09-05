@@ -1,15 +1,58 @@
 from gameClass import Game
+from jsonDecoder import loadJson, saveJson
 
-game = Game()
-game.initialLoad()
 
-run = True
-while game.player.hp > 0:
-	game.displayCurrentArea()
-	game.reactCurrentArea()
-	game.chooseNewArea()
-	if game.player.hp <= 0:
-		run=False
+# Starts the gameloop
+def startGame(game):
+	run = True
+	while game.player.hp > 0:
+		game.displayCurrentArea()
+		game.reactCurrentArea()
+		game.chooseNewArea()
+		if game.player.hp <= 0:
+			run=False
+
+def openSettings(game, settingsFile):
+	game.openOptionsWindow()
+	saveJson(settingsFile, game.settings)
+	game.initialLoad(RES_FOLDER, SETTINGS)
+
+def openDataPacks():
+	pass
+
+
+# This code runs with main.py is opened
+if __name__ == "__main__":
+	# Loads some resource stuff
+	RES_FOLDER = "res/"
+	SETTINGS_FILE = RES_FOLDER + "settings.json"
+	SETTINGS = loadJson("{}".format(SETTINGS_FILE))
+
+	# Inital game / menu loading
+	game = Game()
+	game.initialLoad(RES_FOLDER, SETTINGS)
+
+	appRunning = True
+	while appRunning:
+		game.displayMainMenu()
+		try:
+			cmd = int(input())
+		except ValueError:
+			cmd = -1
+		
+		if cmd == 1:
+			# Actually start the game
+			startGame(game)
+		elif cmd == 2:
+			# Displays the settings menu
+			openSettings(game, SETTINGS_FILE)
+		elif cmd == 3:
+			pass #TODO finish data pack options window
+		elif cmd == 0:
+			# Exit the game
+			appRunning = False
+		else:
+			pass #TODO finish incorrect command message
 
 # print game.currentArea.name
 # print game.currentArea.desc

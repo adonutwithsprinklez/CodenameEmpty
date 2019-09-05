@@ -31,7 +31,7 @@
 	],
 	"itemChance":1,
 	"itemDrops":[
-		["misc_greatWolfPelt","You skin the large beast and take it as a reward."]
+		["material_greatWolfPelt","You skin the large beast and take it as a reward."]
 	],
 	"xp":12
 }

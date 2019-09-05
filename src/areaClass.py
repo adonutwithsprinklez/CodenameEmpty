@@ -34,7 +34,7 @@ class Area(object):
 		chance = areaType["enemyChance"]
 		enemies = []
 		c = math.pow(15,(self.hostility-2.0)/10.0)
-		for enemy,echance in areaType["enemies"]:
+		for enemy, echance in areaType["enemies"]:
 			enemies+=[enemy]*echance
 		for i in range(0,10):
 			if len(self.enemy)<self.hostility:
@@ -51,7 +51,8 @@ class Area(object):
 		if self.enemy != []:
 			e = []
 			for enemy in self.enemy:
-				e.append(Enemy(enemies[enemy],weapons,armor,misc,modifiers))
+				newEnemy = Enemy(enemies[enemy],weapons,armor,misc,modifiers)
+				e.append(newEnemy)
 			self.enemy = e
 		if self.event:
 			self.event = Event(events[self.event],weapons,armor,misc)
