@@ -17,8 +17,10 @@ def openSettings(game, settingsFile):
 	saveJson(settingsFile, game.settings)
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
-def openDataPacks():
-	pass
+def openDataPacks(game, settingsFile):
+	game.openDataPacks()
+	saveJson(settingsFile, game.settings)
+	game.initialLoad(RES_FOLDER, SETTINGS)
 
 
 # This code runs with main.py is opened
@@ -47,7 +49,7 @@ if __name__ == "__main__":
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)
 		elif cmd == 3:
-			pass #TODO finish data pack options window
+			openDataPacks(game, SETTINGS_FILE)
 		elif cmd == 0:
 			# Exit the game
 			appRunning = False

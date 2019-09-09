@@ -34,6 +34,7 @@ class Game(object):
         self.loaded = False
         self.settings = {}
         self.gameSettings = {}
+        self.dataPackSettings = {}
 
         self.currentArea = None
 
@@ -58,55 +59,59 @@ class Game(object):
         self.disp.delay = self.gameSettings["DELAYENABLED"]
         self.disp.printdelay = DELAY
 
-        packs = loadJson(folder + "packs.json")
-        starter = packs["start"]
+        self.loadDataPackSettings()
+        packs = self.dataPackSettings["packsToLoad"]
+        starter = self.dataPackSettings["start"]
         print("\nLoading assets...")
-        for pack in packs["packs"]:
-            print("Loading pack \"{}\"...".format(pack))
-            self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
+        for pack in packs:
+            if pack[1]:
+                pack = pack[0]
 
-            # Asset loading
-            for w in self.packs[pack]["weapons"]:
-                self.weapons[w] = loadJson(
-                    "%s%s/weapons/%s.json" % (folder, pack, w))
-                self.disp.dprint("Loaded asset %s" % w)
-            for a in self.packs[pack]["armor"]:
-                self.armor[a] = loadJson(
-                    "%s%s/armor/%s.json" % (folder, pack, a))
-                self.disp.dprint("Loaded asset %s" % a)
-            for m in self.packs[pack]["misc"]:
-                self.misc[m] = loadJson(
-                    "%s%s/misc/%s.json" % (folder, pack, m))
-                self.disp.dprint("Loaded asset %s" % m)
-            for a in self.packs[pack]["areas"]:
-                self.areas[a] = loadJson(
-                    "%s%s/areas/%s.json" % (folder, pack, a))
-                self.disp.dprint("Loaded asset %s" % a)
-            for r in self.packs[pack]["races"]:
-                self.races[r] = loadJson(
-                    "%s%s/races/%s.json" % (folder, pack, r))
-                self.disp.dprint("Loaded asset %s" % r)
-            for n in self.packs[pack]["npcs"]:
-                self.npcs[n] = loadJson(
-                    "%s%s/npcs/%s.json" % (folder, pack, n))
-                self.disp.dprint("Loaded asset %s" % n)
-            for e in self.packs[pack]["enemies"]:
-                self.enemies[e] = loadJson(
-                    "%s%s/enemies/%s.json" % (folder, pack, e))
-                self.disp.dprint("Loaded asset %s" % e)
-            for q in self.packs[pack]["quests"]:
-                self.quests[q] = loadJson(
-                    "%s%s/quests/%s.json" % (folder, pack, q))
-                self.disp.dprint("Loaded asset %s" % q)
-            for e in self.packs[pack]["events"]:
-                self.events[e] = loadJson(
-                    "%s%s/events/%s.json" % (folder, pack, e))
-                self.disp.dprint("Loaded asset %s" % e)
-            for m in self.packs[pack]["modifiers"]:
-                mods = loadJson("%s%s/%s.json" % (folder, pack, m))
-                for mod in mods.keys():
-                    self.modifiers[mod] = Modifier(mod, mods[mod])
-            print("Finished loading assets.")
+                print("Loading pack \"{}\"...".format(pack))
+                self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
+
+                # Asset loading
+                for w in self.packs[pack]["weapons"]:
+                    self.weapons[w] = loadJson(
+                        "%s%s/weapons/%s.json" % (folder, pack, w))
+                    self.disp.dprint("Loaded asset %s" % w)
+                for a in self.packs[pack]["armor"]:
+                    self.armor[a] = loadJson(
+                        "%s%s/armor/%s.json" % (folder, pack, a))
+                    self.disp.dprint("Loaded asset %s" % a)
+                for m in self.packs[pack]["misc"]:
+                    self.misc[m] = loadJson(
+                        "%s%s/misc/%s.json" % (folder, pack, m))
+                    self.disp.dprint("Loaded asset %s" % m)
+                for a in self.packs[pack]["areas"]:
+                    self.areas[a] = loadJson(
+                        "%s%s/areas/%s.json" % (folder, pack, a))
+                    self.disp.dprint("Loaded asset %s" % a)
+                for r in self.packs[pack]["races"]:
+                    self.races[r] = loadJson(
+                        "%s%s/races/%s.json" % (folder, pack, r))
+                    self.disp.dprint("Loaded asset %s" % r)
+                for n in self.packs[pack]["npcs"]:
+                    self.npcs[n] = loadJson(
+                        "%s%s/npcs/%s.json" % (folder, pack, n))
+                    self.disp.dprint("Loaded asset %s" % n)
+                for e in self.packs[pack]["enemies"]:
+                    self.enemies[e] = loadJson(
+                        "%s%s/enemies/%s.json" % (folder, pack, e))
+                    self.disp.dprint("Loaded asset %s" % e)
+                for q in self.packs[pack]["quests"]:
+                    self.quests[q] = loadJson(
+                        "%s%s/quests/%s.json" % (folder, pack, q))
+                    self.disp.dprint("Loaded asset %s" % q)
+                for e in self.packs[pack]["events"]:
+                    self.events[e] = loadJson(
+                        "%s%s/events/%s.json" % (folder, pack, e))
+                    self.disp.dprint("Loaded asset %s" % e)
+                for m in self.packs[pack]["modifiers"]:
+                    mods = loadJson("%s%s/%s.json" % (folder, pack, m))
+                    for mod in mods.keys():
+                        self.modifiers[mod] = Modifier(mod, mods[mod])
+                print("Finished loading assets.")
 
         # Adds all loaded quests into a list of possible quests, as well as
         # loads thems into actual objects
@@ -154,6 +159,11 @@ class Game(object):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
             self.gameSettings[setting[0]] = setting[2]
+        
+    def loadDataPackSettings(self):
+        self.dataPackSettings = {}
+        for setting in self.settings["DATAPACKSETTINGS"].keys():
+            self.dataPackSettings[setting] = self.settings["DATAPACKSETTINGS"][setting]
 
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
@@ -529,6 +539,78 @@ class Game(object):
             self.disp.display(f'{i}. {option[1]:<50} {enabled:>18}', 0)
         self.disp.display(
             "Input option # to toggle. Settings take effect on screen exit.")
+        pagebreak = 1
+        if page < numPages:
+            self.disp.display("12. for next page of settings")
+            pagebreak = 0
+        if page > 0:
+            self.disp.display("11. for previous page of settings", pagebreak)
+            pagebreak = 0
+        self.disp.display("0. to exit", pagebreak)
+        self.disp.closeDisplay()
+
+        return listOfOptions
+
+    def openDataPacks(self):
+        self.loadDataPackSettings()
+
+        dataPacksWindow = True
+        packPage = 0
+        numPages = int(len(self.dataPackSettings["packsToLoad"]) / 9)
+        
+        while dataPacksWindow:
+            toggleablePacks = self.displayPacks(numPages, packPage)
+            try:
+                cmd = int(input())
+            except ValueError:
+                cmd = -1
+
+            if cmd in range(1, 9) and cmd-1 <= len(toggleablePacks):
+                if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][0] != "official":
+                    self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
+                else:
+                    pass # TODO Display error when attempting to disable the official datapack.
+                         # The official data pack should be allowed to be disabled, only if
+                         # another data pack is enabled
+            elif cmd == 12 and packPage < numPages:
+                packPage += 1
+            elif cmd == 11 and packPage > 0:
+                packPage -= 1
+            elif cmd == 0:
+                dataPacksWindow = False
+        
+        self.settings["DATAPACKSETTINGS"] = self.dataPackSettings
+
+    def displayPacks(self, numPages = 1, page = 0):
+        self.disp.clearScreen()
+        self.disp.displayHeader("Data Packs")
+
+        startOptions = page*9
+        endOptions = 9+(page*9)
+
+        listOfOptions = self.dataPackSettings["packsToLoad"][startOptions:endOptions]
+        firstOption = listOfOptions.pop(0)
+        enabled = "ENABLED" if firstOption[1] else "DISABLED"
+        firstOption = loadJson(self.dataPackSettings["folder"] + firstOption[0] + "/meta.json")
+        packName = firstOption["name"]
+        packDesc = firstOption["desc"]
+        
+        self.disp.display(f'1. {packName:<50} {enabled:>18}')
+        self.disp.display(f'\t{packDesc}', 0)
+
+        i = 1
+
+        for pack in listOfOptions:
+            i += 1
+            enabled = "ENABLED" if pack[1] else "DISABLED"
+            pack = loadJson(self.dataPackSettings["folder"] + pack[0] + "meta.json")
+            packName = pack["name"]
+            packDesc = pack["desc"]
+
+            self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
+            self.disp.display(f'\t{packDesc}', 0)
+        self.disp.display(
+            "Input pack # to toggle. Changes to enabled data packs take effect on screen exit.")
         pagebreak = 1
         if page < numPages:
             self.disp.display("12. for next page of settings")
