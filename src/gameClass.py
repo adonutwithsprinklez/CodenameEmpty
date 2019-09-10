@@ -10,6 +10,7 @@ from displayClass import Screen
 from enemyClass import Enemy
 from itemGeneration import generateWeapon
 from jsonDecoder import loadJson
+from miscClass import Misc
 from modifierClass import Modifier
 from playerClass import Player
 from questClass import Quest
@@ -27,7 +28,7 @@ class Game(object):
     def __init__(self):
         '''Initializes the Game object. This also sets some required variable
         to empty so they can be initialized later.'''
-        self.player = Player()
+        self.player = None
 
         self.disp = Screen()
 
@@ -130,6 +131,7 @@ class Game(object):
 
         # Sets up the player variables and also gives the player some starting gear.
         # Spawns in an extra weapon for the player to switch between.
+        self.player = Player()
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
@@ -437,12 +439,12 @@ class Game(object):
                 itemKey = action[1]
                 item = None
                 if itemKey in self.weapons.keys():
-                    item = self.weapons[itemKey]
+                    item = generateWeapon(self.weapons[itemKey])
                 elif itemKey in self.misc.keys():
-                    item = self.misc[itemKey]
+                    item = Misc(self.misc[itemKey])
                 elif itemKey in self.armor.keys():
-                    item = self.armor[itemKey]
-                if item:
+                    item = Armor(self.armor[itemKey])
+                if item != None:
                     self.disp.display("You recieved {}.".format(item.name))
                     self.player.inv.append(item)
             elif action[0] == "questComplete":
