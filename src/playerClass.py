@@ -187,8 +187,13 @@ class Player(object):
             else:
                 # TODO Incorrect input notification
                 pass
+    
+    def setRace(self, race):
+        # TODO check for equipped gear to make sure the player can still wield it
+        self.race = race
 
     def getEquipmentString(self):
+        # TODO redo this whole part
         equipstr = ""
         if self.weapon:
             equipstr += "You are wielding a {}. {} ".format(
@@ -204,6 +209,7 @@ class Player(object):
 
     def getStats(self):
         stats = []
+        stats.append(("Race", self.race.name))
         stats.append(("Health", self.hp))
         stats.append(("Max Health", self.getMaxHP()))
         return stats

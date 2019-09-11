@@ -15,6 +15,7 @@
         "dwarf":1
     },
     "playable":true,
+    "startabke":true,
     "playerCreationDescription":"Orcs are seen as the barbarians of the world. Their strength and vitality has leads them to take a more direct approach when it comes to objstacles.",
     "limbs":[
         {

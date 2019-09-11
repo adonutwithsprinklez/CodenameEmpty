@@ -14,6 +14,7 @@ from miscClass import Misc
 from modifierClass import Modifier
 from playerClass import Player
 from questClass import Quest
+from raceClass import Race
 from weaponClass import Weapon
 
 
@@ -89,8 +90,8 @@ class Game(object):
                         "%s%s/areas/%s.json" % (folder, pack, a))
                     self.disp.dprint("Loaded asset %s" % a)
                 for r in self.packs[pack]["races"]:
-                    self.races[r] = loadJson(
-                        "%s%s/races/%s.json" % (folder, pack, r))
+                    raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
+                    self.races[raceData["id"]] = raceData
                     self.disp.dprint("Loaded asset %s" % r)
                 for n in self.packs[pack]["npcs"]:
                     self.npcs[n] = loadJson(
@@ -136,6 +137,7 @@ class Game(object):
     
     def loadPlayer(self):
         self.player = Player()
+        self.player.race = Race(self.races["human"])
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
