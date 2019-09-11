@@ -5,10 +5,15 @@ from jsonDecoder import loadJson, saveJson
 # Starts the gameloop
 def startGame(game):
 	run = True
+	game.loadPlayer()
 	while game.player.hp > 0:
 		game.displayCurrentArea()
 		game.reactCurrentArea()
+		if game.player.quit:
+			return None
 		game.chooseNewArea()
+		if game.player.quit:
+			return None
 		if game.player.hp <= 0:
 			run=False
 

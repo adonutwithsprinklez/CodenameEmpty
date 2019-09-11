@@ -18,6 +18,7 @@ class Player(object):
         self.gold = 0
         self.inv = []
         self.disp = None
+        self.quit = False
 
     def viewInventory(self):
         cmd = -1
@@ -106,7 +107,7 @@ class Player(object):
     
     def playerMenu(self, currentQuests, completedQuests):
         cmd = -1
-        while cmd != 0:
+        while cmd != 0 and not self.quit:
             self.disp.clearScreen()
             self.disp.displayHeader("{} Info".format(self.name))
             self.disp.display("Stats:")
@@ -118,6 +119,7 @@ class Player(object):
                 self.getEquipmentString()), 0)
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests",0)
+            self.disp.display("9. Quit Game")
             self.disp.display("0. Exit", 0)
             self.disp.closeDisplay()
             try:
@@ -130,6 +132,8 @@ class Player(object):
                 self.viewInventory()
             elif cmd == 2:
                 self.viewQuests(currentQuests, completedQuests)
+            elif cmd == 9:
+                self.confirmQuit()
             else:
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")
@@ -160,6 +164,29 @@ class Player(object):
                 cmd = int(input())
             except:
                 cmd = -1
+    
+    def confirmQuit(self):
+        window = True
+        while window:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Quit Confirmation")
+            self.disp.display("Are you sure you wish to quit?")
+            self.disp.display("0. Yes, Quit")
+            self.disp.display("1. No, Don't Quit", 0)
+            self.disp.closeDisplay()
+            try:
+                cmd = int(input())
+            except:
+                cmd = -1
+            if cmd == 0:
+                self.quit = True
+                window = False
+            elif cmd == 1:
+                self.quit = False
+                window = False
+            else:
+                # TODO Incorrect input notification
+                pass
 
     def getEquipmentString(self):
         equipstr = ""

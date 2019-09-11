@@ -131,12 +131,15 @@ class Game(object):
 
         # Sets up the player variables and also gives the player some starting gear.
         # Spawns in an extra weapon for the player to switch between.
+        self.loadPlayer()
+        self.loaded = True
+    
+    def loadPlayer(self):
         self.player = Player()
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(self.weapons["template_IronSword"]))
-        self.loaded = True
 
     def cleanDataPackInfo(self):
         self.packs = {}
@@ -187,6 +190,8 @@ class Game(object):
         objectives getting updated.'''
 
         self.fightEnemies()
+        if self.player.quit:
+            return None
 
         ##### Random event Code #####
         if self.currentArea.event:
@@ -262,6 +267,9 @@ class Game(object):
                         if cmd == 0:
                             self.player.playerMenu(
                                 self.currentQuests, self.completedQuests)
+                            if self.player.quit:
+                                # TODO Exit the game completely
+                                return None
                         elif cmd in (9, 90) and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.getMaxHP()
@@ -383,6 +391,9 @@ class Game(object):
             if cmd == 0:
                 self.player.playerMenu(
                     self.currentQuests, self.completedQuests)
+                if self.player.quit:
+                    # TODO Exit the game completely
+                    return None
 
         # Load the new area
         self.currentArea = choices[cmd - 1]
@@ -596,9 +607,11 @@ class Game(object):
         firstOption = loadJson(self.dataPackSettings["folder"] + firstOption[0] + "/meta.json")
         packName = firstOption["name"]
         packDesc = firstOption["desc"]
+        packAuth = firstOption["author"]
         
         self.disp.display(f'1. {packName:<50} {enabled:>18}')
         self.disp.display(f'\t{packDesc}', 0)
+        self.disp.display(f'\tBy: {packAuth}',0)
 
         i = 1
 
@@ -608,9 +621,11 @@ class Game(object):
             pack = loadJson(self.dataPackSettings["folder"] + pack[0] + "meta.json")
             packName = pack["name"]
             packDesc = pack["desc"]
+            packAuth = pack["author"]
 
             self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
             self.disp.display(f'\t{packDesc}', 0)
+            self.disp.display(f'\tBy {packAuth}',0)
         self.disp.display(
             "Input pack # to toggle. Changes to enabled data packs take effect on screen exit.")
         pagebreak = 1
