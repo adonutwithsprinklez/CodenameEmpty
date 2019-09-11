@@ -18,6 +18,7 @@ class Player(object):
         self.gold = 0
         self.inv = []
         self.disp = None
+        self.quit = False
 
     def viewInventory(self):
         cmd = -1
@@ -103,10 +104,10 @@ class Player(object):
             self.disp.closeDisplay()
             input("\nEnter to continue")
             self.disp.clearScreen()
-    
+
     def playerMenu(self, currentQuests, completedQuests):
         cmd = -1
-        while cmd != 0:
+        while cmd != 0 and not self.quit:
             self.disp.clearScreen()
             self.disp.displayHeader("{} Info".format(self.name))
             self.disp.display("Stats:")
@@ -117,7 +118,8 @@ class Player(object):
             self.disp.display("\t{}".format(
                 self.getEquipmentString()), 0)
             self.disp.display("1. View Inventory")
-            self.disp.display("2. View Quests",0)
+            self.disp.display("2. View Quests", 0)
+            self.disp.display("9. Quit Game")
             self.disp.display("0. Exit", 0)
             self.disp.closeDisplay()
             try:
@@ -130,12 +132,13 @@ class Player(object):
                 self.viewInventory()
             elif cmd == 2:
                 self.viewQuests(currentQuests, completedQuests)
+            elif cmd == 9:
+                self.confirmQuit()
             else:
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")
-                self.disp.display("That was not a valid response",1,1)
-            
-    
+                self.disp.display("That was not a valid response", 1, 1)
+
     def viewQuests(self, currentQuests, completedQuests):
         cmd = -1
         while cmd != 0:
@@ -145,21 +148,15 @@ class Player(object):
             if len(currentQuests) > 0:
                 for quest in currentQuests:
                     self.disp.display("[ ] - {}".format(quest.title))
-                    self.disp.display("\t{}".format(quest.desc),0)
+                    self.disp.display("\t{}".format(quest.desc), 0)
             else:
-                self.disp.display("\tNo quests currently started",0)
+                self.disp.display("\tNo quests currently started", 0)
             if len(completedQuests) > 0:
-<<<<<<< HEAD
                 # revereses the array so that the most recently completed quests
                 # come up first
-                for quest in completedQuests: 
-                    self.disp.display("[X] - {}".format(quest.title))
-                    self.disp.display("\t{}".format(quest.desc),0)
-=======
-                self.disp.display("Completed Quests:")
                 for quest in completedQuests:
-                    self.disp.display("\t{}-{}".format(quest.title,quest.desc),0)
->>>>>>> MainDev
+                    self.disp.display("[X] - {}".format(quest.title))
+                    self.disp.display("\t{}".format(quest.desc), 0)
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
@@ -167,13 +164,41 @@ class Player(object):
             except:
                 cmd = -1
 
+    def confirmQuit(self):
+        window = True
+        while window:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Quit Confirmation")
+            self.disp.display("Are you sure you wish to quit?")
+            self.disp.display("0. Yes, Quit")
+            self.disp.display("1. No, Don't Quit", 0)
+            self.disp.closeDisplay()
+            try:
+                cmd = int(input())
+            except:
+                cmd = -1
+            if cmd == 0:
+                self.quit = True
+                window = False
+            elif cmd == 1:
+                self.quit = False
+                window = False
+            else:
+                # TODO Incorrect input notification
+                pass
+
+    def setRace(self, race):
+        # TODO check for equipped gear to make sure the player can still wield it
+        self.race = race
+
     def getEquipmentString(self):
+        # TODO redo this whole part
         equipstr = ""
         if self.weapon:
             equipstr += "You are wielding a {}. {} ".format(
                 self.weapon, self.weapon.desc)
         else:
-             equipstr += "You are wielding your fists as your weapon. "
+            equipstr += "You are wielding your fists as your weapon. "
         if self.armor:
             equipstr += "You are wearing {}. {} ".format(
                 self.armor, self.armor.desc)
@@ -183,6 +208,7 @@ class Player(object):
 
     def getStats(self):
         stats = []
+        stats.append(("Race", self.race.name))
         stats.append(("Health", self.hp))
         stats.append(("Max Health", self.getMaxHP()))
         return stats
@@ -209,11 +235,11 @@ class Player(object):
             return armor
         else:
             return 0
-    
+
     def getMaxHP(self):
         # TODO return a real maximum health number
         return 50
-    
+
     def getMaxInventorySlots(self):
         # TODO return a real number of inventory slots
         return 10

@@ -5,10 +5,15 @@ from jsonDecoder import loadJson, saveJson
 # Starts the gameloop
 def startGame(game):
 	run = True
+	game.loadPlayer()
 	while game.player.hp > 0:
 		game.displayCurrentArea()
 		game.reactCurrentArea()
+		if game.player.quit:
+			return None
 		game.chooseNewArea()
+		if game.player.quit:
+			return None
 		if game.player.hp <= 0:
 			run=False
 
@@ -17,8 +22,10 @@ def openSettings(game, settingsFile):
 	saveJson(settingsFile, game.settings)
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
-def openDataPacks():
-	pass
+def openDataPacks(game, settingsFile):
+	game.openDataPacks()
+	saveJson(settingsFile, game.settings)
+	game.initialLoad(RES_FOLDER, SETTINGS)
 
 
 # This code runs with main.py is opened
@@ -47,7 +54,7 @@ if __name__ == "__main__":
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)
 		elif cmd == 3:
-			pass #TODO finish data pack options window
+			openDataPacks(game, SETTINGS_FILE)
 		elif cmd == 0:
 			# Exit the game
 			appRunning = False

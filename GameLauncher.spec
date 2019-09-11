@@ -4,11 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['src\\main.py'],
-<<<<<<< HEAD
              pathex=['C:\\Users\\ninon\\Google Drive\\CodeNameEmpty-NightlyDev\\CodeNameEmpty'],
-=======
-             pathex=['C:\\Users\\ninon\\Google Drive\\CodeNameEmpty-laptop\\CodeNameEmpty'],
->>>>>>> MainDev
              binaries=[],
              datas=[],
              hiddenimports=[],

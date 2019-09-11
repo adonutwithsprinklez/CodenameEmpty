@@ -26,6 +26,17 @@
             "flags":["vital"]
         },
         {
+            "type":"misc",
+            "name":"Horns",
+            "hitChance":"1d1",
+            "maxHealth":1,
+            "attacks":[],
+            "flags":[
+                "unattackable",
+                "specialArmor"
+            ]
+        },
+        {
             "type":"torso",
             "name":"Torso",
             "hitChance":"1d4",
