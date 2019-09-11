@@ -16,7 +16,8 @@ class Enemy(object):
         self.damage = data["damage"]
         self.xp = int(random.random()*data["xp"]+0.5)
         if data["weapon"]:
-            self.weapon = generateWeapon(weapons[random.choice(data["weapon"])])
+            self.weapon = generateWeapon(
+                weapons[random.choice(data["weapon"])])
         # Adds modifiers to the enemy
         if data["modifier"]:
             # Calculates the chance for each mod
@@ -45,7 +46,8 @@ class Enemy(object):
             self.itemDrop = copy.copy(random.choice(data["itemDrops"]))
             try:
                 if self.itemDrop[0] in weapons.keys():
-                    self.itemDrop[0] = generateWeapon(weapons[self.itemDrop[0]])
+                    self.itemDrop[0] = generateWeapon(
+                        weapons[self.itemDrop[0]])
                 elif self.itemDrop[0] in armor.keys():
                     self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
                 elif self.itemDrop[0] in misc.keys():
@@ -67,7 +69,7 @@ class Enemy(object):
 
     def getStrength(self):
         return self.damage
-        
+
     def getRawWeaponDamage(self):
         if self.weapon:
             return self.weapon.damage

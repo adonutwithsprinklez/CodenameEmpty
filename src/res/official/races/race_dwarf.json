@@ -15,7 +15,6 @@
         "human":5
     },
     "playable":true,
-    "startabke":true,
     "playerCreationDescription":"Dwarves are strange creatures. They are not any weaker, sicker, or less intelligent than the other races, but their stature causes them many problems when it comes to dodging weapons",
     "limbs":[
         {

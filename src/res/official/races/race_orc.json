@@ -15,7 +15,6 @@
         "dwarf":1
     },
     "playable":true,
-    "startabke":true,
     "playerCreationDescription":"Orcs are seen as the barbarians of the world. Their strength and vitality has leads them to take a more direct approach when it comes to objstacles.",
     "limbs":[
         {
@@ -25,6 +24,17 @@
             "maxHealth":25,
             "attacks":[],
             "flags":["vital"]
+        },
+        {
+            "type":"misc",
+            "name":"Horns",
+            "hitChance":"1d1",
+            "maxHealth":1,
+            "attacks":[],
+            "flags":[
+                "unattackable",
+                "specialArmor"
+            ]
         },
         {
             "type":"torso",

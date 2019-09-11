@@ -44,7 +44,7 @@ class Game(object):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
-        
+
         self.cleanDataPackInfo()
 
         global VERSION, DELAY, DEBUG
@@ -90,7 +90,8 @@ class Game(object):
                         "%s%s/areas/%s.json" % (folder, pack, a))
                     self.disp.dprint("Loaded asset %s" % a)
                 for r in self.packs[pack]["races"]:
-                    raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
+                    raceData = loadJson("%s%s/races/%s.json" %
+                                        (folder, pack, r))
                     self.races[raceData["id"]] = raceData
                     self.disp.dprint("Loaded asset %s" % r)
                 for n in self.packs[pack]["npcs"]:
@@ -134,14 +135,15 @@ class Game(object):
         # Spawns in an extra weapon for the player to switch between.
         self.loadPlayer()
         self.loaded = True
-    
+
     def loadPlayer(self):
         self.player = Player()
         self.player.race = Race(self.races["human"])
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
-        self.player.inv.append(generateWeapon(self.weapons["template_IronSword"]))
+        self.player.inv.append(generateWeapon(
+            self.weapons["template_IronSword"]))
 
     def cleanDataPackInfo(self):
         self.packs = {}
@@ -166,7 +168,7 @@ class Game(object):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
             self.gameSettings[setting[0]] = setting[2]
-        
+
     def loadDataPackSettings(self):
         self.dataPackSettings = {}
         for setting in self.settings["DATAPACKSETTINGS"].keys():
@@ -207,7 +209,7 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %s" % (x, choice), 0)
             self.disp.closeDisplay()
-            
+
             time.sleep(EVENTDELAY)
             input("Enter to continue")
 
@@ -216,7 +218,7 @@ class Game(object):
             self.disp.clearScreen()
             self.disp.displayHeader(self.currentArea.npc.name)
             self.disp.display(self.currentArea.npc)
-            
+
     def fightEnemies(self):
         ##### Fighting Code #####
         if self.currentArea.enemy != []:
@@ -572,7 +574,7 @@ class Game(object):
         dataPacksWindow = True
         packPage = 0
         numPages = int(len(self.dataPackSettings["packsToLoad"]) / 9)
-        
+
         while dataPacksWindow:
             toggleablePacks = self.displayPacks(numPages, packPage)
             try:
@@ -582,21 +584,23 @@ class Game(object):
 
             if cmd in range(1, 9) and cmd-1 <= len(toggleablePacks):
                 if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][0] != "official":
-                    self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
+                    self.dataPackSettings["packsToLoad"][cmd -
+                                                         1+9*packPage][1] ^= True
                 else:
-                    pass # TODO Display error when attempting to disable the official datapack.
-                         # The official data pack should be allowed to be disabled, only if
-                         # another data pack is enabled
+                    # TODO Display error when attempting to disable the official datapack.
+                    pass
+                    # The official data pack should be allowed to be disabled, only if
+                    # another data pack is enabled
             elif cmd == 12 and packPage < numPages:
                 packPage += 1
             elif cmd == 11 and packPage > 0:
                 packPage -= 1
             elif cmd == 0:
                 dataPacksWindow = False
-        
+
         self.settings["DATAPACKSETTINGS"] = self.dataPackSettings
 
-    def displayPacks(self, numPages = 1, page = 0):
+    def displayPacks(self, numPages=1, page=0):
         self.disp.clearScreen()
         self.disp.displayHeader("Data Packs")
 
@@ -606,28 +610,30 @@ class Game(object):
         listOfOptions = self.dataPackSettings["packsToLoad"][startOptions:endOptions]
         firstOption = listOfOptions.pop(0)
         enabled = "ENABLED" if firstOption[1] else "DISABLED"
-        firstOption = loadJson(self.dataPackSettings["folder"] + firstOption[0] + "/meta.json")
+        firstOption = loadJson(
+            self.dataPackSettings["folder"] + firstOption[0] + "/meta.json")
         packName = firstOption["name"]
         packDesc = firstOption["desc"]
         packAuth = firstOption["author"]
-        
+
         self.disp.display(f'1. {packName:<50} {enabled:>18}')
         self.disp.display(f'\t{packDesc}', 0)
-        self.disp.display(f'\tBy: {packAuth}',0)
+        self.disp.display(f'\tBy: {packAuth}', 0)
 
         i = 1
 
         for pack in listOfOptions:
             i += 1
             enabled = "ENABLED" if pack[1] else "DISABLED"
-            pack = loadJson(self.dataPackSettings["folder"] + pack[0] + "meta.json")
+            pack = loadJson(
+                self.dataPackSettings["folder"] + pack[0] + "meta.json")
             packName = pack["name"]
             packDesc = pack["desc"]
             packAuth = pack["author"]
 
             self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
             self.disp.display(f'\t{packDesc}', 0)
-            self.disp.display(f'\tBy {packAuth}',0)
+            self.disp.display(f'\tBy {packAuth}', 0)
         self.disp.display(
             "Input pack # to toggle. Changes to enabled data packs take effect on screen exit.")
         pagebreak = 1

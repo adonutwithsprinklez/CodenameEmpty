@@ -33,6 +33,13 @@
 		"race_dwarf",
 		"race_draktilien"
 	],
+	"startableRaces":[
+		"race_human",
+		"race_elf",
+		"race_orc",
+		"race_dwarf",
+		"race_draktilien"
+	],
 	"npcs":[
 		"npc_defNPC"
 	],
