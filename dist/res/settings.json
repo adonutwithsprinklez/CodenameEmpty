@@ -20,9 +20,14 @@
             false
         ]
     ],
-    "DATAPACKOPTIONS": {
+    "DATAPACKSETTINGS": {
         "folder": "res/",
-        "packsToLoad": "official",
-        "start": "$default"
+        "packsToLoad": [
+            [
+                "official",
+                true
+            ]
+        ],
+        "start": "official"
     }
 }

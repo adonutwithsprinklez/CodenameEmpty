@@ -1,7 +1,7 @@
 {
-	"name":"Official Game Data",
+	"name":"Official Data Pack",
 	"author":"Sprinklez Media",
-	"desc":"This is the official game data and assets for the game. v0.1.0",
+	"desc":"This is the official game data and assets for the game.",
 	"weapons":[
 		"weapon_ironSword",
 		"weapon_wolfClaws",
@@ -27,6 +27,13 @@
 		"area_strongHold"
 	],
 	"races":[
+		"race_human",
+		"race_elf",
+		"race_orc",
+		"race_dwarf",
+		"race_draktilien"
+	],
+	"startableRaces":[
 		"race_human",
 		"race_elf",
 		"race_orc",
