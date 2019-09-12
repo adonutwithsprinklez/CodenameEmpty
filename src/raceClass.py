@@ -1,8 +1,10 @@
 
 import copy
 
+
 class Race(object):
     def __init__(self, data=None):
+        ''' Instantiates a Race object. '''
         if data:
             self.id = data["id"]
             self.name = data["name"]
@@ -26,19 +28,28 @@ class Race(object):
             self.limbs = []
 
     ### GETTERS ###
+    # These functions are to allow for future changes without having to modify the calls to them.
+
     def getBaseStats(self):
+        ''' Returns the dictionary of base stats. '''
         return self.baseStats
 
     def getBaseSkills(self):
+        ''' Returns the dictionary of base skills. '''
         return self.baseSkills
 
     def getBaseStanding(self):
+        ''' Returns the dictionary of base standing '''
         return self.standing
 
     def getPlayeable(self):
+        ''' Returns whether or not the race is a playable one. This is different from being a starting
+            race. Starting races are added to the character creation menu, playable races set whether
+            or not the player will ever be able to assume control of one of these races. '''
         return self.playable
 
     def getLimbObjects(self):
+        ''' Returns the list of limb objects without any modifications. '''
         return self.limbs
 
     def getLimbCounts(self):
@@ -51,18 +62,14 @@ class Race(object):
                 returnable[limb.type] = 1
         return returnable
 
-    def getCreatorDescription(self):
-        if self.getPlayeable():
-            return self.playerCreationDesc
-        else:
-            return None
-
     def getDescription(self):
+        ''' Generates a description of the race's appearance. '''
         pass
 
 
 class Limb(object):
     def __init__(self, data=None):
+        ''' Instantiates a limb object. '''
         if data:
             self.type = data["type"]
             self.name = data["name"]
