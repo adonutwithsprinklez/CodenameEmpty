@@ -1,7 +1,6 @@
 {
     "name":"Human",
     "id":"human",
-    "desc":"",
     "baseStats":{
         "strength":6,
         "vitality":5,
