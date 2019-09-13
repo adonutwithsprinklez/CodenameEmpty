@@ -137,7 +137,7 @@ class Game(object):
 
     def loadPlayer(self):
         self.player = Player()
-        self.player.race = Race(self.races["human"])
+        self.player.race = Race(self.races["drakt"])
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])

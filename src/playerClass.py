@@ -6,7 +6,7 @@ from dieClass import rollDice
 
 class Player(object):
     def __init__(self):
-        self.name = "Player name"
+        self.name = "Player"
         self.hp = 50
         self.energy = 50
         self.level = 1
@@ -114,9 +114,12 @@ class Player(object):
             for stat in self.getStats():
                 self.disp.display(
                     "\t{} - {}".format(stat[0], stat[1]), 0, 0)
-            self.disp.display("Currently Equipped:", 1, 0)
+            self.disp.display("Equipped Gear:", 1, 0)
             self.disp.display("\t{}".format(
                 self.getEquipmentString()), 0)
+            self.disp.display("Body:")
+            self.disp.display(f'\t{self.getBodyDescription()}', 0)
+            self.disp.closeDisplay()
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests", 0)
             self.disp.display("9. Quit Game")
@@ -191,6 +194,7 @@ class Player(object):
         # TODO check for equipped gear to make sure the player can still wield it
         self.race = race
 
+    # Class Getters
     def getEquipmentString(self):
         # TODO redo this whole part
         equipstr = ""
@@ -211,6 +215,7 @@ class Player(object):
         stats.append(("Race", self.race.name))
         stats.append(("Health", self.hp))
         stats.append(("Max Health", self.getMaxHP()))
+        stats.append(("Hurt Limbs", len(self.race.getHurtLimbs())))
         return stats
 
     def getHealth(self):
@@ -243,3 +248,8 @@ class Player(object):
     def getMaxInventorySlots(self):
         # TODO return a real number of inventory slots
         return 10
+    
+    def getBodyDescription(self):
+        ''' Returns a description of the player's race. ''' 
+        # TODO return a real class object
+        return self.race.getDescription()
