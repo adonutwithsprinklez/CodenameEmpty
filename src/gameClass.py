@@ -46,7 +46,7 @@ class Game(object):
         times.'''
         self.cleanDataPackInfo()
 
-        global VERSION, DELAY, DEBUG
+        global VERSION, DELAY, DEBUG, EVENTDELAY
         self.settings = settingsdata
         self.loadGameSettings()
         VERSION = self.settings["VERSION"]
