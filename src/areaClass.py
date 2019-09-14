@@ -1,3 +1,4 @@
+import copy
 import random
 import math
 
@@ -55,4 +56,4 @@ class Area(object):
 				e.append(newEnemy)
 			self.enemy = e
 		if self.event:
-			self.event = Event(events[self.event],weapons,armor,misc)
+			self.event = Event(events[self.event])

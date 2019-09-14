@@ -19,6 +19,7 @@ class Player(object):
         self.inv = []
         self.disp = None
         self.quit = False
+        self.tags = []
 
     def viewInventory(self):
         cmd = -1
@@ -55,13 +56,13 @@ class Player(object):
             equip = -1
             self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
             self.disp.display("Inspecting:")
-            self.disp.display("%s - %s damage" %
+            self.disp.display("\t%s - %s damage" %
                               (self.inv[cmd-1].name, self.inv[cmd-1].damage), 0)
-            self.disp.display(self.inv[cmd-1].desc, 0)
+            self.disp.display("\t" + self.inv[cmd-1].desc, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("%s - %s damage" %
+            self.disp.display("\t%s - %s damage" %
                               (self.weapon.name, self.weapon.damage), 0)
-            self.disp.display(self.weapon.desc, 0, 1)
+            self.disp.display("\t" + self.weapon.desc, 0, 1)
             self.disp.display("1. Equip", 0)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)

@@ -75,6 +75,7 @@
 		"quest_robbed"
 	],
 	"events":[
+		"event_reworkTest"
 	],
 	"startingArea":"area_forest"
 }
