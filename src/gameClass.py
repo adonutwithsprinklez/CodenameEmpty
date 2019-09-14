@@ -158,6 +158,7 @@ class Game(object):
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(
             self.weapons["template_IronSword"]))
+        self.player.gold = 100
         self.loadStartingArea()
 
     def cleanDataPackInfo(self):
@@ -220,7 +221,8 @@ class Game(object):
                 self.disp.display(self.currentArea.event.msg, 1, 1)
                 self.disp.displayHeader("Actions", 1)
                 x = 0
-                for choice in self.currentArea.event.actions:
+                choices = self.currentArea.event.getPossibleActions(self.player)
+                for choice in choices:
                     x += 1
                     action = choice["action"]
                     self.disp.display(f'{x}. {action}',0)
@@ -232,13 +234,18 @@ class Game(object):
                 except:
                     cmd = -1
                 if cmd > 0 and cmd <= x:
-                    for action in self.currentArea.event.actions[cmd-1]["eventDo"]:
+                    for action in choices[cmd-1]["eventDo"]:
                         if action[0] == "say":
                             self.displayEventAction(action[1])
                         elif action[0] == "goto":
-                            self.currentArea.event.gotoPart(action[1])
+                            self.currentArea.event.gotoPart(random.choice(action[1]))
                         elif action[0] == "addTag":
                             self.player.tags.append(self.currentArea.event.getTag(action[1]))
+                        elif action[0] == "take":
+                            self.currentArea.event.takeItem(action[1], action[2], self.player)
+                        elif action[0] == "give":
+                            self.currentArea.event.giveItem(action[1], action[2], self.player,
+                                                            self.weapons, self.armor, self.misc)
                         elif action[0] == "finish":
                             self.currentArea.event.finish()
 

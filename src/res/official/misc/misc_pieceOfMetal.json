@@ -1,0 +1,13 @@
+{
+	"name":[
+		"Piece of Metal",
+        "Hunk of Metal"
+	],
+	"desc":[
+		"A tarnished piece of metal. It might not even be worth selling.",
+		"A piece of metal that does not seem to be worth much."
+	],
+	"iType":"material",
+	"worthMin":1,
+	"worthMax":5
+}

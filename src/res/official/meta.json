@@ -18,7 +18,9 @@
 		"No, it's not complete",
 		"Estimated Release: Eventually",
 		"Made by A Donut with Sprinklez",
-		"Coming when it's done"
+		"Coming when it's done",
+		"There aren't very many of these",
+		"Growing all the time!"
 	],
 	"weapons":[
 		"weapon_ironSword",
@@ -62,6 +64,7 @@
 		"npc_defNPC"
 	],
 	"enemies":[
+		"enemy_rodentOfUnusualSize",
 		"enemy_wolf",
 		"enemy_greatWolf",
 		"enemy_orc",
@@ -75,7 +78,8 @@
 		"quest_robbed"
 	],
 	"events":[
-		"event_reworkTest"
+		"event_lostItem",
+		"event_flipACoin"
 	],
 	"startingArea":"area_forest"
 }

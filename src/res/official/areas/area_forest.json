@@ -17,11 +17,13 @@
 	"hostilityMax":5,
 	"eventChance":10,
 	"events":[
-		"event_reworkTest"
+		"event_lostItem",
+		"event_flipACoin"
 	],
 	"enemyChance":10,
 	"enemies":[
-		["enemy_wolf",10],
+		["enemy_rodentOfUnusualSize", 5],
+		["enemy_wolf",4],
 		["enemy_greatWolf",1]
 	],
 	"npcChance":0,

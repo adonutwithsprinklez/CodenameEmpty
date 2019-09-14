@@ -217,6 +217,7 @@ class Player(object):
         stats.append(("Health", self.hp))
         stats.append(("Max Health", self.getMaxHP()))
         stats.append(("Hurt Limbs", len(self.race.getHurtLimbs())))
+        stats.append(("Gold", self.gold))
         return stats
 
     def getHealth(self):
