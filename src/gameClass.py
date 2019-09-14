@@ -40,6 +40,7 @@ class Game(object):
         self.dataPackSettings = {}
 
         self.currentArea = None
+        self.starter = None
 
         self.logos = []
         self.descs = []
@@ -66,7 +67,7 @@ class Game(object):
 
         self.loadDataPackSettings()
         packs = self.dataPackSettings["packsToLoad"]
-        starter = self.dataPackSettings["start"]
+        self.starter = self.dataPackSettings["start"]
         print("\nLoading assets...")
 
         for pack in packs:
@@ -134,17 +135,20 @@ class Game(object):
             for q in self.possibleQuests:
                 self.disp.dprint(q)
 
-        self.currentArea = Area(self.areas[self.packs[starter][
-                                "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
-        self.currentArea.load(self.weapons, self.armor, self.misc,
-                              self.enemies, self.npcs, self.events, self.modifiers)
-        # Disables enemies in the first area.
-        self.currentArea.enemy = []
+        self.loadStartingArea()
 
         # Sets up the player variables and also gives the player some starting gear.
         # Spawns in an extra weapon for the player to switch between.
         self.loadPlayer()
         self.loaded = True
+    
+    def loadStartingArea(self):
+        self.currentArea = Area(self.areas[self.packs[self.starter][
+                                "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
+        self.currentArea.load(self.weapons, self.armor, self.misc,
+                              self.enemies, self.npcs, self.events, self.modifiers)
+        # Disables enemies in the first area.
+        self.currentArea.enemy = []
 
     def loadPlayer(self):
         self.player = Player()
@@ -154,6 +158,7 @@ class Game(object):
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(
             self.weapons["template_IronSword"]))
+        self.loadStartingArea()
 
     def cleanDataPackInfo(self):
         self.packs = {}
@@ -209,24 +214,47 @@ class Game(object):
 
         ##### Random event Code #####
         if self.currentArea.event:
-            self.disp.clearScreen()
-            self.disp.displayHeader("Random Event")
-            self.disp.display(self.currentArea.event.name)
-            self.disp.display(self.currentArea.event.msg, 1, 1)
-            self.disp.displayHeader("Actions", 1)
-            x = 0
-            for choice in self.currentArea.event.actions.keys():
-                x += 1
-                self.disp.display("%d. %s" % (x, choice), 0)
-            self.disp.closeDisplay()
-            time.sleep(EVENTDELAY)
-            input("Enter to continue")
+            while not self.currentArea.event.finished:
+                self.disp.clearScreen()
+                self.disp.displayHeader(self.currentArea.event.name)
+                self.disp.display(self.currentArea.event.msg, 1, 1)
+                self.disp.displayHeader("Actions", 1)
+                x = 0
+                for choice in self.currentArea.event.actions:
+                    x += 1
+                    action = choice["action"]
+                    self.disp.display(f'{x}. {action}',0)
+                self.disp.closeDisplay()
+                # time.sleep(EVENTDELAY)
+                
+                try:
+                    cmd = int(input())
+                except:
+                    cmd = -1
+                if cmd > 0 and cmd <= x:
+                    for action in self.currentArea.event.actions[cmd-1]["eventDo"]:
+                        if action[0] == "say":
+                            self.displayEventAction(action[1])
+                        elif action[0] == "goto":
+                            self.currentArea.event.gotoPart(action[1])
+                        elif action[0] == "addTag":
+                            self.player.tags.append(self.currentArea.event.getTag(action[1]))
+                        elif action[0] == "finish":
+                            self.currentArea.event.finish()
+
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
             self.disp.clearScreen()
             self.disp.displayHeader(self.currentArea.npc.name)
             self.disp.display(self.currentArea.npc)
+    
+    def displayEventAction(self, message):
+        self.disp.clearScreen()
+        self.disp.displayHeader(self.currentArea.event.name)
+        self.disp.display(message)
+        self.disp.closeDisplay()
+        input("\nEnter to continue")
 
     def fightEnemies(self):
         ##### Fighting Code #####

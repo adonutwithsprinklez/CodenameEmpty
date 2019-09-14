@@ -15,8 +15,9 @@
 	"aType":"Forest",
 	"hostilityMin":1,
 	"hostilityMax":5,
-	"eventChance":0,
+	"eventChance":10,
 	"events":[
+		"event_reworkTest"
 	],
 	"enemyChance":10,
 	"enemies":[
