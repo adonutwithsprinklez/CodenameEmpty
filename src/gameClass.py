@@ -5,6 +5,7 @@ import textwrap
 
 from areaClass import Area
 from armorClass import Armor
+import copy
 from dieClass import rollDice
 from displayClass import Screen
 from enemyClass import Enemy
@@ -40,6 +41,9 @@ class Game(object):
 
         self.currentArea = None
 
+        self.logos = []
+        self.descs = []
+
     def initialLoad(self, folder="res/", settingsdata={}):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
@@ -64,12 +68,19 @@ class Game(object):
         packs = self.dataPackSettings["packsToLoad"]
         starter = self.dataPackSettings["start"]
         print("\nLoading assets...")
+
         for pack in packs:
             if pack[1]:
                 pack = pack[0]
 
                 print("Loading pack \"{}\"...".format(pack))
                 self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
+
+                if "gameLogo" in self.packs[pack].keys():
+                    self.logos.append(self.packs[pack]["gameLogo"])
+                if "gameDesc" in self.packs[pack].keys():
+                    for desc in self.packs[pack]["gameDesc"]:
+                        self.descs.append(desc)
 
                 # Asset loading
                 for w in self.packs[pack]["weapons"]:
@@ -137,7 +148,7 @@ class Game(object):
 
     def loadPlayer(self):
         self.player = Player()
-        self.player.race = Race(self.races["drakt"])
+        self.player.race = Race(self.races["human"])
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
@@ -505,8 +516,14 @@ class Game(object):
 
         self.disp.clearScreen()
         self.disp.displayHeader("Main Menu")
-        self.disp.display("PROJECT: EMPTY")
-        self.disp.display("Welcome to the Void.", 0)
+
+        logo = random.choice(self.logos)
+        firstLine = logo[0]
+        self.disp.display(firstLine)
+        for line in logo[1:]:
+            self.disp.display(line, 0)
+        
+        self.disp.display(random.choice(self.descs))
         self.disp.display("1. New Game")
         self.disp.display("2. Settings", 0)
         self.disp.display("3. Data Packs", 0)

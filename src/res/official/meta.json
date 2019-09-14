@@ -2,6 +2,24 @@
 	"name":"Official Data Pack",
 	"author":"Sprinklez Media",
 	"desc":"This is the official game data and assets for the game.",
+	"gameLogo":[
+		"            _____  _____  _____     __  _____  _____  _____",
+		"           |  _  || __  ||     | __|  ||   __||     ||_   _|",
+		"           |   __||    -||  |  ||  |  ||   __||   --|  | |",
+		"           |__|   |__|__||_____||_____||_____||_____|  |_|",
+		"                   _____  _____  _____  _____  __ __         ",
+		"                  |   __||     ||  _  ||_   _||  |  |        ",
+		"                  |   __|| | | ||   __|  | |  |_   _|        ",
+		"                  |_____||_|_|_||__|     |_|    |_|          "
+	],
+	"gameDesc":[
+		"Welcome to the void",
+		"REALLY early access",
+		"No, it's not complete",
+		"Estimated Release: Eventually",
+		"Made by A Donut with Sprinklez",
+		"Coming when it's done"
+	],
 	"weapons":[
 		"weapon_ironSword",
 		"weapon_wolfClaws",
@@ -54,8 +72,7 @@
 		"modifiersList"
 	],
 	"quests":[
-		"quest_robbed",
-		"quest_multipleRequirementTest"
+		"quest_robbed"
 	],
 	"events":[
 	],

@@ -15,7 +15,6 @@
         "dwarf":-2
     },
     "playable":true,
-    "playerCreationDescription":"Elves are the most naturally gifted when it comes to magic. Their natural intelligence and higher than average physique allow for them to cast spells without getting hit.",
     "limbs":[
         {
             "type":"head",
