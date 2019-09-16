@@ -32,8 +32,12 @@ class Screen(object):
             print("|%s|" % (" "*78))
 
 
-    def displayHeader(self, msg="", br1=0):
+    def displayHeader(self, msg="", br1=0, br2=0):
         '''Displays a text header. br1 = a line break after the header.'''
+        if br2 == 1:
+            if self.delay:
+                time.sleep(self.printdelay)
+            print("|%s|" % (" "*78))
         title = "+----[ %s ]" % (msg)
         if self.delay:
             time.sleep(self.printdelay)

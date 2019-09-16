@@ -2,7 +2,7 @@
     "VERSION": 0.1,
     "DEBUG": true,
     "DELAY": 0.01,
-    "EVENTDELAY": 3,
+    "EVENTDELAY": 2,
     "GAMESETTINGS": [
         [
             "DELAYENABLED",
