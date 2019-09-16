@@ -141,7 +141,7 @@ class Game(object):
         # Spawns in an extra weapon for the player to switch between.
         self.loadPlayer()
         self.loaded = True
-    
+
     def loadStartingArea(self):
         self.currentArea = Area(self.areas[self.packs[self.starter][
                                 "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
@@ -221,14 +221,15 @@ class Game(object):
                 self.disp.display(self.currentArea.event.msg, 1, 1)
                 self.disp.displayHeader("Actions", 1)
                 x = 0
-                choices = self.currentArea.event.getPossibleActions(self.player)
+                choices = self.currentArea.event.getPossibleActions(
+                    self.player)
                 for choice in choices:
                     x += 1
                     action = choice["action"]
-                    self.disp.display(f'{x}. {action}',0)
+                    self.disp.display(f'{x}. {action}', 0)
                 self.disp.closeDisplay()
                 # time.sleep(EVENTDELAY)
-                
+
                 try:
                     cmd = int(input())
                 except:
@@ -239,24 +240,26 @@ class Game(object):
                         if action[0] == "say":
                             self.displayEventAction(action[1])
                         elif action[0] == "goto":
-                            self.currentArea.event.gotoPart(random.choice(action[1]))
+                            self.currentArea.event.gotoPart(
+                                random.choice(action[1]))
                         elif action[0] == "addTag":
-                            self.player.tags.append(self.currentArea.event.getTag(action[1]))
+                            self.player.tags.append(
+                                self.currentArea.event.getTag(action[1]))
                         elif action[0] == "take":
-                            self.currentArea.event.takeItem(action[1], action[2], self.player)
+                            self.currentArea.event.takeItem(
+                                action[1], action[2], self.player)
                         elif action[0] == "give":
                             self.currentArea.event.giveItem(action[1], action[2], self.player,
                                                             self.weapons, self.armor, self.misc)
                         elif action[0] == "finish":
                             self.currentArea.event.finish()
 
-
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
             self.disp.clearScreen()
             self.disp.displayHeader(self.currentArea.npc.name)
             self.disp.display(self.currentArea.npc)
-    
+
     def displayEventAction(self, message):
         self.disp.clearScreen()
         self.disp.displayHeader(self.currentArea.event.name)
@@ -468,7 +471,7 @@ class Game(object):
                 for flag in area[2]:
                     if flag == "required":
                         required.append(area)
-        
+
         # Actually generate areas:
         for i in range(1, self.currentArea.newArea + 1):
             if len(required) > 0:
@@ -482,7 +485,7 @@ class Game(object):
                     if len(aType) > 2:
                         if "limited" in aType[2]:
                             if aType[0] in usedAreas:
-                                alreadyUsed = True 
+                                alreadyUsed = True
                     if newroll > highroll and not alreadyUsed:
                         newArea = aType
                         highroll = newroll
@@ -580,7 +583,7 @@ class Game(object):
         self.disp.display(firstLine)
         for line in logo[1:]:
             self.disp.display(line, 0)
-        
+
         self.disp.display(random.choice(self.descs))
         self.disp.display("1. New Game")
         self.disp.display("2. Settings", 0)

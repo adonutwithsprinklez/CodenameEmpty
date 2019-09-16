@@ -17,7 +17,7 @@
         [
             "DEBUGDISPLAY",
             "Developer Display (Used for debugging)",
-            true
+            false
         ]
     ],
     "DATAPACKSETTINGS": {
