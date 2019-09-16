@@ -1,0 +1,33 @@
+{
+    "id":"forestMisc",
+    "name":[
+        "The Travelling Gambler",
+        "The Roving Gambler",
+        "The Homeless Gambler"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "While walking down the path an old man walks up to you. He is obviously homeless, but appears to mean no harm.",
+            "While walking the path, you feel a tap on your shoulder. Turning around you see what appears to be a homeless man looking up to you."
+        ],
+        "actions":[
+            {
+                "action":"Greet him",
+                "eventDo":[
+                    ["say","You turn to him and ask him what he wants."],
+                    ["goto", ["#theOldMan"]]
+                ]
+            },
+            {
+                "action":"Ignore him and continue walking",
+                "eventDo":[
+                    ["say","You want nothing to do with a man that looks like that.\nYou continue walking and pretend you never saw him."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}
