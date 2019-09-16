@@ -235,6 +235,7 @@ class Game(object):
                     cmd = -1
                 if cmd > 0 and cmd <= x:
                     for action in choices[cmd-1]["eventDo"]:
+                        self.disp.dprint(action)
                         if action[0] == "say":
                             self.displayEventAction(action[1])
                         elif action[0] == "goto":

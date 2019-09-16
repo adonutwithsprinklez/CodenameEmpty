@@ -69,9 +69,9 @@ class Event(object):
         elif itemId in weapons.keys():
             player.inv.append(copy.copy(generateWeapon(weapons[itemId])))
         elif itemId in armor.keys():
-            player.inv.append(Armor(armor[itemId]))
+            player.inv.append(copy.copy(Armor(armor[itemId])))
         elif itemId in misc.keys():
-            player.inv.append(Misc(misc[itemId]))
+            player.inv.append(copy.copy(Misc(misc[itemId])))
 
 class Tag(object):
     def __init__(self, data):

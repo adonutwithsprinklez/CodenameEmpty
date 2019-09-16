@@ -8,6 +8,5 @@
 		"A piece of metal that does not seem to be worth much."
 	],
 	"iType":"material",
-	"worthMin":1,
-	"worthMax":5
+	"worth":3
 }

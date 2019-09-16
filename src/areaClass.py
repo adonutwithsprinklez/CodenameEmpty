@@ -26,7 +26,8 @@ class Area(object):
 
 		self.kwargs = kwargs
 
-		chance = random.randint(0,areaType["eventChance"])
+		# chance = random.randint(0,areaType["eventChance"])
+		chance = 3
 		if chance < 5 and chance != 0 and len(areaType["events"])>0:
 			self.event = random.choice(areaType["events"])
 
