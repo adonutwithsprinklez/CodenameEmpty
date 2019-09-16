@@ -15,7 +15,7 @@
         ],
         "actions":[
             {
-                "action":"Take it",
+                "action":"Go over to it",
                 "eventDo":[
                     ["say","You think to yourself that you might as well take whatever it is that someone left behind."],
                     ["goto", ["#success", "#fail"]]
@@ -39,7 +39,7 @@
                 "action":"Dig it up",
                 "eventDo":[
                     ["say","You dig the item up. Excitedly you pick it up and examine it, revealing an iron sword."],
-                    ["give","weapon_ironSword", 0],
+                    ["give","weapon_ironSword", 1],
                     ["finish"]
                 ]
             },
@@ -54,14 +54,14 @@
     },
     "#fail":{
         "msg":[
-
+            "You walk over to where you saw the glittering. It looks like something is sticking up out of the dirt."
         ],
         "actions":[
             {
                 "action":"Dig it up",
                 "eventDo":[
                     ["say","You dig the item up. Excitedly you pick it up and examine it, only to see that it was just a small piece of metal."],
-                    ["give","misc_pieceOfMetal"],
+                    ["give","misc_pieceOfMetal", 1],
                     ["finish"]
                 ]
             },
