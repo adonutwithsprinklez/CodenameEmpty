@@ -218,41 +218,46 @@ class Game(object):
             while not self.currentArea.event.finished:
                 self.disp.clearScreen()
                 self.disp.displayHeader(self.currentArea.event.name)
-                self.disp.display(self.currentArea.event.msg, 1, 1)
-                self.disp.displayHeader("Actions", 1)
+                self.disp.display(self.currentArea.event.msg, 1)
                 x = 0
                 choices = self.currentArea.event.getPossibleActions(
                     self.player)
-                for choice in choices:
-                    x += 1
-                    action = choice["action"]
-                    self.disp.display(f'{x}. {action}', 0)
-                self.disp.closeDisplay()
-                # time.sleep(EVENTDELAY)
+                if len(choices) > 0:
+                    self.disp.displayHeader("Actions", 1, 1)
+                    for choice in choices:
+                        x += 1
+                        action = choice["action"]
+                        self.disp.display(f'{x}. {action}', 0)
+                    self.disp.closeDisplay()
 
-                try:
-                    cmd = int(input())
-                except:
-                    cmd = -1
-                if cmd > 0 and cmd <= x:
-                    for action in choices[cmd-1]["eventDo"]:
-                        self.disp.dprint(action)
-                        if action[0] == "say":
-                            self.displayEventAction(action[1])
-                        elif action[0] == "goto":
-                            self.currentArea.event.gotoPart(
-                                random.choice(action[1]))
-                        elif action[0] == "addTag":
-                            self.player.tags.append(
-                                self.currentArea.event.getTag(action[1]))
-                        elif action[0] == "take":
-                            self.currentArea.event.takeItem(
-                                action[1], action[2], self.player)
-                        elif action[0] == "give":
-                            self.currentArea.event.giveItem(action[1], action[2], self.player,
-                                                            self.weapons, self.armor, self.misc)
-                        elif action[0] == "finish":
-                            self.currentArea.event.finish()
+                    try:
+                        cmd = int(input())
+                    except:
+                        cmd = -1
+                    if cmd > 0 and cmd <= x:
+                        for action in choices[cmd-1]["eventDo"]:
+                            self.disp.dprint(action)
+                            if action[0] == "say":
+                                self.displayEventAction(action[1])
+                            elif action[0] == "goto":
+                                self.currentArea.event.gotoPart(
+                                    random.choice(action[1]))
+                            elif action[0] == "addTag":
+                                self.player.tags.append(
+                                    self.currentArea.event.getTag(action[1]))
+                            elif action[0] == "take":
+                                self.currentArea.event.takeItem(
+                                    action[1], action[2], self.player)
+                            elif action[0] == "give":
+                                self.currentArea.event.giveItem(action[1], action[2], self.player,
+                                                                self.weapons, self.armor, self.misc)
+                            elif action[0] == "finish":
+                                self.currentArea.event.finish()
+                else:
+                    self.disp.closeDisplay()
+                    self.currentArea.event.finish()
+                    time.sleep(EVENTDELAY)
+                    input("\nEnter to continue")
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
@@ -424,7 +429,7 @@ class Game(object):
             x = 0
             for area in choices:
                 x += 1
-                self.disp.display("%d. %-32s %17s   Hostility - %2d" %
+                self.disp.display("%d. %-37s %12s   Hostility - %2d" %
                                   (x, area.name, area.aType, area.hostility), 0)
             self.disp.display("0. Player Menu")
             self.disp.closeDisplay()
