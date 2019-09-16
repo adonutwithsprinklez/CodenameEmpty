@@ -456,16 +456,38 @@ class Game(object):
     def randomAreaChoices(self):
         '''This randomly generates areas for the player to choose from.'''
         choices = []
+        # This is to guarantee that no "limited" areas are used more than once
+        usedAreas = []
+
+        # Grab all required areas and throw them into a seperate list. This is to
+        # guarantee that they are generated.
+        areatypes = self.currentArea.newAreaTypes[::]
+        required = []
+        for area in areatypes:
+            if len(area) > 2:
+                for flag in area[2]:
+                    if flag == "required":
+                        required.append(area)
+        
+        # Actually generate areas:
         for i in range(1, self.currentArea.newArea + 1):
-            areatypes = self.currentArea.newAreaTypes[::]
-            newArea = areatypes.pop(0)
-            highroll = rollDice(newArea[1])
-            for aType in areatypes:
-                newroll = rollDice(aType[1])
-                if newroll > highroll:
-                    newArea = aType
-                    highroll = newroll
+            if len(required) > 0:
+                newArea = required.pop(0)
+            else:
+                areatypes = self.currentArea.newAreaTypes[::]
+                highroll = 0
+                for aType in areatypes:
+                    newroll = rollDice(aType[1])
+                    alreadyUsed = False
+                    if len(aType) > 2:
+                        if "limited" in aType[2]:
+                            if aType[0] in usedAreas:
+                                alreadyUsed = True 
+                    if newroll > highroll and not alreadyUsed:
+                        newArea = aType
+                        highroll = newroll
             generatedArea = Area(self.areas[newArea[0]])
+            usedAreas.append(newArea[0])
             choices.append(generatedArea)
         return choices
 
