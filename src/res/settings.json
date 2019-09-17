@@ -1,5 +1,4 @@
 {
-    "VERSION": 0.1,
     "DEBUG": true,
     "DELAY": 0.01,
     "EVENTDELAY": 2,
