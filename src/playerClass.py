@@ -12,6 +12,7 @@ class Player(object):
         self.level = 1
         self.xp = 0
         self.race = None
+        self.perks = []
         self.weapon = []
         self.armor = None
         self.unarmed = 1
@@ -20,6 +21,12 @@ class Player(object):
         self.disp = None
         self.quit = False
         self.tags = []
+        self.stats = {
+            "strength":0,
+            "vitality":0,
+            "physique":0,
+            "intelligence":0
+        }
 
     def viewInventory(self):
         cmd = -1
@@ -242,14 +249,26 @@ class Player(object):
             return armor
         else:
             return 0
+    
+    def getAllStats(self, stat):
+        baseStat = self.race.getStats(stat)
+        bonusStat = self.stats[stat]
+        # TODO Finish support for perks
+        # for perk in self.getPerks():
+        #     if stat in perk
+        return baseStat + bonusStat
 
     def getMaxHP(self):
-        # TODO return a real maximum health number
-        return 50
+        baseHealth = self.getAllStats("vitality") * 10
+        bonusHealth = 0
+        # TODO add supprot for perks
+        return baseHealth + bonusHealth
 
     def getMaxInventorySlots(self):
-        # TODO return a real number of inventory slots
-        return 10
+        baseSlots = self.getAllStats("strength") + int(self.getAllStats("physique"))
+        bonusSlots = 0
+        # TODO add support for perks
+        return baseSlots + bonusSlots
     
     def getBodyDescription(self):
         ''' Returns a description of the player's race. ''' 

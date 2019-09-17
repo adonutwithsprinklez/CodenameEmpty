@@ -20,7 +20,6 @@ from weaponClass import Weapon
 
 
 DEBUG = 0
-VERSION = 0
 DELAY = 0
 EVENTDELAY = 0
 
@@ -51,10 +50,9 @@ class Game(object):
         times.'''
         self.cleanDataPackInfo()
 
-        global VERSION, DELAY, DEBUG, EVENTDELAY
+        global DELAY, DEBUG, EVENTDELAY
         self.settings = settingsdata
         self.loadGameSettings()
-        VERSION = self.settings["VERSION"]
         DELAY = self.settings["DELAY"]
         EVENTDELAY = self.settings["EVENTDELAY"]
         DEBUG = self.settings["DEBUG"]

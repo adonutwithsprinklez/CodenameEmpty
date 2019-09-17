@@ -13,8 +13,10 @@ class Race(object):
             self.standing = data["standing"]
             self.playable = data["playable"]
             self.limbs = []
-            if "playerCreationDescription" in data.keys():
-                self.playerCreationDesc = data["playerCreationDescription"]
+            if "basePerks" in data.keys():
+                self.basePerks = data["basePerks"]
+            else:
+                self.basePerks = []
             for limb in data["limbs"]:
                 newLimb = copy.copy(Limb(limb, self.id))
                 self.limbs.append(newLimb)
@@ -23,6 +25,7 @@ class Race(object):
             self.name = ""
             self.baseStats = {}
             self.baseSkills = []
+            self.basePerks = []
             self.standing = {}
             self.playable = False
             self.limbs = []
@@ -105,6 +108,9 @@ class Race(object):
             if not "unattackable" in limb.flags and limb.health < limb.maxHealth:
                 hurtLimbs.append(limb)
         return hurtLimbs
+    
+    def getStats(self, stat):
+        return self.baseStats[stat]
 
 
 class Limb(object):
