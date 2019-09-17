@@ -92,10 +92,12 @@ class Race(object):
         return description
     
     def getMixedRaceDescription(self):
+        ''' Creates a dynamic description for the race since their limbs do not all belong to any singular race '''
         # TODO add a description generator for nonpure races.
         return self.getPureRaceDescription()
     
     def getVitalLimbs(self):
+        ''' Returns a list of limbs that are vital to the race '''
         vitals = []
         for limb in self.getLimbObjects():
             if "vital" in limb.flags:
@@ -103,14 +105,26 @@ class Race(object):
         return vitals
     
     def getHurtLimbs(self):
+        ''' Returns all limbs that are not at 100% health '''
         hurtLimbs = []
         for limb in self.getLimbObjects():
             if not "unattackable" in limb.flags and limb.health < limb.maxHealth:
                 hurtLimbs.append(limb)
         return hurtLimbs
     
-    def getStats(self, stat):
-        return self.baseStats[stat]
+    def getStat(self, stat):
+        ''' Returns the race's base stat '''
+        if stat in self.baseStats.keys():
+            return self.baseStats[stat]
+        else:
+            return 0
+    
+    def getSkill(self, skill):
+        ''' Returns the race's base skill '''
+        if skill in self.baseSkills.keys():
+            return self.baseSkills[skill]
+        else:
+            return 0
 
 
 class Limb(object):

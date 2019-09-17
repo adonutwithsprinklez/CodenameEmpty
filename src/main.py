@@ -4,9 +4,8 @@ from jsonDecoder import loadJson, saveJson
 
 # Starts the gameloop
 def startGame(game):
-	run = True
 	game.loadPlayer()
-	while game.player.hp > 0:
+	while True:
 		game.displayCurrentArea()
 		game.reactCurrentArea()
 		if game.player.quit:
@@ -15,7 +14,8 @@ def startGame(game):
 		if game.player.quit:
 			return None
 		if game.player.hp <= 0:
-			run=False
+			# TODO have actual end of game code due to player death
+			return False
 
 def openSettings(game, settingsFile):
 	game.openOptionsWindow()
