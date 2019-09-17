@@ -2,6 +2,7 @@ import copy
 import random
 import math
 
+from dieClass import rollDice
 from enemyClass import Enemy
 from eventClass import Event
 from itemGeneration import generateName
@@ -50,7 +51,15 @@ class Area(object):
 			self.npc = random.choice(areaType["npcs"])
 		
 	def chooseAnEvent(self, areaType):
-		return random.choice(areaType["events"])[0] # Functions the same as the previous implementation
+		areaChoices = areaType["events"][::]
+		currentEvent = areaChoices[0]
+		highRoll = rollDice(currentEvent[1])
+		for event in areaChoices[1:]:
+			newRoll = rollDice(event[1])
+			if newRoll > highRoll:
+				currentEvent = event
+				highRoll = newRoll
+		return currentEvent[0]
 
 	def load(self,weapons,armor,misc,enemies,npcs,events,modifiers):
 		# Loads in the enemies and events with any objects that they may need
