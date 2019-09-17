@@ -158,6 +158,7 @@ class Game(object):
             self.weapons["template_IronSword"]))
         self.player.gold = 100
         self.loadStartingArea()
+        self.player.hp = self.player.getMaxHP()
 
     def cleanDataPackInfo(self):
         self.packs = {}
@@ -254,7 +255,8 @@ class Game(object):
                 else:
                     self.disp.closeDisplay()
                     self.currentArea.event.finish()
-                    time.sleep(EVENTDELAY)
+                    if self.gameSettings["EVENTDELAYENABLED"]:
+                        time.sleep(EVENTDELAY)
                     input("\nEnter to continue")
 
         ##### Interacting with an NPC Code #####

@@ -117,19 +117,17 @@ class Player(object):
         cmd = -1
         while cmd != 0 and not self.quit:
             self.disp.clearScreen()
-            self.disp.displayHeader("{} Info".format(self.name))
-            self.disp.display("Stats:")
-            for stat in self.getStats():
-                self.disp.display(
-                    "\t{} - {}".format(stat[0], stat[1]), 0, 0)
+            self.disp.displayHeader("{} Info ( {} )".format(self.name, self.race.name))
+            self.disp.display("Quick Stats:")
+            for stat in self.getUserInfo():
+                self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
             self.disp.display("Equipped Gear:", 1, 0)
             self.disp.display("\t{}".format(
                 self.getEquipmentString()), 0)
-            self.disp.display("Body:")
-            self.disp.display(f'\t{self.getBodyDescription()}', 0)
             self.disp.closeDisplay()
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests", 0)
+            self.disp.display("3. View Player Details",0)
             self.disp.display("9. Quit Game")
             self.disp.display("0. Exit", 0)
             self.disp.closeDisplay()
@@ -143,12 +141,36 @@ class Player(object):
                 self.viewInventory()
             elif cmd == 2:
                 self.viewQuests(currentQuests, completedQuests)
+            elif cmd == 3:
+                self.viewPlayerDetails()
             elif cmd == 9:
                 self.confirmQuit()
             else:
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")
                 self.disp.display("That was not a valid response", 1, 1)
+    
+    def viewPlayerDetails(self):
+        cmd = -1
+        while cmd != 0:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Details")
+            self.disp.display("Player stats:")
+            self.disp.display(f'\tStrength     - {self.getStat("strength")}', 0)
+            self.disp.display(f'\tVitality     - {self.getStat("vitality")}', 0)
+            self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
+            self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
+            self.disp.display("Body:")
+            self.disp.display(f'\t{self.getBodyDescription()}', 0)
+            self.disp.closeDisplay()
+            self.disp.display("0. Exit")
+            self.disp.closeDisplay()
+            try:
+                cmd = int(input())
+            except:
+                cmd = -1
+            if cmd == 0:
+                pass
 
     def viewQuests(self, currentQuests, completedQuests):
         cmd = -1
@@ -218,12 +240,13 @@ class Player(object):
             equipstr += "You are not wearing any kind of protective armor. "
         return equipstr
 
-    def getStats(self):
+    def getUserInfo(self):
         stats = []
-        stats.append(("Race", self.race.name))
+        stats.append(("Level", self.level))
+        stats.append(("Experience", f'{self.xp} / {self.getXpNeededForLevelUp()}'))
         stats.append(("Health", self.hp))
         stats.append(("Max Health", self.getMaxHP()))
-        stats.append(("Hurt Limbs", len(self.race.getHurtLimbs())))
+        # stats.append(("Hurt Limbs", len(self.race.getHurtLimbs())))
         stats.append(("Gold", self.gold))
         return stats
 
@@ -250,8 +273,8 @@ class Player(object):
         else:
             return 0
     
-    def getAllStats(self, stat):
-        baseStat = self.race.getStats(stat)
+    def getStat(self, stat):
+        baseStat = self.race.getStat(stat)
         bonusStat = self.stats[stat]
         # TODO Finish support for perks
         # for perk in self.getPerks():
@@ -259,13 +282,13 @@ class Player(object):
         return baseStat + bonusStat
 
     def getMaxHP(self):
-        baseHealth = self.getAllStats("vitality") * 10
+        baseHealth = self.getStat("vitality") * 10
         bonusHealth = 0
         # TODO add supprot for perks
         return baseHealth + bonusHealth
 
     def getMaxInventorySlots(self):
-        baseSlots = self.getAllStats("strength") + int(self.getAllStats("physique"))
+        baseSlots = self.getStat("strength") + int(self.getStat("physique"))
         bonusSlots = 0
         # TODO add support for perks
         return baseSlots + bonusSlots
@@ -274,3 +297,7 @@ class Player(object):
         ''' Returns a description of the player's race. ''' 
         # TODO return a real class object
         return self.race.getDescription()
+    
+    def getXpNeededForLevelUp(self):
+        # TODO improve required xp formula
+        return (10 + self.level) ** 2
