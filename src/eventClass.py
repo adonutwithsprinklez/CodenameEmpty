@@ -56,6 +56,11 @@ class Event(object):
                 if requirement[1] == "gold":
                     if player.gold < requirement[2]:
                         meetsRequiements = False
+            if requirement[0] == "hasMinimumStat":
+                # used to make sure the player meets the minimum stat requirement
+                if player.getStat(requirement[1]) < requirement[2]:
+                    meetsRequiements = False
+                
         return meetsRequiements
 
     def takeItem(self, item, amount, player):

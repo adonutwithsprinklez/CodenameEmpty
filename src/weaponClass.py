@@ -12,10 +12,18 @@ class Weapon(object):
 		self.t="w"
 		self.desc = random.choice(data["desc"])
 		self.damage = data["damage"]
+		if "requiredHands" in data.keys():
+			self.requiredHands = data["requiredHands"]
+		else:
+			self.requiredHands = 1
 		if "actionText" in data.keys():
 			self.actionText = data["actionText"]
+		else:
+			self.actionText = ""
 		if "worthMin" in data.keys():
 			self.worth = random.randint(data["worthMin"],data["worthMax"])
+		else:
+			self.worth = 0
 
 	def getAction(self):
 		return random.choice(self.actionText)
