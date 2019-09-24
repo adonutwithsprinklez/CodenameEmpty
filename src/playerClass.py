@@ -127,7 +127,8 @@ class Player(object):
             self.disp.closeDisplay()
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests", 0)
-            self.disp.display("3. View Player Details",0)
+            self.disp.display("3. View Player Details", 0)
+            self.disp.display("4. View Skill Levels", 0)
             self.disp.display("9. Quit Game")
             self.disp.display("0. Exit", 0)
             self.disp.closeDisplay()
@@ -143,6 +144,8 @@ class Player(object):
                 self.viewQuests(currentQuests, completedQuests)
             elif cmd == 3:
                 self.viewPlayerDetails()
+            elif cmd == 4:
+                self.viewPlayerLevels()
             elif cmd == 9:
                 self.confirmQuit()
             else:
@@ -155,13 +158,32 @@ class Player(object):
         while cmd != 0:
             self.disp.clearScreen()
             self.disp.displayHeader("Details")
-            self.disp.display("Player stats:")
+            self.disp.display("Player Stats:")
             self.disp.display(f'\tStrength     - {self.getStat("strength")}', 0)
             self.disp.display(f'\tVitality     - {self.getStat("vitality")}', 0)
             self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
             self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
+            self.disp.closeDisplay()
+            self.disp.display("0. Exit")
+            self.disp.closeDisplay()
+            try:
+                cmd = int(input())
+            except:
+                cmd = -1
+            if cmd == 0:
+                pass
+    
+    def viewPlayerLevels(self):
+        cmd = -1
+        while cmd != 0:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Skills")
+            self.disp.display("Player Skills:")
+
+            # TODO finish displaying all player skill levels
+            
             self.disp.closeDisplay()
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
@@ -276,7 +298,7 @@ class Player(object):
     def getStat(self, stat):
         baseStat = self.race.getStat(stat)
         bonusStat = self.stats[stat]
-        # TODO Finish support for perks
+        # TODO Finish support for perks and for equipped gear
         # for perk in self.getPerks():
         #     if stat in perk
         return baseStat + bonusStat
