@@ -376,7 +376,8 @@ class Game(object):
                             self.disp.displayHeader(areaEnemy.name)
                             damage = areaEnemy.weapon.damage
                             if self.player.armor:
-                                damage -= int(self.player.getArmorDefence())
+                                damage += "-{0}".format(self.player.getArmorDefence())
+                            damage = rollDice(damage)
                             if damage < 0:
                                 damage = 0
                             self.player.hp -= damage

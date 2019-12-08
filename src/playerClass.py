@@ -21,6 +21,7 @@ class Player(object):
         self.disp = None
         self.quit = False
         self.tags = []
+        self.skills = []
         self.stats = {
             "strength":0,
             "vitality":0,
