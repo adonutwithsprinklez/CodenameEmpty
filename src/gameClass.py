@@ -41,7 +41,7 @@ class Game(object):
 
         # TODO deprecate self.currentArea and replace with self.areaController
         self.currentArea = None
-        self.areaController = AreaCo
+        self.areaController = None
         self.starter = None
 
         self.logos = []

@@ -9,9 +9,10 @@ from itemGeneration import generateName
 
 # Hostility will range 1-10
 # Hostility affects how close to player strength enemys will be
-# 1-4 = below
-# 5-7 = equal
-# 8-10 = above
+# 1-3 = below
+# 4-6 = equal
+# 7-9 = above
+# 10  = Much higher
 # This not only will affect strength but also rewards, with higher hostility giving better rewards.
 
 class Area(object):
