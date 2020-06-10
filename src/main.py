@@ -54,15 +54,10 @@ if __name__ == "__main__":
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)
 		elif cmd == 3:
+			# Displays the data pack menu
 			openDataPacks(game, SETTINGS_FILE)
 		elif cmd == 0:
 			# Exit the game
 			appRunning = False
 		else:
 			pass #TODO finish incorrect command message
-
-# print game.currentArea.name
-# print game.currentArea.desc
-# print game.currentArea.enemy
-# print game.currentArea.event
-# print game.currentArea.npc

@@ -1,6 +1,6 @@
 {
     "VERSION": 0.1,
-    "DEBUG": true,
+    "DEBUG": false,
     "DELAY": 0.01,
     "EVENTDELAY": 3,
     "GAMESETTINGS": [

@@ -1,12 +1,19 @@
+
+# Official Python module imports
+import copy
 import random
 import time
 import os
 
-# TODO deprecare this areaClass import
+
+# Local module imports
+
+# TODO deprecate this areaClass import and fully replace it with the
+# areaControllerClass import
 from areaClass import Area
+
 from areaControllerClass import AreaController
 from armorClass import Armor
-import copy
 from dieClass import rollDice
 from displayClass import Screen
 from enemyClass import Enemy
@@ -144,6 +151,9 @@ class Game(object):
         self.loaded = True
 
     def loadStartingArea(self):
+        self.areaController = AreaController(self.areas, self.packs[self.starter]["startingArea"], (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+
+        # TODO deprecate this loading function
         self.currentArea = Area(self.areas[self.packs[self.starter][
                                 "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
         self.currentArea.load(self.weapons, self.armor, self.misc,
@@ -153,7 +163,7 @@ class Game(object):
 
     def loadPlayer(self):
         self.player = Player()
-        self.player.race = Race(self.races["drakt"])
+        self.player.race = Race(self.races["human"])
         self.player.disp = self.disp
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
@@ -379,7 +389,8 @@ class Game(object):
                             self.disp.displayHeader(areaEnemy.name)
                             damage = areaEnemy.weapon.damage
                             if self.player.armor:
-                                damage += "-{0}".format(self.player.getArmorDefence())
+                                damage += "-{0}".format(
+                                    self.player.getArmorDefence())
                             damage = rollDice(damage)
                             if damage < 0:
                                 damage = 0
