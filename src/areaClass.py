@@ -9,6 +9,7 @@ from itemGeneration import generateName
 
 # Hostility will range 1-10
 # Hostility affects how close to player strength enemys will be
+# 0   = No hostiles
 # 1-3 = below
 # 4-6 = equal
 # 7-9 = above
