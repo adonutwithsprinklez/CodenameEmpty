@@ -1,17 +1,23 @@
 {
+    "VERSION": 0.1,
     "DEBUG": true,
     "DELAY": 0.01,
     "EVENTDELAY": 2,
+    "DISPLAYSETTINGS": {
+        "WIDTH": 700,
+        "HEIGHT": 400,
+        "RESIZABLE": true
+    },
     "GAMESETTINGS": [
         [
             "DELAYENABLED",
             "Display Effects",
-            true
+            false
         ],
         [
             "EVENTDELAYENABLED",
             "Delay After Random Event",
-            true
+            false
         ],
         [
             "DEBUGDISPLAY",

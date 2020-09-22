@@ -1,11 +1,64 @@
 {
 	"name":[
-		"Wooded Area",
-		"Heavily Forested Area",
-		"Overgrown Area",
-		"Forrested Ruins",
-		"Heavily Wooded Area"
+		"The $nameAdjs $names's $forest",
+		"The $names's $forest",
+		"The $adjs $forest",
+		"$adjs $forest"
 	],
+	"names":{
+		"type":"choose",
+		"choices":[
+			"Elder",
+			"God",
+			"King",
+			"Queen",
+			"Dragon",
+			"Bear",
+			"Ruffian",
+			"Troublemaker",
+			"Huntsman"
+		]
+	},
+	"forest":{
+		"type":"choose",
+		"choices":[
+			"Forest",
+			"Woods",
+			"Thicket",
+			"Woodland",
+			"Timberland",
+			"Wilds",
+			"Grove"
+		]
+	},
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Red",
+			"Yellow",
+			"Green",
+			"Black",
+			"Dark",
+			"Sunny",
+			"Foggy",
+			"Dense",
+			"Royal",
+			"Broken",
+			"Old"
+		]
+	},
+	"nameAdjs":{
+		"type":"choose",
+		"choices":[
+			"Good",
+			"Holy",
+			"Evil",
+			"Cruel",
+			"Loving",
+			"Loved",
+			"Old"
+		]
+	},
 	"desc":[
 		"Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
 		"It is almost impossible to see past the trees.\nYou continue to push on.",
@@ -15,12 +68,16 @@
 	"aType":"Forest",
 	"hostilityMin":1,
 	"hostilityMax":5,
-	"eventChance":0,
+	"eventChance":10,
 	"events":[
+		["event_lostItem", "1d8"],
+		["event_flipACoin", "1d8"],
+		["event_forestAreaMisc", "2d8"]
 	],
 	"enemyChance":10,
 	"enemies":[
-		["enemy_wolf",10],
+		["enemy_rodentOfUnusualSize", 5],
+		["enemy_wolf",4],
 		["enemy_greatWolf",1]
 	],
 	"npcChance":0,
@@ -30,7 +87,7 @@
 	"minNewAreas":3,
 	"maxNewAreas":6,
 	"areas":[
-		["area_forest","2d5"],
+		["area_forest","2d5", ["required"]],
 		["area_strongHold","1d6"]
 	]
 }
