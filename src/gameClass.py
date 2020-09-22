@@ -12,10 +12,10 @@ import os
 # areaControllerClass import
 from areaClass import Area
 
+from ApplicationWindowClass import ApplicationWindow
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
-from displayClass import Screen
 from enemyClass import Enemy
 from itemGeneration import generateWeapon
 from jsonDecoder import loadJson
@@ -39,7 +39,7 @@ class Game(object):
         to empty so they can be initialized later.'''
         self.player = None
 
-        self.disp = Screen()
+        self.disp = ApplicationWindow()
 
         self.loaded = False
         self.settings = {}
@@ -66,12 +66,11 @@ class Game(object):
         DELAY = self.settings["DELAY"]
         EVENTDELAY = self.settings["EVENTDELAY"]
         DEBUG = self.settings["DEBUG"]
+        DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
 
         # Set up the display with a delay and whether or not to debug
-        self.disp.debugging = DEBUGDISPLAY
-        self.disp.delay = self.gameSettings["DELAYENABLED"]
-        self.disp.printdelay = DELAY
+        self.disp.initiate_window(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
 
         self.loadDataPackSettings()
         packs = self.dataPackSettings["packsToLoad"]
@@ -109,8 +108,7 @@ class Game(object):
                         "%s%s/areas/%s.json" % (folder, pack, a))
                     self.disp.dprint("Loaded asset %s" % a)
                 for r in self.packs[pack]["races"]:
-                    raceData = loadJson("%s%s/races/%s.json" %
-                                        (folder, pack, r))
+                    raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
                     self.races[raceData["id"]] = raceData
                     self.disp.dprint("Loaded asset %s" % r)
                 for n in self.packs[pack]["npcs"]:
@@ -202,6 +200,9 @@ class Game(object):
         for setting in self.settings["DATAPACKSETTINGS"].keys():
             self.dataPackSettings[setting] = self.settings["DATAPACKSETTINGS"][setting]
 
+    def close_display(self):
+        self.disp.close_window()
+
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
         self.disp.clearScreen()
@@ -211,9 +212,10 @@ class Game(object):
         for desc in self.currentArea.desc.split("\n"):
             self.disp.display(desc)
         print("|{}|".format(" " * 78))
-        print("+{}+".format("-" * 78))
+        self.disp.closeDisplay()
         time.sleep(DELAY)
-        input("\nEnter to continue")
+        # input("\nEnter to continue")
+        self.disp.get_input()
         self.workOnBacklog()
 
     def reactCurrentArea(self):
@@ -243,7 +245,8 @@ class Game(object):
                     self.disp.closeDisplay()
 
                     try:
-                        cmd = int(input())
+                        #cmd = int(input())
+                        cmd = self.disp.get_input(True)
                     except:
                         cmd = -1
                     if cmd > 0 and cmd <= x:
@@ -270,7 +273,8 @@ class Game(object):
                     self.currentArea.event.finish()
                     if self.gameSettings["EVENTDELAYENABLED"]:
                         time.sleep(EVENTDELAY)
-                    input("\nEnter to continue")
+                    #input("\nEnter to continue")
+                    self.disp.get_input()
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
@@ -283,7 +287,8 @@ class Game(object):
         self.disp.displayHeader(self.currentArea.event.name)
         self.disp.display(message)
         self.disp.closeDisplay()
-        input("\nEnter to continue")
+        # input("\nEnter to continue")
+        self.disp.get_input()
 
     def fightEnemies(self):
         ##### Fighting Code #####
@@ -330,7 +335,8 @@ class Game(object):
                         self.disp.display("0. Player Menu")
                         self.disp.closeDisplay()
                         try:
-                            cmd = int(input())
+                            # cmd = int(input())
+                            cmd = self.disp.get_input(True)
                         except ValueError:
                             cmd = -1
                         if cmd == 0:
@@ -372,7 +378,8 @@ class Game(object):
                             areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
                         time.sleep(DELAY)
-                        input("\nEnter to continue.")
+                        # input("\nEnter to continue.")
+                        self.disp.get_input()
                     elif cmd == 2:
                         self.disp.clearScreen()
                         escape = False
@@ -399,7 +406,8 @@ class Game(object):
                                 areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
                         time.sleep(DELAY)
-                        input("\nEnter to continue")
+                        # input("\nEnter to continue")
+                        self.disp.get_input()
                         if escape:
                             break
 
@@ -423,8 +431,9 @@ class Game(object):
                                           (areaEnemy.itemDrop[0].name))
                         self.player.inv.append(areaEnemy.itemDrop[0])
                     self.disp.closeDisplay()
-                    time.sleep(DELAY)
-                    input("\nEnter to continue")
+                    # time.sleep(DELAY)
+                    # input("\nEnter to continue")
+                    self.disp.get_input()
 
                 # UPDATE QUEST INFO
                 self.updateQuestInfo()
@@ -449,15 +458,17 @@ class Game(object):
             self.disp.display("0. Player Menu")
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except ValueError:
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")
                 self.disp.display("That was not a valid response.")
                 self.disp.closeDisplay()
                 cmd = -1
-                time.sleep(DELAY)
-                input("\nEnter to continue")
+                # time.sleep(DELAY)
+                # input("\nEnter to continue")
+                self.disp.get_input()
 
             if cmd == 0:
                 self.player.playerMenu(
@@ -532,7 +543,8 @@ class Game(object):
                 self.disp.closeDisplay()
                 if self.gameSettings["EVENTDELAYENABLED"]:
                     time.sleep(1)
-                input("\nEnter to continue")
+                # input("\nEnter to continue")
+                self.disp.get_input()
                 self.disp.dprint("Processed say condition.")
             elif action[0] == "giveXP":
                 self.player.xp += action[1]
@@ -620,7 +632,8 @@ class Game(object):
             toggleableOptions = self.displayOptions(
                 settingsNumOfPages, settingsPage)
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except ValueError:
                 cmd = -1
 
@@ -673,7 +686,8 @@ class Game(object):
         while dataPacksWindow:
             toggleablePacks = self.displayPacks(numPages, packPage)
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except ValueError:
                 cmd = -1
 

@@ -46,7 +46,8 @@ class Player(object):
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except ValueError:
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")
@@ -95,7 +96,8 @@ class Player(object):
 
         self.disp.closeDisplay()
         try:
-            equip = int(input())
+            # equip = int(input())
+            equip = self.disp.get_input(True)
         except:
             equip = -1
         self.disp.clearScreen()
@@ -111,7 +113,8 @@ class Player(object):
             self.disp.displayHeader("Item dropped")
             self.disp.display("You drop %s." % (self.inv.pop(cmd-1).name))
             self.disp.closeDisplay()
-            input("\nEnter to continue")
+            # input("\nEnter to continue")
+            self.disp.get_input()
             self.disp.clearScreen()
 
     def playerMenu(self, currentQuests, completedQuests):
@@ -134,7 +137,8 @@ class Player(object):
             self.disp.display("0. Exit", 0)
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except:
                 cmd = -1
             if cmd == 0:
@@ -170,7 +174,8 @@ class Player(object):
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except:
                 cmd = -1
             if cmd == 0:
@@ -189,7 +194,8 @@ class Player(object):
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except:
                 cmd = -1
             if cmd == 0:
@@ -216,7 +222,8 @@ class Player(object):
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except:
                 cmd = -1
 
@@ -230,7 +237,8 @@ class Player(object):
             self.disp.display("1. No, Don't Quit", 0)
             self.disp.closeDisplay()
             try:
-                cmd = int(input())
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
             except:
                 cmd = -1
             if cmd == 0:
