@@ -52,8 +52,6 @@ if __name__ == "__main__":
 			print(cmd)
 		except ValueError:
 			cmd = -1
-		except:
-			raise CustomError("Oops.")
 		
 		if cmd == 1:
 			# Actually start the game
