@@ -57,6 +57,7 @@ class ApplicationWindow(tk.Frame):
         lines = self.screen.get_current_lines()
         for line in lines:
             self.output_box.insert(END, "{}\n".format(line))
+        self.output_box.see("end")
         self.output_box.configure(state=DISABLED)
     
     def dprint(self, msg):
