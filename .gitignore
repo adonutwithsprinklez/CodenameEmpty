@@ -5,5 +5,3 @@
 *.pyc
 
 build/
-*.spec
-GameLauncher.spec

@@ -5,7 +5,7 @@
     "EVENTDELAY": 2,
     "DISPLAYSETTINGS": {
         "WIDTH": 700,
-        "HEIGHT": 400,
+        "HEIGHT": 500,
         "RESIZABLE": true
     },
     "GAMESETTINGS": [

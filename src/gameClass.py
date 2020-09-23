@@ -160,6 +160,7 @@ class Game(object):
         self.currentArea.enemy = []
 
     def loadPlayer(self):
+        # TODO: Add player creation menu here
         self.player = Player()
         self.player.race = Race(self.races["human"])
         self.player.disp = self.disp
