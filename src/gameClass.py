@@ -54,6 +54,8 @@ class Game(object):
         self.logos = []
         self.descs = []
 
+        self.displayIsInitialized = False
+
     def initialLoad(self, folder="res/", settingsdata={}):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
@@ -70,7 +72,9 @@ class Game(object):
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
 
         # Set up the display with a delay and whether or not to debug
-        self.disp.initiate_window(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+        if not self.displayIsInitialized:
+            self.disp.initiate_window(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+            self.displayIsInitialized = True
 
         self.loadDataPackSettings()
         packs = self.dataPackSettings["packsToLoad"]
@@ -202,7 +206,9 @@ class Game(object):
             self.dataPackSettings[setting] = self.settings["DATAPACKSETTINGS"][setting]
 
     def close_display(self):
-        self.disp.close_window()
+        if self.displayIsInitialized:
+            self.disp.close_window()
+            self.displayIsInitialized = False
 
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
@@ -725,8 +731,10 @@ class Game(object):
         packName = firstOption["name"]
         packDesc = firstOption["desc"]
         packAuth = firstOption["author"]
+        packType = firstOption["packType"].upper()
 
         self.disp.display(f'1. {packName:<50} {enabled:>18}')
+        self.disp.display(f'\tPack Type: {packType}', 0)
         self.disp.display(f'\t{packDesc}', 0)
         self.disp.display(f'\tBy: {packAuth}', 0)
 
@@ -757,3 +765,7 @@ class Game(object):
         self.disp.closeDisplay()
 
         return listOfOptions
+
+    # GAME SHUTDOWN
+    def shutdown_game(self):
+        self.close_display()

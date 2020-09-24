@@ -20,15 +20,11 @@ def startGame(game):
 def openSettings(game, settingsFile):
 	game.openOptionsWindow()
 	saveJson(settingsFile, game.settings)
-	# TODO: Rework this load function to allow for changes without restarting the window
-	game.close_display()
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
 def openDataPacks(game, settingsFile):
 	game.openDataPacks()
 	saveJson(settingsFile, game.settings)
-	# TODO: Rework this load function to allow for changes without restarting the window
-	game.close_display()
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
 
@@ -52,6 +48,9 @@ if __name__ == "__main__":
 			print(cmd)
 		except ValueError:
 			cmd = -1
+		except:
+			cmd = -1
+			appRunning = False
 		
 		if cmd == 1:
 			# Actually start the game
@@ -67,3 +66,4 @@ if __name__ == "__main__":
 			appRunning = False
 		else:
 			pass #TODO finish incorrect command message
+	game.shutdown_game()
