@@ -73,7 +73,7 @@ class Game(object):
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
-            self.disp.initiate_window(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+            self.disp.initiate_window(f'Project: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
             self.displayIsInitialized = True
 
         self.loadDataPackSettings()
@@ -441,6 +441,7 @@ class Game(object):
                     # time.sleep(DELAY)
                     # input("\nEnter to continue")
                     self.disp.get_input()
+                    self.player.giveXP(areaEnemy.xp)
 
                 # UPDATE QUEST INFO
                 self.updateQuestInfo()
@@ -622,6 +623,8 @@ class Game(object):
         self.disp.display(firstLine)
         for line in logo[1:]:
             self.disp.display(line, 0)
+        
+        self.disp.display(f'Version: {self.settings["VERSION"]}')
 
         self.disp.display(random.choice(self.descs))
         self.disp.display("1. New Game")

@@ -2,6 +2,11 @@ from gameClass import Game
 from jsonDecoder import loadJson, saveJson
 
 
+GAME_VERSION = 0.1
+MIN_DATA_PACK_VERSION = 0.1
+MIN_SAVE_VERSION = 0.1
+
+
 # Starts the gameloop
 def startGame(game):
 	game.loadPlayer()
