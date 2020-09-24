@@ -254,6 +254,13 @@ class Player(object):
     def setRace(self, race):
         # TODO check for equipped gear to make sure the player can still wield it
         self.race = race
+    
+    def giveXP(self, xp):
+        ''' Gives the player the passed amount of experience. '''
+        self.xp += xp
+        if self.xp >= self.getXpNeededForLevelUp():
+            self.xp -= self.getXpNeededForLevelUp()
+            self.level += 1
 
     # Class Getters
     def getEquipmentString(self):
