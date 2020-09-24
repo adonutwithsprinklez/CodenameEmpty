@@ -3,6 +3,8 @@
 	"author":"Sprinklez Media",
 	"desc":"This is the official game data and assets for the game.",
 	"packType":"standalone",
+	"version":0.1,
+	"minSaveVersion":0.1,
 	"gameLogo":[
 		"            _____  _____  _____     __  _____  _____  _____",
 		"           |  _  || __  ||     | __|  ||   __||     ||_   _|",

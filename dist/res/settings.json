@@ -1,5 +1,7 @@
 {
     "VERSION": 0.1,
+    "MIN_DATA_PACK_VER": 0.1,
+    "MIN_SAVE_VER": 0.1,
     "DEBUG": true,
     "DELAY": 0.01,
     "EVENTDELAY": 2,

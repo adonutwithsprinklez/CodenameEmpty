@@ -1,5 +1,6 @@
 
 import time
+from tkinter import font
 import tkinter as tk
 from tkinter import *
 
@@ -19,7 +20,7 @@ class ApplicationWindow(tk.Frame):
         self._enter_pressed = False
         self.window_is_open = False
     
-    def initiate_window(self, displaySettings = {}, pdelay=0, delay=True, debugdisplay=False):
+    def initiate_window(self, windowTitle, displaySettings = {}, pdelay=0, delay=True, debugdisplay=False):
         # Reset local settings
         self.settings = displaySettings
 
@@ -31,9 +32,11 @@ class ApplicationWindow(tk.Frame):
         # Window initiation
         root = tk.Tk()
         super().__init__(root)
+        self.winfo_toplevel().title(windowTitle)
         self.master = root
         self.master.geometry("{}x{}".format(self.settings["WIDTH"],self.settings["HEIGHT"]))
         self.master.protocol('WM_DELETE_WINDOW', self._close_button_event)
+        self.master.bind('<Configure>', self._window_rezise_event)
         self.create_widgets()
         self.pack()
         self.window_is_open = True
@@ -43,6 +46,7 @@ class ApplicationWindow(tk.Frame):
             self.window_is_open = False
             self.master.destroy()
     
+
     # Game engine accessible functions:
     # (Basically acts as a way to keep the legacy Screen object working)
     def clearScreen(self):
@@ -68,10 +72,13 @@ class ApplicationWindow(tk.Frame):
     def dprint(self, msg):
         self.screen.dprint(msg)
 
-    # Local functions
 
+    # Local functions
     def create_widgets(self):
+        self.font = font.Font(family="courier", size=10)
+
         self.output_box = tk.Text(self.master, relief=FLAT)
+        self.output_box.configure(font=self.font)
         self.output_box.grid(sticky = N + E + S + W)
 
         self.scroll_bar = tk.Scrollbar(self.output_box, command=self.output_box.yview)
@@ -105,6 +112,11 @@ class ApplicationWindow(tk.Frame):
             self._enter_pressed = False
             return True
         return False
+    
+    def _window_rezise_event(self, event):
+        fontSize = int(self.master.winfo_width() / 70)
+        self.font = font.Font(family="courier", size=fontSize)
+        self.output_box.configure(font=self.font)
     
     def get_input(self, convert_to_int = False, clearinput=True):
         while not self._get_enter_pressed():
