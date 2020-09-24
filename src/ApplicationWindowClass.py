@@ -17,6 +17,7 @@ class ApplicationWindow(tk.Frame):
 
         # Runtime variables
         self._enter_pressed = False
+        self.window_is_open = False
     
     def initiate_window(self, displaySettings = {}, pdelay=0, delay=True, debugdisplay=False):
         # Reset local settings
@@ -32,11 +33,15 @@ class ApplicationWindow(tk.Frame):
         super().__init__(root)
         self.master = root
         self.master.geometry("{}x{}".format(self.settings["WIDTH"],self.settings["HEIGHT"]))
+        self.master.protocol('WM_DELETE_WINDOW', self._close_button_event)
         self.create_widgets()
         self.pack()
+        self.window_is_open = True
     
     def close_window(self):
-        self.master.destroy()
+        if self.window_is_open:
+            self.window_is_open = False
+            self.master.destroy()
     
     # Game engine accessible functions:
     # (Basically acts as a way to keep the legacy Screen object working)
@@ -90,6 +95,10 @@ class ApplicationWindow(tk.Frame):
     
     def _press_enter_event(self, event):
         self._enter_pressed = True
+    
+    def _close_button_event(self):
+        self.window_is_open = False
+        self.master.destroy()
 
     def _get_enter_pressed(self):
         if self._enter_pressed:
