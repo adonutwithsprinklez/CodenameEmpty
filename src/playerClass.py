@@ -97,7 +97,7 @@ class Player(object):
         self.disp.closeDisplay()
         try:
             # equip = int(input())
-            equip = self.disp.get_input(True)
+            equip = self.disp.get_input(True, True, True)
         except:
             equip = -1
         self.disp.clearScreen()
@@ -114,7 +114,7 @@ class Player(object):
             self.disp.display("You drop %s." % (self.inv.pop(cmd-1).name))
             self.disp.closeDisplay()
             # input("\nEnter to continue")
-            self.disp.get_input()
+            self.disp.wait_for_enter()
             self.disp.clearScreen()
 
     def playerMenu(self, currentQuests, completedQuests):

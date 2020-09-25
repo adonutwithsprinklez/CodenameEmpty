@@ -9,9 +9,9 @@
     },
     "baseSkills":[],
     "standing":{
-        "elf":-3,
+        "elf":-4,
         "human":-5,
-        "orc":5,
+        "orc":6,
         "dwarf":3
     },
     "playable":true,
