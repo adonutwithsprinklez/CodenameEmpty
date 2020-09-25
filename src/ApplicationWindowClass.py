@@ -41,6 +41,15 @@ class ApplicationWindow(tk.Frame):
         self.pack()
         self.window_is_open = True
     
+    def set_settings(self, displaySettings, pdelay=0, delay=True, debugdisplay=False):
+        # Reset local settings
+        self.settings = displaySettings
+
+        # Set the virtual screen settings:
+        self.screen.debugging = debugdisplay
+        self.screen.delay = delay
+        self.screen.printdelay = pdelay
+    
     def close_window(self):
         if self.window_is_open:
             self.window_is_open = False
