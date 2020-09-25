@@ -75,6 +75,8 @@ class Game(object):
         if not self.displayIsInitialized:
             self.disp.initiate_window(f'Project: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
             self.displayIsInitialized = True
+        else:
+            self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
 
         self.loadDataPackSettings()
         packs = self.dataPackSettings["packsToLoad"]

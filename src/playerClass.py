@@ -338,4 +338,6 @@ class Player(object):
     
     def getXpNeededForLevelUp(self):
         # TODO improve required xp formula
-        return (10 + self.level) ** 2
+        if self.level < 10:
+            return 100 * self.level
+        return ( self.level ** 2 ) * 10
