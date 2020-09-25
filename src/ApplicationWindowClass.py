@@ -127,15 +127,24 @@ class ApplicationWindow(tk.Frame):
         self.font = font.Font(family="courier", size=fontSize)
         self.output_box.configure(font=self.font)
     
-    def get_input(self, convert_to_int = False, clearinput=True):
-        while not self._get_enter_pressed():
-            self.update()
-        input_string = self.input_line.get()
-        if clearinput:
-            self.input_line.delete(0,END)
-        if convert_to_int:
-            try:
-                return int(input_string)
-            except:
-                return -1
+    def get_input(self, convert_to_int = False, clearinput=True, acceptNothing = False):
+        input_string = None
+        while input_string == None:
+            while not self._get_enter_pressed():
+                self.update()
+            input_string = self.input_line.get()
+            if not acceptNothing and input_string == "":
+                input_string = None
+            else:
+                if clearinput:
+                    self.input_line.delete(0,END)
+                if convert_to_int:
+                    try:
+                        return int(input_string)
+                    except:
+                        return -1
         return input_string
+    
+    def wait_for_enter(self):
+        while not self._get_enter_pressed():
+                self.update()

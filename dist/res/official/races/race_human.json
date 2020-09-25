@@ -9,10 +9,10 @@
     },
     "baseSkills":[],
     "standing":{
-        "elf":8,
-        "drakt":-6,
-        "orc":-4,
-        "dwarf":2
+        "elf":6,
+        "drakt":-4,
+        "orc":-5,
+        "dwarf":3
     },
     "playable":true,
     "limbs":[

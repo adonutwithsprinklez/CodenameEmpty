@@ -224,7 +224,7 @@ class Game(object):
         self.disp.closeDisplay()
         time.sleep(DELAY)
         # input("\nEnter to continue")
-        self.disp.get_input()
+        self.disp.wait_for_enter()
         self.workOnBacklog()
 
     def reactCurrentArea(self):
@@ -283,7 +283,7 @@ class Game(object):
                     if self.gameSettings["EVENTDELAYENABLED"]:
                         time.sleep(EVENTDELAY)
                     #input("\nEnter to continue")
-                    self.disp.get_input()
+                    self.disp.wait_for_enter()
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
@@ -297,7 +297,7 @@ class Game(object):
         self.disp.display(message)
         self.disp.closeDisplay()
         # input("\nEnter to continue")
-        self.disp.get_input()
+        self.disp.wait_for_enter()
 
     def fightEnemies(self):
         ##### Fighting Code #####
@@ -318,8 +318,8 @@ class Game(object):
                         areaEnemy.getRawWeaponDamage()))
 
                     cmd = -1
+                    self.disp.clearScreen()
                     while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
-                        self.disp.clearScreen()
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
@@ -346,7 +346,9 @@ class Game(object):
                         try:
                             # cmd = int(input())
                             cmd = self.disp.get_input(True)
+                            self.disp.clearScreen()
                         except ValueError:
+                            self.disp.clearScreen()
                             cmd = -1
                         if cmd == 0:
                             self.player.playerMenu(
@@ -357,8 +359,7 @@ class Game(object):
                         elif cmd in (9, 90) and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.getMaxHP()
-                        elif cmd not in (1, 2, 9, 0):
-                            self.disp.clearScreen()
+                        elif cmd not in (1, 2, 0):
                             self.disp.displayHeader("Error")
                             self.disp.display("That was not a valid response.",
                                               1, 1)
@@ -388,7 +389,7 @@ class Game(object):
                         self.disp.closeDisplay()
                         time.sleep(DELAY)
                         # input("\nEnter to continue.")
-                        self.disp.get_input()
+                        self.disp.wait_for_enter()
                     elif cmd == 2:
                         self.disp.clearScreen()
                         escape = False
@@ -416,7 +417,7 @@ class Game(object):
                         self.disp.closeDisplay()
                         time.sleep(DELAY)
                         # input("\nEnter to continue")
-                        self.disp.get_input()
+                        self.disp.wait_for_enter()
                         if escape:
                             break
 
@@ -442,7 +443,7 @@ class Game(object):
                     self.disp.closeDisplay()
                     # time.sleep(DELAY)
                     # input("\nEnter to continue")
-                    self.disp.get_input()
+                    self.disp.wait_for_enter()
                     self.player.giveXP(areaEnemy.xp)
 
                 # UPDATE QUEST INFO
@@ -478,7 +479,7 @@ class Game(object):
                 cmd = -1
                 # time.sleep(DELAY)
                 # input("\nEnter to continue")
-                self.disp.get_input()
+                self.disp.wait_for_enter()
 
             if cmd == 0:
                 self.player.playerMenu(
@@ -554,7 +555,7 @@ class Game(object):
                 if self.gameSettings["EVENTDELAYENABLED"]:
                     time.sleep(1)
                 # input("\nEnter to continue")
-                self.disp.get_input()
+                self.disp.wait_for_enter()
                 self.disp.dprint("Processed say condition.")
             elif action[0] == "giveXP":
                 self.player.xp += action[1]
