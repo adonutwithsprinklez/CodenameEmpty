@@ -9,12 +9,13 @@
     },
     "baseSkills":[],
     "standing":{
-        "elf":6,
-        "drakt":-4,
-        "orc":-5,
-        "dwarf":3
+        "elf":8,
+        "drakt":-6,
+        "orc":-4,
+        "dwarf":2
     },
     "playable":true,
+    "playerCreationDescription":"Humans are the most abundent race throughout the land. Their jack of all trades natural ability has allowed for them to spread far and wide. They are the most versatile race and have been seen fighting with many different techniques.",
     "limbs":[
         {
             "type":"head",

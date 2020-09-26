@@ -6,7 +6,6 @@
 	"damage":"1d4+2",
 	"worthMin":40,
 	"worthMax":60,
-	"requiredHands":2,
 	"desc":[
 		"The iron gleams when light hits it.",
 		"The blade is scratched on the sides."

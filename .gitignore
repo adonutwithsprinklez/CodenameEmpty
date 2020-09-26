@@ -1,7 +1,8 @@
 
 .vscode/
-.VSCodeCounter/
 
 *.pyc
 
 build/
+*.spec
+GameLauncher.spec

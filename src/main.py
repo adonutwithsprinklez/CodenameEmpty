@@ -2,15 +2,11 @@ from gameClass import Game
 from jsonDecoder import loadJson, saveJson
 
 
-GAME_VERSION = 0.1
-MIN_DATA_PACK_VERSION = 0.1
-MIN_SAVE_VERSION = 0.1
-
-
 # Starts the gameloop
 def startGame(game):
+	run = True
 	game.loadPlayer()
-	while True:
+	while game.player.hp > 0:
 		game.displayCurrentArea()
 		game.reactCurrentArea()
 		if game.player.quit:
@@ -19,8 +15,7 @@ def startGame(game):
 		if game.player.quit:
 			return None
 		if game.player.hp <= 0:
-			# TODO have actual end of game code due to player death
-			return False
+			run=False
 
 def openSettings(game, settingsFile):
 	game.openOptionsWindow()
@@ -45,17 +40,12 @@ if __name__ == "__main__":
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
 	appRunning = True
-	while appRunning and game.disp.window_is_open:
+	while appRunning:
 		game.displayMainMenu()
 		try:
-			# cmd = int(input())
-			cmd = game.disp.get_input(True)
-			print(cmd)
+			cmd = int(input())
 		except ValueError:
 			cmd = -1
-		except:
-			cmd = -1
-			appRunning = False
 		
 		if cmd == 1:
 			# Actually start the game
@@ -64,11 +54,15 @@ if __name__ == "__main__":
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)
 		elif cmd == 3:
-			# Displays the data pack menu
 			openDataPacks(game, SETTINGS_FILE)
 		elif cmd == 0:
 			# Exit the game
 			appRunning = False
 		else:
 			pass #TODO finish incorrect command message
-	game.shutdown_game()
+
+# print game.currentArea.name
+# print game.currentArea.desc
+# print game.currentArea.enemy
+# print game.currentArea.event
+# print game.currentArea.npc
