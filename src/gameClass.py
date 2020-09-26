@@ -346,6 +346,9 @@ class Game(object):
                         try:
                             # cmd = int(input())
                             cmd = self.disp.get_input(True)
+                            if not self.disp.window_is_open:
+                                self.player.quit = True
+                                return None
                             self.disp.clearScreen()
                         except ValueError:
                             self.disp.clearScreen()
@@ -471,6 +474,10 @@ class Game(object):
             try:
                 # cmd = int(input())
                 cmd = self.disp.get_input(True)
+                # Make sure the GUI window is still open. Exit if it is not
+                if not self.disp.window_is_open:
+                    self.player.quit = True
+                    return None
             except ValueError:
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")

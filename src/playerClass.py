@@ -29,6 +29,50 @@ class Player(object):
             "intelligence":0
         }
 
+    def playerMenu(self, currentQuests, completedQuests):
+        cmd = -1
+        while cmd != 0 and not self.quit:
+            self.disp.clearScreen()
+            self.disp.displayHeader("{} Info ( {} )".format(self.name, self.race.name))
+            self.disp.display("Quick Stats:")
+            for stat in self.getUserInfo():
+                self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
+            self.disp.display("Equipped Gear:", 1, 0)
+            self.disp.display("\t{}".format(
+                self.getEquipmentString()), 0)
+            self.disp.closeDisplay()
+            self.disp.display("1. View Inventory")
+            self.disp.display("2. View Quests", 0)
+            self.disp.display("3. View Player Details", 0)
+            self.disp.display("4. View Skill Levels", 0)
+            self.disp.display("9. Quit Game")
+            self.disp.display("0. Exit", 0)
+            self.disp.closeDisplay()
+            try:
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
+            except:
+                cmd = -1
+            if cmd == 0:
+                pass
+            elif cmd == 1:
+                self.viewInventory()
+            elif cmd == 2:
+                self.viewQuests(currentQuests, completedQuests)
+            elif cmd == 3:
+                self.viewPlayerDetails()
+            elif cmd == 4:
+                self.viewPlayerLevels()
+            elif cmd == 9:
+                self.confirmQuit()
+            else:
+                if not self.disp.window_is_open:
+                    self.quit = True
+                    return None
+                self.disp.clearScreen()
+                self.disp.displayHeader("Error")
+                self.disp.display("That was not a valid response", 1, 1)
+
     def viewInventory(self):
         cmd = -1
         while cmd != 0:
@@ -49,6 +93,7 @@ class Player(object):
                 # cmd = int(input())
                 cmd = self.disp.get_input(True)
             except ValueError:
+                # TODO: Clean this up as it should (emphasis on should) no longer be needed
                 self.disp.clearScreen()
                 self.disp.displayHeader("Error")
                 self.disp.display(
@@ -56,6 +101,9 @@ class Player(object):
                 self.disp.closeDisplay()
                 input()
                 cmd = -1
+            if not self.disp.window_is_open:
+                self.quit = True
+                return None
             self.disp.clearScreen()
             if 0 < cmd <= len(self.inv):
                 self.attemptEquip(cmd)
@@ -116,47 +164,6 @@ class Player(object):
             # input("\nEnter to continue")
             self.disp.wait_for_enter()
             self.disp.clearScreen()
-
-    def playerMenu(self, currentQuests, completedQuests):
-        cmd = -1
-        while cmd != 0 and not self.quit:
-            self.disp.clearScreen()
-            self.disp.displayHeader("{} Info ( {} )".format(self.name, self.race.name))
-            self.disp.display("Quick Stats:")
-            for stat in self.getUserInfo():
-                self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
-            self.disp.display("Equipped Gear:", 1, 0)
-            self.disp.display("\t{}".format(
-                self.getEquipmentString()), 0)
-            self.disp.closeDisplay()
-            self.disp.display("1. View Inventory")
-            self.disp.display("2. View Quests", 0)
-            self.disp.display("3. View Player Details", 0)
-            self.disp.display("4. View Skill Levels", 0)
-            self.disp.display("9. Quit Game")
-            self.disp.display("0. Exit", 0)
-            self.disp.closeDisplay()
-            try:
-                # cmd = int(input())
-                cmd = self.disp.get_input(True)
-            except:
-                cmd = -1
-            if cmd == 0:
-                pass
-            elif cmd == 1:
-                self.viewInventory()
-            elif cmd == 2:
-                self.viewQuests(currentQuests, completedQuests)
-            elif cmd == 3:
-                self.viewPlayerDetails()
-            elif cmd == 4:
-                self.viewPlayerLevels()
-            elif cmd == 9:
-                self.confirmQuit()
-            else:
-                self.disp.clearScreen()
-                self.disp.displayHeader("Error")
-                self.disp.display("That was not a valid response", 1, 1)
     
     def viewPlayerDetails(self):
         cmd = -1
@@ -180,6 +187,9 @@ class Player(object):
                 cmd = -1
             if cmd == 0:
                 pass
+            elif not self.disp.window_is_open:
+                self.quit = True
+                return None
     
     def viewPlayerLevels(self):
         cmd = -1
@@ -200,6 +210,9 @@ class Player(object):
                 cmd = -1
             if cmd == 0:
                 pass
+            elif not self.disp.window_is_open:
+                self.quit = True
+                return None
 
     def viewQuests(self, currentQuests, completedQuests):
         cmd = -1
@@ -226,6 +239,9 @@ class Player(object):
                 cmd = self.disp.get_input(True)
             except:
                 cmd = -1
+            if not self.disp.window_is_open:
+                self.quit = True
+                return None
 
     def confirmQuit(self):
         window = True
@@ -247,6 +263,9 @@ class Player(object):
             elif cmd == 1:
                 self.quit = False
                 window = False
+            elif not self.disp.window_is_open:
+                self.quit = True
+                return None
             else:
                 # TODO Incorrect input notification
                 pass
