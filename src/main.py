@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
 	appRunning = True
-	while appRunning:
+	while appRunning and game.disp.window_is_open:
 		game.displayMainMenu()
 		try:
 			# cmd = int(input())

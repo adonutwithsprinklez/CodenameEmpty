@@ -70,13 +70,14 @@ class ApplicationWindow(tk.Frame):
     def closeDisplay(self):
         ''' Causes a window display update '''
         self.screen.closeDisplay()
-        self.output_box.configure(state=NORMAL)
-        self.output_box.delete('1.0', END)
-        lines = self.screen.get_current_lines()
-        for line in lines:
-            self.output_box.insert(END, "{}\n".format(line))
-        self.output_box.see("end")
-        self.output_box.configure(state=DISABLED)
+        if self.window_is_open:
+            self.output_box.configure(state=NORMAL)
+            self.output_box.delete('1.0', END)
+            lines = self.screen.get_current_lines()
+            for line in lines:
+                self.output_box.insert(END, "{}\n".format(line))
+            self.output_box.see("end")
+            self.output_box.configure(state=DISABLED)
     
     def dprint(self, msg):
         self.screen.dprint(msg)
@@ -130,8 +131,10 @@ class ApplicationWindow(tk.Frame):
     def get_input(self, convert_to_int = False, clearinput=True, acceptNothing = False):
         input_string = None
         while input_string == None:
-            while not self._get_enter_pressed():
+            while not self._get_enter_pressed() and self.window_is_open:
                 self.update()
+            if not self.window_is_open:
+                return -1
             input_string = self.input_line.get()
             if not acceptNothing and input_string == "":
                 input_string = None
@@ -146,5 +149,7 @@ class ApplicationWindow(tk.Frame):
         return input_string
     
     def wait_for_enter(self):
-        while not self._get_enter_pressed():
-                self.update()
+        while not self._get_enter_pressed() and self.window_is_open:
+            self.update()
+        if not self.window_is_open:
+            return -1
