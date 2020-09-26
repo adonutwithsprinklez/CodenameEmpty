@@ -2,6 +2,29 @@
 	"name":"Official Data Pack",
 	"author":"Sprinklez Media",
 	"desc":"This is the official game data and assets for the game.",
+	"packType":"standalone",
+	"version":0.1,
+	"minSaveVersion":0.1,
+	"gameLogo":[
+		"            _____  _____  _____     __  _____  _____  _____",
+		"           |  _  || __  ||     | __|  ||   __||     ||_   _|",
+		"           |   __||    -||  |  ||  |  ||   __||   --|  | |",
+		"           |__|   |__|__||_____||_____||_____||_____|  |_|",
+		"                   _____  _____  _____  _____  __ __",
+		"                  |   __||     ||  _  ||_   _||  |  |",
+		"                  |   __|| | | ||   __|  | |  |_   _|",
+		"                  |_____||_|_|_||__|     |_|    |_|"
+	],
+	"gameDesc":[
+		"Welcome to the void",
+		"REALLY early access",
+		"No, it's not complete",
+		"Estimated Release: Eventually",
+		"Made by A Donut with Sprinklez",
+		"Coming when it's done",
+		"There aren't very many of these",
+		"Growing all the time!"
+	],
 	"weapons":[
 		"weapon_ironSword",
 		"weapon_wolfClaws",
@@ -20,6 +43,7 @@
 		"material_wolfPelt",
 		"material_stick",
 		"material_greatWolfPelt",
+		"misc_pieceOfMetal",
 		"consumable_apple"
 	],
 	"areas":[
@@ -44,6 +68,7 @@
 		"npc_defNPC"
 	],
 	"enemies":[
+		"enemy_rodentOfUnusualSize",
 		"enemy_wolf",
 		"enemy_greatWolf",
 		"enemy_orc",
@@ -54,10 +79,12 @@
 		"modifiersList"
 	],
 	"quests":[
-		"quest_robbed",
-		"quest_multipleRequirementTest"
+		"quest_robbed"
 	],
 	"events":[
+		"event_lostItem",
+		"event_flipACoin",
+		"event_forestAreaMisc"
 	],
 	"startingArea":"area_forest"
 }

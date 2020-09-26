@@ -1,0 +1,70 @@
+{
+    "id":"UnifinishedEvent",
+    "name":[
+        "An Unfinished Event",
+        "A Brand New Event",
+        "An Event Test"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You stumble across a brand new event. It appears to still be in development.",
+            "A portion of an unfinished event is sticking out of the ground.",
+            "It's strange. There is an event here, but it does not appear to have been finished"
+        ],
+        "actions":[
+            {
+                "action":"Finish it",
+                "eventDo":[
+                    ["say","You begin working on finishing the event."],
+                    ["goto", "#finishIt"]
+                ]
+            },
+            {
+                "action":"Ignore it",
+                "eventDo":[
+                    ["say","You walk past the unfinished event. Maybe someone will one day finish it."],
+                    ["addTag",{
+                        "id":"eventHelp",
+                        "desc":"You did not help finish the event",
+                        "value":false
+                    }],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#finishIt":{
+        "msg":[
+            "It seems more work needs to be done than initially thought."
+        ],
+        "actions":[
+            {
+                "action":"Finish it anyway",
+                "eventDo":[
+                    ["say","You push through and finish the event. It was a lot of work, but now it is finished."],
+                    ["addTag",{
+                        "id":"eventHelp",
+                        "desc":"You helped finish the event.",
+                        "value":true
+                    }],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Decide it's not worth the time",
+                "eventDo":[
+                    ["say", "After you reevaluate how much time it would take, you decide it is not worth it and leave the event in its unfinished state."],
+                    ["addTag",{
+                        "id":"eventHelp",
+                        "desc":"You did not help finish the event",
+                        "value":false
+                    }],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

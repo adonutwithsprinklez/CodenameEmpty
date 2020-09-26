@@ -1,19 +1,24 @@
+import copy
 import random
 import math
 
+from dieClass import rollDice
 from enemyClass import Enemy
 from eventClass import Event
+from itemGeneration import generateName
 
 # Hostility will range 1-10
 # Hostility affects how close to player strength enemys will be
-# 1-4 = below
-# 5-7 = equal
-# 8-10 = above
+# 0   = No hostiles
+# 1-3 = below
+# 4-6 = equal
+# 7-9 = above
+# 10  = Much higher
 # This not only will affect strength but also rewards, with higher hostility giving better rewards.
 
 class Area(object):
 	def __init__(self,areaType,debug = 0,**kwargs):
-		self.name = random.choice(areaType["name"])
+		self.name = generateName(areaType)
 		self.desc = random.choice(areaType["desc"])
 		self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
 		self.newAreaTypes = areaType["areas"]
@@ -26,8 +31,9 @@ class Area(object):
 		self.kwargs = kwargs
 
 		chance = random.randint(0,areaType["eventChance"])
+		# chance = 3
 		if chance < 5 and chance != 0 and len(areaType["events"])>0:
-			self.event = random.choice(areaType["events"])
+			self.event = self.chooseAnEvent(areaType)
 
 		# ENEMY GENERATION
 		# MUST BE DEDONE
@@ -45,6 +51,17 @@ class Area(object):
 		chance = random.randint(0,areaType["npcChance"])
 		if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
 			self.npc = random.choice(areaType["npcs"])
+		
+	def chooseAnEvent(self, areaType):
+		areaChoices = areaType["events"][::]
+		currentEvent = areaChoices[0]
+		highRoll = rollDice(currentEvent[1])
+		for event in areaChoices[1:]:
+			newRoll = rollDice(event[1])
+			if newRoll > highRoll:
+				currentEvent = event
+				highRoll = newRoll
+		return currentEvent[0]
 
 	def load(self,weapons,armor,misc,enemies,npcs,events,modifiers):
 		# Loads in the enemies and events with any objects that they may need
@@ -55,4 +72,4 @@ class Area(object):
 				e.append(newEnemy)
 			self.enemy = e
 		if self.event:
-			self.event = Event(events[self.event],weapons,armor,misc)
+			self.event = Event(events[self.event])

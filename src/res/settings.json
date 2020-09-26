@@ -1,18 +1,25 @@
 {
     "VERSION": 0.1,
+    "MIN_DATA_PACK_VER": 0.1,
+    "MIN_SAVE_VER": 0.1,
     "DEBUG": true,
     "DELAY": 0.01,
-    "EVENTDELAY": 3,
+    "EVENTDELAY": 2,
+    "DISPLAYSETTINGS": {
+        "WIDTH": 700,
+        "HEIGHT": 500,
+        "RESIZABLE": true
+    },
     "GAMESETTINGS": [
         [
             "DELAYENABLED",
             "Display Effects",
-            true
+            false
         ],
         [
             "EVENTDELAYENABLED",
             "Delay After Random Event",
-            true
+            false
         ],
         [
             "DEBUGDISPLAY",
