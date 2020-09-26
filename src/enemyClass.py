@@ -1,7 +1,7 @@
 import random
 import copy
 
-from itemGeneration import generateWeapon, generateName
+from itemGeneration import generateWeapon
 from armorClass import Armor
 from miscClass import Misc
 from dieClass import rollDice, maxRoll
@@ -9,7 +9,7 @@ from dieClass import rollDice, maxRoll
 
 class Enemy(object):
     def __init__(self, data, weapons, armor, misc, modifiers):
-        self.name = generateName(data)
+        self.name = random.choice(data["name"])
         self.eID = data["eID"]
         self.desc = random.choice(data["desc"])
         self.hpMax = rollDice(data["hp"])
@@ -39,11 +39,7 @@ class Enemy(object):
         # Wait until modifiers are added to set the starting health
         self.hp = self.hpMax
 
-        armorType = random.choice(data["armor"])
-        if armorType != "None":
-            self.armor = Armor(armor[armorType])
-        else:
-            self.armor = None
+        self.armor = Armor(armor[random.choice(data["armor"])])
         self.deathMsg = random.choice(data["deathMsg"])
         self.itemChance = data["itemChance"]
         if self.itemChance > 0:
@@ -93,8 +89,4 @@ class Enemy(object):
             return 0
 
     def getDanger(self):
-        if self.armor != None:
-            armor = self.armor.defence
-        else:
-            armor = "0"
-        return int((1.0*(self.hpMax+self.hp) + maxRoll(self.damage) + maxRoll(self.weapon.damage) + maxRoll(armor))/5)
+        return int((1.0*(self.hpMax+self.hp) + maxRoll(self.damage) + maxRoll(self.weapon.damage) + maxRoll(self.armor.defence))/5)

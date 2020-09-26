@@ -1,6 +1,6 @@
-pyinstaller --onefile --clean --noconsole^
+pyinstaller --onefile --clean ^
     -n GameLauncher ^
-    GameLauncher.spec
+    src/main.py
 
 xcopy /s /y /f src\res dist\res
 pause
