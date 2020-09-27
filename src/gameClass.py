@@ -221,8 +221,14 @@ class Game(object):
         for desc in self.currentArea.desc.split("\n"):
             self.disp.display(desc)
         print("|{}|".format(" " * 78))
+        # Display enemies that are in the area (if there are any)
+        if self.currentArea.enemy != []:
+            self.disp.closeDisplay()
+            self.disp.display("You can see enemies in the distance:", 1, 1)
+            for enemy in self.currentArea.enemy:
+                self.disp.display(f'{enemy.name} (Danger - {enemy.getDanger()})', 0, 0)
         self.disp.closeDisplay()
-        time.sleep(DELAY)
+        
         # input("\nEnter to continue")
         self.disp.wait_for_enter()
         self.workOnBacklog()

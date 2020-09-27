@@ -5,7 +5,7 @@ import math
 from dieClass import rollDice
 from enemyClass import Enemy
 from eventClass import Event
-from itemGeneration import generateName
+from textGeneration import generateString
 
 # Hostility will range 1-10
 # Hostility affects how close to player strength enemys will be
@@ -18,8 +18,8 @@ from itemGeneration import generateName
 
 class Area(object):
 	def __init__(self,areaType,debug = 0,**kwargs):
-		self.name = generateName(areaType)
-		self.desc = random.choice(areaType["desc"])
+		self.name = generateString(areaType)
+		self.desc = generateString(areaType, "desc")
 		self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
 		self.newAreaTypes = areaType["areas"]
 		self.aType = areaType["aType"]
