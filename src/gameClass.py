@@ -157,11 +157,15 @@ class Game(object):
     def loadStartingArea(self):
         self.areaController = AreaController(self.areas, self.packs[self.starter]["startingArea"], (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
+        '''
         # TODO deprecate this loading function
         self.currentArea = Area(self.areas[self.packs[self.starter][
                                 "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
         self.currentArea.load(self.weapons, self.armor, self.misc,
                               self.enemies, self.npcs, self.events, self.modifiers)
+        '''
+
+        self.currentArea = self.areaController.loadArea((0,0))
         # Disables enemies in the first area.
         self.currentArea.enemy = []
 
@@ -228,7 +232,7 @@ class Game(object):
             for enemy in self.currentArea.enemy:
                 self.disp.display(f'{enemy.name} (Danger - {enemy.getDanger()})', 0, 0)
         self.disp.closeDisplay()
-        
+
         # input("\nEnter to continue")
         self.disp.wait_for_enter()
         self.workOnBacklog()
@@ -243,7 +247,10 @@ class Game(object):
             return None
 
         ##### Random event Code #####
+        if self.currentArea.event and self.gameSettings["DISABLEFLAVOREVENTS"] and self.currentArea.event.eventType == "flavor":
+            self.currentArea.event = None
         if self.currentArea.event:
+            self.disp.dprint(self.currentArea.event.name)
             while not self.currentArea.event.finished:
                 self.disp.clearScreen()
                 self.disp.displayHeader(self.currentArea.event.name)

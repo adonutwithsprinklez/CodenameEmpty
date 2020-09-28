@@ -11,6 +11,7 @@ class Event(object):
     def __init__(self, data):
         self.id = data["id"]
         self.name = random.choice(data["name"])
+        self.eventType = data["type"]
 
         self.start = random.choice(data["start"])
         self.msg = random.choice(data[self.start]["msg"])

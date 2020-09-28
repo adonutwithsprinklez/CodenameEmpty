@@ -84,7 +84,8 @@
 	"events":[
 		"event_lostItem",
 		"event_flipACoin",
-		"event_forestAreaMisc"
+		"event_forestAreaMisc",
+		"event_forestAreaMisc2"
 	],
 	"startingArea":"area_forest"
 }
