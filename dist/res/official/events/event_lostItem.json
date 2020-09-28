@@ -5,6 +5,7 @@
         "A Hidden Item",
         "A Lost Treause"
     ],
+    "type":"random",
     "start":[
         "#startingPoint"
     ],

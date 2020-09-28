@@ -5,6 +5,7 @@
         "A Brand New Event",
         "An Event Test"
     ],
+    "type":"random",
     "start":[
         "#startingPoint"
     ],

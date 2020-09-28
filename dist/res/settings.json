@@ -22,6 +22,11 @@
             false
         ],
         [
+            "DISABLEFLAVOREVENTS",
+            "Disable Flavor Text Events",
+            false
+        ],
+        [
             "DEBUGDISPLAY",
             "Developer Display (Used for debugging)",
             false
