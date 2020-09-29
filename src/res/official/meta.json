@@ -70,10 +70,7 @@
 		"npc_defNPC"
 	],
 	"enemies":[
-<<<<<<< HEAD
 		"enemy_bandit",
-=======
->>>>>>> baae8db7b59da7f1100f678c2ef718882d13bdb3
 		"enemy_rodentOfUnusualSize",
 		"enemy_wolf",
 		"enemy_greatWolf",
@@ -90,12 +87,8 @@
 	"events":[
 		"event_lostItem",
 		"event_flipACoin",
-<<<<<<< HEAD
 		"event_forestAreaMisc",
 		"event_forestAreaMisc2"
-=======
-		"event_forestAreaMisc"
->>>>>>> baae8db7b59da7f1100f678c2ef718882d13bdb3
 	],
 	"startingArea":"area_forest"
 }
