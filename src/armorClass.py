@@ -1,11 +1,12 @@
 import random
 
+from textGeneration import generateString
 
 class Armor(object):
 	def __init__(self,data):
-		self.name = random.choice(data["name"])
+		self.name = generateString(data)
 		self.t = "a"
-		self.desc = random.choice(data["desc"])
+		self.desc = generateString(data, "desc")
 		self.defence = data["defence"]
 		self.worth = random.randint(data["worthMin"],data["worthMax"])
 

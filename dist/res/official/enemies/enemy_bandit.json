@@ -1,0 +1,47 @@
+{
+	"name":[
+        "$racetype $title",
+        "$title"
+    ],
+    "title":{
+        "type":"choose",
+        "choices":[
+            "Bandit",
+            "Thief",
+            "Scoundrel",
+            "Outcast"
+        ]
+    },
+    "racetype":{
+        "type":"choose",
+        "choices":[
+            "Human",
+            "Elven",
+            "Orc"
+        ]
+    },
+	"eID":"bandit",
+	"desc":[
+		"It's a bandit... What else do you want from me?"
+	],
+	"deathMsg":[
+		"topples to the ground, his blood pooling around his body."
+	],
+	"hp":"2d5+8",
+	"damage":"0",
+	"modifier":[
+	],
+	"weapon":[
+		"weapon_ironSword"
+	],
+	"armor":[
+		"armor_hideArmor"
+	],
+	"itemChance":50,
+	"itemDrops":[
+        ["armor_hideArmor", "You search the bandit and take his armor."],
+        ["weapon_ironSword", "You search the bandit and take his sword."],
+        ["template_IronSword", "You search the bandit and take his sword. How a bandit got ahold of such a nice weapon is anyone's guess."]
+	],
+	"xp":5
+}

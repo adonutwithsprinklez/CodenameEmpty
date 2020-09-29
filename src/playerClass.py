@@ -125,11 +125,11 @@ class Player(object):
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "a":
             self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
-            self.disp.display("%s - %d defence" %
+            self.disp.display("%s - %s defence" %
                               (self.inv[cmd-1].name, self.inv[cmd-1].defence))
             self.disp.display(self.inv[cmd-1].desc, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("%s - %d defence" %
+            self.disp.display("%s - %s defence" %
                               (self.armor.name, self.armor.defence), 0)
             self.disp.display(self.armor.desc, 0, 1)
             self.disp.display("1. Equip", 0)
@@ -149,14 +149,13 @@ class Player(object):
         except:
             equip = -1
         self.disp.clearScreen()
-        if self.inv[cmd-1].t == "w" and equip == 1 or self.inv[cmd-1].t == "a" and equip == 1:
+        if self.inv[cmd-1].t == "w" and equip == 1:
             print(equip)
-            try:
-                self.inv.append(self.weapon)
-                self.weapon = self.inv.pop(cmd-1)
-            except:
-                self.inv.append(self.armor)
-                self.armor = self.inv.pop(cmd-1)
+            self.inv.append(self.weapon)
+            self.weapon = self.inv.pop(cmd-1)
+        elif self.inv[cmd-1].t == "a" and equip == 1:
+            self.inv.append(self.armor)
+            self.armor = self.inv.pop(cmd-1)
         elif equip == 2:
             self.disp.displayHeader("Item dropped")
             self.disp.display("You drop %s." % (self.inv.pop(cmd-1).name))

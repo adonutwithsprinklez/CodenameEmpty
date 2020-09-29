@@ -23,7 +23,9 @@
 		"Made by A Donut with Sprinklez",
 		"Coming when it's done",
 		"There aren't very many of these",
-		"Growing all the time!"
+		"Growing all the time!",
+		"Ever closer to completion",
+		"The void stares back"
 	],
 	"weapons":[
 		"weapon_ironSword",
@@ -68,6 +70,7 @@
 		"npc_defNPC"
 	],
 	"enemies":[
+		"enemy_bandit",
 		"enemy_rodentOfUnusualSize",
 		"enemy_wolf",
 		"enemy_greatWolf",

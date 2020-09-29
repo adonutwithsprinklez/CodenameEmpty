@@ -29,8 +29,9 @@
 	"armor":[
 		"armor_orcArmor"
 	],
-	"itemChance":0,
+	"itemChance":25,
 	"itemDrops":[
+		["armor_ironArmor", "You see that the orc you killed had a bag of valuables. Within it you find some iron armor."]
 	],
 	"xp":20
 }

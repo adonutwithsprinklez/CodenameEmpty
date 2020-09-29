@@ -79,6 +79,7 @@
 	"enemies":[
 		["enemy_rodentOfUnusualSize", 5],
 		["enemy_wolf",4],
+		["enemy_bandit", 10],
 		["enemy_greatWolf",1]
 	],
 	"npcChance":0,

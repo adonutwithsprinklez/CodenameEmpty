@@ -12,10 +12,10 @@ class Enemy(object):
     def __init__(self, data, weapons, armor, misc, modifiers):
         self.name = generateString(data)
         self.eID = data["eID"]
-        self.desc = random.choice(data["desc"])
+        self.desc = generateString(data, "desc")
         self.hpMax = rollDice(data["hp"])
         self.damage = data["damage"]
-        self.xp = int(random.random()*data["xp"]+0.5)
+        self.xp = data["xp"]
         if data["weapon"]:
             self.weapon = generateWeapon(
                 weapons[random.choice(data["weapon"])])
