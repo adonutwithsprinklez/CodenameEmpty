@@ -19,6 +19,7 @@ from textGeneration import generateString
 class Area(object):
 	def __init__(self,areaType,debug = 0,**kwargs):
 		self.name = generateString(areaType)
+		print(f'\n GENERATING AREA: {self.name}')
 		self.desc = generateString(areaType, "desc")
 		self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
 		self.newAreaTypes = areaType["areas"]
@@ -38,6 +39,50 @@ class Area(object):
 		# ENEMY GENERATION
 		# MUST BE DEDONE
 		chance = areaType["enemyChance"]
+		try:
+			hostilityAffectsEnemyChance = areaType["hostilityAffectsEnemyChance"]
+		except:
+			hostilityAffectsEnemyChance = False
+		if hostilityAffectsEnemyChance:
+			c = chance+(self.hostility*10)
+			if c<0:
+				c=0
+		else:
+			c = chance
+		if random.randint(0,100) <= c:
+			enemyPoints = self.hostility * areaType["enemyPointsPerHostility"]
+			attempts = 1
+			currentEnemyDanger = 0
+			while currentEnemyDanger < enemyPoints and attempts <= 3:
+				currentEnemyDanger = 0
+				enemies = []
+				possibleEnemies = copy.copy(areaType["enemies"])
+				print(f'Attempt: {attempts}')
+				print(f'Possible Enemies: {possibleEnemies}')
+				print(f'Total Enemy Points: {enemyPoints}')
+				while len(possibleEnemies) > 0:
+					enemiesCheck = copy.copy(possibleEnemies)
+					possibleEnemies = []
+					for enemy in enemiesCheck:
+						print(enemy)
+						if enemy[1] > enemyPoints - currentEnemyDanger:
+							print(f'removing: {enemy[0]} because {enemy[1]} >= {enemyPoints - currentEnemyDanger}')
+						else:
+							print(f'Keeping {enemy[0]} because {enemy[1]} <= {enemyPoints - currentEnemyDanger}')
+							possibleEnemies.append(enemy)
+					print(possibleEnemies)
+					if len(possibleEnemies) > 0:
+						newEnemy = random.choice(possibleEnemies)
+						currentEnemyDanger += newEnemy[1]
+						enemies.append(newEnemy[0]) 
+				attempts += 1
+				print(currentEnemyDanger)
+			self.enemy = enemies
+
+			
+
+		'''
+		chance = areaType["enemyChance"]
 		enemies = []
 		c = math.pow(15,(self.hostility-2.0)/10.0)
 		for enemy, echance in areaType["enemies"]:
@@ -47,6 +92,7 @@ class Area(object):
 				x = random.random()*chance
 				if x<c:
 					self.enemy.append(random.choice(enemies))
+		'''
 
 		chance = random.randint(0,areaType["npcChance"])
 		if chance < 10 and chance != 0 and len(areaType["npcs"])>0:

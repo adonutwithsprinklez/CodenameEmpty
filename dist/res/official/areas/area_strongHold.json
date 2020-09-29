@@ -20,12 +20,13 @@
 	"eventChance":0,
 	"events":[
 	],
-	"enemyChance":10,
+	"enemyChance":90,
+	"enemyPointsPerHostility":5,
 	"enemies":[
-		["enemy_wolf",10],
-		["enemy_greatWolf",1],
+		["enemy_wolf",8],
+		["enemy_greatWolf",15],
 		["enemy_orc",15],
-		["enemy_orcCaptain",3]
+		["enemy_orcCaptain",25]
 	],
 	"npcChance":0,
 	"npcs":[

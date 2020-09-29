@@ -1,5 +1,6 @@
 {
     "id":"FlipACoin",
+    "type":"random",
     "name":[
         "The Travelling Gambler",
         "The Roving Gambler",

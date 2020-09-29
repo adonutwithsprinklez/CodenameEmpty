@@ -76,11 +76,12 @@
 		["event_forestAreaMisc2", "2d8"]
 	],
 	"enemyChance":10,
+	"enemyPointsPerHostility":2,
 	"enemies":[
-		["enemy_rodentOfUnusualSize", 5],
-		["enemy_wolf",4],
-		["enemy_bandit", 10],
-		["enemy_greatWolf",1]
+		["enemy_rodentOfUnusualSize", 2],
+		["enemy_wolf",3],
+		["enemy_bandit", 5],
+		["enemy_greatWolf",7]
 	],
 	"npcChance":0,
 	"npcs":[
