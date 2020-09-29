@@ -4,6 +4,7 @@
 		"A stash of junk",
 		"A rotten box."
 	],
+	"type":"random",
 	"msg":[
 		"You stumble upon a stash of random junk and other odds and ends.",
 		"You trip on a box. It seems to only contain junk, but hey, you might get lucky.",

@@ -1,0 +1,20 @@
+{
+    "id":"forestMisc",
+    "type":"flavor",
+    "name":[
+        "Noises Nearby"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You hear a rustling in the trees to the right of you.",
+            "You hear a rustling in the trees to the left of you.",
+            "In the distance you can hear wolves howling.",
+            "The leaves rustle in the wind as you walk",
+            "There are birds chirping as you continue to walk the beaten path."
+        ],
+        "actions":[]
+    }
+}
