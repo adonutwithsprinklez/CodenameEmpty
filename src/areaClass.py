@@ -17,105 +17,95 @@ from textGeneration import generateString
 # This not only will affect strength but also rewards, with higher hostility giving better rewards.
 
 class Area(object):
-	def __init__(self,areaType,debug = 0,**kwargs):
-		self.name = generateString(areaType)
-		print(f'\n GENERATING AREA: {self.name}')
-		self.desc = generateString(areaType, "desc")
-		self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
-		self.newAreaTypes = areaType["areas"]
-		self.aType = areaType["aType"]
-		self.enemy = []
-		self.event = None
-		self.npc = None
-		self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
+    def __init__(self,areaType,debug = 0,**kwargs):
+        self.name = generateString(areaType)
+        print(f'\n GENERATING AREA: {self.name}')
+        self.desc = generateString(areaType, "desc")
+        self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
+        self.newAreaTypes = areaType["areas"]
+        self.aType = areaType["aType"]
+        self.enemy = []
+        self.event = None
+        self.npc = None
+        self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
 
-		self.kwargs = kwargs
+        self.kwargs = kwargs
 
-		chance = random.randint(0,areaType["eventChance"])
-		# chance = 3
-		if chance < 5 and chance != 0 and len(areaType["events"])>0:
-			self.event = self.chooseAnEvent(areaType)
+        chance = random.randint(0,areaType["eventChance"])
+        # chance = 3
+        if chance < 5 and chance != 0 and len(areaType["events"])>0:
+            self.event = self.chooseAnEvent(areaType)
+        
+        # Enemy Generation/Spawning
+        chance = areaType["enemyChance"]
+        try:
+            hostilityAffectsEnemyChance = areaType["hostilityAffectsEnemyChance"]
+        except:
+            hostilityAffectsEnemyChance = False
+        if hostilityAffectsEnemyChance:
+            c = chance+(self.hostility*10)
+            if c<0:
+                c=0
+        else:
+            c = chance
+        if random.randint(0,100) <= c:
+            enemyPoints = self.hostility * areaType["enemyPointsPerHostility"]
+            attempts = 1
+            currentEnemyDanger = 0
+            while currentEnemyDanger < enemyPoints and attempts <= 3:
+                currentEnemyDanger = 0
+                enemies = []
+                possibleEnemies = copy.copy(areaType["enemies"])
+                while len(possibleEnemies) > 0:
+                    enemiesCheck = copy.copy(possibleEnemies)
+                    possibleEnemies = []
+                    for enemy in enemiesCheck:
+                        if enemy[1] <= enemyPoints - currentEnemyDanger:
+                            possibleEnemies.append(enemy)
+                    if len(possibleEnemies) > 0:
+                        newEnemy = random.choice(possibleEnemies)
+                        currentEnemyDanger += newEnemy[1]
+                        enemies.append(newEnemy[0]) 
+                attempts += 1
+            self.enemy = enemies
 
-		# ENEMY GENERATION
-		# MUST BE DEDONE
-		chance = areaType["enemyChance"]
-		try:
-			hostilityAffectsEnemyChance = areaType["hostilityAffectsEnemyChance"]
-		except:
-			hostilityAffectsEnemyChance = False
-		if hostilityAffectsEnemyChance:
-			c = chance+(self.hostility*10)
-			if c<0:
-				c=0
-		else:
-			c = chance
-		if random.randint(0,100) <= c:
-			enemyPoints = self.hostility * areaType["enemyPointsPerHostility"]
-			attempts = 1
-			currentEnemyDanger = 0
-			while currentEnemyDanger < enemyPoints and attempts <= 3:
-				currentEnemyDanger = 0
-				enemies = []
-				possibleEnemies = copy.copy(areaType["enemies"])
-				print(f'Attempt: {attempts}')
-				print(f'Possible Enemies: {possibleEnemies}')
-				print(f'Total Enemy Points: {enemyPoints}')
-				while len(possibleEnemies) > 0:
-					enemiesCheck = copy.copy(possibleEnemies)
-					possibleEnemies = []
-					for enemy in enemiesCheck:
-						print(enemy)
-						if enemy[1] > enemyPoints - currentEnemyDanger:
-							print(f'removing: {enemy[0]} because {enemy[1]} >= {enemyPoints - currentEnemyDanger}')
-						else:
-							print(f'Keeping {enemy[0]} because {enemy[1]} <= {enemyPoints - currentEnemyDanger}')
-							possibleEnemies.append(enemy)
-					print(possibleEnemies)
-					if len(possibleEnemies) > 0:
-						newEnemy = random.choice(possibleEnemies)
-						currentEnemyDanger += newEnemy[1]
-						enemies.append(newEnemy[0]) 
-				attempts += 1
-				print(currentEnemyDanger)
-			self.enemy = enemies
+            
 
-			
+        '''
+        chance = areaType["enemyChance"]
+        enemies = []
+        c = math.pow(15,(self.hostility-2.0)/10.0)
+        for enemy, echance in areaType["enemies"]:
+            enemies+=[enemy]*echance
+        for i in range(0,10):
+            if len(self.enemy)<self.hostility:
+                x = random.random()*chance
+                if x<c:
+                    self.enemy.append(random.choice(enemies))
+        '''
 
-		'''
-		chance = areaType["enemyChance"]
-		enemies = []
-		c = math.pow(15,(self.hostility-2.0)/10.0)
-		for enemy, echance in areaType["enemies"]:
-			enemies+=[enemy]*echance
-		for i in range(0,10):
-			if len(self.enemy)<self.hostility:
-				x = random.random()*chance
-				if x<c:
-					self.enemy.append(random.choice(enemies))
-		'''
+        chance = random.randint(0,areaType["npcChance"])
+        if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
+            self.npc = random.choice(areaType["npcs"])
+        
+    def chooseAnEvent(self, areaType):
+        areaChoices = areaType["events"][::]
+        currentEvent = areaChoices[0]
+        highRoll = rollDice(currentEvent[1])
+        for event in areaChoices[1:]:
+            newRoll = rollDice(event[1])
+            if newRoll > highRoll:
+                currentEvent = event
+                highRoll = newRoll
+        return currentEvent[0]
 
-		chance = random.randint(0,areaType["npcChance"])
-		if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
-			self.npc = random.choice(areaType["npcs"])
-		
-	def chooseAnEvent(self, areaType):
-		areaChoices = areaType["events"][::]
-		currentEvent = areaChoices[0]
-		highRoll = rollDice(currentEvent[1])
-		for event in areaChoices[1:]:
-			newRoll = rollDice(event[1])
-			if newRoll > highRoll:
-				currentEvent = event
-				highRoll = newRoll
-		return currentEvent[0]
-
-	def load(self,weapons,armor,misc,enemies,npcs,events,modifiers):
-		# Loads in the enemies and events with any objects that they may need
-		if self.enemy != []:
-			e = []
-			for enemy in self.enemy:
-				newEnemy = Enemy(enemies[enemy],weapons,armor,misc,modifiers)
-				e.append(newEnemy)
-			self.enemy = e
-		if self.event:
-			self.event = Event(events[self.event])
+    def load(self,weapons,armor,misc,enemies,npcs,events,modifiers):
+        # Loads in the enemies and events with any objects that they may need
+        if self.enemy != []:
+            e = []
+            for enemy in self.enemy:
+                newEnemy = Enemy(enemies[enemy],weapons,armor,misc,modifiers)
+                e.append(newEnemy)
+            self.enemy = e
+        if self.event:
+            self.event = Event(events[self.event])
