@@ -30,10 +30,8 @@ class Area(object):
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
 
         self.kwargs = kwargs
-
-        chance = random.randint(0,areaType["eventChance"])
-        # chance = 3
-        if chance < 5 and chance != 0 and len(areaType["events"])>0:
+        
+        if random.randint(0,100) <= areaType["eventChance"]:
             self.event = self.chooseAnEvent(areaType)
         
         # Enemy Generation/Spawning

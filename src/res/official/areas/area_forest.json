@@ -68,14 +68,14 @@
 	"aType":"Forest",
 	"hostilityMin":1,
 	"hostilityMax":5,
-	"eventChance":10,
+	"eventChance":35,
 	"events":[
 		["event_lostItem", "1d8"],
 		["event_flipACoin", "1d8"],
-		["event_forestAreaMisc", "2d8"],
-		["event_forestAreaMisc2", "2d8"]
+		["event_forestAreaMisc", "2d6"],
+		["event_forestAreaMisc2", "2d6"]
 	],
-	"enemyChance":10,
+	"enemyChance":35,
 	"enemyPointsPerHostility":2,
 	"enemies":[
 		["enemy_rodentOfUnusualSize", 2],
