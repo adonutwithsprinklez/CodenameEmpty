@@ -8,7 +8,7 @@ from eventClass import Event
 from textGeneration import generateString
 
 class Area(object):
-    def __init__(self,areaType,debug = 0,nonrepeatableevents=[],**kwargs):
+    def __init__(self,areaType,nonrepeatableevents=[],**kwargs):
         self.name = generateString(areaType)
         print(f'\n GENERATING AREA: {self.name}')
         self.desc = generateString(areaType, "desc")
@@ -81,7 +81,7 @@ class Area(object):
         areaChoices = areaType["events"][::]
         # Remove any non-repeatable events that have already occured
         for event in areaChoices:
-            if event in nonrepeatableevents:
+            if event[0] in nonrepeatableevents:
                 areaChoices.remove(event)
         currentEvent = areaChoices[0]
         highRoll = rollDice(currentEvent[1])

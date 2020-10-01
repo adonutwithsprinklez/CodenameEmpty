@@ -228,7 +228,6 @@ class Game(object):
         self.disp.displayHeader(title)
         for desc in self.currentArea.desc.split("\n"):
             self.disp.display(desc)
-        print("|{}|".format(" " * 78))
         # Display enemies that are in the area (if there are any)
         if self.currentArea.enemy != []:
             self.disp.closeDisplay()
@@ -245,10 +244,6 @@ class Game(object):
         '''This is where the player becomes able to respond to any action that
         has occured within the game, such as enemies appearing, or quest
         objectives getting updated.'''
-
-        self.fightEnemies()
-        if self.player.quit:
-            return None
 
         ##### Random event Code #####
         if self.currentArea.event and self.gameSettings["DISABLEFLAVOREVENTS"] and self.currentArea.event.eventType == "flavor":
@@ -301,6 +296,10 @@ class Game(object):
                         time.sleep(EVENTDELAY)
                     #input("\nEnter to continue")
                     self.disp.wait_for_enter()
+        
+        self.fightEnemies()
+        if self.player.quit:
+            return None
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
@@ -517,8 +516,9 @@ class Game(object):
         self.currentArea.load(self.weapons, self.armor, self.misc,
                               self.enemies, self.npcs, self.events, self.modifiers)
         
-        if self.currentArea.event != None and not self.currentArea.event.isRepeatable:
-            self.nonRepeatableEvents.append(self.currentArea.event.resourceId)
+        if self.currentArea.event:
+            if not self.currentArea.event.isRepeatable:
+                self.nonRepeatableEvents.append(self.currentArea.event.resourceId)
 
         self.importantQuestInfo.append(
             ["inAreaType", self.currentArea.aType, True, False])

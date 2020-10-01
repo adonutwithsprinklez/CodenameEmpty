@@ -45,6 +45,7 @@
 		"material_stick",
 		"material_greatWolfPelt",
 		"misc_pieceOfMetal",
+		"misc_mysteriousOrb",
 		"consumable_apple"
 	],
 	"areas":[
@@ -87,7 +88,8 @@
 		"event_lostItem",
 		"event_flipACoin",
 		"event_forestAreaMisc",
-		"event_forestAreaMisc2"
+		"event_forestAreaMisc2",
+		"event_mysteriousOrb"
 	],
 	"startingArea":"area_forest"
 }
