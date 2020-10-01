@@ -51,6 +51,8 @@ class Game(object):
         self.areaController = None
         self.starter = None
 
+        self.nonRepeatableEvents = []
+
         self.logos = []
         self.descs = []
 
@@ -146,6 +148,8 @@ class Game(object):
         if DEBUG:
             for q in self.possibleQuests:
                 self.disp.dprint(q)
+        
+        self.nonRepeatableEvents = []
 
         self.loadStartingArea()
 
@@ -512,6 +516,9 @@ class Game(object):
         self.currentArea = choices[cmd - 1]
         self.currentArea.load(self.weapons, self.armor, self.misc,
                               self.enemies, self.npcs, self.events, self.modifiers)
+        
+        if self.currentArea.event != None and not self.currentArea.event.isRepeatable:
+            self.nonRepeatableEvents.append(self.currentArea.event.resourceId)
 
         self.importantQuestInfo.append(
             ["inAreaType", self.currentArea.aType, True, False])
@@ -551,7 +558,7 @@ class Game(object):
                     if newroll > highroll and not alreadyUsed:
                         newArea = aType
                         highroll = newroll
-            generatedArea = Area(self.areas[newArea[0]])
+            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents)
             usedAreas.append(newArea[0])
             choices.append(generatedArea)
         return choices

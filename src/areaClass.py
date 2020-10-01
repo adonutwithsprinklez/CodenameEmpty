@@ -7,17 +7,8 @@ from enemyClass import Enemy
 from eventClass import Event
 from textGeneration import generateString
 
-# Hostility will range 1-10
-# Hostility affects how close to player strength enemys will be
-# 0   = No hostiles
-# 1-3 = below
-# 4-6 = equal
-# 7-9 = above
-# 10  = Much higher
-# This not only will affect strength but also rewards, with higher hostility giving better rewards.
-
 class Area(object):
-    def __init__(self,areaType,debug = 0,**kwargs):
+    def __init__(self,areaType,debug = 0,nonrepeatableevents=[],**kwargs):
         self.name = generateString(areaType)
         print(f'\n GENERATING AREA: {self.name}')
         self.desc = generateString(areaType, "desc")
@@ -32,7 +23,7 @@ class Area(object):
         self.kwargs = kwargs
         
         if random.randint(1,100) <= areaType["eventChance"]:
-            self.event = self.chooseAnEvent(areaType)
+            self.event = self.chooseAnEvent(areaType, nonrepeatableevents)
         
         # Enemy Generation/Spawning
         chance = areaType["enemyChance"]
@@ -86,8 +77,12 @@ class Area(object):
         if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
             self.npc = random.choice(areaType["npcs"])
         
-    def chooseAnEvent(self, areaType):
+    def chooseAnEvent(self, areaType, nonrepeatableevents):
         areaChoices = areaType["events"][::]
+        # Remove any non-repeatable events that have already occured
+        for event in areaChoices:
+            if event in nonrepeatableevents:
+                areaChoices.remove(event)
         currentEvent = areaChoices[0]
         highRoll = rollDice(currentEvent[1])
         for event in areaChoices[1:]:
@@ -106,4 +101,4 @@ class Area(object):
                 e.append(newEnemy)
             self.enemy = e
         if self.event:
-            self.event = Event(events[self.event])
+            self.event = Event(events[self.event], self.event)

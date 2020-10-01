@@ -8,8 +8,9 @@ from armorClass import Armor
 
 
 class Event(object):
-    def __init__(self, data):
+    def __init__(self, data, resourceId):
         self.id = data["id"]
+        self.resourceId = resourceId
         self.name = random.choice(data["name"])
         self.eventType = data["type"]
 
@@ -17,10 +18,18 @@ class Event(object):
         self.msg = random.choice(data[self.start]["msg"])
         self.actions = data[self.start]["actions"]
 
+        keys = data.keys()
+
         self.parts = {}
-        for part in data.keys():
+        for part in keys:
             if "#" in part:
                 self.parts[part] = data[part]
+        
+        # Check if the event can be repeated (If not specified defaults to true)
+        if "isRepeatable" in keys:
+            self.isRepeatable = data["isRepeatable"] 
+        else:
+            self.isRepeatable = True
 
         self.finished = False
 
