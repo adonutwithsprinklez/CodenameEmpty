@@ -10,7 +10,7 @@ from textGeneration import generateString
 class Area(object):
     def __init__(self,areaType,nonrepeatableevents=[],**kwargs):
         self.name = generateString(areaType)
-        print(f'\n GENERATING AREA: {self.name}')
+        print(f'GENERATING AREA: {self.name}')
         self.desc = generateString(areaType, "desc")
         self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
         self.newAreaTypes = areaType["areas"]
@@ -58,7 +58,11 @@ class Area(object):
                 attempts += 1
             self.enemy = enemies
 
-            
+        # Optional Area data tags
+        datakeys = areaType.keys()
+        self.enemyMessage = None
+        if "enemyMessage" in datakeys:
+            self.enemyMessage = generateString(areaType, "enemyMessage")
 
         '''
         chance = areaType["enemyChance"]
@@ -73,6 +77,7 @@ class Area(object):
                     self.enemy.append(random.choice(enemies))
         '''
 
+        # NPC's not yet implemented
         chance = random.randint(0,areaType["npcChance"])
         if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
             self.npc = random.choice(areaType["npcs"])

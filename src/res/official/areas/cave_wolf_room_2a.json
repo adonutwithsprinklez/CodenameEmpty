@@ -1,0 +1,79 @@
+{
+    "name":[
+        "$nameDesc $room",
+        "$room"
+    ],
+	"room":{
+		"type":"choose",
+		"choices":[
+            "Passage",
+            "Cavernous Room",
+            "Cavern",
+            "Pathway",
+            "Chamber",
+            "Clear Space"
+		]
+	},
+	"nameDesc":{
+		"type":"choose",
+		"choices":[
+            "Dimly lit",
+            "Darkly lit",
+            "Barely lit",
+            "Dark",
+            "Small",
+            "Large",
+            "Roomy",
+            "Tight",
+            "Drafty",
+            "Slim",
+            "Sparkling"
+		]
+	},
+	"nameDescLowercase":{
+		"type":"choose",
+		"choices":[
+            "dimly lit",
+            "darkly lit",
+            "barely lit",
+            "dark",
+            "small",
+            "large",
+            "roomy",
+            "tight",
+            "drafty",
+            "slim",
+            "sparkling"
+		]
+	},
+	"desc":[
+        "Description text",
+        "Other possible description text."
+	],
+	"aType":"Cave",
+	"hostilityMin":4,
+	"hostilityMax":6,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":75,
+	"enemyMessage":[
+		"You can discern moving shapes within the $nameDescLowercase passageway.",
+		"Multiple pairs of eyes stare at you as you work your way through the $nameDescLowercase tunnel.",
+		"A growl alerts you to several enemies within the $nameDescLowercase cavern.",
+		"The $nameDescLowercase passage appears to be full of enemies."
+	],
+	"enemyPointsPerHostility":3,
+	"enemies":[
+        ["enemy_wolf", 2],
+        ["enemy_greatWolf", 5]
+	],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":1,
+	"maxNewAreas":3,
+	"areas":[
+        ["cave_wolf_room_3", "1d6", ["required", "limited"]],
+        ["cave_wolf_room_2a", "1d6", ["limited"]]
+	]
+}

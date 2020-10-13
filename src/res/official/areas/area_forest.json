@@ -92,6 +92,7 @@
 	"maxNewAreas":6,
 	"areas":[
 		["area_forest","2d5", ["required"]],
-		["area_strongHold","1d6"]
+		["area_strongHold","1d6"],
+		["cave_wolf_entrance", "1d90"]
 	]
 }

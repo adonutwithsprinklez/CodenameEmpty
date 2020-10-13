@@ -231,7 +231,10 @@ class Game(object):
         # Display enemies that are in the area (if there are any)
         if self.currentArea.enemy != []:
             self.disp.closeDisplay()
-            self.disp.display("You can see enemies in the distance:", 1, 1)
+            enemyMessage = "You can see enemies in the distance:"
+            if self.currentArea.enemyMessage != None:
+                enemyMessage = self.currentArea.enemyMessage
+            self.disp.display(enemyMessage, 1, 1)
             for enemy in self.currentArea.enemy:
                 self.disp.display(f'{enemy.name} (Danger - {enemy.getDanger()})', 0, 0)
         self.disp.closeDisplay()
@@ -527,6 +530,8 @@ class Game(object):
 
     def randomAreaChoices(self):
         '''This randomly generates areas for the player to choose from.'''
+        
+        print("")
         choices = []
         # This is to guarantee that no "limited" areas are used more than once
         usedAreas = []
@@ -579,8 +584,8 @@ class Game(object):
                 self.disp.displayHeader("Event")
                 self.disp.display(action[1])
                 self.disp.closeDisplay()
-                if self.gameSettings["EVENTDELAYENABLED"]:
-                    time.sleep(1)
+                # if self.gameSettings["EVENTDELAYENABLED"]:
+                #     time.sleep(1)
                 # input("\nEnter to continue")
                 self.disp.wait_for_enter()
                 self.disp.dprint("Processed say condition.")

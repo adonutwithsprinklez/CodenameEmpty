@@ -50,7 +50,11 @@
 	],
 	"areas":[
 		"area_forest",
-		"area_strongHold"
+		"area_strongHold",
+		"cave_wolf_entrance",
+		"cave_wolf_room_1a",
+		"cave_wolf_room_2a",
+		"cave_wolf_room_3"
 	],
 	"races":[
 		"race_human",
