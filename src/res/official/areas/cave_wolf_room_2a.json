@@ -47,14 +47,18 @@
 		]
 	},
 	"desc":[
-        "Description text",
-        "Other possible description text."
+		"Based on the echoes of your movement, you estimate you are halfway through the cave system.",
+		"You can hear water dripping somewhere deeper inside the cave.",
+		"This seems to be the deepest portion of the cave. The everpresent darkness surrounds you at every turn.",
+		"The cave begins to slope and turn about randomly. Anyone could get easily lost within the dark corridors.",
+		"There is no more light this deep within the cave. All is darkness. You have only your other senses to help you."
 	],
 	"aType":"Cave",
 	"hostilityMin":4,
 	"hostilityMax":6,
-	"eventChance":0,
+	"eventChance":100,
 	"events":[
+		["event_cave_wolf_1", "1d6"]
 	],
 	"enemyChance":75,
 	"enemyMessage":[

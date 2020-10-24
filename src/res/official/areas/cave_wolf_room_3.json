@@ -24,9 +24,7 @@
             "Small",
             "Large",
             "Roomy",
-            "Tight",
             "Drafty",
-            "Slim",
             "Sparkling"
 		]
 	},
@@ -40,15 +38,21 @@
             "small",
             "large",
             "roomy",
-            "tight",
             "drafty",
-            "slim",
             "sparkling"
 		]
 	},
+	"randomDetail":{
+		"type":"choose",
+		"choices":[
+			"Bones litter the ground. This is obviously a nest for a foul beast.",
+			"A bit of grass has been piled into one of the sides of the area.",
+			"What appears to be a freshly eaten meal sits at the center of the area."
+		]
+	},
 	"desc":[
-        "Description text",
-        "Other possible description text."
+		"The cave opens up a bit into a slightly more spacious room. $randomDetail",
+		"You push into another chamber of the cave. This one is more spacious that the previous ones. $randomDetail"
 	],
 	"aType":"Cave",
 	"hostilityMin":5,

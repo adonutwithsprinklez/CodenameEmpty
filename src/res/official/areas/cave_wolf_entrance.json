@@ -57,13 +57,23 @@
 			"Entry",
 			"Inlet"
 		]
-    },
+	},
+	"randomDetail":{
+		"type":"choose",
+		"choices":[
+			"Going inside could prove to be a bad idea.",
+			"You can't shake off the feeling of death around you.",
+			"The sickly looking trees closest to the entrance add to the unnerving feel of the cave.",
+			"You cannot think of a good reason to enter.",
+			"You can only prepare yourself so much for whatever lies within."
+		]
+	},
 	"desc":[
-		"A draft of air blows out from the cave's dark entrance. A sense of lingering danger coming from within.",
-		"You can hear howls from within the cave. The sounds are obviously coming from beasts that are calling it their home.\nGoing inside could prove to be a bad idea.",
-		"The entrance to the cave appears to have been carved out. Small glyphs and runes have been etched into the sides.\nYou can't shake off the feeling of death around you.",
-		"Two large boulders lean against each other, forming a sort of entrance into the dark depths into the wall of rock.",
-		"You see blood splatters all around the entrance to the cave. Small bones are littered about the area. You imagine what lies beyond."
+		"A draft of air blows out from the cave's dark entrance. A sense of lingering danger coming from within.\n$randomDetail",
+		"You can hear howls from within the cave. The sounds are obviously coming from beasts that are calling it their home.\n$randomDetail",
+		"The entrance to the cave appears to have been carved out. Small glyphs and runes have been etched into the sides.\n$randomDetail",
+		"Two large boulders lean against each other, forming a sort of entrance into the dark depths into the wall of rock.\n$randomDetail",
+		"You see blood splatters all around the entrance to the cave. Small bones are littered about the area. You imagine what lies beyond.\n$randomDetail"
 	],
 	"aType":"Cave",
 	"hostilityMin":4,
@@ -79,8 +89,8 @@
 	],
 	"enemyPointsPerHostility":3,
 	"enemies":[
-        ["enemy_wolf", 2],
-        ["enemy_greatWolf", 5]
+        ["enemy_wolf", 4],
+        ["enemy_greatWolf", 7]
 	],
 	"npcChance":0,
 	"npcs":[],

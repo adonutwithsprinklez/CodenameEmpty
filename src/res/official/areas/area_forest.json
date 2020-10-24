@@ -74,7 +74,7 @@
 		["event_flipACoin", "1d8"],
 		["event_forestAreaMisc", "2d6"],
 		["event_forestAreaMisc2", "2d6"],
-		["event_mysteriousOrb", "1d6"]
+		["event_mysteriousOrb", "1d7"]
 	],
 	"enemyChance":35,
 	"enemyPointsPerHostility":2,

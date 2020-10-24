@@ -290,6 +290,10 @@ class Game(object):
                             elif action[0] == "give":
                                 self.currentArea.event.giveItem(action[1], action[2], self.player,
                                                                 self.weapons, self.armor, self.misc)
+                            elif action[0] == "spawnEnemy":
+                                for enemyid in action[1]:
+                                    self.currentArea.enemy.append(Enemy(
+                                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                             elif action[0] == "finish":
                                 self.currentArea.event.finish()
                 else:
@@ -476,6 +480,8 @@ class Game(object):
         '''This lets the player choose a new area to travel to.'''
         # Create various area choices:
         choices = self.randomAreaChoices()
+        # Shuffle the choices to make sure "required" areas don't always appaear first
+        random.shuffle(choices)
         cmd = -1
 
         # Allow the player to choose from those places:
@@ -617,8 +623,9 @@ class Game(object):
                         self.currentQuests.remove(quest)
                 self.disp.dprint("Processed questComplete condition.")
             elif action[0] == "spawnEnemy":
-                self.currentArea.enemy.append(Enemy(
-                    self.enemies[action[1]], self.weapons, self.armor, self.misc, self.modifiers))
+                for enemyid in action[1]:
+                    self.currentArea.enemy.append(Enemy(
+                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                 self.disp.dprint("Processed spawnEnemy condition.")
 
     def updateQuestInfo(self):

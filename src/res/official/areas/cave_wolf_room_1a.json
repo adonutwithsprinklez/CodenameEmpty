@@ -46,9 +46,17 @@
             "sparkling"
 		]
 	},
+	"randomDetail":{
+		"type":"choose",
+		"choices":[
+			"All you can hear is the snapping of small bones under your feet as you walk.",
+			"It is impossible to count the number of dead creatures that have made this place their final resting place.",
+			"The growls from deeper within the cave grow louder as you continue on."
+		]
+	},
 	"desc":[
-        "Description text",
-        "Other possible description text."
+		"You enter the cave and pause for a moment, allowing your eyes to get used to the darkness within the cave.\n$randomDetail",
+		"The stench of rotting flesh causes you to nearly wretch within the darkness.\n$randomDetail"
 	],
 	"aType":"Cave",
 	"hostilityMin":4,
