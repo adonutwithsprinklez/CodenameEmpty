@@ -1,0 +1,46 @@
+{
+	"name":[
+        "Name",
+        "Name with $var"
+	],
+	"var":{
+		"type":"choose",
+		"choices":[
+            "variable",
+            "random text"
+		]
+	},
+	"desc":[
+        "Description text",
+		"Other possible description text.",
+		"$vars can be used here as well"
+	],
+	"aType":"Forest",
+	"hostilityMin":1,
+	"hostilityMax":10,
+	"eventChance":35,
+	"events":[
+        ["event id here", "die roll (1d8)"],
+		["event 2 id here", "1d8"]
+	],
+	"enemyChance":35,
+	"enemyMessage":[
+		"This tag is optional",
+		"$vars are able to be used as well"
+	],
+	"enemyPointsPerHostility":2,
+	"enemies":[
+		["enemy id here", hostilitypointsneededtospawn],
+		["enemy 2 id here", 2]
+	],
+	"npcChance":0,
+	"npcs":[
+		"npc_defNPC"
+	],
+	"minNewAreas":1,
+	"maxNewAreas":10,
+	"areas":[
+		["area id here","die roll (1d8)", ["required"]],
+		["area 2 id here","1d6"]
+	]
+}

@@ -1,0 +1,57 @@
+{
+    "id":"templateEvent",
+    "type":"random",
+    "name":[
+        "Random title 1",
+        "Random title 2"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "Random initial message 1",
+            "Random initial message 2"
+        ],
+        "actions":[
+            {
+                "action":"This is an action that takes you to another step",
+                "eventDo":[
+                    ["say","This is a say command. The next command will take you to another branch of the event"],
+                    ["goto", ["#secondStep"]]
+                ]
+            },
+            {
+                "action":"This is an action that will exit",
+                "eventDo":[
+                    ["say","This is a say command. The next action will end the event"],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#secondStep":{
+        "msg":[
+            "These function the same as the first branch"
+        ],
+        "actions":[
+            {
+                "action":"This action has a requirement",
+                "requirements":[
+                    ["have","gold",1]
+                ],
+                "eventDo":[
+                    ["say","If this action was chosen, the player will lose 1 gold and then end the event."],
+                    ["take","gold",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"This action has no requirements",
+                "eventDo":[
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}
