@@ -94,7 +94,8 @@
 		"event_forestAreaMisc",
 		"event_forestAreaMisc2",
 		"event_mysteriousOrb",
-		"event_cave_wolf_1"
+		"event_cave_wolf_1",
+		"event_cave_found_item_1"
 	],
 	"startingArea":"area_forest"
 }

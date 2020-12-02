@@ -8,7 +8,8 @@
         "The apple looks large and delicious.",
         "The skin is a little bruised, but still edible."
     ],
-    "cType":"edible",
+    "iType":"consumable",
+    "consumeText":["Eat"],
     "effects":[
         ["heal","1d6"]
     ],

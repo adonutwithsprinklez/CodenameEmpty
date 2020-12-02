@@ -135,6 +135,13 @@ class Player(object):
             self.disp.display("1. Equip", 0)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
+        elif self.inv[cmd-1].t == "consumable":
+            self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
+            self.disp.display(self.inv[cmd-1].desc)
+            self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1)
+            self.disp.display("1. {}".format(self.inv[cmd-1].consumeText))
+            self.disp.display("2. Drop")
+            self.disp.display("Anything else to continue", 0)
         else:
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
@@ -156,6 +163,9 @@ class Player(object):
         elif self.inv[cmd-1].t == "a" and equip == 1:
             self.inv.append(self.armor)
             self.armor = self.inv.pop(cmd-1)
+        elif self.inv[cmd-1].t == "consumable" and equip == 1:
+            self.inv[cmd-1].consumableEffect(self)
+            self.inv.pop(cmd-1)
         elif equip == 2:
             self.disp.displayHeader("Item dropped")
             self.disp.display("You drop %s." % (self.inv.pop(cmd-1).name))
@@ -279,6 +289,12 @@ class Player(object):
         if self.xp >= self.getXpNeededForLevelUp():
             self.xp -= self.getXpNeededForLevelUp()
             self.level += 1
+    
+    def giveHP(self, hp):
+        ''' Gives the player HP '''
+        self.hp += hp
+        if self.hp > self.getMaxHP():
+            self.hp = self.getMaxHP()
 
     # Class Getters
     def getEquipmentString(self):
