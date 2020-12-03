@@ -11,11 +11,14 @@
     "iType":"consumable",
     "consumeText":["Drink"],
     "modifier":[
-        ["strongEffect", 3],
-        ["None", 7]
+        ["strongEffect", 1],
+        ["improvedEffect", 2],
+        ["slightlyImprovedEffect", 3],
+        ["impairedEffect", 3],
+        ["None", 6]
     ],
     "effects":[
-        ["heal","2d6"]
+        ["heal","1d12+6"]
     ],
     "worth":2
 }

@@ -606,7 +606,7 @@ class Game(object):
                 if itemKey in self.weapons.keys():
                     item = generateWeapon(self.weapons[itemKey])
                 elif itemKey in self.misc.keys():
-                    item = Misc(self.misc[itemKey])
+                    item = Misc(self.misc[itemKey], self.modifiers)
                 elif itemKey in self.armor.keys():
                     item = Armor(self.armor[itemKey])
                 if item != None:

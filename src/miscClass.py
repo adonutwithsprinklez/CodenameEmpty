@@ -44,9 +44,13 @@ class Misc(object):
 		for effect in self.effects:
 			if effect[0] == "heal":
 				healing = rollDice(effect[1])
-				if self.modifier and self.modifier["e"] == "strongEffect":
-					healing *= rollDice(self.modifier["s"])
-					print(healing)
+				if self.modifier:
+					if self.modifier["e"] == "strongEffect":
+						healing *= rollDice(self.modifier["s"])
+					elif self.modifier["e"] == "improved":
+						healing += rollDice(self.modifier["s"])
+					elif self.modifier["e"] == "impaired":
+						healing -= rollDice(self.modifier["s"])
 				if healing > 0:
 					actualEffects += 1
 					player.giveHP(healing)

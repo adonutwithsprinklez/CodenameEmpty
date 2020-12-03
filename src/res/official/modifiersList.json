@@ -30,8 +30,23 @@
 		"strength":"-2d2"
 	},
 	"strongEffect":{
-		"name":["Strong"],
+		"name":["Strong", "Potent", "Concentrated"],
 		"effect":"strongEffect",
 		"strength":"+2"
+	},
+	"improvedEffect":{
+		"name":["Improved", "Refined", "Enhanced"],
+		"effect":"improved",
+		"strength":"1d6+6"
+	},
+	"slightlyImprovedEffect":{
+		"name":["Marginally Improved", "Partially Refined", "Mildly Enhanced"],
+		"effect":"improved",
+		"strength":"1d3+3"
+	},
+	"impairedEffect":{
+		"name":["Weakened", "Old", "Impaired", "Expired"],
+		"effect":"impaired",
+		"strength":"1d6+6"
 	}
 }
