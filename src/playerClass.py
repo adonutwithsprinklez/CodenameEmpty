@@ -138,9 +138,9 @@ class Player(object):
         elif self.inv[cmd-1].t == "consumable":
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
-            self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1)
-            self.disp.display("1. {}".format(self.inv[cmd-1].consumeText))
-            self.disp.display("2. Drop")
+            self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1, 1)
+            self.disp.display("1. {}".format(self.inv[cmd-1].consumeText), 0)
+            self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         else:
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))

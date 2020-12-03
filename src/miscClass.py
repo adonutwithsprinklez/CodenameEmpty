@@ -3,7 +3,7 @@ from dieClass import rollDice
 
 
 class Misc(object):
-	def __init__(self,data):
+	def __init__(self, data, gameModifiers):
 		self.name = random.choice(data["name"])
 		self.t = data["iType"]
 		self.desc = random.choice(data["desc"])
@@ -17,6 +17,24 @@ class Misc(object):
 		except:
 			self.consumeText = ""
 
+		# Modifier logic
+		print("\n" + self.name)
+		print(data.keys())
+		if "modifier" in data.keys():
+			modifiers = data["modifier"]
+			self.modifier = None
+			mods = []
+			for mod in modifiers:
+				mods += [mod[0]]*mod[1]
+			mod = random.choice(mods)
+			if mod != "None":
+				self.modifier = gameModifiers[mod].getInfo()
+				self.name = "{} {}".format(self.modifier["n"], self.name)
+		try:
+			pass
+		except:
+			self.modifier = None
+
 	def consumableEffect(self, player):
 		player.disp.clearScreen()
 		player.disp.displayHeader("You eat the {}".format(self.name))
@@ -26,6 +44,9 @@ class Misc(object):
 		for effect in self.effects:
 			if effect[0] == "heal":
 				healing = rollDice(effect[1])
+				if self.modifier and self.modifier["e"] == "strongEffect":
+					healing *= rollDice(self.modifier["s"])
+					print(healing)
 				if healing > 0:
 					actualEffects += 1
 					player.giveHP(healing)

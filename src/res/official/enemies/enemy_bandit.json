@@ -39,9 +39,7 @@
 	],
 	"itemChance":50,
 	"itemDrops":[
-        ["armor_hideArmor", "You search the bandit and take his armor."],
-        ["weapon_ironSword", "You search the bandit and take his sword."],
-        ["template_IronSword", "You search the bandit and take his sword. How a bandit got ahold of such a nice weapon is anyone's guess."]
+        ["consumable_potion_health", "You search the bandit, finding a potion."]
 	],
 	"xp":5
 }

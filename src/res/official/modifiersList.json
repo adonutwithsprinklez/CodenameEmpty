@@ -28,5 +28,10 @@
 		"name":["Very Sick","Dying","Bloody"],
 		"effect":"health",
 		"strength":"-2d2"
+	},
+	"strongEffect":{
+		"name":["Strong"],
+		"effect":"strongEffect",
+		"strength":"+2"
 	}
 }

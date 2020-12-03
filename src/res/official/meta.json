@@ -41,12 +41,13 @@
 		"armor_orcCaptainArmor"
 	],
 	"misc":[
+		"consumable_apple",
+		"consumable_potion_health",
 		"material_wolfPelt",
 		"material_stick",
 		"material_greatWolfPelt",
 		"misc_pieceOfMetal",
-		"misc_mysteriousOrb",
-		"consumable_apple"
+		"misc_mysteriousOrb"
 	],
 	"areas":[
 		"area_forest",

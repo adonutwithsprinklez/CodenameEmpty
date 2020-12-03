@@ -78,7 +78,7 @@ class Event(object):
         if item == "gold":
             player.gold -= amount
 
-    def giveItem(self, itemId, amount, player, weapons, armor, misc):
+    def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers):
         if itemId == "gold":
             player.gold += amount
         elif itemId in weapons.keys():
@@ -86,7 +86,7 @@ class Event(object):
         elif itemId in armor.keys():
             player.inv.append(copy.copy(Armor(armor[itemId])))
         elif itemId in misc.keys():
-            player.inv.append(copy.copy(Misc(misc[itemId])))
+            player.inv.append(copy.copy(Misc(misc[itemId], modifiers)))
 
 class Tag(object):
     def __init__(self, data):

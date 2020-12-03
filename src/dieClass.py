@@ -15,9 +15,10 @@ def rollDice(dieRolls):
 			elif "-" in dice:
 				dice,bonus = dice.split("-")
 				bonus = int(bonus) * -1
-			numDice, diceSize = dice.split("d")
-			for i in range(int(numDice)):
-				total += multiplyer * random.randint(1,int(diceSize))
+			if "d" in dice:
+				numDice, diceSize = dice.split("d")
+				for i in range(int(numDice)):
+					total += multiplyer * random.randint(1,int(diceSize))
 			total+=bonus
 		else:
 			total += 0
@@ -34,8 +35,9 @@ def maxRoll(dieRolls):
 			elif "-" in dice:
 				dice,bonus = dice.split("-")
 				bonus= int(bonus) * -1
-			numDice, diceSize = dice.split("d")
-			total += int(numDice) * int(diceSize) + int(bonus)
+			if "d" in dice:
+				numDice, diceSize = dice.split("d")
+				total += int(numDice) * int(diceSize) + int(bonus)
 		if dice[0] == "-":
 			dice = dice[1:]
 			bonus = 0
@@ -45,8 +47,9 @@ def maxRoll(dieRolls):
 			elif "-" in dice:
 				dice,bonus = dice.split("-")
 				bonus= int(bonus) * -1
-			numDice, diceSize = dice.split("d")
-			total += int(numDice) * int(diceSize) + int(bonus) * -1
+			if "d" in dice:
+				numDice, diceSize = dice.split("d")
+				total += int(numDice) * int(diceSize) + int(bonus) * -1
 		else:
 			total += 0
 	return total

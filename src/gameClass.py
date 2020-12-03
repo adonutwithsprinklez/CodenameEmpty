@@ -289,7 +289,7 @@ class Game(object):
                                     action[1], action[2], self.player)
                             elif action[0] == "give":
                                 self.currentArea.event.giveItem(action[1], action[2], self.player,
-                                                                self.weapons, self.armor, self.misc)
+                                                                self.weapons, self.armor, self.misc, self.modifiers)
                             elif action[0] == "spawnEnemy":
                                 for enemyid in action[1]:
                                     self.currentArea.enemy.append(Enemy(

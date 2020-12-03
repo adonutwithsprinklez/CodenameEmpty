@@ -1,0 +1,21 @@
+{
+    "name":[
+        "Potion of Health",
+        "Health Potion"
+    ],
+    "desc":[
+        "A red liquid sloshes within the glass vial",
+        "It's a small vial full of a red liquid.",
+        "The glass container has a label that reads, 'drink if in trouble'."
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "modifier":[
+        ["strongEffect", 3],
+        ["None", 7]
+    ],
+    "effects":[
+        ["heal","2d6"]
+    ],
+    "worth":2
+}

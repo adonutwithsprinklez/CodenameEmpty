@@ -56,9 +56,10 @@ class Enemy(object):
                 elif self.itemDrop[0] in armor.keys():
                     self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
                 elif self.itemDrop[0] in misc.keys():
-                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]])
-            except:
+                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]], modifiers)
+            except Exception as e:
                 print("Error loading {} item reward.".format(self.name))
+                print(e)
 
         if self.xp < 1:
             self.xp = 1
