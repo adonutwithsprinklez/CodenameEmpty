@@ -41,12 +41,13 @@
 		"armor_orcCaptainArmor"
 	],
 	"misc":[
+		"consumable_apple",
+		"consumable_potion_health",
 		"material_wolfPelt",
 		"material_stick",
 		"material_greatWolfPelt",
 		"misc_pieceOfMetal",
-		"misc_mysteriousOrb",
-		"consumable_apple"
+		"misc_mysteriousOrb"
 	],
 	"areas":[
 		"area_forest",
@@ -94,7 +95,8 @@
 		"event_forestAreaMisc",
 		"event_forestAreaMisc2",
 		"event_mysteriousOrb",
-		"event_cave_wolf_1"
+		"event_cave_wolf_1",
+		"event_cave_found_item_1"
 	],
 	"startingArea":"area_forest"
 }

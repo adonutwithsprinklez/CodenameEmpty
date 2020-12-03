@@ -58,7 +58,8 @@
 	"hostilityMax":6,
 	"eventChance":100,
 	"events":[
-		["event_cave_wolf_1", "1d6"]
+		["event_cave_wolf_1", "1d6"],
+		["event_cave_found_item_1", "1d6"]
 	],
 	"enemyChance":75,
 	"enemyMessage":[
