@@ -170,8 +170,6 @@ class Game(object):
         '''
 
         self.currentArea = self.areaController.loadArea((0,0))
-        # Disables enemies in the first area.
-        self.currentArea.enemy = []
 
     def loadPlayer(self):
         # TODO: Add player creation menu here

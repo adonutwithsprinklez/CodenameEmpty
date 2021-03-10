@@ -49,19 +49,31 @@ class Area(object):
                     enemiesCheck = copy.copy(possibleEnemies)
                     possibleEnemies = []
                     for enemy in enemiesCheck:
-                        if enemy[1] <= enemyPoints - currentEnemyDanger:
+                        if enemy[0] != "group" and enemy[1] <= enemyPoints - currentEnemyDanger:
+                            # This enemy choice is not a group and has a low enough danger level
+                            possibleEnemies.append(enemy)
+                        elif enemy[0] == "group" and enemy[2] <= enemyPoints - currentEnemyDanger:
+                            # This enemy choice is a group and has a low enough danger level
                             possibleEnemies.append(enemy)
                     if len(possibleEnemies) > 0:
                         newEnemy = random.choice(possibleEnemies)
-                        currentEnemyDanger += newEnemy[1]
-                        enemies.append(newEnemy[0]) 
+                        # check if enemy is a group or not
+                        if enemy[0] != "group":
+                            # This is not a group, add them to the enemy list normally
+                            currentEnemyDanger += newEnemy[1]
+                            enemies.append(newEnemy[0])
+                        else:
+                            # this enemy is apart of a group, add them individually to the list
+                            currentEnemyDanger += newEnemy[2]
+                            for enemyid in newEnemy[1]:
+                                enemies.append(enemyid)
                 attempts += 1
             self.enemy = enemies
 
         # Optional Area data tags
         datakeys = areaType.keys()
         self.enemyMessage = None
-        if "enemyMessage" in datakeys:
+        if "enemyMessage" in datakeys and len(areaType["enemyMessage"]):
             self.enemyMessage = generateString(areaType, "enemyMessage")
 
         '''
