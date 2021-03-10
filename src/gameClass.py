@@ -420,7 +420,7 @@ class Game(object):
                     elif cmd == 2:
                         self.disp.clearScreen()
                         escape = False
-                        if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < areaEnemy.getArmorDefence():
+                        if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < 1 + areaEnemy.getArmorDefence():
                             escape = True
                         if escape:
                             self.disp.displayHeader("Escape Successful")
