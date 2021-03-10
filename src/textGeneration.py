@@ -15,6 +15,12 @@ def generateString(data=None, tag="name"):
         nameString = nameString.replace(command, replacement)
     return nameString
 
+def generateDescription(descriptors, numDescriptorsToUse = 1):
+    string = ""
+    for i in range(numDescriptorsToUse):
+        string += random.choice(descriptors).getString()
+    return string
+
 def _makeMarkovChain(dataInput=None):
     chain = ""
     if dataInput["markovType"] == "data":

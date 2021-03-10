@@ -26,11 +26,13 @@
 		"Ever closer to completion",
 		"The void stares back"
 	],
-	"weapons":[
-		"weapon_ironSword",
-		"weapon_wolfClaws",
-		"weapon_orcSword",
-		"template_IronSword"
+	"areas":[
+		"area_forest",
+		"area_strongHold",
+		"cave_wolf_entrance",
+		"cave_wolf_room_1a",
+		"cave_wolf_room_2a",
+		"cave_wolf_room_3"
 	],
 	"armor":[
 		"armor_wolfHide",
@@ -39,6 +41,29 @@
 		"armor_greatWolfHide",
 		"armor_orcArmor",
 		"armor_orcCaptainArmor"
+	],
+	"descriptors":[
+		"desc_trees",
+		"desc_dirt_path"
+	],
+	"enemies":[
+		"enemy_bandit",
+		"enemy_rodentOfUnusualSize",
+		"enemy_wolf",
+		"enemy_greatWolf",
+		"enemy_orc",
+		"enemy_orcCaptain",
+		"enemy_robbedQuestEnemy"
+	],
+	"events":[
+		"event_lostItem",
+		"event_flipACoin",
+		"event_forestAreaMisc",
+		"event_forestAreaMisc2",
+		"event_mysteriousOrb",
+		"event_forest_apple",
+		"event_cave_wolf_1",
+		"event_cave_found_item_1"
 	],
 	"misc":[
 		"consumable_apple",
@@ -49,13 +74,14 @@
 		"misc_pieceOfMetal",
 		"misc_mysteriousOrb"
 	],
-	"areas":[
-		"area_forest",
-		"area_strongHold",
-		"cave_wolf_entrance",
-		"cave_wolf_room_1a",
-		"cave_wolf_room_2a",
-		"cave_wolf_room_3"
+	"modifiers":[
+		"modifiersList"
+	],
+	"npcs":[
+		"npc_defNPC"
+	],
+	"quests":[
+		"quest_robbed"
 	],
 	"races":[
 		"race_human",
@@ -71,32 +97,11 @@
 		"race_dwarf",
 		"race_draktilien"
 	],
-	"npcs":[
-		"npc_defNPC"
-	],
-	"enemies":[
-		"enemy_bandit",
-		"enemy_rodentOfUnusualSize",
-		"enemy_wolf",
-		"enemy_greatWolf",
-		"enemy_orc",
-		"enemy_orcCaptain",
-		"enemy_robbedQuestEnemy"
-	],
-	"modifiers":[
-		"modifiersList"
-	],
-	"quests":[
-		"quest_robbed"
-	],
-	"events":[
-		"event_lostItem",
-		"event_flipACoin",
-		"event_forestAreaMisc",
-		"event_forestAreaMisc2",
-		"event_mysteriousOrb",
-		"event_cave_wolf_1",
-		"event_cave_found_item_1"
+	"weapons":[
+		"weapon_ironSword",
+		"weapon_wolfClaws",
+		"weapon_orcSword",
+		"template_IronSword"
 	],
 	"startingArea":"area_forest"
 }
