@@ -1,0 +1,41 @@
+{
+	"name":[
+        "$descriptor $aName"
+	],
+	"aName":{
+		"type":"choose",
+		"choices":[
+            "Grove",
+            "Clearing"
+		]
+	},
+	"descriptor":{
+		"type":"choose",
+		"choices":[
+            "Clear",
+			"Empty",
+			"Peaceful"
+		]
+	},
+	"desc":[
+        "Place holder description text."
+	],
+	"aType":"Forest",
+	"hostilityMin":1,
+	"hostilityMax":1,
+	"eventChance":100,
+	"events":[
+		["intro_event_1","1d1"]
+	],
+	"enemyChance":0,
+	"enemyMessage":[""],
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":1,
+	"maxNewAreas":9,
+	"areas":[
+		["area_forest","1d1", ["required", "limited"]]
+	]
+}

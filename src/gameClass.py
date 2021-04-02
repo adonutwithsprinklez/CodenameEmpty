@@ -461,7 +461,8 @@ class Game(object):
                     if random.randint(1, 100) < areaEnemy.itemChance:
                         self.disp.display("")
                         self.disp.displayHeader("Reward")
-                        self.disp.display(areaEnemy.itemDrop[1])
+                        itemMessage = areaEnemy.itemDrop[1].replace("$name", areaEnemy.name)
+                        self.disp.display(itemMessage)
                         self.disp.display("You recieved %s." %
                                           (areaEnemy.itemDrop[0].name))
                         self.player.inv.append(areaEnemy.itemDrop[0])

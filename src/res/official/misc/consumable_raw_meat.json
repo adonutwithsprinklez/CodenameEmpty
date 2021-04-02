@@ -1,0 +1,15 @@
+{
+    "name":[
+        "Raw Meat",
+        "Raw Flesh"
+    ],
+    "desc":[
+        "It is a hunk of raw flesh. It may give some nourishment, but cooking it would probably help."
+    ],
+    "iType":"consumable",
+    "consumeText":["Eat"],
+    "effects":[
+        ["heal","1d4"]
+    ],
+    "worth":3
+}
