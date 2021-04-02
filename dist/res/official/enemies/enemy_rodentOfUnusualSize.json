@@ -52,9 +52,9 @@
 	"armor":[
         "None"
 	],
-	"itemChance":0,
+	"itemChance":50,
 	"itemDrops":[
-		["material_wolfPelt","You skin the wolf and take it as a reward."]
+		["consumable_raw_meat","You are able to salvage some of the beast's flesh."]
 	],
 	"xp":1
 }

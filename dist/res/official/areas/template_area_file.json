@@ -31,7 +31,8 @@
 	"enemyPointsPerHostility":2,
 	"enemies":[
 		["enemy id here", hostilitypointsneededtospawn],
-		["enemy 2 id here", 2]
+		["enemy 2 id here", 2],
+		["group", ["enemy", "ids", "of", "group", "here"], 10]
 	],
 	"npcChance":0,
 	"npcs":[

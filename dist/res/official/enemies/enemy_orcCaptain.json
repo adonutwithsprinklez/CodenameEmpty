@@ -29,9 +29,11 @@
 	"armor":[
 		"armor_orcArmor"
 	],
-	"itemChance":25,
+	"itemChance":50,
 	"itemDrops":[
-		["armor_ironArmor", "You see that the orc you killed had a bag of valuables. Within it you find some iron armor."]
+		["armor_ironArmor", "You see that the orc you killed had a bag of valuables. Within it you find some iron armor."],
+		["consumable_potion_health", "You search the $name and find a healing potion."],
+		["consumable_potion_health", "You search the Orc and find a healing potion."]
 	],
 	"xp":20
 }
