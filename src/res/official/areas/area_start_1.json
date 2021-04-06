@@ -34,8 +34,8 @@
 	"npcChance":0,
 	"npcs":[],
 	"minNewAreas":1,
-	"maxNewAreas":9,
+	"maxNewAreas":1,
 	"areas":[
-		["area_forest","1d1", ["required", "limited"]]
+		["area_start_2","1d1", ["required", "limited"]]
 	]
 }

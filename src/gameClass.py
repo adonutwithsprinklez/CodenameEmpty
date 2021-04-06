@@ -176,6 +176,8 @@ class Game(object):
         self.player = Player()
         self.player.race = Race(self.races["human"])
         self.player.disp = self.disp
+        
+        # Sets some defualt equipment to the player
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(

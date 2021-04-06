@@ -1,0 +1,44 @@
+{
+	"name":[
+        "$descriptor $aName"
+	],
+	"aName":{
+		"type":"choose",
+		"choices":[
+            "Path",
+            "Pathway",
+            "Trail"
+		]
+	},
+	"descriptor":{
+		"type":"choose",
+		"choices":[
+            "Lightly Treaded",
+            "Rough Looking",
+            "Barely Treaded"
+		]
+	},
+	"desc":[
+        "You walk along the $descriptor path, unsure if it will actually lead anywhere worthwhile.",
+        "The path is tough follow due to its apparent lack of use. You are unsure if following this path is a"
+	],
+	"aType":"Forest",
+	"hostilityMin":2,
+	"hostilityMax":3,
+	"eventChance":100,
+	"events":[
+        ["intro_event_2a", "1d6"],
+		["intro_event_2b", "1d6"]
+	],
+	"enemyChance":0,
+	"enemyMessage":[""],
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":1,
+	"maxNewAreas":1,
+	"areas":[
+		["area_forest","1d1", ["required","limited"]]
+	]
+}
