@@ -20,9 +20,9 @@ class Misc(object):
 		# Modifier logic
 		print("\n" + self.name)
 		print(data.keys())
+		self.modifier = None
 		if "modifier" in data.keys():
 			modifiers = data["modifier"]
-			self.modifier = None
 			mods = []
 			for mod in modifiers:
 				mods += [mod[0]]*mod[1]
