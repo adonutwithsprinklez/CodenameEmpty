@@ -91,6 +91,10 @@ class Game(object):
 
                 print("Loading pack \"{}\"...".format(pack))
                 self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
+                if self.packs[pack]["packType"] == "standalone":
+                    self.starterWeapon = self.packs[pack]["startingWeapon"]
+                    self.starterArmor = self.packs[pack]["startingArmor"]
+                    self.starterInventory = self.packs[pack]["startingInventory"]
 
                 if "gameLogo" in self.packs[pack].keys():
                     self.logos.append(self.packs[pack]["gameLogo"])
@@ -178,10 +182,29 @@ class Game(object):
         self.player.disp = self.disp
         
         # Sets some defualt equipment to the player
+        '''
         self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(
             self.weapons["template_IronSword"]))
+        '''
+
+        self.player.weapon = generateWeapon(self.weapons[self.starterWeapon])
+        self.player.armor = Armor(self.armor[self.starterArmor])
+
+        # Add all the extra inventory gear
+        for item in self.starterInventory:
+            newItem = None
+            if item in self.misc.keys():
+                newItem = Misc(self.misc[item], self.modifiers)
+            elif item in self.weapons.keys():
+                newItem = generateWeapon(self.weapons[item])
+            elif item in self.armor.keys():
+                newItem = Armor(self.armor[item])
+            if newItem != None:
+                self.player.inv.append(newItem)
+            
+
         self.player.gold = 100
         self.loadStartingArea()
         self.player.hp = self.player.getMaxHP()
