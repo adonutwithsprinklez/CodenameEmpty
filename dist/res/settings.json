@@ -24,7 +24,7 @@
         [
             "DISABLEFLAVOREVENTS",
             "Disable Flavor Text Events",
-            true
+            false
         ],
         [
             "DEBUGDISPLAY",

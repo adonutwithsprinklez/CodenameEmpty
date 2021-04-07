@@ -62,8 +62,7 @@
 	],
 	"events":[
 		"intro_event_1",
-		"intro_event_2a",
-		"intro_event_2b",
+		"intro_event_2",
 		"event_lostItem",
 		"event_flipACoin",
 		"event_forestAreaMisc",
@@ -116,8 +115,6 @@
 	"startingWeapon":"weapon_ironSword",
 	"startingArmor":"armor_hideArmor",
 	"startingInventory":[
-		"consumable_potion_health",
-		"consumable_potion_health",
 		"consumable_potion_health"
 	]
 }

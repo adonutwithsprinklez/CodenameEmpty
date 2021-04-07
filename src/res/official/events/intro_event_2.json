@@ -1,0 +1,124 @@
+{
+    "id":"areaStartIntro2",
+    "type":"intro",
+    "name":[
+        "Abandoned Camp",
+        "Empty Campsite"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You continue following the trail, eventually entering a clearing. A fire pit sits at the center and a broken tent sits on its own just a few yards away.",
+            "As you follow the trail, you stumble into what appears to be an abandoned campsite. A broken tent and empty fire pit are the only things of notice."
+        ],
+        "actions":[
+            {
+                "action":"Investigate the fire pit",
+                "eventDo":[
+                    ["say","You walk over to the fire pit and kneel down to see if there is anything of note.\nExamining the ash and footprints around the pit lead you to believe that there was only a single person staying at the campsite."],
+                    ["goto", ["#firepit"]]
+                ]
+            },
+            {
+                "action":"Investigate the broken tent",
+                "eventDo":[
+                    ["say","You walk over to the broken tent and pick through the scraps of fabric."],
+                    ["goto", ["#brokentent","#luckytent"]]
+                ]
+            },
+            {
+                "action":"Leave the campsite",
+                "eventDo":[
+                    ["say","After looking at the state of the camp, you decide that it would not be wise to stick around and see what made the previous visitor leave in such a hurry."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#firepit":{
+        "msg":[
+            "You stand up from the fire pit and look around at the rest of the camp. The tent sits on its own in silence.",
+            "Standing up from the firepit you take another glance around the camp. All that was left behind by the prior visitor was the tent."
+        ],
+        "actions":[
+            {
+                "action":"Investigate the abandoned tent",
+                "eventDo":[
+                    ["say","You walk over to the broken tent and pick through the scraps of fabric."],
+                    ["goto", ["#brokentent","#luckytent"]]
+                ]
+            },
+            {
+                "action":"Leave the campsite",
+                "eventDo":[
+                    ["say","You stand up and walk towards the trail. Odds are there's nothing worthwhile here, and you definitely don't want to see what made the previous visitor leave in such a hurry."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#brokentent":{
+        "msg":[
+            "Upon lifting one of the tent flaps you find a satchel with a bit of weight to it.",
+            "Tossing parts of the tent to the side you see a small bag. Lifting it up you can feel that there's something inside."
+        ],
+        "actions":[
+            {
+                "action":"Open the bag",
+                "eventDo":[
+                    ["say","You open the top flap of the bag and shake its contents out in front of you. Several apples drop down onto the ground.\nYou pocket the apples."],
+                    ["give","consumable_apple",3],
+                    ["goto", ["#anEncounter","#noEncounter"]]
+                ]
+            }
+        ]
+    },
+    "#luckytent":{
+        "msg":[
+            "Upon lifting one of the tent flaps you find a satchel with a bit of weight to it.",
+            "Tossing parts of the tent to the side you see a small bag. Lifting it up you can feel that there's something inside."
+        ],
+        "actions":[
+            {
+                "action":"Open the bag",
+                "eventDo":[
+                    ["say","You open the top flap of the bag and shake its contents out in front of you. Three glass bottles drop onto the ground.\nPicking one up to look at closer makes you realize that they are healing potions! You throw the potions into your bag."],
+                    ["give","consumable_potion_health",3],
+                    ["goto", ["#anEncounter","#noEncounter"]]
+                ]
+            }
+        ]
+    },
+    "#anEncounter":{
+        "msg":[
+            "You stand up, glad that searching the campsite was worth the time.\nA sudden loud snap alerts you to a pair of large rodents that are closing in on you fast. You don't have any choice other than to fight.",
+            "You stand up and glance around the camp one last time.\nA high pitched screech causes you to spin around. A pair of unusually big rodents are circling you. Your only choice is to fight them off. "
+        ],
+        "actions":[
+            {
+                "action":"Ready your weapon",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_rodentOfUnusualSize","enemy_rodentOfUnusualSize"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#noEncounter":{
+        "msg":[
+            "You stand up, glad that searching the campsite was worth the time.",
+            "You stand up and glance around the camp one last time."
+        ],
+        "actions":[
+            {
+                "action":"Continue along the path",
+                "eventDo":[
+                    ["say","Since there is nothing left at the site to search you continue once more along the trail."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}
