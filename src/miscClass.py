@@ -54,7 +54,7 @@ class Misc(object):
 				if healing > 0:
 					actualEffects += 1
 					player.giveHP(healing)
-					player.disp.display("You feel from the {}, giving you {} hp.".format(self.name, healing))
+					player.disp.display("You feel strengthened from the {}, giving you {} hp.".format(self.name, healing))
 		
 		if actualEffects <= 0:
 			# TODO Display no effects message
