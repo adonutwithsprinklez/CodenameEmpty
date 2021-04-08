@@ -1,0 +1,13 @@
+{
+	"name":[
+		"Ruined Cloak",
+		"Torn Cloak"
+	],
+	"desc":[
+		"The cloak will protect you only if a blow lands on an undamaged portion of it.",
+		"The worn out cloak won't protect you from much."
+	],
+	"defence":"1d2-1",
+	"worthMin":5,
+	"worthMax":15
+}

@@ -92,8 +92,8 @@ class Game(object):
                 print("Loading pack \"{}\"...".format(pack))
                 self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
                 if self.packs[pack]["packType"] == "standalone":
-                    self.starterWeapon = self.packs[pack]["startingWeapon"]
-                    self.starterArmor = self.packs[pack]["startingArmor"]
+                    self.starterWeapon = random.choice(self.packs[pack]["startingWeapon"])
+                    self.starterArmor = random.choice(self.packs[pack]["startingArmor"])
                     self.starterInventory = self.packs[pack]["startingInventory"]
 
                 if "gameLogo" in self.packs[pack].keys():
@@ -163,7 +163,7 @@ class Game(object):
         self.loaded = True
 
     def loadStartingArea(self):
-        self.areaController = AreaController(self.areas, self.packs[self.starter]["startingArea"], (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+        self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
         '''
         # TODO deprecate this loading function
