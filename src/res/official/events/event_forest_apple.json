@@ -16,6 +16,7 @@
                 "action":"Take it",
                 "eventDo":[
                     ["say","You reach up to the tree and grab the apple."],
+                    ["give","consumable_apple",1],
                     ["finish"]
                 ]
             },

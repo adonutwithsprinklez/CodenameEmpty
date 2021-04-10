@@ -29,7 +29,7 @@
 	"armor":[
 		"armor_greatWolfHide"
 	],
-	"itemChance":75,
+	"itemChance":50,
 	"itemDrops":[
 		["material_greatWolfPelt","You skin the large beast and take it as a reward."],
 		["consumable_raw_meat","You skin the large beast, taking some of its flesh with you."],

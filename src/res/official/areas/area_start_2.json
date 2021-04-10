@@ -20,7 +20,7 @@
 	},
 	"desc":[
         "You walk along the $descriptor path, unsure if it will actually lead anywhere worthwhile.",
-        "The path is tough follow due to its apparent lack of use. You are unsure if following this path is a"
+        "The path is tough follow due to its apparent lack of use. You are unsure if following this path is the smartest decision."
 	],
 	"aType":"Empty Forest",
 	"hostilityMin":2,

@@ -15,7 +15,7 @@
             {
                 "action":"Take in your surroundings",
                 "eventDo":[
-                    ["say","You stand up, looking around at the trees spread out around you.\nYou are in the middle of a forest grove."],
+                    ["say","You stand up, looking around at the trees spread out around you."],
                     ["say","Figuring out what you were doing and why you are in the middle of a forest should probably be your top priority.\nThere is a lightly treaded path in front of you. It could be the way to the nearest town."],
                     ["finish"]
                 ]

@@ -23,7 +23,6 @@
             "Dark",
             "Small",
             "Large",
-            "Roomy",
             "Tight",
             "Drafty",
             "Slim",
@@ -78,10 +77,11 @@
 	],
 	"npcChance":0,
 	"npcs":[],
-	"minNewAreas":1,
-	"maxNewAreas":3,
+	"minNewAreas":2,
+	"maxNewAreas":4,
 	"areas":[
         ["cave_wolf_room_2a", "1d6", ["required", "limited"]],
-        ["cave_wolf_room_1a", "1d6", ["limited"]]
+        ["cave_wolf_room_1a", "1d6", ["limited"]],
+        ["cave_wolf_room_1b", "1d6"]
 	]
 }

@@ -312,8 +312,10 @@ class Game(object):
                                     action[1], action[2], self.player)
                             elif action[0] == "give":
                                 for i in range(action[2]):
-                                    self.currentArea.event.giveItem(action[1], action[2], self.player,
+                                    result = self.currentArea.event.giveItem(action[1], action[2], self.player,
                                                                     self.weapons, self.armor, self.misc, self.modifiers)
+                                    if self.settings["DEBUG"] and not result:
+                                        raise Exception("Something went wrong when processing an event's 'give' command.")
                             elif action[0] == "spawnEnemy":
                                 for enemyid in action[1]:
                                     self.currentArea.enemy.append(Enemy(

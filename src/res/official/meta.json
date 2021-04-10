@@ -36,6 +36,7 @@
 		"area_strongHold",
 		"cave_wolf_entrance",
 		"cave_wolf_room_1a",
+		"cave_wolf_room_1b",
 		"cave_wolf_room_2a",
 		"cave_wolf_room_3"
 	],
@@ -65,6 +66,7 @@
 		"intro_event_1",
 		"intro_event_2",
 		"event_lostItem",
+		"event_forgotten_item",
 		"event_flipACoin",
 		"event_forestAreaMisc",
 		"event_forestAreaMisc2",

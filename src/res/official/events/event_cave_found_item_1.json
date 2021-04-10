@@ -61,7 +61,7 @@
                 "action":"Take it",
                 "eventDo":[
                     ["say","You slip the potion into your bag and continue on."],
-                    ["give","consumable_potion_healing",1],
+                    ["give","consumable_potion_health",1],
                     ["finish"]
                 ]
             },
@@ -83,7 +83,7 @@
                 "action":"Take them",
                 "eventDo":[
                     ["say","You slip the potions into your bag and continue on."],
-                    ["give","consumable_potion_healing",2],
+                    ["give","consumable_potion_health",2],
                     ["finish"]
                 ]
             },

@@ -70,14 +70,15 @@
 	"hostilityMax":5,
 	"eventChance":35,
 	"events":[
-		["event_lostItem", "1d8"],
-		["event_flipACoin", "1d8"],
-		["event_forestAreaMisc", "1d6+5"],
-		["event_forestAreaMisc2", "1d6+5"],
-		["event_forest_apple", "1d6+4"],
-		["event_mysteriousOrb", "1d7"]
+		["event_lostItem", "1d20"],
+		["event_flipACoin", "1d20"],
+		["event_forestAreaMisc", "1d20+6"],
+		["event_forestAreaMisc2", "1d20+6"],
+		["event_forest_apple", "1d20+3"],
+		["event_mysteriousOrb", "1d20"],
+		["event_forgotten_item", "1d20+3"]
 	],
-	"enemyChance":35,
+	"enemyChance":45,
 	"enemyPointsPerHostility":2,
 	"enemies":[
 		["enemy_rodentOfUnusualSize", 2],

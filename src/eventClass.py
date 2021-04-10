@@ -81,12 +81,18 @@ class Event(object):
     def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers):
         if itemId == "gold":
             player.gold += amount
+            return True
         elif itemId in weapons.keys():
             player.inv.append(copy.copy(generateWeapon(weapons[itemId])))
+            return True
         elif itemId in armor.keys():
             player.inv.append(copy.copy(Armor(armor[itemId])))
+            return True
         elif itemId in misc.keys():
             player.inv.append(copy.copy(Misc(misc[itemId], modifiers)))
+            return True
+        print("Item id '{}' not found".format(itemId))
+        return False
 
 class Tag(object):
     def __init__(self, data):
