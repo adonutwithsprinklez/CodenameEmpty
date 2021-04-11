@@ -1,6 +1,5 @@
 
 # Official Python module imports
-import copy
 import random
 import time
 import os
@@ -140,9 +139,10 @@ class Game(object):
                         "%s%s/events/%s.json" % (folder, pack, e))
                     self.disp.dprint("Loaded asset %s" % e)
                 for m in self.packs[pack]["modifiers"]:
-                    mods = loadJson("%s%s/%s.json" % (folder, pack, m))
+                    mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
                     for mod in mods.keys():
                         self.modifiers[mod] = Modifier(mod, mods[mod])
+                    self.disp.dprint("Loaded asset %s" % m)
                 print("Finished loading assets.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -189,7 +189,7 @@ class Game(object):
             self.weapons["template_IronSword"]))
         '''
 
-        self.player.weapon = generateWeapon(self.weapons[self.starterWeapon])
+        self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
         self.player.armor = Armor(self.armor[self.starterArmor])
 
         # Add all the extra inventory gear
@@ -198,7 +198,7 @@ class Game(object):
             if item in self.misc.keys():
                 newItem = Misc(self.misc[item], self.modifiers)
             elif item in self.weapons.keys():
-                newItem = generateWeapon(self.weapons[item])
+                newItem = generateWeapon(self.weapons[item], self.modifiers)
             elif item in self.armor.keys():
                 newItem = Armor(self.armor[item])
             if newItem != None:
@@ -631,7 +631,7 @@ class Game(object):
                 itemKey = action[1]
                 item = None
                 if itemKey in self.weapons.keys():
-                    item = generateWeapon(self.weapons[itemKey])
+                    item = generateWeapon(self.weapons[itemKey], self.modifiers)
                 elif itemKey in self.misc.keys():
                     item = Misc(self.misc[itemKey], self.modifiers)
                 elif itemKey in self.armor.keys():

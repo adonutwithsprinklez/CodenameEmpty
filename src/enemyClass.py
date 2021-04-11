@@ -69,7 +69,7 @@ class Enemy(object):
 
     def getWeaponDamage(self, rand=True):
         if self.weapon:
-            return rollDice(self.damage) + rollDice(self.weapon.damage)
+            return rollDice(self.damage) + self.weapon.getAttack()
         else:
             return rollDice(self.damage)
 

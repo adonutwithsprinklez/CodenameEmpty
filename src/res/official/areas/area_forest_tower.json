@@ -1,0 +1,44 @@
+{
+	"name":[
+        "$nameDesc Tower",
+        "Tower in the Forest"
+	],
+	"nameDesc":{
+		"type":"choose",
+		"choices":[
+            "Abandoned",
+            "Forgotten",
+            "Derelict",
+            "Crumbling"
+		]
+	},
+	"desc":[
+        "[STILL A WORK IN PROGRESS] The tower stands tall in the middle of the forest. Its crumbling exterior still presenting the master worksmanship of its original architects.",
+        "[STILL A WORK IN PROGRESS] The derelict spire reaches high above the surrounding trees. "
+	],
+	"aType":"Forest",
+	"hostilityMin":4,
+	"hostilityMax":6,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":80,
+	"enemyMessage":[
+		"This tag is optional",
+		"$nameDesc are able to be used as well"
+	],
+	"enemyPointsPerHostility":1,
+	"enemies":[
+		["group", ["enemy_bandit", "enemy_bandit", "enemy_bandit"], 5],
+		["group", ["enemy_bandit", "enemy_bandit", "enemy_bandit", "enemy_bandit"], 6],
+		["group", ["enemy_wolf", "enemy_wolf", "enemy_greatWolf"], 4]
+	],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":3,
+	"maxNewAreas":5,
+	"areas":[
+		["area_forest","2d5", ["required"]],
+		["area_strongHold","1d7"]
+	]
+}

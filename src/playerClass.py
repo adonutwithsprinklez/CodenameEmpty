@@ -327,7 +327,7 @@ class Player(object):
 
     def getWeaponDamage(self):
         if self.weapon:
-            return rollDice(self.weapon.damage)
+            return self.weapon.getAttack()
         else:
             return 0
 

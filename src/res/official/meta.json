@@ -33,6 +33,7 @@
 		"area_start_1",
 		"area_start_2",
 		"area_forest",
+		"area_forest_tower",
 		"area_strongHold",
 		"cave_wolf_entrance",
 		"cave_wolf_room_1a",
@@ -48,10 +49,6 @@
 		"armor_greatWolfHide",
 		"armor_orcArmor",
 		"armor_orcCaptainArmor"
-	],
-	"descriptors":[
-		"desc_trees",
-		"desc_dirt_path"
 	],
 	"enemies":[
 		"enemy_bandit",
@@ -86,7 +83,9 @@
 		"misc_mysteriousOrb"
 	],
 	"modifiers":[
-		"modifiersList"
+		"consumable_modifiers",
+		"enemy_modifiers",
+		"weapon_modifiers"
 	],
 	"npcs":[
 		"npc_defNPC"
