@@ -18,7 +18,7 @@ class Enemy(object):
         self.xp = data["xp"]
         if data["weapon"]:
             self.weapon = generateWeapon(
-                weapons[random.choice(data["weapon"])])
+                weapons[random.choice(data["weapon"])], modifiers)
         # Adds modifiers to the enemy
         if data["modifier"]:
             # Calculates the chance for each mod
@@ -52,7 +52,7 @@ class Enemy(object):
             try:
                 if self.itemDrop[0] in weapons.keys():
                     self.itemDrop[0] = generateWeapon(
-                        weapons[self.itemDrop[0]])
+                        weapons[self.itemDrop[0]], modifiers)
                 elif self.itemDrop[0] in armor.keys():
                     self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
                 elif self.itemDrop[0] in misc.keys():
