@@ -12,27 +12,29 @@
             "Crumbling"
 		]
 	},
+	"towerDesc":{
+		"type":"choose",
+		"choices":[
+			"The tower stands tall in the middle of the forest. Its crumbling exterior still presenting the master worksmanship of its original architects.",
+			"The derelict spire reaches high above the surrounding trees. The structure is made up of carfully carved stones that perfectly fit into the other. If only it had received some form of upkeep.",
+			"The tower looms over the surrounding trees with its intimidating presence. The torn banners are the only indicator that the tower has been abandoned for some time."
+		]
+	},
 	"desc":[
-        "[STILL A WORK IN PROGRESS] The tower stands tall in the middle of the forest. Its crumbling exterior still presenting the master worksmanship of its original architects.",
-        "[STILL A WORK IN PROGRESS] The derelict spire reaches high above the surrounding trees. "
+        "The worn trail has numerous lush trees to either side of it. Following the trail leads to an abandoned looking tower.\n$towerDesc",
+        "Following the dirt path under the coverage of trees eventually leads to a worn tower.\n$towerDesc",
+		"The seemingly endless path curves through the dense forest. Continuing to follow it leads to a derelict looking tower."
 	],
 	"aType":"Forest",
 	"hostilityMin":4,
 	"hostilityMax":6,
-	"eventChance":0,
+	"eventChance":75,
 	"events":[
+		["event_tower_forest", "1d6"]
 	],
-	"enemyChance":80,
-	"enemyMessage":[
-		"This tag is optional",
-		"$nameDesc are able to be used as well"
-	],
+	"enemyChance":0,
 	"enemyPointsPerHostility":1,
-	"enemies":[
-		["group", ["enemy_bandit", "enemy_bandit", "enemy_bandit"], 5],
-		["group", ["enemy_bandit", "enemy_bandit", "enemy_bandit", "enemy_bandit"], 6],
-		["group", ["enemy_wolf", "enemy_wolf", "enemy_greatWolf"], 4]
-	],
+	"enemies":[],
 	"npcChance":0,
 	"npcs":[],
 	"minNewAreas":3,

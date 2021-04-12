@@ -70,7 +70,8 @@
 		"event_mysteriousOrb",
 		"event_forest_apple",
 		"event_cave_wolf_1",
-		"event_cave_found_item_1"
+		"event_cave_found_item_1",
+		"event_tower_forest"
 	],
 	"misc":[
 		"consumable_apple",
@@ -117,7 +118,5 @@
 	"startingArea":["area_start_1"],
 	"startingWeapon":["weapon_starter_sword"],
 	"startingArmor":["armor_starting_armor"],
-	"startingInventory":[
-		"consumable_potion_health"
-	]
+	"startingInventory":["consumable_potion_health"]
 }
