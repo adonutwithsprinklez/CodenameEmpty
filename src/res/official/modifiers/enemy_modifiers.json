@@ -95,34 +95,5 @@
 		],
 		"effect":"health",
 		"strength":"-2d2"
-	},
-	"wolfStrong":{
-		"name":[
-			"Well Built",
-			"Muscular",
-			"Towering"
-		],
-		"desc":[
-			"The wolf is massive in size.",
-			"The frame of the wolf is impressive.",
-			"There are few wolves as large as the one in front of you."
-		],
-		"effect":"health",
-		"strength":"2d3"
-	},
-	"wolfRabid":{
-		"name":[
-			"Rabid",
-			"Foaming",
-			"Mad-Eyed",
-			"Fearless"
-		],
-		"desc":[
-			"The wolf is foaming at the mouth.",
-			"The wolf has a mad look in its eye.",
-			"The rabid wolf does not appear to be showing any sign of fear."
-		],
-		"effect":"damage",
-		"strength":"1d3"
 	}
 }

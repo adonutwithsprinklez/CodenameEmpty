@@ -86,6 +86,7 @@
 	"modifiers":[
 		"consumable_modifiers",
 		"enemy_modifiers",
+		"enemy_wolf_modifiers",
 		"weapon_modifiers"
 	],
 	"npcs":[

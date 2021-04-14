@@ -37,6 +37,8 @@ class Player(object):
             self.disp.display("Quick Stats:")
             for stat in self.getUserInfo():
                 self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
+            self.disp.display("Wielding: %s (%s damage)" % (self.weapon.name, self.weapon.damage))
+            self.disp.display("Wearing: %s (%s defence)" % (self.armor.name, self.armor.defence), 0)
             self.disp.display("Equipped Gear:", 1, 0)
             self.disp.display("\t{}".format(
                 self.getEquipmentString()), 0)
@@ -125,11 +127,11 @@ class Player(object):
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "a":
             self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
-            self.disp.display("%s - %s defence" %
+            self.disp.display("\t%s - %s defence" %
                               (self.inv[cmd-1].name, self.inv[cmd-1].defence))
             self.disp.display(self.inv[cmd-1].desc, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("%s - %s defence" %
+            self.disp.display("\t%s - %s defence" %
                               (self.armor.name, self.armor.defence), 0)
             self.disp.display(self.armor.desc, 0, 1)
             self.disp.display("1. Equip", 0)
