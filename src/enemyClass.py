@@ -77,6 +77,7 @@ class Enemy(object):
         for mod in self.modifiers:
             if "d" in mod.keys() and random.random() > .5:
                 description = "{} {}".format(description, mod["d"])
+        description = description.replace("$name", self.name)
         return description
 
     def getHealth(self):

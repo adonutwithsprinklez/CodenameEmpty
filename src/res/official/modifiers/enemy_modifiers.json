@@ -3,7 +3,9 @@
 		"name":[
 			"Strong",
 			"Fit",
-			"Quick"
+			"Quick",
+			"Mad",
+			"Irritated"
 		],
 		"desc":[
 			"It looks like it could easily deal some damage.",
@@ -16,11 +18,13 @@
 		"name":[
 			"Very Strong",
 			"Fast",
-			"Rugged"
+			"Rugged",
+			"Angery",
+			"Furious"
 		],
 		"desc":[
 			"It looks like it could easily deal some damage.",
-			"This one definitely has a higher damage potential."
+			"The $name definitely has a higher damage potential."
 		],
 		"effect":"damage",
 		"strength":"1d3-1"
@@ -32,8 +36,8 @@
 			"Lesser"
 		],
 		"desc":[
-			"This one is smaller than others of the same kind.",
-			"There is no way it can hit as strong as others."
+			"This $name is smaller than others of the same kind.",
+			"There is no way the $name can hit as strong as others."
 		],
 		"effect":"damage",
 		"strength":"-1d2-1"
@@ -50,6 +54,20 @@
 		"effect":"damage",
 		"strength":"-1d3-1"
 	},
+	"largeBody":{
+		"name":[
+			"Healthy",
+			"Well Fed",
+			"Large",
+			"Bulky"
+		],
+		"desc":[
+			"The $name's body is huge.",
+			"The $name can probably take quite a beating."
+		],
+		"effect":"health",
+		"strength":"2d3"
+	},
 	"sick":{
 		"name":[
 			"Sickly",
@@ -57,8 +75,9 @@
 			"Hurt"
 		],
 		"desc":[
-			"It is surprising that the it is still standing in its current state.",
-			"The weakness caused by its condition is noticable."
+			"It is surprising that the $name is still standing in its current state.",
+			"The weakness caused by its condition is noticable.",
+			"There's a chance that the $name will fall quicker than others."
 		],
 		"effect":"health",
 		"strength":"-1d3"
@@ -70,10 +89,40 @@
 			"Bloody"
 		],
 		"desc":[
-			"It is surprising that the it is still standing in its current state.",
-			"The weakness caused by its condition is noticable."
+			"It is surprising that the $name is still standing in its current state.",
+			"The weakness caused by its condition is noticable.",
+			"There is a very small chance that the $name will be able to fight for an extended amount of time."
 		],
 		"effect":"health",
 		"strength":"-2d2"
+	},
+	"wolfStrong":{
+		"name":[
+			"Well Built",
+			"Muscular",
+			"Towering"
+		],
+		"desc":[
+			"The wolf is massive in size.",
+			"The frame of the wolf is impressive.",
+			"There are few wolves as large as the one in front of you."
+		],
+		"effect":"health",
+		"strength":"2d3"
+	},
+	"wolfRabid":{
+		"name":[
+			"Rabid",
+			"Foaming",
+			"Mad-Eyed",
+			"Fearless"
+		],
+		"desc":[
+			"The wolf is foaming at the mouth.",
+			"The wolf has a mad look in its eye.",
+			"The rabid wolf does not appear to be showing any sign of fear."
+		],
+		"effect":"damage",
+		"strength":"1d3"
 	}
 }

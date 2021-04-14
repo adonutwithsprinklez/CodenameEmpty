@@ -19,9 +19,12 @@
 	"damage":"1d3",
 	"modCount":"1d3-1",
 	"modifier":[
-		["strong",3],
+		["strong",2],
 		["veryStrong",1],
-		["weak",1]
+		["weak",1],
+		["largeBody",2],
+		["wolfRabid",3],
+		["wolfStrong",3]
 	],
 	"weapon":[
 		"weapon_wolfClaws"

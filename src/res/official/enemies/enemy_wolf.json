@@ -20,7 +20,10 @@
 		["None",1],
 		["weak",2],
 		["strong",1],
-		["veryWeak",1]
+		["veryWeak",2],
+		["largeBody",1],
+		["wolfRabid",2],
+		["wolfStrong",2]
 	],
 	"weapon":[
 		"weapon_wolfClaws"
