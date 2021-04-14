@@ -19,24 +19,32 @@ class Enemy(object):
         if data["weapon"]:
             self.weapon = generateWeapon(
                 weapons[random.choice(data["weapon"])], modifiers)
+
         # Adds modifiers to the enemy
+        self.modifiers = []
+        if "modCount" in data.keys():
+            numberOfMods = rollDice(data["modCount"])
+        else:
+            numberOfMods = 0
         if data["modifier"]:
-            # Calculates the chance for each mod
-            mods = []
-            for mod in data["modifier"]:
-                mods += [mod[0]]*mod[1]
-            # Chooses a mod
-            mod = random.choice(mods)
-            # If the mod is not none add the info
-            if mod != "None":
-                mod = modifiers[mod].getInfo()
-                # modifies the enemy's name to match the effect
-                self.name = "%s %s" % (mod["n"], self.name)
-                # Gets into the mod's effects
-                if mod["e"] == "damage":
-                    self.damage += ";%s" % (mod["s"])
-                elif mod["e"] == "health":
-                    self.hpMax += rollDice(mod["s"])
+            for i in range(numberOfMods):
+                # Calculates the chance for each mod
+                mods = []
+                for mod in data["modifier"]:
+                    mods += [mod[0]]*mod[1]
+                # Chooses a mod
+                mod = random.choice(mods)
+                # If the mod is not none add the info
+                if mod != "None":
+                    mod = modifiers[mod].getInfo()
+                    # modifies the enemy's name to match the effect
+                    self.name = "%s %s" % (mod["n"], self.name)
+                    # Gets into the mod's effects
+                    if mod["e"] == "damage":
+                        self.damage += ";%s" % (mod["s"])
+                    elif mod["e"] == "health":
+                        self.hpMax += rollDice(mod["s"])
+                    self.modifiers.append(mod)
         # Wait until modifiers are added to set the starting health
         self.hp = self.hpMax
 
@@ -63,6 +71,13 @@ class Enemy(object):
 
         if self.xp < 1:
             self.xp = 1
+    
+    def getDesc(self):
+        description = self.desc
+        for mod in self.modifiers:
+            if "d" in mod.keys() and random.random() > .5:
+                description = "{} {}".format(description, mod["d"])
+        return description
 
     def getHealth(self):
         return int(((1.0*self.hp)/self.hpMax)*68 + 0.5)

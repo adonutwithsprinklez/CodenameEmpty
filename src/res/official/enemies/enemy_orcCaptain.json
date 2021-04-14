@@ -17,6 +17,7 @@
 	],
 	"hp":"3d6+15",
 	"damage":"1d3",
+	"modCount":"1d3-1",
 	"modifier":[
 		["None",5],
 		["strong",3],

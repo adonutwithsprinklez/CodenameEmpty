@@ -372,7 +372,7 @@ class Game(object):
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
-                                          (areaEnemy.desc, areaEnemy.getDanger()), 1, 1)
+                                          (areaEnemy.getDesc(), areaEnemy.getDanger()), 1, 1)
                         self.disp.displayHeader("Info")
                         self.disp.display("Player: %s - %dHP" %
                                           (self.player.name, self.player.hp))

@@ -5,6 +5,10 @@
 			"Fit",
 			"Quick"
 		],
+		"desc":[
+			"It looks like it could easily deal some damage.",
+			"It looks like it may be able to deal more damage than normally possible."
+		],
 		"effect":"damage",
 		"strength":"1d2-1"
 	},
@@ -13,6 +17,10 @@
 			"Very Strong",
 			"Fast",
 			"Rugged"
+		],
+		"desc":[
+			"It looks like it could easily deal some damage.",
+			"This one definitely has a higher damage potential."
 		],
 		"effect":"damage",
 		"strength":"1d3-1"
@@ -23,6 +31,10 @@
 			"Small",
 			"Lesser"
 		],
+		"desc":[
+			"This one is smaller than others of the same kind.",
+			"There is no way it can hit as strong as others."
+		],
 		"effect":"damage",
 		"strength":"-1d2-1"
 	},
@@ -31,6 +43,9 @@
 			"Very Weak",
 			"Tiny",
 			"Very Slow"
+		],
+		"desc":[
+			"It will be tough for such an enemy to land a strong blow."
 		],
 		"effect":"damage",
 		"strength":"-1d3-1"
@@ -41,6 +56,10 @@
 			"Unhealthy",
 			"Hurt"
 		],
+		"desc":[
+			"It is surprising that the it is still standing in its current state.",
+			"The weakness caused by its condition is noticable."
+		],
 		"effect":"health",
 		"strength":"-1d3"
 	},
@@ -49,6 +68,10 @@
 			"Very Sick",
 			"Dying",
 			"Bloody"
+		],
+		"desc":[
+			"It is surprising that the it is still standing in its current state.",
+			"The weakness caused by its condition is noticable."
 		],
 		"effect":"health",
 		"strength":"-2d2"

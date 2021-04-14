@@ -13,4 +13,8 @@ class Modifier(object):
 			self.desc = []
 	
 	def getInfo(self):
-		return {"e":self.effect,"s":self.strength,"n":random.choice(self.name),"t":self.title,"d":self.desc}
+		info = {"e":self.effect,"s":self.strength,"n":random.choice(self.name),"t":self.title}
+		if len(self.desc) > 0:
+			info["d"] = random.choice(self.desc)
+
+		return info
