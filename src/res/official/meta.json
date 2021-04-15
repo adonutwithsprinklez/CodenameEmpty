@@ -57,7 +57,8 @@
 		"enemy_greatWolf",
 		"enemy_orc",
 		"enemy_orcCaptain",
-		"enemy_robbedQuestEnemy"
+		"enemy_robbedQuestEnemy",
+		"enemy_bear"
 	],
 	"events":[
 		"intro_event_1",
@@ -89,9 +90,7 @@
 		"enemy_wolf_modifiers",
 		"weapon_modifiers"
 	],
-	"npcs":[
-		"npc_defNPC"
-	],
+	"npcs":[],
 	"quests":[
 		"quest_robbed"
 	],

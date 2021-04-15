@@ -39,9 +39,6 @@ class Player(object):
                 self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
             self.disp.display("Wielding: %s (%s damage)" % (self.weapon.name, self.weapon.damage))
             self.disp.display("Wearing: %s (%s defence)" % (self.armor.name, self.armor.defence), 0)
-            self.disp.display("Equipped Gear:", 1, 0)
-            self.disp.display("\t{}".format(
-                self.getEquipmentString()), 0)
             self.disp.closeDisplay()
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests", 0)
@@ -186,6 +183,9 @@ class Player(object):
             self.disp.display(f'\tVitality     - {self.getStat("vitality")}', 0)
             self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
             self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
+            self.disp.display("Equipped Gear:", 1, 0)
+            self.disp.display("\t{}".format(
+                self.getEquipmentString()), 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
             self.disp.closeDisplay()

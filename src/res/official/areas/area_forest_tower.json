@@ -28,7 +28,7 @@
 	"aType":"Forest",
 	"hostilityMin":4,
 	"hostilityMax":6,
-	"eventChance":75,
+	"eventChance":90,
 	"events":[
 		["event_tower_forest", "1d6"]
 	],

@@ -2,16 +2,17 @@
     "id":"towerEnemies",
     "type":"random",
     "name":[
-        "A Not So Abandoned Tower",
-        "Those Within the Tower"
+        "Reaching the Tower",
+        "At the Tower"
     ],
     "start":[
-        "#banditCamp"
+        "#wolves",
+        "#bandits",
+        "#bear"
     ],
-    "#banditCamp":{
+    "#wolves":{
         "msg":[
-            "You continue working your way through the tight chambers of the cave. Pushing through a particularly tight passageway you lose your balance and trip. You quickly get up to see several wolves circling around you.",
-            "The deep growling of several wolves causes you to pause. Unlike the growls you heard earleir, these are much closer. The sound is steadily getting louder."
+            ""
         ],
         "actions":[
             {
@@ -21,6 +22,24 @@
                     ["finish"]
                 ]
             }
+        ]
+    },
+    "#bandits":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            ["spawnEnemy",["enemy_bandit", "enemy_bandit", "enemy_bandit","enemy_bandit"]],
+            ["finish"]
+        ]
+    },
+    "#bear":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            ["spawnEnemy",["enemy_bear"]],
+            ["finish"]
         ]
     }
 }

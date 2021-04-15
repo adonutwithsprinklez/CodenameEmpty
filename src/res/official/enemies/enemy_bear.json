@@ -1,0 +1,57 @@
+{
+	"name":[
+		"$color Furred Bear",
+        "$color2 Bear"
+	],
+    "color":{
+        "type":"choose",
+        "choices":[
+            "Black",
+            "Onyx",
+            "Pitch-Black",
+            "Charcoal",
+            "Dark Gray",
+            "Slate",
+            "Darkly"
+        ]
+    },
+    "color2":{
+        "type":"choose",
+        "choices":[
+            "Black",
+            "Dark Gray",
+            "Jet-Black",
+            "Pitch-Black"
+        ]
+    },
+	"eID":"blackBear",
+	"desc":[
+		"The $name eyes you intently. Its fur glinting in the light.",
+		"The scars across the $name body lets any of its enemies know that its not new to fighting."
+	],
+	"deathMsg":[
+		"gives one last roar before succumbing to its wounds.",
+		"groans before collapsing on the ground."
+	],
+	"hp":"3d8+8",
+	"damage":"1d6+2",
+	"modCount":"1d3",
+	"modifier":[
+		["None",3],
+		["strong",2],
+		["veryStrong",2],
+		["strong",2],
+        ["weak",2],
+        ["largeBody",3],
+        ["sick",1]
+	],
+	"weapon":[
+		"weapon_wolfClaws"
+	],
+	"armor":[
+		"armor_greatWolfHide"
+	],
+	"itemChance":0,
+	"itemDrops":[],
+	"xp":15
+}

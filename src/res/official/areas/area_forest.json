@@ -68,7 +68,7 @@
 	"aType":"Forest",
 	"hostilityMin":1,
 	"hostilityMax":5,
-	"eventChance":35,
+	"eventChance":45,
 	"events":[
 		["event_lostItem", "1d20"],
 		["event_flipACoin", "1d20"],
