@@ -252,7 +252,7 @@ class Game(object):
         for desc in self.currentArea.desc.split("\n"):
             self.disp.display(desc)
         # Display enemies that are in the area (if there are any)
-        if self.currentArea.enemy != []:
+        if self.currentArea.enemy != [] and not self.gameSettings["DISABLEENEMIES"]:
             self.disp.closeDisplay()
             enemyMessage = "You can see enemies in the distance:"
             if self.currentArea.enemyMessage != None:
@@ -350,7 +350,7 @@ class Game(object):
 
     def fightEnemies(self):
         ##### Fighting Code #####
-        if self.currentArea.enemy != []:
+        if self.currentArea.enemy != [] and not self.gameSettings["DISABLEENEMIES"]:
             self.disp.clearScreen()
             for areaEnemy in self.currentArea.enemy:
                 enemyhp = areaEnemy.getHealth()
