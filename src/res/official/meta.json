@@ -32,14 +32,17 @@
 	"areas":[
 		"area_start_1",
 		"area_start_2",
-		"area_forest",
-		"area_forest_tower",
-		"area_strongHold",
+		"area_gen_forest_1",
+		"area_gen_forest_2",
+		"area_gen_forest_3",
+		"area_gen_forest_4",
 		"cave_wolf_entrance",
 		"cave_wolf_room_1a",
 		"cave_wolf_room_1b",
 		"cave_wolf_room_2a",
-		"cave_wolf_room_3"
+		"cave_wolf_room_3",
+		"area_village_gate_east",
+		"area_village_gate_west"
 	],
 	"armor":[
 		"armor_starting_armor",
@@ -92,7 +95,6 @@
 	],
 	"npcs":[],
 	"quests":[
-		"quest_robbed"
 	],
 	"races":[
 		"race_human",

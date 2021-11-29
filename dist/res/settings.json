@@ -30,6 +30,11 @@
             "DEBUGDISPLAY",
             "Developer Display (Used for debugging)",
             false
+        ],
+        [
+            "DISABLEENEMIES",
+            "Disable Enemy Encounters (Used for debugging)",
+            true
         ]
     ],
     "DATAPACKSETTINGS": {

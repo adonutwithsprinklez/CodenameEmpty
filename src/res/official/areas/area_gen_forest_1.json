@@ -1,21 +1,16 @@
 {
 	"name":[
-		"The $nameAdjs $names's $forest",
-		"The $names's $forest",
-		"The $adjs $forest",
-		"$adjs $forest"
+		"The $names's $forest Trail",
+		"The $adjs $forest Trail",
+		"$adjs $forest Trail"
 	],
 	"names":{
 		"type":"choose",
 		"choices":[
 			"Elder",
-			"God",
 			"King",
 			"Queen",
-			"Dragon",
 			"Bear",
-			"Ruffian",
-			"Troublemaker",
 			"Huntsman"
 		]
 	},
@@ -23,39 +18,20 @@
 		"type":"choose",
 		"choices":[
 			"Forest",
-			"Woods",
 			"Thicket",
-			"Woodland",
-			"Timberland",
-			"Wilds",
-			"Grove"
+			"Grove",
+            "Wilderness",
+            "Woodland"
 		]
 	},
 	"adjs":{
 		"type":"choose",
 		"choices":[
-			"Red",
 			"Yellow",
 			"Green",
-			"Black",
-			"Dark",
 			"Sunny",
 			"Foggy",
 			"Dense",
-			"Royal",
-			"Broken",
-			"Old"
-		]
-	},
-	"nameAdjs":{
-		"type":"choose",
-		"choices":[
-			"Good",
-			"Holy",
-			"Evil",
-			"Cruel",
-			"Loving",
-			"Loved",
 			"Old"
 		]
 	},
@@ -67,7 +43,7 @@
 	],
 	"aType":"Forest",
 	"hostilityMin":1,
-	"hostilityMax":5,
+	"hostilityMax":4,
 	"eventChance":45,
 	"events":[
 		["event_lostItem", "1d20"],
@@ -75,15 +51,14 @@
 		["event_forestAreaMisc", "1d20+6"],
 		["event_forestAreaMisc2", "1d20+6"],
 		["event_forest_apple", "1d20+3"],
-		["event_mysteriousOrb", "1d20"],
-		["event_forgotten_item", "1d20+3"]
+		["event_forgotten_item", "1d15"]
 	],
-	"enemyChance":45,
+	"hostilityAffectsEnemyChance":true,
+	"enemyChance":15,
 	"enemyPointsPerHostility":2,
 	"enemies":[
 		["enemy_rodentOfUnusualSize", 2],
 		["enemy_wolf",3],
-		["enemy_bandit", 5],
 		["enemy_greatWolf",7]
 	],
 	"npcChance":0,
@@ -93,8 +68,8 @@
 	"minNewAreas":3,
 	"maxNewAreas":6,
 	"areas":[
-		["area_forest","2d5", ["required"]],
-		["cave_wolf_entrance", "1d7"],
-		["area_forest_tower", "1d7", ["limited"]]
+		["area_gen_forest_1","2d5", ["required"]],
+		["area_gen_forest_2","2d5"],
+		["area_gen_forest_3","2d5"]
 	]
 }

@@ -1,0 +1,25 @@
+{
+    "name":[
+        "Village Gate West"
+	],
+	"desc":[
+        "The path is tough follow due to its apparent lack of use. You are unsure if following this path is the smartest decision."
+	],
+	"aType":"Village",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":0,
+	"enemyMessage":[""],
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":2,
+	"maxNewAreas":4,
+	"areas":[
+        ["area_gen_forest_3", "2d6"]
+	]
+}

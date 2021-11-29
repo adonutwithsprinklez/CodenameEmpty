@@ -59,6 +59,8 @@ def startApplication():
 	SETTINGS_FILE = RES_FOLDER + "settings.json"
 	SETTINGS = loadJson("{}".format(SETTINGS_FILE))
 
+	# TODO Rewrite this bs
+	'''
 	if __name__ != "__main__":
 		# Unpack the datapack zip folders if needed
 		print("Prepping datapacks...")
@@ -71,6 +73,9 @@ def startApplication():
 				else:
 					print ("\t\tDecompressing datapack...")
 					shutil.unpack_archive(RES_FOLDER + file, RES_FOLDER + file.split(".zip")[0])
+	'''
+	if __name__ != "__main__":
+		pass
 
 	# Inital game / menu loading
 	game = Game()
@@ -107,6 +112,7 @@ def startApplication():
 	# Shutdown the app window
 	game.shutdown_game()
 
+	# TODO REMOVE THIS BULLSHIT
 	if __name__ != "__main__":
 		# Delete the uncompressed datapack folders
 		subfolders = [ f.name for f in os.scandir(RES_FOLDER) if f.is_dir() ]

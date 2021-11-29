@@ -29,14 +29,14 @@ class Area(object):
         chance = areaType["enemyChance"]
         try:
             hostilityAffectsEnemyChance = areaType["hostilityAffectsEnemyChance"]
+            if hostilityAffectsEnemyChance:
+                c = chance*self.hostility
         except:
             hostilityAffectsEnemyChance = False
-        if hostilityAffectsEnemyChance:
-            c = chance+(self.hostility*10)
-            if c<0:
-                c=0
-        else:
             c = chance
+        if c<0:
+            c=0
+        print("Enemy Chance: {}".format(str(c)))
         if random.randint(1,100) <= c:
             enemyPoints = self.hostility * areaType["enemyPointsPerHostility"]
             attempts = 1
