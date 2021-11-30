@@ -95,6 +95,7 @@
 	],
 	"npcs":[],
 	"quests":[
+		"quest_beginnings"
 	],
 	"races":[
 		"race_human",

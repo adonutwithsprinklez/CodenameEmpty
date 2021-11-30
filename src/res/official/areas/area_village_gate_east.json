@@ -1,11 +1,35 @@
 {
     "name":[
-        "Village Gate East"
+        "Eastern Village Gate"
 	],
+    "descWall":{
+        "type":"choose",
+        "choices":[
+            "You walk up to the village gate, taking in its rough texture and the many holes that have been drilled into it.",
+            "The wooden gate is old and rough. Worn down from weather and the passage of time.",
+            "The tall, oak gate used to protect the village from the dangers outside stands before you.",
+            "The walls of the village stand before you. Tall and intimidating with its dark wood exterior."
+        ]
+    },
+    "guardDiscussion":{
+        "type":"choose",
+        "choices":[
+            "their wild night at the village's inn",
+            "the ludicrous price of bread",
+            "how underpaid they are",
+            "how boring gate duty is",
+            "how poor the weather has been recently",
+            "the terrible crop season",
+            "a crazy woman that is constantly causing issues"
+        ]
+    },
 	"desc":[
-        "The path is tough follow due to its apparent lack of use. You are unsure if following this path is the smartest decision."
+        "$descWall\nTwo guards stand at the doors of the gate. Their bored expressions conveying their lack of interest at doing such a job.",
+        "$descWall\nThe gate's guards lean on the side of the walls. The two of them chatting about $guardDiscussion.",
+        "$descWall\nYou overhear the two gate guards discussing $guardDiscussion.",
+        "$descWall"
 	],
-	"aType":"Village",
+	"aType":"Village Wall",
 	"hostilityMin":0,
 	"hostilityMax":0,
 	"eventChance":0,

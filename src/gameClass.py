@@ -558,6 +558,8 @@ class Game(object):
 
         self.importantQuestInfo.append(
             ["inAreaType", self.currentArea.aType, True, False])
+        self.importantQuestInfo.append(
+            ["inAreaId", self.currentArea.aId, True, False])
 
         self.updateQuestInfo()
 
@@ -596,7 +598,7 @@ class Game(object):
                     if newroll > highroll and not alreadyUsed:
                         newArea = aType
                         highroll = newroll
-            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents)
+            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents, newArea[0])
             usedAreas.append(newArea[0])
             choices.append(generatedArea)
         return choices

@@ -8,8 +8,9 @@ from eventClass import Event
 from textGeneration import generateString
 
 class Area(object):
-    def __init__(self,areaType,nonrepeatableevents=[],**kwargs):
+    def __init__(self,areaType,nonrepeatableevents=[],areaId="",**kwargs):
         self.name = generateString(areaType)
+        self.aId = areaId
         print(f'GENERATING AREA: {self.name}')
         self.desc = generateString(areaType, "desc")
         self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])

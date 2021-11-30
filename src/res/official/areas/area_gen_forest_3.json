@@ -30,6 +30,7 @@
 			"Yellow",
 			"Green",
 			"Sunny",
+			"Bright",
 			"Foggy",
 			"Dense",
 			"Old"
@@ -47,6 +48,7 @@
 	"eventChance":40,
 	"events":[
 		["event_lostItem", "1d20"],
+		["event_flipACoin", "1d20"],
 		["event_forestAreaMisc", "1d20+6"],
 		["event_forestAreaMisc2", "1d20+6"],
 		["event_forest_apple", "1d20+3"],
