@@ -51,6 +51,7 @@ class Game(object):
         self.starter = None
 
         self.nonRepeatableEvents = []
+        self.globalRandomEvents = []
 
         self.logos = []
         self.descs = []
@@ -154,6 +155,12 @@ class Game(object):
                 self.disp.dprint(q)
         
         self.nonRepeatableEvents = []
+        self.globalRandomEvents = []
+        # Load the global random events:
+        for event in self.events.keys():
+            if "globalEvent" in self.events[event].keys():
+                if self.events[event]["globalEvent"]:
+                    self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
         self.loadStartingArea()
 
@@ -179,6 +186,7 @@ class Game(object):
         # TODO: Add player creation menu here
         self.player = Player()
         self.player.race = Race(self.races["human"])
+        #self.player.race.limbs[0] = Limb(self.races["drakt"]["limbs"][0], "Draktilien")
         self.player.disp = self.disp
         
         # Sets some defualt equipment to the player
@@ -581,6 +589,9 @@ class Game(object):
                     if flag == "required":
                         required.append(area)
 
+        # Check if all requirements are met for areas to spawn:
+        # TODO
+
         # Actually generate areas:
         for i in range(1, self.currentArea.newArea + 1):
             if len(required) > 0:
@@ -598,7 +609,7 @@ class Game(object):
                     if newroll > highroll and not alreadyUsed:
                         newArea = aType
                         highroll = newroll
-            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents, newArea[0])
+            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents, self.globalRandomEvents, newArea[0])
             usedAreas.append(newArea[0])
             choices.append(generatedArea)
         return choices

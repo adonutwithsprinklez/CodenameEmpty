@@ -8,7 +8,7 @@ from eventClass import Event
 from textGeneration import generateString
 
 class Area(object):
-    def __init__(self,areaType,nonrepeatableevents=[],areaId="",**kwargs):
+    def __init__(self,areaType,nonrepeatableevents=[],globalEvents=[],areaId="",**kwargs):
         self.name = generateString(areaType)
         self.aId = areaId
         print(f'GENERATING AREA: {self.name}')
@@ -24,7 +24,7 @@ class Area(object):
         self.kwargs = kwargs
         
         if random.randint(1,100) <= areaType["eventChance"]:
-            self.event = self.chooseAnEvent(areaType, nonrepeatableevents)
+            self.event = self.chooseAnEvent(areaType, nonrepeatableevents, globalEvents)
         
         # Enemy Generation/Spawning
         chance = areaType["enemyChance"]
@@ -95,8 +95,10 @@ class Area(object):
         if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
             self.npc = random.choice(areaType["npcs"])
         
-    def chooseAnEvent(self, areaType, nonrepeatableevents):
+    def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
         areaChoices = areaType["events"][::]
+        for event in globalevents:
+            areaChoices.append(event)
         # Remove any non-repeatable events that have already occured
         for event in areaChoices:
             if event[0] in nonrepeatableevents:
