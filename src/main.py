@@ -113,11 +113,13 @@ def startApplication():
 	game.shutdown_game()
 
 	# TODO REMOVE THIS BULLSHIT
+	'''
 	if __name__ != "__main__":
 		# Delete the uncompressed datapack folders
 		subfolders = [ f.name for f in os.scandir(RES_FOLDER) if f.is_dir() ]
 		for folder in subfolders:
 			shutil.rmtree(RES_FOLDER+folder)
+	'''
 
 # This code runs with main.py is opened
 if __name__ == "__main__":

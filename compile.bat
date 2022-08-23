@@ -1,18 +1,16 @@
 echo Creating executable...
-pyinstaller --onefile --clean --noconsole^
-    -n GameLauncher ^
-    GameLauncher.spec
+pyinstaller GameLauncher.spec
 
 echo Created executable.
 echo Creating res directory...
 
-rem xcopy /s /y /f src\res dist\res
-xcopy /y /f src\res dist\res
+xcopy /s /y /f src\res dist\res
+rem     xcopy /y /f src\res dist\res
 
 echo Created res directory.
-echo Zipping res directory...
 
-python zipResources.py
+rem echo Zipping res directory...
+rem python zipResources.py
+rem echo Zip complete.
 
-echo Zip complete.
 pause

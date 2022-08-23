@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['src\\launchGame.py'],
-             pathex=['C:\\Users\\ninon\\Google Drive\\CodeNameEmpty-NightlyDev\\CodeNameEmpty'],
+             pathex=['F:\\Drive\\CodeNameEmptyRestart\\CodeNameEmpty'],
              binaries=[],
              datas=[],
              hiddenimports=[],
