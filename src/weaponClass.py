@@ -46,11 +46,14 @@ class Weapon(object):
 							if newRoll > highRoll:
 								newMod = mod
 								highRoll = newRoll
-						possibleMods.remove(newMod)
-						newMod = modifiers[newMod[0]].getInfo()
-						self.name = "{} {}".format(newMod["n"], self.name)
-						if newMod["e"] == "damage":
-							self.damage += ";{}".format(newMod["s"])
+						if newMod:
+							possibleMods.remove(newMod)
+							newMod = modifiers[newMod[0]].getInfo()
+							self.name = "{} {}".format(newMod["n"], self.name)
+							if newMod["e"] == "damage":
+								self.damage += ";{}".format(newMod["s"])
+							elif newMod["e"] == "worth":
+								self.worth += rollDice(newMod["s"])
 	
 	def getAttack(self):
 		attack = rollDice(self.damage)

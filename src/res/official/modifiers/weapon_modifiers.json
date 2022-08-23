@@ -26,5 +26,18 @@
         ],
         "effect":"damage",
         "strength":"1d3-1"
+    },
+    "wep_polished":{
+        "name":[
+            "Polished",
+            "Clean",
+            "Shiny"
+        ],
+        "desc":[
+            "The weapon looks extremely shiny",
+            "The weapon looks like it was cleaned recently"
+        ],
+        "effect":"worth",
+        "strength":"20"
     }
 }

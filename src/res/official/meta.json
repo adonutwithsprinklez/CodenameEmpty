@@ -55,6 +55,7 @@
 	],
 	"enemies":[
 		"enemy_bandit",
+		"enemy_banditStrong",
 		"enemy_rodentOfUnusualSize",
 		"enemy_wolf",
 		"enemy_greatWolf",
@@ -113,6 +114,7 @@
 	],
 	"weapons":[
 		"weapon_ironSword",
+		"weapon_steelSword",
 		"weapon_wolfClaws",
 		"weapon_orcSword",
 		"weapon_starter_sword",

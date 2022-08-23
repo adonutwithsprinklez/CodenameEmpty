@@ -191,10 +191,10 @@ class Game(object):
         
         # Sets some defualt equipment to the player
         '''
-        self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
+        self.player.weapon = Weapon(self.weapons["weapon_ironSword"], self.modifiers)
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(
-            self.weapons["template_IronSword"]))
+            self.weapons["template_IronSword"], self.modifiers))
         '''
 
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
@@ -785,10 +785,11 @@ class Game(object):
 
             if cmd in range(1, 9) and cmd-1 <= len(toggleablePacks):
                 if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][0] != "official":
-                    self.dataPackSettings["packsToLoad"][cmd -
-                                                         1+9*packPage][1] ^= True
+                    self.dataPackSettings["packsToLoad"][cmd - 1+9*packPage][1] ^= True
                 else:
                     # TODO Display error when attempting to disable the official datapack.
+                    self.disp.clearScreen()
+                    self.disp.display("")
                     pass
                     # The official data pack should be allowed to be disabled, only if
                     # another data pack is enabled

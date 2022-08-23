@@ -68,6 +68,7 @@
 	"enemies":[
 		["enemy_wolf",3],
 		["enemy_bandit",7],
+        ["enemy_banditStrong",9],
 		["enemy_greatWolf",8],
 		["enemy_bear",11]
 	],

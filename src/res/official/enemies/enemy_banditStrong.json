@@ -20,7 +20,7 @@
             "Orc"
         ]
     },
-	"eID":"bandit",
+	"eID":"banditStrong",
 	"desc":[
 		"It's a bandit... What else do you want from me?"
 	],
@@ -28,20 +28,25 @@
 		"topples to the ground, his blood pooling around his body.",
 		"breathes his last and falls to the ground, his blood pooling around his body."
 	],
-	"hp":"2d5+8",
+	"hp":"2d6+10",
 	"damage":"0",
-	"modCount":"0",
+	"modCount":"1d2",
 	"modifier":[
+		["strong","1d6"],
+		["largeBody","1d6"],
+		["veryStrong","1d4"]
 	],
 	"weapon":[
-		"weapon_ironSword"
+		"weapon_steelSword"
 	],
 	"armor":[
 		"armor_hideArmor"
 	],
-	"itemChance":50,
+	"itemChance":60,
 	"itemDrops":[
-        ["consumable_potion_health", "You search the bandit, finding a potion."]
+        ["consumable_potion_health", "You search the bandit, finding a potion."],
+        ["consumable_potion_health", "You search the bandit, finding a potion."],
+        ["weapon_steelSword", "You search the bandit, finding a potion."]
 	],
-	"xp":5
+	"xp":10
 }
