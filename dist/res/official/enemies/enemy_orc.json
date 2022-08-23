@@ -1,0 +1,41 @@
+{
+	"name":[
+		"Orc",
+		"Orc Grunt",
+		"Basic Orc Soldier"
+	],
+	"eID":"orc",
+	"desc":[
+		"The orc has his weapon readied. He smiles at the thought of cutting you down.",
+		"The orc has a scar accrossed its face from a previous battle.",
+		"The orc stands tall as it hones into its target."
+	],
+	"deathMsg":[
+		"roars in defeat before dying.",
+		"lays limp and bloodied."
+	],
+	"hp":"3d6+10",
+	"damage":"0d0",
+	"modCount":"1d3-1",
+	"modifier":[
+		["None",3],
+		["strong",3],
+		["veryStrong",3],
+		["weak",2],
+		["sick",2],
+		["dying",1],
+		["veryWeak",1]
+	],
+	"weapon":[
+		"weapon_orcSword"
+	],
+	"armor":[
+		"armor_orcArmor"
+	],
+	"itemChance":50,
+	"itemDrops":[
+		["consumable_potion_health", "You search the Orc and find a healing potion."],
+		["weapon_steelSword", "You search the Orc and find a steel sword."]
+	],
+	"xp":8
+}

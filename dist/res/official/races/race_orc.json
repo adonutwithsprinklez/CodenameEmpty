@@ -1,0 +1,92 @@
+{
+    "name":"Orc",
+    "id":"orc",
+    "baseStats":{
+        "strength":8,
+        "vitality":7,
+        "physique":3,
+        "intelligence":4
+    },
+    "baseSkills":[],
+    "standing":{
+        "elf":-4,
+        "drakt":6,
+        "human":-3,
+        "dwarf":1
+    },
+    "playable":true,
+    "playerCreationDescription":"Orcs are seen as the barbarians of the world. Their strength and vitality has leads them to take a more direct approach when it comes to objstacles.",
+    "limbs":[
+        {
+            "type":"head",
+            "name":"Head",
+            "hitChance":"2d8",
+            "maxHealth":25,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"misc",
+            "name":"Horns",
+            "hitChance":"1d1",
+            "maxHealth":1,
+            "attacks":[],
+            "flags":[
+                "unattackable",
+                "specialArmor"
+            ]
+        },
+        {
+            "type":"torso",
+            "name":"Torso",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"arm",
+            "name":"Left Arm",
+            "hitChance":"1d6",
+            "maxHealth":50,
+            "attacks":[
+                ["Punch", "$user punches the target.", "1d3"]
+            ],
+            "flags":[
+                "equippable"
+            ]
+        },
+        {
+            "type":"arm",
+            "name":"Right Arm",
+            "hitChance":"1d6",
+            "maxHealth":50,
+            "attacks":[
+                ["Punch", "$user punches the target.", "1d3"]
+            ],
+            "flags":[
+                "equippable"
+            ]
+        },
+        {
+            "type":"leg",
+            "name":"Left Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Right Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "flags":[]
+        }
+    ]
+}

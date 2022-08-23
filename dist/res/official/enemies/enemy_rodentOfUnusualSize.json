@@ -1,0 +1,62 @@
+{
+	"name":[
+        "$adjs $names",
+        "$adjs $color $names",
+        "$names of Unusual Size"
+    ],
+    "adjs":{
+        "type":"choose",
+        "choices":[
+            "Giant",
+            "Large",
+            "Massive"
+        ]
+    },
+    "color":{
+        "type":"choose",
+        "choices":[
+            "Black",
+            "Gray",
+            "White",
+            "Albino"
+        ]
+    },
+    "names":{
+        "type":"choose",
+        "choices":[
+            "Rat",
+            "Rodent",
+            "Mouse"
+        ]
+    },
+	"eID":"rat",
+	"desc":[
+		"The rodent hisses.",
+		"The rodent is missing multiple patches of fur."
+	],
+	"deathMsg":[
+		"hisses before dying.",
+		"collapses."
+	],
+	"hp":"1d4+3",
+	"damage":"0",
+	"modCount":"1d3-1",
+	"modifier":[
+		["None",1],
+		["weak",4],
+		["strong",1],
+		["veryWeak",2],
+		["largeBody",2]
+	],
+	"weapon":[
+		"weapon_wolfClaws"
+	],
+	"armor":[
+        "None"
+	],
+	"itemChance":50,
+	"itemDrops":[
+		["consumable_raw_meat","You are able to salvage some of the beast's flesh."]
+	],
+	"xp":1
+}

@@ -1,0 +1,41 @@
+{
+	"name":[
+		"Orc Stronghold",
+		"Orc Camp",
+		"Orc Territory",
+		"Orc Military Camp",
+		"Orcish Stronghold",
+		"Orcish Campsite",
+		"Wall of Orcish Warriors"
+	],
+	"desc":[
+		"There does not seem to be a good path to avoid detection.",
+		"Orcs seem to cover the whole area. There does not seem to be a good path to take.",
+		"The land is barren. It is a wonder how any animal can live out here."
+	],
+	"aType":"Enemy Land",
+	"hostilityMin":5,
+	"hostilityMax":10,
+	"minimumLvl":5,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":90,
+	"enemyPointsPerHostility":5,
+	"enemies":[
+		["enemy_wolf",8],
+		["enemy_greatWolf",15],
+		["enemy_orc",15],
+		["enemy_orcCaptain",25]
+	],
+	"npcChance":0,
+	"npcs":[
+		"npc_defNPC"
+	],
+	"minNewAreas":2,
+	"maxNewAreas":5,
+	"areas":[
+		["area_forest","1d6"],
+		["area_strongHold","2d5"]
+	]
+}

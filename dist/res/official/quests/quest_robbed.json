@@ -1,0 +1,41 @@
+{
+	"title":"Robbed",
+	"desc":"An old man was robbed, and wants me to help him. He says that the person who robbed him ran into some hostile area.",
+	"qID": "Robbed",
+	"devComments":"This is a test quest. The idea was to get a few 'do' and 'flag' id ideas. This also served to help design how the quest class would work. The mission is simply, go to the forest, someone asks for help, go to enemy area, enemy spawns, kill enemy, go to forest, quest complete.",
+	"spawnConditions":[
+		["inAreaType","Forest"]
+	],
+	"spawnChance":2,
+	"do":[
+		["say","An old man ran up to me. He started going off about how someone robbed him then ran off into some area too dangerous for him to follow. I should help him."]
+	],
+	"nextStep":{
+		"requirements":[
+			["inAreaType","Enemy Land"]
+		],
+		"do":[
+			["spawnEnemy",["enemy_robbedQuestEnemy"]],
+			["say","The person that robbed the old man is here somewhere."]
+		],
+		"nextStep":{
+			"requirements":[
+				["isKilled","robbedQuestEnemy"]
+			],
+			"do":[
+				["say","I killed the person that robbed the old man. I should try to return to him."]
+			],
+			"nextStep":{
+				"requirements":[
+					["inAreaType","Forest"]
+				],
+				"do":[
+					["say","You find the old man and return his bag."],
+					["giveXP",50],
+					["giveItem", "template_IronSword"],
+					["questComplete",true]
+				]
+			}
+		}
+	}
+}

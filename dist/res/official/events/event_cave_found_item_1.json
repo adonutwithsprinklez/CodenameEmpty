@@ -1,0 +1,99 @@
+{
+    "id":"itemInCave",
+    "type":"random",
+    "name":[
+        "A Forgotten Item",
+        "A Dropped Item",
+        "Finding Something within the Cave"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You continue working through the depths of the cave. As you walk through the corridors you spot something glinting in the shadows."
+        ],
+        "actions":[
+            {
+                "action":"Check it out",
+                "eventDo":[
+                    ["say","You pick up the item and investigate it."],
+                    ["goto", ["#healingItem1","#healingItem2","#healingItem3"]]
+                ]
+            },
+            {
+                "action":"Ignore it",
+                "eventDo":[
+                    ["say","You decide that whatever it is, it is not worth your time and continue on."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#healingItem1":{
+        "msg":[
+            "You grab the thing and examine it. It is just a slightly bruised, but still somehwat fresh apple."
+        ],
+        "actions":[
+            {
+                "action":"Take it",
+                "eventDo":[
+                    ["say","You slip the apple into your bag and continue on."],
+                    ["give","consumable_apple",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Leave it",
+                "eventDo":[
+                    ["say", "The apple is not worth the space it would take up in you bag. You decide to leave it where you found it."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#healingItem2":{
+        "msg":[
+            "You grab the thing and examine it. It appears to be a healing potion."
+        ],
+        "actions":[
+            {
+                "action":"Take it",
+                "eventDo":[
+                    ["say","You slip the potion into your bag and continue on."],
+                    ["give","consumable_potion_health",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Leave it",
+                "eventDo":[
+                    ["say", "The potion is not worth the space it would take up in you bag. You decide to leave it where you found it."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#healingItem3":{
+        "msg":[
+            "You examine the object and see that it is not a singular item, but rather what appears to be two different healing poitions."
+        ],
+        "actions":[
+            {
+                "action":"Take them",
+                "eventDo":[
+                    ["say","You slip the potions into your bag and continue on."],
+                    ["give","consumable_potion_health",2],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Leave it",
+                "eventDo":[
+                    ["say", "Those potions are not worth the space they would take up in you bag. You decide to leave it where you found it."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

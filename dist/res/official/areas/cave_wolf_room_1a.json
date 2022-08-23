@@ -1,0 +1,87 @@
+{
+    "name":[
+        "$nameDesc $room",
+        "$room"
+    ],
+	"room":{
+		"type":"choose",
+		"choices":[
+            "Passage",
+            "Cavernous Room",
+            "Cavern",
+            "Pathway",
+            "Chamber",
+            "Clear Space"
+		]
+	},
+	"nameDesc":{
+		"type":"choose",
+		"choices":[
+            "Dimly lit",
+            "Darkly lit",
+            "Barely lit",
+            "Dark",
+            "Small",
+            "Large",
+            "Tight",
+            "Drafty",
+            "Slim",
+            "Sparkling"
+		]
+	},
+	"nameDescLowercase":{
+		"type":"choose",
+		"choices":[
+            "dimly lit",
+            "darkly lit",
+            "barely lit",
+            "dark",
+            "small",
+            "large",
+            "roomy",
+            "tight",
+            "drafty",
+            "slim",
+            "sparkling"
+		]
+	},
+	"randomDetail":{
+		"type":"choose",
+		"choices":[
+			"All you can hear is the snapping of small bones under your feet as you walk.",
+			"It is impossible to count the number of dead creatures that have made this place their final resting place.",
+			"The growls from deeper within the cave grow louder as you continue on."
+		]
+	},
+	"desc":[
+		"You enter the cave and pause for a moment, allowing your eyes to get used to the darkness within the cave.\n$randomDetail",
+		"The stench of rotting flesh causes you to nearly wretch within the darkness.\n$randomDetail"
+	],
+	"aType":"Cave",
+	"hostilityMin":4,
+	"hostilityMax":6,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":75,
+	"enemyMessage":[
+		"You can discern moving shapes within the $nameDescLowercase passageway.",
+		"Multiple pairs of eyes stare at you as you work your way through the $nameDescLowercase tunnel.",
+		"A growl alerts you to several enemies within the $nameDescLowercase cavern.",
+		"The $nameDescLowercase passage appears to be full of enemies."
+	],
+	"enemyPointsPerHostility":2,
+	"enemies":[
+        ["enemy_wolf", 2],
+        ["enemy_greatWolf", 5]
+	],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":2,
+	"maxNewAreas":4,
+	"areas":[
+        ["cave_wolf_room_2a", "1d6", ["required", "limited"]],
+        ["cave_wolf_room_1a", "1d6", ["limited"]],
+        ["cave_wolf_room_1b", "1d6"]
+	]
+}

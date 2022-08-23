@@ -1,0 +1,41 @@
+{
+	"name":[
+		"Wolf",
+		"Gray Wolf",
+		"Black Wolf"
+	],
+	"eID":"wolf",
+	"desc":[
+		"The wolf growls from a distance.",
+		"The wolf has a scar accrossed its face from a previous battle."
+	],
+	"deathMsg":[
+		"howls in defeat before dying.",
+		"lays limp and bloodied."
+	],
+	"hp":"2d3+5",
+	"damage":"0",
+	"modCount":"1d3-1",
+	"modifier":[
+		["None",1],
+		["weak",2],
+		["strong",1],
+		["veryWeak",2],
+		["largeBody",1],
+		["wolfRabid",2],
+		["wolfStrong",2]
+	],
+	"weapon":[
+		"weapon_wolfClaws"
+	],
+	"armor":[
+		"armor_wolfHide"
+	],
+	"itemChance":50,
+	"itemDrops":[
+		["material_wolfPelt","You skin the wolf and take it as a reward."],
+		["consumable_raw_meat","You skin the large beast, taking some of its flesh with you."],
+		["consumable_raw_meat","You are able to take some of the beast's flesh."]
+	],
+	"xp":3
+}

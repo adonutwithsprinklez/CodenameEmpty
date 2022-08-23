@@ -1,0 +1,99 @@
+{
+    "strong":{
+		"name":[
+			"Strong",
+			"Fit",
+			"Quick",
+			"Mad",
+			"Irritated"
+		],
+		"desc":[
+			"It looks like it could easily deal some damage.",
+			"It looks like it may be able to deal more damage than normally possible."
+		],
+		"effect":"damage",
+		"strength":"1d2-1"
+	},
+	"veryStrong":{
+		"name":[
+			"Very Strong",
+			"Fast",
+			"Rugged",
+			"Angry",
+			"Furious"
+		],
+		"desc":[
+			"It looks like it could easily deal some damage.",
+			"The $name definitely has a higher damage potential."
+		],
+		"effect":"damage",
+		"strength":"1d3-1"
+	},
+	"weak":{
+		"name":[
+			"Weak",
+			"Small",
+			"Lesser"
+		],
+		"desc":[
+			"This $name is smaller than others of the same kind.",
+			"There is no way the $name can hit as strong as others."
+		],
+		"effect":"damage",
+		"strength":"-1d2-1"
+	},
+	"veryWeak":{
+		"name":[
+			"Very Weak",
+			"Tiny",
+			"Very Slow"
+		],
+		"desc":[
+			"It will be tough for such an enemy to land a strong blow."
+		],
+		"effect":"damage",
+		"strength":"-1d3-1"
+	},
+	"largeBody":{
+		"name":[
+			"Healthy",
+			"Well Fed",
+			"Large",
+			"Bulky"
+		],
+		"desc":[
+			"The $name's body is huge.",
+			"The $name can probably take quite a beating."
+		],
+		"effect":"health",
+		"strength":"2d3"
+	},
+	"sick":{
+		"name":[
+			"Sickly",
+			"Unhealthy",
+			"Hurt"
+		],
+		"desc":[
+			"It is surprising that the $name is still standing in its current state.",
+			"The weakness caused by its condition is noticable.",
+			"There's a chance that the $name will fall quicker than others."
+		],
+		"effect":"health",
+		"strength":"-1d3"
+	},
+	"dying":{
+		"name":[
+			"Very Sick",
+			"Dying",
+			"Bloody"
+		],
+		"desc":[
+			"It is surprising that the $name is still standing in its current state.",
+			"The weakness caused by its condition is noticable.",
+			"There is a very small chance that the $name will be able to fight for an extended amount of time."
+		],
+		"effect":"health",
+		"strength":"-2d2"
+	}
+}

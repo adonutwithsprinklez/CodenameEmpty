@@ -1,0 +1,43 @@
+{
+    "wep_damaged":{
+        "name":[
+            "Damaged",
+            "Broken",
+            "Scratched",
+            "Dull"
+        ],
+        "desc":[
+            "The weapon is not in the best of shape.",
+            "The weapon looks somewhat damaged."
+        ],
+        "effect":"damage",
+        "strength":"-1d2-1"
+    },
+    "wep_goodShape":{
+        "name":[
+            "Sharp",
+            "Well Maintained",
+            "Well Made"
+        ],
+        "desc":[
+            "The weapon looks extremely sharp",
+            "The weapon looks like it was well maintained",
+            "The weapon is in good condition."
+        ],
+        "effect":"damage",
+        "strength":"1d3-1"
+    },
+    "wep_polished":{
+        "name":[
+            "Polished",
+            "Clean",
+            "Shiny"
+        ],
+        "desc":[
+            "The weapon looks extremely shiny",
+            "The weapon looks like it was cleaned recently"
+        ],
+        "effect":"worth",
+        "strength":"20"
+    }
+}

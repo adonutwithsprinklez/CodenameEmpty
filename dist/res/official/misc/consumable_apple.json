@@ -1,0 +1,17 @@
+{
+    "name":[
+        "Apple",
+        "Red Apple",
+        "Bruised Apple"
+    ],
+    "desc":[
+        "The apple looks large and delicious.",
+        "The skin is a little bruised, but still edible."
+    ],
+    "iType":"consumable",
+    "consumeText":["Eat"],
+    "effects":[
+        ["heal","2d3"]
+    ],
+    "worth":2
+}
