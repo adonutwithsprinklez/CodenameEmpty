@@ -4,6 +4,7 @@
 import copy
 import os
 from email import message
+from struct import pack
 from tkinter import font
 import tkinter as tk
 from tkinter import ttk
@@ -160,8 +161,6 @@ class MetaDataEditor(tk.Frame):
         self.modifiertab.grid(row=0, column=0, padx=50, pady=50, sticky=E+W+N+S)
         self.tabControl.add(self.modifiertab, text = "  Modifiers  ")
 
-
-        # SCROLLABLE CREATION
         canvas = tk.Canvas(self.modifiertab)
         
         modifierFrame = ttk.Frame(canvas)
@@ -239,11 +238,11 @@ class MetaDataEditor(tk.Frame):
         canvas.pack(side="left", fill="both", expand=True)
 
         modifierFrame.rowconfigure(0, weight=1)
-        modifierFrame.columnconfigure(0, weight=0)
+        modifierFrame.columnconfigure(0, weight=1)
         modifierFrame.columnconfigure(1, weight=0)
-        modifierFrame.columnconfigure(2, weight=0)
+        modifierFrame.columnconfigure(2, weight=1)
         modifierFrame.columnconfigure(3, weight=0)
-        modifierFrame.columnconfigure(4, weight=1)
+        modifierFrame.columnconfigure(4, weight=10)
 
         modifierFrame.pack(expand=1, fill="both")
 
@@ -256,6 +255,40 @@ class MetaDataEditor(tk.Frame):
     def create_weaponstab(self):
         self.weapontab = ttk.Frame(self.tabControl)
         self.tabControl.add(self.weapontab, text = "  Weapons  ")
+
+        weaponFrame = ttk.Frame(self.weapontab)
+        weaponFrame.grid(row=0, column=0, columnspan=1, padx=0, pady=0, sticky=E+W+N+S)
+
+        # ELEMENT CREATION
+        # Files display
+        self.weaponFileList = StringVar(value=[])
+        weaponFileFrame = Frame(weaponFrame)
+        weaponFileFrame.grid(row=0, column=0, sticky=N+E+W+S)
+        ttk.Label(weaponFileFrame, text="Weapons", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
+        self.weaponFiles = Listbox(weaponFileFrame, listvariable=self.weaponFileList, font=self.font)
+        self.weaponFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
+        self.weaponFiles.bind("<<ListboxSelect>>", self._weaponLoadSelection)
+        ttk.Button(weaponFileFrame, text="-", command=self.delWeapon).grid(row=2, column=0, sticky=N+S+W+E)
+        ttk.Button(weaponFileFrame, text="+", command=self.newWeapon).grid(row=2, column=1, sticky=N+S+W+E)
+
+        ttk.Separator(weaponFrame, orient=VERTICAL).grid(row=0, column=1, columnspan=1, sticky=N+S)
+
+        weaponFileFrame.rowconfigure(1, weight=1)
+        weaponFileFrame.columnconfigure(0, weight=1)
+        weaponFileFrame.columnconfigure(1, weight=1)
+
+        weaponDataFrame = Frame(weaponFrame)
+        weaponDataFrame.grid(row=0, column=2)
+
+        weaponFrame.rowconfigure(0, weight=1)
+        weaponFrame.columnconfigure(0, weight=1)
+        weaponFrame.columnconfigure(1, weight=0)
+        weaponFrame.columnconfigure(2, weight=5)
+
+        self.weapontab.rowconfigure(0, weight=1)
+        self.weapontab.columnconfigure(0, weight=1)
+
+        self.weaponInitialLoad()
     
     def _close_button_event(self):
         self.window_is_open = False
@@ -268,7 +301,23 @@ class MetaDataEditor(tk.Frame):
         pass
 
     def savePack(self):
-        pass
+        packType = self.packType.get()
+        packVers = self.packVers.get()
+
+        self.metaFileData["name"] = self.packName.get()
+        self.metaFileData["author"] = self.packAuth.get()
+        self.metaFileData["desc"] = self.packDesc.get()
+        self.metaFileData["packType"] = self.packType.get()
+        try:
+            version = self.packVers.get()
+            version = float(version)
+            self.metaFileData["version"] = version
+        except:
+            pass
+        self.metaFileData["gameDesc"] = self.metadataGameDescGet()
+
+        saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+        
 
     def saveModifier(self):
         currentModifierData = {}
@@ -318,11 +367,14 @@ class MetaDataEditor(tk.Frame):
 
     def delSelectedModifier(self):
         if (len(list(self.currentOpenCollection.keys())) > 0):
-            currentModifierId = list(self.currentOpenCollection.keys())[self.selectedModifier]
-            del self.currentOpenCollection[currentModifierId]
-            modifierFiles = self.metaFileData["modifiers"]
-            saveJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json", self.currentOpenCollection)
-            self.modifierLoadCollection(self.selectedModFile)  
+            confirmation = messagebox.askokcancel("Confirm Delete", "Are you sure you want to delete the current Modifier?\
+                \nThis cannot be undone.")
+            if (confirmation):
+                currentModifierId = list(self.currentOpenCollection.keys())[self.selectedModifier]
+                del self.currentOpenCollection[currentModifierId]
+                modifierFiles = self.metaFileData["modifiers"]
+                saveJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json", self.currentOpenCollection)
+                self.modifierLoadCollection(self.selectedModFile)  
 
     def newModifier(self):
         newModId = "UNNAMEDMODIFIER"
@@ -419,7 +471,25 @@ class MetaDataEditor(tk.Frame):
         lines = self.modDesc.get('1.0',END).split("\n")
         return [line for line in lines if line.strip()]
 
+    def weaponInitialLoad(self):
+        self.weaponLoadSelection(0)
 
+    def _weaponLoadSelection(self, *args):
+        if (self.weaponFiles.curselection()) == 1:
+            idx = self.weaponFiles.curselection()[0]
+            if (idx != self.selectedWeapon):
+                self.weaponLoadSelection(idx)
+
+    def weaponLoadSelection(self, idx):
+        self.selectedWeapon = idx
+        weaponFiles = self.metaFileData["weapons"]
+        self.weaponFileList.set(weaponFiles)
+
+    def delWeapon(self):
+        pass
+
+    def newWeapon(self):
+        pass
 
 # Setup Constansts
 RES_FOLDER = "res/"
