@@ -34,7 +34,8 @@
 	"modifier":[
 	],
 	"weapon":[
-		"weapon_ironSword"
+		"weapon_ironSword",
+		"weapon_club"
 	],
 	"armor":[
 		"armor_hideArmor"

@@ -39,5 +39,44 @@
         ],
         "effect":"worth",
         "strength":"20"
+    },
+    "wep_branch_rotten":{
+        "name":[
+            "Rotten",
+            "Rotted",
+            "Rotting",
+            "Cracked"
+        ],
+        "desc":[
+            "The branch looks extremely weak",
+            "The branch is cracked and rotten"
+        ],
+        "effect":"damage",
+        "strength":"-1d2-1"
+    },
+    "wep_branch_spiky":{
+        "name":[
+            "Spiky",
+            "Branchy",
+            "Cruel Looking"
+        ],
+        "desc":[
+            "The limb has lots of smaller branches growing out of it",
+            "This particular branch looks extra spiky"
+        ],
+        "effect":"damage",
+        "strength":"1d2-1"
+    },
+    "wep_club_heavy":{
+        "name":[
+            "Heavy",
+            "Large"
+        ],
+        "desc":[
+            "The club is weighted well",
+            "This club has a good bit of heft to it"
+        ],
+        "effect":"damage",
+        "strength":"1d3-1"
     }
 }

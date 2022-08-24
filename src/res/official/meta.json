@@ -118,6 +118,8 @@
 		"weapon_wolfClaws",
 		"weapon_orcSword",
 		"weapon_starter_sword",
+		"weapon_treeBranch",
+		"weapon_club",
 		"template_IronSword"
 	],
 	"startingArea":["area_start_1"],
