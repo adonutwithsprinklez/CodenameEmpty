@@ -2,9 +2,12 @@
 
 # Official imports
 import copy
+import os
+from email import message
 from tkinter import font
 import tkinter as tk
 from tkinter import ttk
+from tkinter import simpledialog, messagebox
 from tkinter import *
 
 # Local Imports
@@ -67,6 +70,7 @@ class MetaDataEditor(tk.Frame):
         self.create_metadatatab()
         self.create_modifiertab()
         self.create_enemiestab()
+        self.create_weaponstab()
 
         # TODO: Add the other tabs
         # self.tabControl.add(self.areatab, text = "  Areas  ")
@@ -75,7 +79,6 @@ class MetaDataEditor(tk.Frame):
         # self.tabControl.add(self.npcstab, text = "  NPCs  ")
         # self.tabControl.add(self.queststab, text = "  Quests  ")
         # self.tabControl.add(self.racetab, text = "  Races  ")
-        # self.tabControl.add(self.weapontab, text = "  Weapons  ")
         # self.areatab = ttk.Frame(self.tabControl)
         # self.armortab = ttk.Frame(self.tabControl)
         # self.eventtab = ttk.Frame(self.tabControl)
@@ -83,7 +86,6 @@ class MetaDataEditor(tk.Frame):
         # self.npcstab = ttk.Frame(self.tabControl)
         # self.queststab = ttk.Frame(self.tabControl)
         # self.racetab = ttk.Frame(self.tabControl)
-        # self.weapontab = ttk.Frame(self.tabControl)
 
         self.tabControl.pack(expand=1, fill="both")
     
@@ -115,6 +117,8 @@ class MetaDataEditor(tk.Frame):
         ttk.Label(metadataFrame, text="Pack Type", font=self.font).grid(row=3, column=0, padx=10, pady=5, sticky=E)
         ttk.Label(metadataFrame, text="Version", font=self.font).grid(row=4, column=0, padx=10, pady=5, sticky=E)
         ttk.Label(metadataFrame, text="Game Descriptions", font=self.font).grid(row=5, column=0, padx=10, pady=5, sticky=E)
+
+        Button(metadataFrame, text="Update Metadata", command=self.savePack, font=self.font).grid(row=6,column=0, columnspan=3, sticky=E+W)
 
         self.packName = Entry(metadataFrame, font=self.font)
         self.packAuth = Entry(metadataFrame, font=self.font)
@@ -190,8 +194,8 @@ class MetaDataEditor(tk.Frame):
         self.modifierList = Listbox(modifiersListFrame, listvariable=self.currentModifiersList,  font=self.font)
         self.modifierList.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
         self.modifierList.bind("<<ListboxSelect>>", self._modifierLoadModifier)
-        ttk.Button(modifiersListFrame, text="-", command=self.delModifierFile).grid(row=2, column=0, sticky=N+S+W+E)
-        ttk.Button(modifiersListFrame, text="+", command=self.newModifierFile).grid(row=2, column=1, sticky=N+S+W+E)
+        ttk.Button(modifiersListFrame, text="-", command=self.delSelectedModifier).grid(row=2, column=0, sticky=N+S+W+E)
+        ttk.Button(modifiersListFrame, text="+", command=self.newModifier).grid(row=2, column=1, sticky=N+S+W+E)
 
         modifiersListFrame.rowconfigure(1, weight=1)
         modifiersListFrame.columnconfigure(0, weight=1)
@@ -249,6 +253,10 @@ class MetaDataEditor(tk.Frame):
         self.enemytab = ttk.Frame(self.tabControl)
         self.tabControl.add(self.enemytab, text = "  Enemies  ")
     
+    def create_weaponstab(self):
+        self.weapontab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.weapontab, text = "  Weapons  ")
+    
     def _close_button_event(self):
         self.window_is_open = False
         self.master.destroy()
@@ -268,7 +276,6 @@ class MetaDataEditor(tk.Frame):
         currentModifierData["desc"] = self.modifierGetModDesc()
         currentModifierData["effect"] = self.modEffect.get()
         currentModifierData["strength"] = self.modStrength.get()
-        print(currentModifierData)
         currentModifierId = list(self.currentOpenCollection.keys())[self.selectedModifier]
         newModifierID = self.modId.get()
         if (currentModifierId != newModifierID):
@@ -277,8 +284,10 @@ class MetaDataEditor(tk.Frame):
         else:
             self.currentOpenCollection[newModifierID] = currentModifierData
         modifierFiles = self.metaFileData["modifiers"]
-        print ((self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json", self.currentOpenCollection))
         saveJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json", self.currentOpenCollection)
+        self.modifierLoadCollection(self.selectedModFile)
+        self.selectedModifier = list(self.currentOpenCollection.keys()).index(newModifierID)
+        self.modifierLoadModifier(self.selectedModifier)
 
     def menuHelp(self):
         pass
@@ -287,10 +296,49 @@ class MetaDataEditor(tk.Frame):
         pass
 
     def newModifierFile(self):
-        pass
+        newfilename = simpledialog.askstring("Modifier Collection Name", "Enter new modifier collection name", parent=self.master)
+        if (newfilename):
+            newfilename = newfilename.strip()
+        if (newfilename and newfilename not in self.metaFileData["modifiers"]):
+            saveJson(self.fileLoc+"/modifiers/"+newfilename+".json", {})
+            self.metaFileData["modifiers"].append(newfilename)
+            self.metaFileData["modifiers"] = sorted(self.metaFileData["modifiers"])
+            saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+            self.modifierLoadCollection(self.metaFileData["modifiers"].index(newfilename))
+
     
     def delModifierFile(self):
-        pass
+        confirmation = messagebox.askokcancel("Confirm Delete", "Are you sure you want to delete the current Modifier Collection? All modifiers in this collection will be deleted.\
+            \nThis cannot be undone.")
+        if (confirmation):
+            collectionId = self.metaFileData["modifiers"].pop(self.selectedModFile)
+            os.remove(self.fileLoc+"/modifiers/"+collectionId+".json")
+            saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+            self.modifierLoadCollection(0)
+
+    def delSelectedModifier(self):
+        if (len(list(self.currentOpenCollection.keys())) > 0):
+            currentModifierId = list(self.currentOpenCollection.keys())[self.selectedModifier]
+            del self.currentOpenCollection[currentModifierId]
+            modifierFiles = self.metaFileData["modifiers"]
+            saveJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json", self.currentOpenCollection)
+            self.modifierLoadCollection(self.selectedModFile)  
+
+    def newModifier(self):
+        newModId = "UNNAMEDMODIFIER"
+        if (newModId not in list(self.currentOpenCollection.keys())):
+            newModifierData = {
+                "name":[],
+                "desc":[],
+                "effect":"",
+                "strength":""
+            }
+            self.currentOpenCollection[newModId] = newModifierData
+            modifierFiles = self.metaFileData["modifiers"]
+            saveJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json", self.currentOpenCollection)
+            self.modifierLoadCollection(self.selectedModFile)
+            self.selectedModifier = list(self.currentOpenCollection.keys()).index(newModId)
+            
 
     def metadataGameDescFill(self):
         self.gameDesc.delete('1.0', END)
@@ -316,9 +364,10 @@ class MetaDataEditor(tk.Frame):
         self.selectedModFile = idx
 
         modifierFiles = self.metaFileData["modifiers"]
-        self.currentOpenCollection = loadJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json")
+        self.currentOpenCollection = dict(sorted(loadJson(self.fileLoc+"/modifiers/"+modifierFiles[self.selectedModFile]+".json").items()))
 
         self.modifierFilesList.set(modifierFiles)
+        self.modifierFiles.selection_clear(0, END)
         self.modifierFiles.selection_set(self.selectedModFile)
         self.modifierFiles.see(self.selectedModFile)
 
@@ -334,6 +383,7 @@ class MetaDataEditor(tk.Frame):
         self.selectedModifier = idx
         
         self.currentModifiersList.set(list(self.currentOpenCollection.keys()))
+        self.modifierList.selection_clear(0, END)
         self.modifierList.selection_set(self.selectedModifier)
         self.modifierList.see(self.selectedModifier)
 
@@ -368,8 +418,7 @@ class MetaDataEditor(tk.Frame):
     def modifierGetModDesc(self):
         lines = self.modDesc.get('1.0',END).split("\n")
         return [line for line in lines if line.strip()]
-        
-        
+
 
 
 # Setup Constansts

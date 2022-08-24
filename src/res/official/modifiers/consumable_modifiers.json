@@ -1,15 +1,16 @@
 {
-    "strongEffect": {
+    "impairedEffect": {
         "name": [
-            "Strong",
-            "Potent",
-            "Concentrated"
+            "Weakened",
+            "Old",
+            "Impaired",
+            "Expired"
         ],
         "desc": [
-            "It seems to be stronger than average."
+            "It seems to be less than average."
         ],
-        "effect": "strongEffect",
-        "strength": "+2"
+        "effect": "impaired",
+        "strength": "1d6+6"
     },
     "improvedEffect": {
         "name": [
@@ -35,17 +36,16 @@
         "effect": "improved",
         "strength": "1d3+3"
     },
-    "impairedEffect": {
+    "strongEffect": {
         "name": [
-            "Weakened",
-            "Old",
-            "Impaired",
-            "Expired"
+            "Strong",
+            "Potent",
+            "Concentrated"
         ],
         "desc": [
-            "It seems to be less than average."
+            "It seems to be stronger than average."
         ],
-        "effect": "impaired",
-        "strength": "1d6+6"
+        "effect": "strongEffect",
+        "strength": "+2"
     }
 }

@@ -1,129 +1,134 @@
 {
-	"name":"Official Data Pack",
-	"author":"Sprinklez Media",
-	"desc":"This is the official game data and assets for the game.",
-	"packType":"standalone",
-	"version":0.1,
-	"gameLogo":[
-		"            _____  _____  _____     __  _____  _____  _____",
-		"           |  _  || __  ||     | __|  ||   __||     ||_   _|",
-		"           |   __||    -||  |  ||  |  ||   __||   --|  | |",
-		"           |__|   |__|__||_____||_____||_____||_____|  |_|",
-		"                   _____  _____  _____  _____  __ __",
-		"                  |   __||     ||  _  ||_   _||  |  |",
-		"                  |   __|| | | ||   __|  | |  |_   _|",
-		"                  |_____||_|_|_||__|     |_|    |_|"
-	],
-	"gameDesc":[
-		"Welcome to the void",
-		"REALLY early access",
-		"No, it's not complete",
-		"Estimated Release: Eventually",
-		"Made by A Donut with Sprinklez",
-		"Coming when it's done",
-		"There aren't very many of these",
-		"Growing all the time!",
-		"Ever closer to completion",
-		"The void stares back",
-		"Now with a tiny bit of story!",
-		"Inspired by Huw2k8's The Wastes",
-		"This project has been in development for way too long"
-	],
-	"areas":[
-		"area_start_1",
-		"area_start_2",
-		"area_gen_forest_1",
-		"area_gen_forest_2",
-		"area_gen_forest_3",
-		"area_gen_forest_4",
-		"cave_wolf_entrance",
-		"cave_wolf_room_1a",
-		"cave_wolf_room_1b",
-		"cave_wolf_room_2a",
-		"cave_wolf_room_3",
-		"area_village_gate_east",
-		"area_village_gate_west"
-	],
-	"armor":[
-		"armor_starting_armor",
-		"armor_wolfHide",
-		"armor_hideArmor",
-		"armor_ironArmor",
-		"armor_greatWolfHide",
-		"armor_orcArmor",
-		"armor_orcCaptainArmor"
-	],
-	"enemies":[
-		"enemy_bandit",
-		"enemy_banditStrong",
-		"enemy_rodentOfUnusualSize",
-		"enemy_wolf",
-		"enemy_greatWolf",
-		"enemy_orc",
-		"enemy_orcCaptain",
-		"enemy_robbedQuestEnemy",
-		"enemy_bear"
-	],
-	"events":[
-		"intro_event_1",
-		"intro_event_2",
-		"event_lostItem",
-		"event_forgotten_item",
-		"event_flipACoin",
-		"event_forestAreaMisc",
-		"event_forestAreaMisc2",
-		"event_mysteriousOrb",
-		"event_forest_apple",
-		"event_cave_wolf_1",
-		"event_cave_found_item_1",
-		"event_tower_forest"
-	],
-	"misc":[
-		"consumable_apple",
-		"consumable_potion_health",
-		"consumable_raw_meat",
-		"material_wolfPelt",
-		"material_stick",
-		"material_greatWolfPelt",
-		"misc_pieceOfMetal",
-		"misc_mysteriousOrb"
-	],
-	"modifiers":[
-		"consumable_modifiers",
-		"enemy_modifiers",
-		"enemy_wolf_modifiers",
-		"weapon_modifiers"
-	],
-	"npcs":[],
-	"quests":[
-		"quest_beginnings"
-	],
-	"races":[
-		"race_human",
-		"race_elf",
-		"race_orc",
-		"race_dwarf",
-		"race_draktilien"
-	],
-	"startableRaces":[
-		"race_human",
-		"race_elf",
-		"race_orc",
-		"race_dwarf",
-		"race_draktilien"
-	],
-	"weapons":[
-		"weapon_ironSword",
-		"weapon_steelSword",
-		"weapon_wolfClaws",
-		"weapon_orcSword",
-		"weapon_starter_sword",
-		"weapon_treeBranch",
-		"weapon_club",
-		"template_IronSword"
-	],
-	"startingArea":["area_start_1"],
-	"startingWeapon":["weapon_starter_sword"],
-	"startingArmor":["armor_starting_armor"],
-	"startingInventory":["consumable_potion_health"]
+    "name": "Official Data Pack",
+    "author": "Sprinklez Media",
+    "desc": "This is the official game data and assets for the game.",
+    "packType": "standalone",
+    "version": 0.1,
+    "gameLogo": [
+        "            _____  _____  _____     __  _____  _____  _____",
+        "           |  _  || __  ||     | __|  ||   __||     ||_   _|",
+        "           |   __||    -||  |  ||  |  ||   __||   --|  | |",
+        "           |__|   |__|__||_____||_____||_____||_____|  |_|",
+        "                   _____  _____  _____  _____  __ __",
+        "                  |   __||     ||  _  ||_   _||  |  |",
+        "                  |   __|| | | ||   __|  | |  |_   _|",
+        "                  |_____||_|_|_||__|     |_|    |_|"
+    ],
+    "gameDesc": [
+        "Estimated Release: Eventually",
+        "Made by A Donut with Sprinklez",
+        "Coming when it's done",
+        "There aren't very many of these",
+        "Growing all the time!",
+        "Ever closer to completion",
+        "The void stares back",
+        "Now with a tiny bit of story!",
+        "Inspired by Huw2k8's The Wastes",
+        "This project has been in development for way too long"
+    ],
+    "areas": [
+        "area_start_1",
+        "area_start_2",
+        "area_gen_forest_1",
+        "area_gen_forest_2",
+        "area_gen_forest_3",
+        "area_gen_forest_4",
+        "cave_wolf_entrance",
+        "cave_wolf_room_1a",
+        "cave_wolf_room_1b",
+        "cave_wolf_room_2a",
+        "cave_wolf_room_3",
+        "area_village_gate_east",
+        "area_village_gate_west"
+    ],
+    "armor": [
+        "armor_starting_armor",
+        "armor_wolfHide",
+        "armor_hideArmor",
+        "armor_ironArmor",
+        "armor_greatWolfHide",
+        "armor_orcArmor",
+        "armor_orcCaptainArmor"
+    ],
+    "enemies": [
+        "enemy_bandit",
+        "enemy_banditStrong",
+        "enemy_rodentOfUnusualSize",
+        "enemy_wolf",
+        "enemy_greatWolf",
+        "enemy_orc",
+        "enemy_orcCaptain",
+        "enemy_robbedQuestEnemy",
+        "enemy_bear"
+    ],
+    "events": [
+        "intro_event_1",
+        "intro_event_2",
+        "event_lostItem",
+        "event_forgotten_item",
+        "event_flipACoin",
+        "event_forestAreaMisc",
+        "event_forestAreaMisc2",
+        "event_mysteriousOrb",
+        "event_forest_apple",
+        "event_cave_wolf_1",
+        "event_cave_found_item_1",
+        "event_tower_forest"
+    ],
+    "misc": [
+        "consumable_apple",
+        "consumable_potion_health",
+        "consumable_raw_meat",
+        "material_wolfPelt",
+        "material_stick",
+        "material_greatWolfPelt",
+        "misc_pieceOfMetal",
+        "misc_mysteriousOrb"
+    ],
+    "modifiers": [
+        "consumable_modifiers",
+        "enemy_modifiers",
+        "enemy_wolf_modifiers",
+        "weapon_modifiers"
+    ],
+    "npcs": [],
+    "quests": [
+        "quest_beginnings"
+    ],
+    "races": [
+        "race_human",
+        "race_elf",
+        "race_orc",
+        "race_dwarf",
+        "race_draktilien"
+    ],
+    "startableRaces": [
+        "race_human",
+        "race_elf",
+        "race_orc",
+        "race_dwarf",
+        "race_draktilien"
+    ],
+    "weapons": [
+        "weapon_ironSword",
+        "weapon_steelSword",
+        "weapon_wolfClaws",
+        "weapon_orcSword",
+        "weapon_starter_sword",
+        "weapon_treeBranch",
+        "weapon_club",
+        "template_IronSword"
+    ],
+    "startingArea": [
+        "area_start_1"
+    ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
+    "startingArmor": [
+        "armor_starting_armor"
+    ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ]
 }
