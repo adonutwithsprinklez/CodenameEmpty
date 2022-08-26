@@ -32,9 +32,9 @@
 	"damage":"0",
 	"modCount":"1d2",
 	"modifier":[
-		["strong","1d6"],
-		["largeBody","1d6"],
-		["veryStrong","1d4"]
+		["strong",3],
+		["largeBody",3],
+		["veryStrong",2]
 	],
 	"weapon":[
 		"weapon_steelSword"

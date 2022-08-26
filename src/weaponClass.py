@@ -54,6 +54,8 @@ class Weapon(object):
 								self.damage += ";{}".format(newMod["s"])
 							elif newMod["e"] == "worth":
 								self.worth += rollDice(newMod["s"])
+							if "d" in newMod.keys():
+								self.desc += " {}".format(newMod["d"])
 	
 	def getAttack(self):
 		attack = rollDice(self.damage)

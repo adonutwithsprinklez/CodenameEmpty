@@ -299,6 +299,10 @@ class Player(object):
             self.hp = self.getMaxHP()
 
     # Class Getters
+    def getDodge(self):
+        # TODO: Implement
+        return 0
+
     def getEquipmentString(self):
         # TODO redo this whole part
         equipstr = ""

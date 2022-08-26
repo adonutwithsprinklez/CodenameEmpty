@@ -15,9 +15,6 @@
         "                  |_____||_|_|_||__|     |_|    |_|"
     ],
     "gameDesc": [
-        "Estimated Release: Eventually",
-        "Made by A Donut with Sprinklez",
-        "Coming when it's done",
         "There aren't very many of these",
         "Growing all the time!",
         "Ever closer to completion",
@@ -55,13 +52,13 @@
     "enemies": [
         "enemy_bandit",
         "enemy_banditStrong",
-        "enemy_rodentOfUnusualSize",
-        "enemy_wolf",
+        "enemy_bear",
         "enemy_greatWolf",
         "enemy_orc",
         "enemy_orcCaptain",
         "enemy_robbedQuestEnemy",
-        "enemy_bear"
+        "enemy_rodentOfUnusualSize",
+        "enemy_wolf"
     ],
     "events": [
         "intro_event_1",
@@ -113,14 +110,14 @@
         "race_draktilien"
     ],
     "weapons": [
+        "template_IronSword",
+        "weapon_club",
         "weapon_ironSword",
-        "weapon_steelSword",
-        "weapon_wolfClaws",
         "weapon_orcSword",
         "weapon_starter_sword",
+        "weapon_steelSword",
         "weapon_treeBranch",
-        "weapon_club",
-        "template_IronSword"
+        "weapon_wolfClaws"
     ],
     "startingArea": [
         "area_start_1"

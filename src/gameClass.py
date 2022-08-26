@@ -435,17 +435,18 @@ class Game(object):
                             damage = 0
                         areaEnemy.hp -= damage
                         self.disp.displayHeader("You")
-                        self.disp.display("%s You dealt %d damage." %
-                                          (msg, damage), 1, 1)
+                        self.disp.display("%s You dealt %d damage." % (msg, damage), 1, 1)
                         self.disp.displayHeader(areaEnemy.name)
                         damage = areaEnemy.getWeaponDamage()
                         if self.player.armor:
                             damage -= self.player.getArmorDefence()
                         if damage < 0:
-                            damage = 0
-                        self.player.hp -= damage
-                        self.disp.display("%s %s dealt %d damage." % (
-                            areaEnemy.weapon.getAction(), areaEnemy.name, damage))
+                            self.disp.display("You deflect %s's attack." % areaEnemy.name)
+                        elif self.player.getDodge() - areaEnemy.getAccuracy() > random.randint(1,100):
+                            self.disp.display("%s missed their attack." % (areaEnemy.name))
+                        else:
+                            self.player.hp -= damage
+                            self.disp.display("%s %s dealt %d damage." % (areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
                         time.sleep(DELAY)
                         # input("\nEnter to continue.")

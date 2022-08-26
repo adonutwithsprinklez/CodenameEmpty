@@ -72,6 +72,10 @@ class Enemy(object):
         if self.xp < 1:
             self.xp = 1
     
+    def getAccuracy(self):
+        # TODO: Implement
+        return 100
+    
     def getDesc(self):
         description = self.desc
         for mod in self.modifiers:

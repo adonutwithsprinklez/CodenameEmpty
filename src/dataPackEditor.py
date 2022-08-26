@@ -45,7 +45,9 @@ class MetaDataEditor(tk.Frame):
         self.master.mainloop()
     
     def create_widgets(self):
-        self.font = font.Font(family="courier", size=10)
+        self.font = font.Font(family="courier", size=12)
+        self.fontText = font.Font(family="courier", size=10)
+        self.fontBold = font.Font(family="courier", size=12, weight=font.BOLD)
 
         menu_file = Menu(self.menubar)
         menu_edit = Menu(self.menubar)
@@ -69,24 +71,16 @@ class MetaDataEditor(tk.Frame):
         self.tabControl = ttk.Notebook(self.masterframe)
 
         self.create_metadatatab()
-        self.create_modifiertab()
         self.create_enemiestab()
+        self.create_modifiertab()
         self.create_weaponstab()
-
-        # TODO: Add the other tabs
-        # self.tabControl.add(self.areatab, text = "  Areas  ")
-        # self.tabControl.add(self.armortab, text = "  Armors  ")
-        # self.tabControl.add(self.misctab, text = "  Misc  ")
-        # self.tabControl.add(self.npcstab, text = "  NPCs  ")
-        # self.tabControl.add(self.queststab, text = "  Quests  ")
-        # self.tabControl.add(self.racetab, text = "  Races  ")
-        # self.areatab = ttk.Frame(self.tabControl)
-        # self.armortab = ttk.Frame(self.tabControl)
-        # self.eventtab = ttk.Frame(self.tabControl)
-        # self.misctab = ttk.Frame(self.tabControl)
-        # self.npcstab = ttk.Frame(self.tabControl)
-        # self.queststab = ttk.Frame(self.tabControl)
-        # self.racetab = ttk.Frame(self.tabControl)
+        # self.create_areastab()
+        # self.create_armorstab()
+        # self.create_eventstab()
+        # self.create_misctab()
+        # self.create_npcstab()
+        # self.create_queststab()
+        # self.create_racestab()
 
         self.tabControl.pack(expand=1, fill="both")
     
@@ -121,11 +115,11 @@ class MetaDataEditor(tk.Frame):
 
         Button(metadataFrame, text="Update Metadata", command=self.savePack, font=self.font).grid(row=6,column=0, columnspan=3, sticky=E+W)
 
-        self.packName = Entry(metadataFrame, font=self.font)
-        self.packAuth = Entry(metadataFrame, font=self.font)
-        self.packDesc = Entry(metadataFrame, font=self.font)
-        self.packType = Entry(metadataFrame, font=self.font)
-        self.packVers = Entry(metadataFrame, font=self.font)
+        self.packName = Entry(metadataFrame, font=self.fontText)
+        self.packAuth = Entry(metadataFrame, font=self.fontText)
+        self.packDesc = Entry(metadataFrame, font=self.fontText)
+        self.packType = Entry(metadataFrame, font=self.fontText)
+        self.packVers = Entry(metadataFrame, font=self.fontText)
         self.packName.grid(row=0, column=1, columnspan=2, padx=10, pady=5, sticky=E+W)
         self.packAuth.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky=E+W)
         self.packDesc.grid(row=2, column=1, columnspan=2, padx=10, pady=5, sticky=E+W)
@@ -138,7 +132,7 @@ class MetaDataEditor(tk.Frame):
         self.packVers.insert(END, self.metaFileData["version"])
 
         self.gameDesc = tk.Text(metadataFrame)
-        self.gameDesc.configure(font=self.font, wrap='none')
+        self.gameDesc.configure(font=self.fontText, wrap='none')
         self.gameDesc.grid(row=5, column=1, columnspan=2, padx=10, pady=5, sticky=E+W+N+S)
 
 
@@ -171,12 +165,12 @@ class MetaDataEditor(tk.Frame):
         self.modifierFilesList = StringVar(value=[])
         modifierFilesFrame = Frame(modifierFrame)
         modifierFilesFrame.grid(row=0, column=0, sticky=N+E+W+S)
-        ttk.Label(modifierFilesFrame, text="Collections", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
-        self.modifierFiles = Listbox(modifierFilesFrame, listvariable=self.modifierFilesList, font=self.font)
+        ttk.Label(modifierFilesFrame, text="Collections", font=self.fontBold).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
+        self.modifierFiles = Listbox(modifierFilesFrame, listvariable=self.modifierFilesList, font=self.fontText)
         self.modifierFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
         self.modifierFiles.bind("<<ListboxSelect>>", self._modifierLoadCollection)
-        ttk.Button(modifierFilesFrame, text="-", command=self.delModifierFile).grid(row=2, column=0, sticky=N+S+W+E)
-        ttk.Button(modifierFilesFrame, text="+", command=self.newModifierFile).grid(row=2, column=1, sticky=N+S+W+E)
+        Button(modifierFilesFrame, text="-", command=self.delModifierFile, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(modifierFilesFrame, text="+", command=self.newModifierFile, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
 
         modifierFilesFrame.rowconfigure(1, weight=1)
         modifierFilesFrame.columnconfigure(0, weight=1)
@@ -189,12 +183,12 @@ class MetaDataEditor(tk.Frame):
         modifiersListFrame = Frame(modifierFrame)
         modifiersListFrame.grid(row=0, column=2, sticky=N+E+W+S)
 
-        ttk.Label(modifiersListFrame, text="Modifiers", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
-        self.modifierList = Listbox(modifiersListFrame, listvariable=self.currentModifiersList,  font=self.font)
+        ttk.Label(modifiersListFrame, text="Modifiers", font=self.fontBold  ).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
+        self.modifierList = Listbox(modifiersListFrame, listvariable=self.currentModifiersList,  font=self.fontText)
         self.modifierList.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
         self.modifierList.bind("<<ListboxSelect>>", self._modifierLoadModifier)
-        ttk.Button(modifiersListFrame, text="-", command=self.delSelectedModifier).grid(row=2, column=0, sticky=N+S+W+E)
-        ttk.Button(modifiersListFrame, text="+", command=self.newModifier).grid(row=2, column=1, sticky=N+S+W+E)
+        Button(modifiersListFrame, text="-", command=self.delSelectedModifier, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(modifiersListFrame, text="+", command=self.newModifier, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
 
         modifiersListFrame.rowconfigure(1, weight=1)
         modifiersListFrame.columnconfigure(0, weight=1)
@@ -210,27 +204,29 @@ class MetaDataEditor(tk.Frame):
         ttk.Label(modifierDataFrame, text="Name", font=self.font).grid(row=1, column=0, padx=10, pady=5, sticky=E)
         ttk.Label(modifierDataFrame, text="Description", font=self.font).grid(row=2, column=0, padx=10, pady=5, sticky=E)
         ttk.Label(modifierDataFrame, text="Effect", font=self.font).grid(row=3, column=0, padx=10, pady=5, sticky=E)
-        ttk.Label(modifierDataFrame, text="Strength", font=self.font).grid(row=4, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(modifierDataFrame, text="Strength", font=self.font).grid(row=4, column=0, padx=10, pady=5, sticky=E+N)
 
-        self.modId = Entry(modifierDataFrame, font=self.font)
-        self.modName = Text(modifierDataFrame, height=3, font=self.font)
-        self.modDesc = Text(modifierDataFrame, height=3, font=self.font)
-        self.modEffect = Entry(modifierDataFrame, font=self.font)
-        self.modStrength = Entry(modifierDataFrame, font=self.font)
-        saveModifier = Button(modifierDataFrame, text="Save", command=self.saveModifier)
+        self.modId = Entry(modifierDataFrame, font=self.fontText)
+        self.modName = Text(modifierDataFrame, height=3, font=self.fontText)
+        self.modDesc = Text(modifierDataFrame, height=3, font=self.fontText)
+        self.modEffect = Entry(modifierDataFrame, font=self.fontText)
+        self.modStrength = Entry(modifierDataFrame, font=self.fontText)
+        saveModifier = Button(modifierDataFrame, text="Save", command=self.saveModifier, font=self.font)
 
         self.modId.grid(row=0, column=1, columnspan=1, padx=10, pady=5, sticky=E+W)
-        self.modName.grid(row=1, column=1, columnspan=1, padx=10, pady=5, sticky=E+W)
-        self.modDesc.grid(row=2, column=1, columnspan=1, padx=10, pady=5, sticky=E+W)
+        self.modName.grid(row=1, column=1, columnspan=1, padx=10, pady=5, sticky=N+S+E+W)
+        self.modDesc.grid(row=2, column=1, columnspan=1, padx=10, pady=5, sticky=N+S+E+W)
         self.modEffect.grid(row=3, column=1, columnspan=1, padx=10, pady=5, sticky=E+W)
-        self.modStrength.grid(row=4, column=1, columnspan=1, padx=10, pady=5, sticky=E+W)
-        saveModifier.grid(row=5, column=0, columnspan=2, sticky=E+W+S)
+        self.modStrength.grid(row=4, column=1, columnspan=1, padx=10, pady=5, sticky=N+E+W)
+        saveModifier.grid(row=5, column=0, columnspan=2, sticky=E+W)
         # self.packName.insert(END, self.metaFileData["name"])
 
         self.modName.configure(wrap='none')
         self.modDesc.configure(wrap='none')
 
         modifierDataFrame.columnconfigure(1, weight=1)
+        modifierDataFrame.rowconfigure(1, weight=1)
+        modifierDataFrame.rowconfigure(2, weight=1)
 
 
         # FINISHING TOUCHES
@@ -251,7 +247,36 @@ class MetaDataEditor(tk.Frame):
     def create_enemiestab(self):
         self.enemytab = ttk.Frame(self.tabControl)
         self.tabControl.add(self.enemytab, text = "  Enemies  ")
-    
+
+        enemyFrame = ttk.Frame(self.enemytab)
+        enemyFrame.grid(row=0, column=0, columnspan=1, padx=0, pady=0, sticky=E+W+N+S)
+        
+        # ELEMENT CREATION
+        # Files display
+        self.enemyFileList = StringVar(value=[])
+        enemyFileFrame = Frame(enemyFrame)
+        enemyFileFrame.grid(row=0, column=0, sticky=N+E+W+S)
+        ttk.Label(enemyFileFrame, text="Enemies", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
+        self.enemyFiles = Listbox(enemyFileFrame, listvariable=self.enemyFileList, font=self.fontText)
+        self.enemyFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
+        self.enemyFiles.bind("<<ListboxSelect>>", self._enemyLoadSelection)
+        Button(enemyFileFrame, text="-", command=self.delEnemy, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(enemyFileFrame, text="+", command=self.newEnemy, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
+
+        ttk.Separator(enemyFrame, orient=VERTICAL).grid(row=0, column=1, columnspan=1, sticky=N+S)
+
+        enemyFileFrame.rowconfigure(1, weight=1)
+        enemyFileFrame.columnconfigure(0, weight=1)
+        enemyFileFrame.columnconfigure(1, weight=1)
+
+        enemyFrame.rowconfigure(0, weight=1)
+        enemyFrame.columnconfigure(0, weight=1)
+        enemyFrame.columnconfigure(1, weight=0)
+        enemyFrame.columnconfigure(2, weight=5)
+
+        self.enemytab.rowconfigure(0, weight=1)
+        self.enemytab.columnconfigure(0, weight=1)
+
     def create_weaponstab(self):
         self.weapontab = ttk.Frame(self.tabControl)
         self.tabControl.add(self.weapontab, text = "  Weapons  ")
@@ -265,11 +290,11 @@ class MetaDataEditor(tk.Frame):
         weaponFileFrame = Frame(weaponFrame)
         weaponFileFrame.grid(row=0, column=0, sticky=N+E+W+S)
         ttk.Label(weaponFileFrame, text="Weapons", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
-        self.weaponFiles = Listbox(weaponFileFrame, listvariable=self.weaponFileList, font=self.font)
+        self.weaponFiles = Listbox(weaponFileFrame, listvariable=self.weaponFileList, font=self.fontText)
         self.weaponFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
         self.weaponFiles.bind("<<ListboxSelect>>", self._weaponLoadSelection)
-        ttk.Button(weaponFileFrame, text="-", command=self.delWeapon).grid(row=2, column=0, sticky=N+S+W+E)
-        ttk.Button(weaponFileFrame, text="+", command=self.newWeapon).grid(row=2, column=1, sticky=N+S+W+E)
+        Button(weaponFileFrame, text="-", command=self.delWeapon, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(weaponFileFrame, text="+", command=self.newWeapon, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
 
         ttk.Separator(weaponFrame, orient=VERTICAL).grid(row=0, column=1, columnspan=1, sticky=N+S)
 
@@ -277,9 +302,54 @@ class MetaDataEditor(tk.Frame):
         weaponFileFrame.columnconfigure(0, weight=1)
         weaponFileFrame.columnconfigure(1, weight=1)
 
+        # Data display
         weaponDataFrame = Frame(weaponFrame)
-        weaponDataFrame.grid(row=0, column=2)
+        weaponDataFrame.grid(row=0, column=2, sticky=N+E+W+S)
 
+        ttk.Label(weaponDataFrame, text="Weapon ID", font=self.fontBold).grid(row=0, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Name", font=self.fontBold).grid(row=1, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Description", font=self.fontBold).grid(row=2, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Action Text", font=self.fontBold).grid(row=3, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Damage", font=self.fontBold).grid(row=4, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Num Hands", font=self.font).grid(row=4, column=2, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Min Worth", font=self.font).grid(row=5, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Max Worth", font=self.font).grid(row=5, column=2, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Mod Chance", font=self.font).grid(row=6, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Mod Count", font=self.font).grid(row=6, column=2, padx=10, pady=5, sticky=E)
+        ttk.Label(weaponDataFrame, text="Mods", font=self.font).grid(row=7, column=0, padx=10, pady=5, sticky=E+N)
+
+        self.wepId = Entry(weaponDataFrame, font=self.fontText)
+        self.wepName = Text(weaponDataFrame, height=3, font=self.fontText)
+        self.wepDesc = Text(weaponDataFrame, height=3, font=self.fontText)
+        self.wepActionText = Text(weaponDataFrame, height=3, font=self.fontText)
+        self.wepDmg = Entry(weaponDataFrame, font=self.fontText)
+        self.wepHand = Entry(weaponDataFrame, font=self.fontText)
+        self.wepWorMin = Entry(weaponDataFrame, font=self.fontText)
+        self.wepWorMax = Entry(weaponDataFrame, font=self.fontText)
+        self.wepModChance = Entry(weaponDataFrame, font=self.fontText)
+        self.wepModCnt = Entry(weaponDataFrame, font=self.fontText)
+        self.wepMods = Text(weaponDataFrame, height=3, font=self.fontText)
+
+        self.wepId.grid(row=0, column=1, columnspan=2, padx=0, pady=5, sticky=W+E)
+        self.wepName.grid(row=1, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W)
+        self.wepDesc.grid(row=2, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+E)
+        self.wepActionText.grid(row=3, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+E)
+        self.wepDmg.grid(row=4, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepHand.grid(row=4, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepWorMin.grid(row=5, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepWorMax.grid(row=5, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepModChance.grid(row=6, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepModCnt.grid(row=6, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepMods.grid(row=7, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+N)
+
+        Button(weaponDataFrame, text="Save", command=self.saveWeapon, font=self.font).grid(row=8, column=0, columnspan=4, sticky=N+E+W+S)
+
+        weaponDataFrame.rowconfigure(1, weight=1)
+        weaponDataFrame.rowconfigure(2, weight=1)
+        weaponDataFrame.rowconfigure(3, weight=1)
+        weaponDataFrame.rowconfigure(7, weight=1)
+        weaponDataFrame.columnconfigure(3, weight=1)
+        
         weaponFrame.rowconfigure(0, weight=1)
         weaponFrame.columnconfigure(0, weight=1)
         weaponFrame.columnconfigure(1, weight=0)
@@ -289,6 +359,34 @@ class MetaDataEditor(tk.Frame):
         self.weapontab.columnconfigure(0, weight=1)
 
         self.weaponInitialLoad()
+    
+    def create_areastab(self):
+        self.areatab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.areatab, text = "  Areas  ")
+    
+    def create_armorstab(self):
+        self.armortab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.armortab, text = "  Armors  ")
+    
+    def create_eventstab(self):
+        self.eventtab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.eventtab, text = "  Events  ")
+    
+    def create_misctab(self):
+        self.misctab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.misctab, text = "  Misc  ")
+    
+    def create_npcstab(self):
+        self.npcstab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.npcstab, text = "  NPCs  ")
+    
+    def create_queststab(self):
+        self.queststab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.queststab, text = "  Quests  ")
+    
+    def create_racestab(self):
+        self.racetab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.racetab, text = "  Races  ")
     
     def _close_button_event(self):
         self.window_is_open = False
@@ -342,6 +440,15 @@ class MetaDataEditor(tk.Frame):
         pass
 
     def menuAbout(self):
+        pass
+
+    def _enemyLoadSelection(self):
+        pass
+
+    def delEnemy(self):
+        pass
+
+    def newEnemy(self):
         pass
 
     def newModifierFile(self):
@@ -475,7 +582,7 @@ class MetaDataEditor(tk.Frame):
         self.weaponLoadSelection(0)
 
     def _weaponLoadSelection(self, *args):
-        if (self.weaponFiles.curselection()) == 1:
+        if (len(self.weaponFiles.curselection()) == 1):
             idx = self.weaponFiles.curselection()[0]
             if (idx != self.selectedWeapon):
                 self.weaponLoadSelection(idx)
@@ -484,12 +591,114 @@ class MetaDataEditor(tk.Frame):
         self.selectedWeapon = idx
         weaponFiles = self.metaFileData["weapons"]
         self.weaponFileList.set(weaponFiles)
+        self.wepId.delete(0,END)
+        self.wepId.insert(0, weaponFiles[self.selectedWeapon])
+        self.currentWeapon = loadJson(self.fileLoc+"/weapons/"+weaponFiles[self.selectedWeapon]+".json")
+        self.weaponSetNameField(self.currentWeapon["name"])
+        self.weaponSetDescField(self.currentWeapon["desc"])
+        self.weaponSetActionField(self.currentWeapon["actionText"])
+        self.wepDmg.delete(0,END)
+        self.wepDmg.insert(0, self.currentWeapon["damage"])
+        self.wepHand.delete(0,END)
+        if ("requiredHands" in self.currentWeapon.keys()):
+            self.wepHand.insert(0, self.currentWeapon["requiredHands"])
+        self.wepWorMin.delete(0,END)
+        if ("worthMin" in self.currentWeapon.keys()):
+            self.wepWorMin.insert(0, self.currentWeapon["worthMin"])
+        self.wepWorMax.delete(0,END)
+        if ("worthMax" in self.currentWeapon.keys()):
+            self.wepWorMax.insert(0, self.currentWeapon["worthMax"])
+        
+        self.wepModChance.delete(0,END)
+        if ("modifierChance" in self.currentWeapon.keys()):
+            self.wepModChance.insert(0, self.currentWeapon["modifierChance"])
+        self.wepModCnt.delete(0,END)
+        if ("modifierCount" in self.currentWeapon.keys()):
+            self.wepModCnt.insert(0, self.currentWeapon["modifierCount"])
+        if ("modifiers" in self.currentWeapon.keys()):
+            self.weaponSetModField(self.currentWeapon["modifiers"])
+        else:
+            self.weaponSetModField([])
+        
+    
+    def saveWeapon(self):
+        pass
 
     def delWeapon(self):
         pass
 
     def newWeapon(self):
-        pass
+        newfilename = simpledialog.askstring("New Weapon ID", "Enter new modifier collection name", parent=self.master)
+        if (newfilename):
+            newfilename = newfilename.strip()
+        if (newfilename and newfilename not in self.metaFileData["weapons"]):
+            newWeaponData = {
+                "name":[],
+                "desc":[],
+                "damage":[],
+                "actionText":[]
+            }
+            saveJson(self.fileLoc+"/weapons/"+newfilename+".json", newWeaponData)
+            self.metaFileData["weapons"].append(newfilename)
+            self.metaFileData["weapons"] = sorted(self.metaFileData["weapons"])
+            saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+            idx = self.metaFileData["weapons"].index(newfilename)
+            self.weaponLoadSelection(idx)
+
+    def weaponSetNameField(self, lines):
+        self.wepName.delete("1.0", END)
+        if (len(lines)>=1):
+            self.wepName.insert(END, lines.pop(0))
+        for line in lines:
+            self.wepName.insert(END, "\n" + line)
+    
+    def weaponGetNameField(self):
+        lines = self.wepName.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def weaponSetDescField(self, lines):
+        self.wepDesc.delete("1.0", END)
+        if (len(lines)>=1):
+            self.wepDesc.insert(END, lines.pop(0))
+        for line in lines:
+            self.wepDesc.insert(END, "\n" + line)
+    
+    def weaponGetDescField(self):
+        lines = self.wepDesc.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def weaponSetActionField(self, lines):
+        self.wepActionText.delete("1.0", END)
+        if (len(lines)>=1):
+            self.wepActionText.insert(END, lines.pop(0))
+        for line in lines:
+            self.wepActionText.insert(END, "\n" + line)
+    
+    def weaponGetActionField(self):
+        lines = self.wepActionText.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def weaponSetModField(self, lines):
+        self.wepMods.delete("1.0", END)
+        if (len(lines)>=1):
+            m = lines.pop(0)
+            self.wepMods.insert(END, "{}, {}".format(m[0], m[1]))
+        for line in lines:
+            self.wepMods.insert(END, "\n{}, {}".format(line[0], line[1]))
+    
+    def weaponGetModField(self):
+        lines = self.wepMods.get('1.0',END).split("\n")
+        lines = [line for line in lines if line.strip()]
+        modsList = []
+        for line in lines:
+            try:
+                line = line.split(",")
+                modEffect = line[0].strip()
+                modLiklihood = line[1].strip()
+                modsList.append([modEffect,modLiklihood])
+            except:
+                pass
+        return modsList
 
 # Setup Constansts
 RES_FOLDER = "res/"
