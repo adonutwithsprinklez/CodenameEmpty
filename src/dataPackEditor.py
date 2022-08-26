@@ -501,7 +501,7 @@ class MetaDataEditor(tk.Frame):
 
     def metadataGameDescFill(self):
         self.gameDesc.delete('1.0', END)
-        lines = self.metaFileData["gameDesc"]
+        lines = copy.copy(self.metaFileData["gameDesc"])
         self.gameDesc.insert(END, "{}".format(lines.pop(0)))
         for line in lines:
             self.gameDesc.insert(END, "\n{}".format(line))
@@ -608,7 +608,6 @@ class MetaDataEditor(tk.Frame):
         self.wepWorMax.delete(0,END)
         if ("worthMax" in self.currentWeapon.keys()):
             self.wepWorMax.insert(0, self.currentWeapon["worthMax"])
-        
         self.wepModChance.delete(0,END)
         if ("modifierChance" in self.currentWeapon.keys()):
             self.wepModChance.insert(0, self.currentWeapon["modifierChance"])
@@ -622,10 +621,56 @@ class MetaDataEditor(tk.Frame):
         
     
     def saveWeapon(self):
-        pass
+        wepId = self.wepId.get().strip()
+
+        self.currentWeapon = {}
+        self.currentWeapon["name"] = self.weaponGetNameField()
+        self.currentWeapon["damage"] = self.wepDmg.get()
+        self.currentWeapon["desc"] = self.weaponGetDescField()
+        self.currentWeapon["actionText"] = self.weaponGetActionField()
+        if (self.wepModCnt.get().strip()):
+            self.currentWeapon["modifierCount"] = self.wepModCnt.get().strip()
+            self.currentWeapon["modifiers"] = self.weaponGetModField()
+            if (self.wepModChance.get.strip()):
+                try:
+                    self.currentWeapon["modifierChance"] = int(self.wepModChance.get.strip())
+                except:
+                    pass
+        if (self.wepWorMin.get().strip()):
+            try:
+                self.currentWeapon["worthMin"] = int(self.wepWorMin.get().strip())
+            except:
+                pass
+        if (self.wepWorMax.get().strip()):
+            try:
+                self.currentWeapon["worthMax"] = int(self.wepWorMax.get().strip())
+            except:
+                pass
+        if (self.wepHand.get().strip()):
+            try:
+                self.currentWeapon["requiredHands"] = int(self.wepHand.get().strip())
+            except:
+                pass
+        
+        # Check if weapon ID changed, update if needed
+        if (wepId != self.metaFileData["weapons"][self.selectedWeapon]):
+            oldID = self.metaFileData["weapons"].pop(self.selectedWeapon)
+            self.metaFileData["weapons"].append(wepId)
+            self.metaFileData["weapons"] = sorted(self.metaFileData["weapons"])
+            self.selectedWeapon = self.metaFileData["weapons"].index(wepId)
+            os.remove("{}/weapons/{}.json".format(self.fileLoc, oldID))
+        saveJson("{}/weapons/{}.json".format(self.fileLoc, wepId), self.currentWeapon)
+        self.weaponLoadSelection(self.selectedWeapon)
 
     def delWeapon(self):
-        pass
+        weaponId = self.metaFileData["weapons"][self.selectedWeapon]
+        confirmation = messagebox.askokcancel("Confirm Delete", "Are you sure you want to delete %s?\
+            \nThis cannot be undone." % (weaponId))
+        if (confirmation):
+            self.metaFileData["weapons"].pop(self.selectedWeapon)
+            saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+            os.remove("{}/weapons/{}.json".format(self.fileLoc, weaponId))
+            self.weaponLoadSelection(0)
 
     def newWeapon(self):
         newfilename = simpledialog.askstring("New Weapon ID", "Enter new modifier collection name", parent=self.master)
