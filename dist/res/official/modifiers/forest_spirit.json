@@ -1,0 +1,15 @@
+{
+    "forest_spirit_young": {
+        "name": [
+            "Young",
+            "Confused",
+            "Recently Awoken"
+        ],
+        "desc": [
+            "The spirit was recently awoken and is not able to attack as hard.",
+            "It is too out of it to get a proper hit in."
+        ],
+        "effect": "damage",
+        "strength": "-1d3"
+    }
+}

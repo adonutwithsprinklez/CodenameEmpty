@@ -26,8 +26,8 @@
     },
 	"eID":"blackBear",
 	"desc":[
-		"The $name eyes you intently. Its fur glinting in the light.",
-		"The scars across the $name body lets any of its enemies know that its not new to fighting."
+		"The bear eyes you intently. Its fur glinting in the light.",
+		"The scars across the bear's body lets any of its enemies know that its not new to fighting."
 	],
 	"deathMsg":[
 		"gives one last roar before succumbing to its wounds.",

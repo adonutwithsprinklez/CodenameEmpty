@@ -1,0 +1,21 @@
+{
+	"name":[
+		"Club",
+        "Wooden Club"
+	],
+	"damage":"1d3+1",
+	"worthMin":5,
+	"worthMax":15,
+	"requiredHands":2,
+	"desc":[
+		"A basic wooden club."
+	],
+	"actionText":[
+		"The club blurs as it is swung through the air."
+	],
+	"modifierChance":75,
+	"modifierCount":"+1",
+	"modifiers":[
+		["wep_club_heavy","1d6"]
+	]
+}

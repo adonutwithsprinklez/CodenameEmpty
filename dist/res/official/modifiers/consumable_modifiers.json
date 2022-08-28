@@ -1,39 +1,51 @@
 {
-	"strongEffect":{
-		"name":[
-			"Strong",
-			"Potent",
-			"Concentrated"
-		],
-		"effect":"strongEffect",
-		"strength":"+2"
-	},
-	"improvedEffect":{
-		"name":[
-			"Improved",
-			"Refined",
-			"Enhanced"
-		],
-		"effect":"improved",
-		"strength":"1d6+6"
-	},
-	"slightlyImprovedEffect":{
-		"name":[
-			"Marginally Improved",
-			"Partially Refined",
-			"Mildly Enhanced"
-		],
-		"effect":"improved",
-		"strength":"1d3+3"
-	},
-	"impairedEffect":{
-		"name":[
-			"Weakened",
-			"Old",
-			"Impaired",
-			"Expired"
-		],
-		"effect":"impaired",
-		"strength":"1d6+6"
-	}
+    "impairedEffect": {
+        "name": [
+            "Weakened",
+            "Old",
+            "Impaired",
+            "Expired"
+        ],
+        "desc": [
+            "It seems to be less than average."
+        ],
+        "effect": "impaired",
+        "strength": "1d6+6"
+    },
+    "improvedEffect": {
+        "name": [
+            "Improved",
+            "Refined",
+            "Enhanced"
+        ],
+        "desc": [
+            "It seems to be well above average."
+        ],
+        "effect": "improved",
+        "strength": "1d6+6"
+    },
+    "slightlyImprovedEffect": {
+        "name": [
+            "Marginally Improved",
+            "Partially Refined",
+            "Mildly Enhanced"
+        ],
+        "desc": [
+            "It seems to be above average."
+        ],
+        "effect": "improved",
+        "strength": "1d3+3"
+    },
+    "strongEffect": {
+        "name": [
+            "Strong",
+            "Potent",
+            "Concentrated"
+        ],
+        "desc": [
+            "It seems to be stronger than average."
+        ],
+        "effect": "strongEffect",
+        "strength": "+2"
+    }
 }
