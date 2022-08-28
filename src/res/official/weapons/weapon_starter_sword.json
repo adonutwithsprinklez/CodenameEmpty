@@ -1,0 +1,18 @@
+{
+	"name":[
+		"Broken Sword",
+		"Shattered Sword"
+	],
+	"damage":"1d3",
+	"worthMin":10,
+	"worthMax":20,
+	"requiredHands":2,
+	"desc":[
+		"The blade of the sword is completely shattered. It will still deal damage, but do not expect it to deal much.",
+		"The sword is in good shape until you get to the shattered blade. It looks like it has as much of a chance to hurt its target as it does its own wielder."
+	],
+	"actionText":[
+		"There is a blur as the sword swings through the air.",
+		"The sword is silent as is is jabbed into its target."
+	]
+}

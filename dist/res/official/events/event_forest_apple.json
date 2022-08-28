@@ -1,0 +1,32 @@
+{
+    "id":"eventForestApple",
+    "type":"random",
+    "name":[
+        "An Apple Tree"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "As you continue along the dirt path you notice an apple tree not too far away. You examine it and see a single fresh apple just waiting to be taken."
+        ],
+        "actions":[
+            {
+                "action":"Take it",
+                "eventDo":[
+                    ["say","You reach up to the tree and grab the apple."],
+                    ["give","consumable_apple",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Ignore it",
+                "eventDo":[
+                    ["say","You opt to leave the tree alone. You don't need an apple taking up space in your inventory."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

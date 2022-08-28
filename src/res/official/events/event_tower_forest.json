@@ -1,0 +1,45 @@
+{
+    "id":"towerEnemies",
+    "type":"random",
+    "name":[
+        "Reaching the Tower",
+        "At the Tower"
+    ],
+    "start":[
+        "#wolves",
+        "#bandits",
+        "#bear"
+    ],
+    "#wolves":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#bandits":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            ["spawnEnemy",["enemy_bandit", "enemy_bandit", "enemy_bandit","enemy_bandit"]],
+            ["finish"]
+        ]
+    },
+    "#bear":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            ["spawnEnemy",["enemy_bear"]],
+            ["finish"]
+        ]
+    }
+}

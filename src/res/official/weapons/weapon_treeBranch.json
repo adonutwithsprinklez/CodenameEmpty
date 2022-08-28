@@ -1,0 +1,23 @@
+{
+	"name":[
+		"Tree Branch",
+		"Wooden Branch"
+	],
+	"damage":"1d3",
+	"worthMin":0,
+	"worthMax":10,
+	"requiredHands":2,
+	"desc":[
+		"A wooden tree branch covered in bark.",
+		"A tree branch covered in bark and moss."
+	],
+	"actionText":[
+		"The branch creaks as it is swung through the air."
+	],
+	"modifierChance":75,
+	"modifierCount":"1d2",
+	"modifiers":[
+		["wep_branch_rotten","1d6"],
+		["wep_branch_spiky","1d6"]
+	]
+}

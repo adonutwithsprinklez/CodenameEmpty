@@ -18,25 +18,33 @@ class Enemy(object):
         self.xp = data["xp"]
         if data["weapon"]:
             self.weapon = generateWeapon(
-                weapons[random.choice(data["weapon"])])
+                weapons[random.choice(data["weapon"])], modifiers)
+
         # Adds modifiers to the enemy
+        self.modifiers = []
+        if "modCount" in data.keys():
+            numberOfMods = rollDice(data["modCount"])
+        else:
+            numberOfMods = 0
         if data["modifier"]:
-            # Calculates the chance for each mod
-            mods = []
-            for mod in data["modifier"]:
-                mods += [mod[0]]*mod[1]
-            # Chooses a mod
-            mod = random.choice(mods)
-            # If the mod is not none add the info
-            if mod != "None":
-                mod = modifiers[mod].getInfo()
-                # modifies the enemy's name to match the effect
-                self.name = "%s %s" % (mod["n"], self.name)
-                # Gets into the mod's effects
-                if mod["e"] == "damage":
-                    self.damage += ";%s" % (mod["s"])
-                elif mod["e"] == "health":
-                    self.hpMax += rollDice(mod["s"])
+            for i in range(numberOfMods):
+                # Calculates the chance for each mod
+                mods = []
+                for mod in data["modifier"]:
+                    mods += [mod[0]]*mod[1]
+                # Chooses a mod
+                mod = random.choice(mods)
+                # If the mod is not none add the info
+                if mod != "None":
+                    mod = modifiers[mod].getInfo()
+                    # modifies the enemy's name to match the effect
+                    self.name = "%s %s" % (mod["n"], self.name)
+                    # Gets into the mod's effects
+                    if mod["e"] == "damage":
+                        self.damage += ";%s" % (mod["s"])
+                    elif mod["e"] == "health":
+                        self.hpMax += rollDice(mod["s"])
+                    self.modifiers.append(mod)
         # Wait until modifiers are added to set the starting health
         self.hp = self.hpMax
 
@@ -52,23 +60,36 @@ class Enemy(object):
             try:
                 if self.itemDrop[0] in weapons.keys():
                     self.itemDrop[0] = generateWeapon(
-                        weapons[self.itemDrop[0]])
+                        weapons[self.itemDrop[0]], modifiers)
                 elif self.itemDrop[0] in armor.keys():
                     self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
                 elif self.itemDrop[0] in misc.keys():
-                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]])
-            except:
+                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]], modifiers)
+            except Exception as e:
                 print("Error loading {} item reward.".format(self.name))
+                print(e)
 
         if self.xp < 1:
             self.xp = 1
+    
+    def getAccuracy(self):
+        # TODO: Implement
+        return 100
+    
+    def getDesc(self):
+        description = self.desc
+        for mod in self.modifiers:
+            if "d" in mod.keys() and random.random() > .5:
+                description = "{} {}".format(description, mod["d"])
+        description = description.replace("$name", self.name)
+        return description
 
     def getHealth(self):
         return int(((1.0*self.hp)/self.hpMax)*68 + 0.5)
 
     def getWeaponDamage(self, rand=True):
         if self.weapon:
-            return rollDice(self.damage) + rollDice(self.weapon.damage)
+            return rollDice(self.damage) + self.weapon.getAttack()
         else:
             return rollDice(self.damage)
 

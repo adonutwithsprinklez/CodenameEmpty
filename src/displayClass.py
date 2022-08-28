@@ -27,14 +27,20 @@ class Screen(object):
             if self.debugging:
                 print(newline)
             self.currentLines.append(newline)
-        for line in textwrap.wrap(msg, 72):
-            if self.delay:
-                time.sleep(self.printdelay)
-            newline = "|   {:75}|".format(line)
-            if self.debugging:
-                print(newline)
-            self.currentLines.append("|   {:75}|".format(line))
-            # print "|   %-75s|" % (line)
+        pCount = 0
+        for paragraph in msg.split("\n"):
+            if pCount >= 1:
+                newline = "|%s|" % (" "*78)
+                self.currentLines.append(newline)
+            for line in textwrap.wrap(paragraph, 72):
+                if self.delay:
+                    time.sleep(self.printdelay)
+                newline = "|   {:75}|".format(line)
+                if self.debugging:
+                    print(newline)
+                self.currentLines.append("|   {:75}|".format(line))
+                # print "|   %-75s|" % (line)
+            pCount += 1
         if br2 == 1:
             time.sleep(self.printdelay)
             newline = "|%s|" % (" "*78)

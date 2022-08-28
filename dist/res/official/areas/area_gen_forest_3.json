@@ -1,0 +1,78 @@
+{
+    "name":[
+		"The $names's $forest Trail",
+		"The $adjs $forest Trail",
+		"$adjs $forest Trail"
+	],
+	"names":{
+		"type":"choose",
+		"choices":[
+			"Elder",
+			"King",
+			"Queen",
+			"Bear",
+			"Huntsman"
+		]
+	},
+	"forest":{
+		"type":"choose",
+		"choices":[
+			"Forest",
+			"Thicket",
+			"Grove",
+            "Wilderness",
+            "Woodland"
+		]
+	},
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Yellow",
+			"Green",
+			"Sunny",
+			"Bright",
+			"Foggy",
+			"Dense",
+			"Old"
+		]
+	},
+    "desc":[
+        "Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
+        "It is almost impossible to see past the trees.\nYou continue to push on.",
+        "Next to no light is able to pass through the thick layer of leaves above.\nThe few beams of light guide you as you go on.",
+        "There is a slight chill to the air, probably because of the lack of sunlight.\nAt least you won't sweat as you hike on."
+    ],
+	"aType":"Forest",
+	"hostilityMin":2,
+	"hostilityMax":4,
+	"eventChance":40,
+	"events":[
+		["event_lostItem", "1d20"],
+		["event_flipACoin", "1d20"],
+		["event_forestAreaMisc", "1d20+6"],
+		["event_forestAreaMisc2", "1d20+6"],
+		["event_forest_apple", "1d20+3"],
+		["event_forgotten_item", "1d15"]
+	],
+	"hostilityAffectsEnemyChance":true,
+	"enemyChance":20,
+	"enemyPointsPerHostility":2,
+	"enemies":[
+		["enemy_rodentOfUnusualSize", 2],
+		["enemy_wolf",3],
+		["enemy_greatWolf",7]
+	],
+	"npcChance":0,
+	"npcs":[
+	],
+	"minNewAreas":3,
+	"maxNewAreas":6,
+	"areas":[
+        ["area_gen_forest_1", "2d6"],
+        ["area_gen_forest_2", "2d6"],
+        ["area_gen_forest_3", "1d8", ["required"]],
+        ["area_gen_forest_4", "1d12"],
+        ["cave_wolf_entrance", "1d8"],
+		["area_village_gate_east", "2d6", ["limited"]]
+	]
+}

@@ -1,8 +1,12 @@
+
+import copy
 import random
+
+from dieClass import rollDice
 
 
 class Weapon(object):
-	def __init__(self, data=None):
+	def __init__(self, data=None, modifiers = None):
 		# Decides whether or not the item is generated
 		if "generated" in data.keys():
 			self.generated = data["generated"]
@@ -24,6 +28,38 @@ class Weapon(object):
 			self.worth = random.randint(data["worthMin"],data["worthMax"])
 		else:
 			self.worth = 0
+		self.modifiers = []
+		if "modifiers" in data.keys():
+			# Get the chance of a modifier
+			if random.randint(0,100) < data["modifierChance"]:
+				# Get the number of modifers to add
+				modCount = rollDice(data["modifierCount"])
+
+				# Add the modifers:
+				possibleMods = copy.copy(data["modifiers"])
+				for i in range(modCount):
+					if len(possibleMods) > 0:
+						highRoll = 0
+						newMod = None
+						for mod in possibleMods:
+							newRoll = rollDice(mod[1])
+							if newRoll > highRoll:
+								newMod = mod
+								highRoll = newRoll
+						if newMod:
+							possibleMods.remove(newMod)
+							newMod = modifiers[newMod[0]].getInfo()
+							self.name = "{} {}".format(newMod["n"], self.name)
+							if newMod["e"] == "damage":
+								self.damage += ";{}".format(newMod["s"])
+							elif newMod["e"] == "worth":
+								self.worth += rollDice(newMod["s"])
+							if "d" in newMod.keys():
+								self.desc += " {}".format(newMod["d"])
+	
+	def getAttack(self):
+		attack = rollDice(self.damage)
+		return attack
 
 	def getAction(self):
 		return random.choice(self.actionText)

@@ -6,8 +6,8 @@ from textGeneration import generateString
 from weaponClass import Weapon
 
 
-def generateWeapon(data=None):
-    newWeapon = Weapon(data)
+def generateWeapon(data=None, modifiers=None):
+    newWeapon = Weapon(data, modifiers)
     if newWeapon.generated:
         newWeapon = _generateWeapon(newWeapon, data)
     return newWeapon

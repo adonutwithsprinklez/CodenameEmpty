@@ -1,0 +1,33 @@
+{
+	"name":[
+		"Enemy Name",
+        "Enemy Name Variant"
+	],
+	"eID":"enemyId",
+	"desc":[
+		"Description when fighting enemy.",
+		"Second description for fighting"
+	],
+	"deathMsg":[
+		"this message plays on death.",
+		"these messages should start with a lowercase letter and include a period at the end."
+	],
+	"hp":"1d20",
+	"damage":"1d3",
+	"modCount":"1d3-1",
+	"modifier":[
+		["None",3],
+		["mod type",2]
+	],
+	"weapon":[
+		"weapon_id"
+	],
+	"armor":[
+		"armor_id"
+	],
+	"itemChance":50,
+	"itemDrops":[
+		["item_id","Description when player recieves the item drop."]
+	],
+	"xp":3
+}

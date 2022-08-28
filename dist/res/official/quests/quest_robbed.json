@@ -15,7 +15,7 @@
 			["inAreaType","Enemy Land"]
 		],
 		"do":[
-			["spawnEnemy","enemy_robbedQuestEnemy"],
+			["spawnEnemy",["enemy_robbedQuestEnemy"]],
 			["say","The person that robbed the old man is here somewhere."]
 		],
 		"nextStep":{

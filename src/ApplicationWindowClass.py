@@ -36,7 +36,7 @@ class ApplicationWindow(tk.Frame):
         self.master = root
         self.master.geometry("{}x{}".format(self.settings["WIDTH"],self.settings["HEIGHT"]))
         self.master.protocol('WM_DELETE_WINDOW', self._close_button_event)
-        self.master.bind('<Configure>', self._window_rezise_event)
+        self.master.bind('<Configure>', self._window_resize_event)
         self.create_widgets()
         self.pack()
         self.window_is_open = True
@@ -123,7 +123,7 @@ class ApplicationWindow(tk.Frame):
             return True
         return False
     
-    def _window_rezise_event(self, event):
+    def _window_resize_event(self, event):
         fontSize = int(self.master.winfo_width() / 70)
         self.font = font.Font(family="courier", size=fontSize)
         self.output_box.configure(font=self.font)

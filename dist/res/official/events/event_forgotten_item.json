@@ -1,0 +1,98 @@
+{
+    "id":"eventItemInTheDirt",
+    "type":"random",
+    "name":[
+        "Something Left in the Dirt",
+        "Lost Item"
+    ],
+    "start":[
+        "#start"
+    ],
+    "#start":{
+        "msg":[
+            "You notice something sticking up out of the dirt as you walk. You walk over to it, seeing that it is a leather bag with something obviously shoved into it."
+        ],
+        "actions":[
+            {
+                "action":"Open the bag",
+                "eventDo":[
+                    ["goto",["#ironSword", "#hideArmor", "#healthPotion"]]
+                ]
+            },
+            {
+                "action":"Ignore it and continue on",
+                "eventDo":[
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#ironSword":{
+        "msg":[
+            "You open the bag, pulling out a simple iron sword wrapped in a thin cloth.",
+            "You kneel down by the bag and open the flap. Inside you find an iron sword wrapped with a thin cloth."
+        ],
+        "actions":[
+            {
+                "action":"Take the sword",
+                "eventDo":[
+                    ["say","You throw the cloth away and take the sword with you."],
+                    ["give","weapon_ironSword",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Ignore it",
+                "eventDo":[
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#hideArmor":{
+        "msg":[
+            "You open the bag, pulling out a set of hide armor inside.",
+            "Opening the bag's flap reveals a set of hide armor shoved hastily inside.",
+            "Inside the leather bag sits a neatly folded set of hide armor."
+        ],
+        "actions":[
+            {
+                "action":"Take the armor",
+                "eventDo":[
+                    ["say","You pull the armor out of the bag and take it with you."],
+                    ["give","armor_hideArmor",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Ignore it",
+                "eventDo":[
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#healthPotion":{
+        "msg":[
+            "You throw the flap of the bag open and find a health potion inside.",
+            "Inside the bag is a single health potion.",
+            "You flip open the bag's flap and see a health potion."
+        ],
+        "actions":[
+            {
+                "action":"Take the potion",
+                "eventDo":[
+                    ["say","You grab the health potion and throw it into your own bag."],
+                    ["give","consumable_potion_health",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Ignore it",
+                "eventDo":[
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,84 @@
+{
+    "name":[
+        "The $nameAdjs $names's $forest",
+        "$nameAdjs $adjs $forest"
+    ],
+    "names":{
+        "type":"choose",
+        "choices":[
+            "Elder",
+            "God",
+            "King",
+            "Queen",
+            "Dragon",
+            "Bear",
+            "Ruffian",
+            "Troublemaker",
+            "Huntsman"
+        ]
+    },
+    "forest":{
+        "type":"choose",
+        "choices":[
+            "Forest",
+            "Thicket",
+            "Wilds",
+            "Wilderness",
+            "Woodland"
+        ]
+    },
+    "adjs":{
+        "type":"choose",
+        "choices":[
+            "Dark",
+            "Foggy",
+            "Dense",
+            "Royal",
+            "Broken"
+        ]
+    },
+    "nameAdjs":{
+        "type":"choose",
+        "choices":[
+            "Evil",
+            "Cruel",
+            "Old"
+        ]
+    },
+    "desc":[
+        "Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
+        "It is almost impossible to see past the trees.\nYou continue to push on.",
+        "Next to no light is able to pass through the thick layer of leaves above.\nThe few beams of light guide you as you go on.",
+        "There is a slight chill to the air, probably because of the lack of sunlight.\nAt least you won't sweat as you hike on."
+    ],
+	"aType":"Forest",
+	"hostilityMin":5,
+	"hostilityMax":7,
+	"eventChance":35,
+	"events":[
+		["event_lostItem", "1d20"],
+		["event_forestAreaMisc", "1d20+6"],
+		["event_forestAreaMisc2", "1d20+6"],
+		["event_forest_apple", "1d20+3"],
+		["event_forgotten_item", "1d15"]
+	],
+	"hostilityAffectsEnemyChance":true,
+	"enemyChance":15,
+	"enemyPointsPerHostility":3,
+	"enemies":[
+		["enemy_wolf",3],
+		["enemy_bandit",7],
+        ["enemy_banditStrong",9],
+		["enemy_greatWolf",8],
+		["enemy_bear",11]
+	],
+	"npcChance":0,
+	"npcs":[
+	],
+	"minNewAreas":3,
+	"maxNewAreas":5,
+	"areas":[
+        ["area_gen_forest_3", "1d8", ["required"]],
+        ["cave_wolf_entrance", "1d8"]
+	]
+}

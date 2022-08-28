@@ -1,0 +1,83 @@
+{
+    "name":[
+        "$nameDesc $room",
+        "$room"
+    ],
+	"room":{
+		"type":"choose",
+		"choices":[
+            "Passage",
+            "Cavernous Room",
+            "Cavern",
+            "Pathway",
+            "Chamber",
+            "Clear Space"
+		]
+	},
+	"nameDesc":{
+		"type":"choose",
+		"choices":[
+            "Dimly lit",
+            "Darkly lit",
+            "Barely lit",
+            "Dark",
+            "Small",
+            "Large",
+            "Roomy",
+            "Drafty",
+            "Sparkling"
+		]
+	},
+	"nameDescLowercase":{
+		"type":"choose",
+		"choices":[
+            "dimly lit",
+            "darkly lit",
+            "barely lit",
+            "dark",
+            "small",
+            "large",
+            "roomy",
+            "drafty",
+            "sparkling"
+		]
+	},
+	"randomDetail":{
+		"type":"choose",
+		"choices":[
+			"Bones litter the ground. This is obviously a nest for a foul beast.",
+			"A bit of grass has been piled into one of the sides of the area.",
+			"What appears to be a freshly eaten meal sits at the center of the area."
+		]
+	},
+	"desc":[
+		"The cave opens up a bit into a slightly more spacious room. $randomDetail",
+		"You push into another chamber of the cave. This one is more spacious that the previous ones. $randomDetail"
+	],
+	"aType":"Cave",
+	"hostilityMin":5,
+	"hostilityMax":7,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":75,
+	"enemyMessage":[
+		"You can discern moving shapes within the $nameDescLowercase passageway.",
+		"Multiple pairs of eyes stare at you as you work your way through the $nameDescLowercase tunnel.",
+		"A growl alerts you to several enemies within the $nameDescLowercase cavern.",
+		"The $nameDescLowercase passage appears to be full of enemies."
+	],
+	"enemyPointsPerHostility":4,
+	"enemies":[
+        ["enemy_wolf", 2],
+        ["enemy_greatWolf", 5]
+	],
+	"npcChance":0,
+	"npcs":[],
+	"minNewAreas":1,
+	"maxNewAreas":2,
+	"areas":[
+        ["area_gen_forest_3", "1d6", ["required"]],
+        ["area_gen_forest_4", "1d6"]
+	]
+}

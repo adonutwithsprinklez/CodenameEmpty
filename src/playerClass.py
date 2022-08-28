@@ -37,9 +37,8 @@ class Player(object):
             self.disp.display("Quick Stats:")
             for stat in self.getUserInfo():
                 self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
-            self.disp.display("Equipped Gear:", 1, 0)
-            self.disp.display("\t{}".format(
-                self.getEquipmentString()), 0)
+            self.disp.display("Wielding: %s (%s damage)" % (self.weapon.name, self.weapon.damage))
+            self.disp.display("Wearing: %s (%s defence)" % (self.armor.name, self.armor.defence), 0)
             self.disp.closeDisplay()
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests", 0)
@@ -125,14 +124,21 @@ class Player(object):
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "a":
             self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
-            self.disp.display("%s - %s defence" %
+            self.disp.display("\t%s - %s defence" %
                               (self.inv[cmd-1].name, self.inv[cmd-1].defence))
             self.disp.display(self.inv[cmd-1].desc, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("%s - %s defence" %
+            self.disp.display("\t%s - %s defence" %
                               (self.armor.name, self.armor.defence), 0)
             self.disp.display(self.armor.desc, 0, 1)
             self.disp.display("1. Equip", 0)
+            self.disp.display("2. Drop", 0)
+            self.disp.display("Anything else to continue", 0)
+        elif self.inv[cmd-1].t == "consumable":
+            self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
+            self.disp.display(self.inv[cmd-1].desc)
+            self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1, 1)
+            self.disp.display("1. {}".format(self.inv[cmd-1].consumeText), 0)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         else:
@@ -156,6 +162,9 @@ class Player(object):
         elif self.inv[cmd-1].t == "a" and equip == 1:
             self.inv.append(self.armor)
             self.armor = self.inv.pop(cmd-1)
+        elif self.inv[cmd-1].t == "consumable" and equip == 1:
+            self.inv[cmd-1].consumableEffect(self)
+            self.inv.pop(cmd-1)
         elif equip == 2:
             self.disp.displayHeader("Item dropped")
             self.disp.display("You drop %s." % (self.inv.pop(cmd-1).name))
@@ -174,6 +183,9 @@ class Player(object):
             self.disp.display(f'\tVitality     - {self.getStat("vitality")}', 0)
             self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
             self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
+            self.disp.display("Equipped Gear:", 1, 0)
+            self.disp.display("\t{}".format(
+                self.getEquipmentString()), 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
             self.disp.closeDisplay()
@@ -279,8 +291,18 @@ class Player(object):
         if self.xp >= self.getXpNeededForLevelUp():
             self.xp -= self.getXpNeededForLevelUp()
             self.level += 1
+    
+    def giveHP(self, hp):
+        ''' Gives the player HP '''
+        self.hp += hp
+        if self.hp > self.getMaxHP():
+            self.hp = self.getMaxHP()
 
     # Class Getters
+    def getDodge(self):
+        # TODO: Implement
+        return 0
+
     def getEquipmentString(self):
         # TODO redo this whole part
         equipstr = ""
@@ -311,7 +333,7 @@ class Player(object):
 
     def getWeaponDamage(self):
         if self.weapon:
-            return rollDice(self.weapon.damage)
+            return self.weapon.getAttack()
         else:
             return 0
 

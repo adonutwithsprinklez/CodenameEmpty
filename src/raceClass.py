@@ -71,7 +71,7 @@ class Race(object):
 
     def getDescription(self):
         ''' Generates a description of the race's appearance. '''
-        if len(self.getLimbCounts().keys()) > 1:
+        if len(self.getLimbCounts().keys()) == 1:
             return self.getPureRaceDescription()
         else:
             return self.getMixedRaceDescription()
@@ -94,7 +94,19 @@ class Race(object):
     def getMixedRaceDescription(self):
         ''' Creates a dynamic description for the race since their limbs do not all belong to any singular race '''
         # TODO add a description generator for nonpure races.
-        return self.getPureRaceDescription()
+        limbCounts = self.getLimbCounts()
+        description = 'You look like a strange Chimera of different races.\n\t'
+        for rId in limbCounts.keys():
+            firstLimbType = list(limbCounts[rId].keys())[0]
+            description += f'You have {limbCounts[rId][firstLimbType]} {firstLimbType}'
+            if limbCounts[rId][firstLimbType] > 1:
+                description += "s"
+            for limbtype in list(limbCounts[rId].keys())[1:]:
+                description = f'{description}, {limbCounts[rId][limbtype]} {limbtype}'
+                if limbCounts[rId][limbtype] > 1:
+                    description += "s"
+            description += f" that appears to be of the {rId} race. "
+        return description
     
     def getVitalLimbs(self):
         ''' Returns a list of limbs that are vital to the race '''

@@ -15,11 +15,15 @@
 	],
 	"hp":"2d3+5",
 	"damage":"0",
+	"modCount":"1d3-1",
 	"modifier":[
-		["None",3],
+		["None",1],
 		["weak",2],
 		["strong",1],
-		["veryWeak",1]
+		["veryWeak",2],
+		["largeBody",1],
+		["wolfRabid",2],
+		["wolfStrong",2]
 	],
 	"weapon":[
 		"weapon_wolfClaws"
@@ -27,9 +31,11 @@
 	"armor":[
 		"armor_wolfHide"
 	],
-	"itemChance":10,
+	"itemChance":50,
 	"itemDrops":[
-		["material_wolfPelt","You skin the wolf and take it as a reward."]
+		["material_wolfPelt","You skin the wolf and take it as a reward."],
+		["consumable_raw_meat","You skin the large beast, taking some of its flesh with you."],
+		["consumable_raw_meat","You are able to take some of the beast's flesh."]
 	],
 	"xp":3
 }

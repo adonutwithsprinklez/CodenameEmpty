@@ -1,3 +1,15 @@
+
+'''
+CALL startApplication INSTEAD OF RUNNING THIS FILE DIRECTLY UNLESS
+YOU KNOW WHAT YOU ARE DOING!!!
+
+Only run this file if the game's resources are already decompressed.
+If the game's resources are zipped then the game will fail to launch.
+'''
+
+import os
+import shutil
+
 from gameClass import Game
 from jsonDecoder import loadJson, saveJson
 
@@ -5,6 +17,10 @@ from jsonDecoder import loadJson, saveJson
 GAME_VERSION = 0.1
 MIN_DATA_PACK_VERSION = 0.1
 MIN_SAVE_VERSION = 0.1
+
+RES_FOLDER = None
+SETTINGS_FILE = None
+SETTINGS = None
 
 
 # Starts the gameloop
@@ -23,22 +39,43 @@ def startGame(game):
 			return False
 
 def openSettings(game, settingsFile):
+	global RES_FOLDER, SETTINGS
 	game.openOptionsWindow()
 	saveJson(settingsFile, game.settings)
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
 def openDataPacks(game, settingsFile):
+	global RES_FOLDER, SETTINGS
 	game.openDataPacks()
 	saveJson(settingsFile, game.settings)
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
+def startApplication():
+	global GAME_VERSION, MIN_SAVE_VERSION, MIN_SAVE_VERSION
+	global RES_FOLDER, SETTINGS, SETTINGS_FILE
 
-# This code runs with main.py is opened
-if __name__ == "__main__":
 	# Loads some resource stuff
 	RES_FOLDER = "res/"
 	SETTINGS_FILE = RES_FOLDER + "settings.json"
 	SETTINGS = loadJson("{}".format(SETTINGS_FILE))
+
+	# TODO Rewrite this bs
+	'''
+	if __name__ != "__main__":
+		# Unpack the datapack zip folders if needed
+		print("Prepping datapacks...")
+		subfolders = [ f.name for f in os.scandir(RES_FOLDER) if f.is_dir() ]
+		for file in os.listdir(RES_FOLDER):
+			if file.endswith(".zip"):
+				print("\tPrepping datapack '{}'".format(os.path.join(RES_FOLDER, file)))
+				if file.split(".zip")[0] in subfolders:
+					print ("\t\tDatapack already loaded.")
+				else:
+					print ("\t\tDecompressing datapack...")
+					shutil.unpack_archive(RES_FOLDER + file, RES_FOLDER + file.split(".zip")[0])
+	'''
+	if __name__ != "__main__":
+		pass
 
 	# Inital game / menu loading
 	game = Game()
@@ -71,4 +108,19 @@ if __name__ == "__main__":
 			appRunning = False
 		else:
 			pass #TODO finish incorrect command message
+	
+	# Shutdown the app window
 	game.shutdown_game()
+
+	# TODO REMOVE THIS BULLSHIT
+	'''
+	if __name__ != "__main__":
+		# Delete the uncompressed datapack folders
+		subfolders = [ f.name for f in os.scandir(RES_FOLDER) if f.is_dir() ]
+		for folder in subfolders:
+			shutil.rmtree(RES_FOLDER+folder)
+	'''
+
+# This code runs with main.py is opened
+if __name__ == "__main__":
+	startApplication()

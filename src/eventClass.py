@@ -8,8 +8,9 @@ from armorClass import Armor
 
 
 class Event(object):
-    def __init__(self, data):
+    def __init__(self, data, resourceId):
         self.id = data["id"]
+        self.resourceId = resourceId
         self.name = random.choice(data["name"])
         self.eventType = data["type"]
 
@@ -17,10 +18,18 @@ class Event(object):
         self.msg = random.choice(data[self.start]["msg"])
         self.actions = data[self.start]["actions"]
 
+        keys = data.keys()
+
         self.parts = {}
-        for part in data.keys():
+        for part in keys:
             if "#" in part:
                 self.parts[part] = data[part]
+        
+        # Check if the event can be repeated (If not specified defaults to true)
+        if "isRepeatable" in keys:
+            self.isRepeatable = data["isRepeatable"] 
+        else:
+            self.isRepeatable = True
 
         self.finished = False
 
@@ -69,15 +78,21 @@ class Event(object):
         if item == "gold":
             player.gold -= amount
 
-    def giveItem(self, itemId, amount, player, weapons, armor, misc):
+    def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers):
         if itemId == "gold":
             player.gold += amount
+            return True
         elif itemId in weapons.keys():
-            player.inv.append(copy.copy(generateWeapon(weapons[itemId])))
+            player.inv.append(copy.copy(generateWeapon(weapons[itemId], modifiers)))
+            return True
         elif itemId in armor.keys():
             player.inv.append(copy.copy(Armor(armor[itemId])))
+            return True
         elif itemId in misc.keys():
-            player.inv.append(copy.copy(Misc(misc[itemId])))
+            player.inv.append(copy.copy(Misc(misc[itemId], modifiers)))
+            return True
+        print("Item id '{}' not found".format(itemId))
+        return False
 
 class Tag(object):
     def __init__(self, data):

@@ -1,0 +1,57 @@
+{
+    "id":"caveWolfEvent1",
+    "type":"random",
+    "name":[
+        "A Group of Wolves",
+        "A Pack of Wolves"
+    ],
+    "start":[
+        "#BasicPack1",
+        "#BasicPack2",
+        "#DangerousPack"
+    ],
+    "#BasicPack1":{
+        "msg":[
+            "You continue working your way through the tight chambers of the cave. Pushing through a particularly tight passageway you lose your balance and trip. You quickly get up to see several wolves circling around you.",
+            "The deep growling of several wolves causes you to pause. Unlike the growls you heard earleir, these are much closer. The sound is steadily getting louder."
+        ],
+        "actions":[
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#BasicPack2":{
+        "msg":[
+            "You continue working your way through the tight chambers of the cave. Pushing through a particularly tight passageway you lose your balance and trip. You quickly get up to see several wolves quickly approaching you.",
+            "The deep growling of several wolves causes you to pause. Unlike the growls you heard earlier, these are much closer. The sound is steadily getting louder."
+        ],
+        "actions":[
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_wolf", "enemy_wolf"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#DangerousPack":{
+        "msg":[
+            "The sound of a wolf howling causes you to jump. You can't see to much further into the dark passages, but you can easily make out the eyes of several wolves. One of the wolves in the far back appears much larger than any of the ones in the front."
+        ],
+        "actions":[
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

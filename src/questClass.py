@@ -72,7 +72,10 @@ class Quest(object):
 				requirements.append(Flag(f))
 			self.requirements = requirements
 		for action in do:
-			action.append(self.qID)
+			if action[0] == "setDesc":
+				self.desc = action[1]
+			else:
+				action.append(self.qID)
 		return do
 
 	def __str__(self):

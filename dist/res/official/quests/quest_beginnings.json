@@ -1,0 +1,23 @@
+{
+    "title":"A New Beginning",
+    "desc":"Who am I? Why did I wake up in the middle of nowhere? I should stick to trails until I find a village or town. I need to find someone who could help me figure this out.",
+    "qID":"Beginnings",
+    "devComments":"Starts immediately after exiting the starting area",
+    "spawnConditions":[
+        ["inAreaId", "area_gen_forest_1"]
+    ],
+    "spawnChance":11,
+    "do":[
+        ["say", "I should stick to trails until I find a village or town. I need to find someone who could help me figure this out."]
+    ],
+    "nextStep":{
+        "requirements":[
+            ["inAreaType", "Village Wall"]
+        ],
+        "do":[
+            ["say", "Well, this quest isn't ready..."],
+            ["setDesc", "I did not prepare the rest of this quest yet... sorry."],
+            ["questComplete",true]
+        ]
+    }
+}

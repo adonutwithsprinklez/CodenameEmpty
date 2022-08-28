@@ -11,6 +11,7 @@
 	],
 	"hp":"2d4+8",
 	"damage":"1d1",
+	"modCount":"0",
 	"modifier":[
 	],
 	"weapon":[

@@ -13,12 +13,12 @@
     "GAMESETTINGS": [
         [
             "DELAYENABLED",
-            "Display Effects",
+            "[BROKEN] Display Effects",
             false
         ],
         [
             "EVENTDELAYENABLED",
-            "Delay After Random Event",
+            "[BROKEN] Delay After Random Event",
             false
         ],
         [
@@ -29,6 +29,11 @@
         [
             "DEBUGDISPLAY",
             "Developer Display (Used for debugging)",
+            false
+        ],
+        [
+            "DISABLEENEMIES",
+            "Disable Enemy Encounters (Used for debugging)",
             false
         ]
     ],

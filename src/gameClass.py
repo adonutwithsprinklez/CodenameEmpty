@@ -1,6 +1,5 @@
 
 # Official Python module imports
-import copy
 import random
 import time
 import os
@@ -51,6 +50,9 @@ class Game(object):
         self.areaController = None
         self.starter = None
 
+        self.nonRepeatableEvents = []
+        self.globalRandomEvents = []
+
         self.logos = []
         self.descs = []
 
@@ -89,6 +91,10 @@ class Game(object):
 
                 print("Loading pack \"{}\"...".format(pack))
                 self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
+                if self.packs[pack]["packType"] == "standalone":
+                    self.starterWeapon = random.choice(self.packs[pack]["startingWeapon"])
+                    self.starterArmor = random.choice(self.packs[pack]["startingArmor"])
+                    self.starterInventory = self.packs[pack]["startingInventory"]
 
                 if "gameLogo" in self.packs[pack].keys():
                     self.logos.append(self.packs[pack]["gameLogo"])
@@ -134,9 +140,10 @@ class Game(object):
                         "%s%s/events/%s.json" % (folder, pack, e))
                     self.disp.dprint("Loaded asset %s" % e)
                 for m in self.packs[pack]["modifiers"]:
-                    mods = loadJson("%s%s/%s.json" % (folder, pack, m))
+                    mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
                     for mod in mods.keys():
                         self.modifiers[mod] = Modifier(mod, mods[mod])
+                    self.disp.dprint("Loaded asset %s" % m)
                 print("Finished loading assets.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -146,6 +153,14 @@ class Game(object):
         if DEBUG:
             for q in self.possibleQuests:
                 self.disp.dprint(q)
+        
+        self.nonRepeatableEvents = []
+        self.globalRandomEvents = []
+        # Load the global random events:
+        for event in self.events.keys():
+            if "globalEvent" in self.events[event].keys():
+                if self.events[event]["globalEvent"]:
+                    self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
         self.loadStartingArea()
 
@@ -155,7 +170,7 @@ class Game(object):
         self.loaded = True
 
     def loadStartingArea(self):
-        self.areaController = AreaController(self.areas, self.packs[self.starter]["startingArea"], (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+        self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
         '''
         # TODO deprecate this loading function
@@ -166,18 +181,38 @@ class Game(object):
         '''
 
         self.currentArea = self.areaController.loadArea((0,0))
-        # Disables enemies in the first area.
-        self.currentArea.enemy = []
 
     def loadPlayer(self):
         # TODO: Add player creation menu here
         self.player = Player()
         self.player.race = Race(self.races["human"])
+        #self.player.race.limbs[0] = Limb(self.races["drakt"]["limbs"][0], "Draktilien")
         self.player.disp = self.disp
-        self.player.weapon = Weapon(self.weapons["weapon_ironSword"])
+        
+        # Sets some defualt equipment to the player
+        '''
+        self.player.weapon = Weapon(self.weapons["weapon_ironSword"], self.modifiers)
         self.player.armor = Armor(self.armor["armor_hideArmor"])
         self.player.inv.append(generateWeapon(
-            self.weapons["template_IronSword"]))
+            self.weapons["template_IronSword"], self.modifiers))
+        '''
+
+        self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
+        self.player.armor = Armor(self.armor[self.starterArmor])
+
+        # Add all the extra inventory gear
+        for item in self.starterInventory:
+            newItem = None
+            if item in self.misc.keys():
+                newItem = Misc(self.misc[item], self.modifiers)
+            elif item in self.weapons.keys():
+                newItem = generateWeapon(self.weapons[item], self.modifiers)
+            elif item in self.armor.keys():
+                newItem = Armor(self.armor[item])
+            if newItem != None:
+                self.player.inv.append(newItem)
+            
+
         self.player.gold = 100
         self.loadStartingArea()
         self.player.hp = self.player.getMaxHP()
@@ -224,11 +259,13 @@ class Game(object):
         self.disp.displayHeader(title)
         for desc in self.currentArea.desc.split("\n"):
             self.disp.display(desc)
-        print("|{}|".format(" " * 78))
         # Display enemies that are in the area (if there are any)
         if self.currentArea.enemy != []:
             self.disp.closeDisplay()
-            self.disp.display("You can see enemies in the distance:", 1, 1)
+            enemyMessage = "You can see enemies in the distance:"
+            if self.currentArea.enemyMessage != None:
+                enemyMessage = self.currentArea.enemyMessage
+            self.disp.display(enemyMessage, 1, 1)
             for enemy in self.currentArea.enemy:
                 self.disp.display(f'{enemy.name} (Danger - {enemy.getDanger()})', 0, 0)
         self.disp.closeDisplay()
@@ -241,10 +278,6 @@ class Game(object):
         '''This is where the player becomes able to respond to any action that
         has occured within the game, such as enemies appearing, or quest
         objectives getting updated.'''
-
-        self.fightEnemies()
-        if self.player.quit:
-            return None
 
         ##### Random event Code #####
         if self.currentArea.event and self.gameSettings["DISABLEFLAVOREVENTS"] and self.currentArea.event.eventType == "flavor":
@@ -286,8 +319,15 @@ class Game(object):
                                 self.currentArea.event.takeItem(
                                     action[1], action[2], self.player)
                             elif action[0] == "give":
-                                self.currentArea.event.giveItem(action[1], action[2], self.player,
-                                                                self.weapons, self.armor, self.misc)
+                                for i in range(action[2]):
+                                    result = self.currentArea.event.giveItem(action[1], action[2], self.player,
+                                                                    self.weapons, self.armor, self.misc, self.modifiers)
+                                    if self.settings["DEBUG"] and not result:
+                                        raise Exception("Something went wrong when processing an event's 'give' command.")
+                            elif action[0] == "spawnEnemy":
+                                for enemyid in action[1]:
+                                    self.currentArea.enemy.append(Enemy(
+                                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                             elif action[0] == "finish":
                                 self.currentArea.event.finish()
                 else:
@@ -297,6 +337,10 @@ class Game(object):
                         time.sleep(EVENTDELAY)
                     #input("\nEnter to continue")
                     self.disp.wait_for_enter()
+        
+        self.fightEnemies()
+        if self.player.quit:
+            return None
 
         ##### Interacting with an NPC Code #####
         if self.currentArea.npc:
@@ -314,7 +358,7 @@ class Game(object):
 
     def fightEnemies(self):
         ##### Fighting Code #####
-        if self.currentArea.enemy != []:
+        if self.currentArea.enemy != [] and not self.gameSettings["DISABLEENEMIES"]:
             self.disp.clearScreen()
             for areaEnemy in self.currentArea.enemy:
                 enemyhp = areaEnemy.getHealth()
@@ -336,7 +380,7 @@ class Game(object):
                         self.disp.displayHeader("Enemy Encountered - %s" %
                                                 (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
-                                          (areaEnemy.desc, areaEnemy.getDanger()), 1, 1)
+                                          (areaEnemy.getDesc(), areaEnemy.getDanger()), 1, 1)
                         self.disp.displayHeader("Info")
                         self.disp.display("Player: %s - %dHP" %
                                           (self.player.name, self.player.hp))
@@ -391,17 +435,18 @@ class Game(object):
                             damage = 0
                         areaEnemy.hp -= damage
                         self.disp.displayHeader("You")
-                        self.disp.display("%s You dealt %d damage." %
-                                          (msg, damage), 1, 1)
+                        self.disp.display("%s You dealt %d damage." % (msg, damage), 1, 1)
                         self.disp.displayHeader(areaEnemy.name)
                         damage = areaEnemy.getWeaponDamage()
                         if self.player.armor:
                             damage -= self.player.getArmorDefence()
                         if damage < 0:
-                            damage = 0
-                        self.player.hp -= damage
-                        self.disp.display("%s %s dealt %d damage." % (
-                            areaEnemy.weapon.getAction(), areaEnemy.name, damage))
+                            self.disp.display("You deflect %s's attack." % areaEnemy.name)
+                        elif self.player.getDodge() - areaEnemy.getAccuracy() > random.randint(1,100):
+                            self.disp.display("%s missed their attack." % (areaEnemy.name))
+                        else:
+                            self.player.hp -= damage
+                            self.disp.display("%s %s dealt %d damage." % (areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
                         time.sleep(DELAY)
                         # input("\nEnter to continue.")
@@ -409,7 +454,7 @@ class Game(object):
                     elif cmd == 2:
                         self.disp.clearScreen()
                         escape = False
-                        if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < areaEnemy.getArmorDefence():
+                        if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < 1 + areaEnemy.getArmorDefence():
                             escape = True
                         if escape:
                             self.disp.displayHeader("Escape Successful")
@@ -452,7 +497,8 @@ class Game(object):
                     if random.randint(1, 100) < areaEnemy.itemChance:
                         self.disp.display("")
                         self.disp.displayHeader("Reward")
-                        self.disp.display(areaEnemy.itemDrop[1])
+                        itemMessage = areaEnemy.itemDrop[1].replace("$name", areaEnemy.name)
+                        self.disp.display(itemMessage)
                         self.disp.display("You recieved %s." %
                                           (areaEnemy.itemDrop[0].name))
                         self.player.inv.append(areaEnemy.itemDrop[0])
@@ -470,6 +516,8 @@ class Game(object):
         '''This lets the player choose a new area to travel to.'''
         # Create various area choices:
         choices = self.randomAreaChoices()
+        # Shuffle the choices to make sure "required" areas don't always appaear first
+        random.shuffle(choices)
         cmd = -1
 
         # Allow the player to choose from those places:
@@ -512,14 +560,22 @@ class Game(object):
         self.currentArea = choices[cmd - 1]
         self.currentArea.load(self.weapons, self.armor, self.misc,
                               self.enemies, self.npcs, self.events, self.modifiers)
+        
+        if self.currentArea.event:
+            if not self.currentArea.event.isRepeatable:
+                self.nonRepeatableEvents.append(self.currentArea.event.resourceId)
 
         self.importantQuestInfo.append(
             ["inAreaType", self.currentArea.aType, True, False])
+        self.importantQuestInfo.append(
+            ["inAreaId", self.currentArea.aId, True, False])
 
         self.updateQuestInfo()
 
     def randomAreaChoices(self):
         '''This randomly generates areas for the player to choose from.'''
+        
+        print("")
         choices = []
         # This is to guarantee that no "limited" areas are used more than once
         usedAreas = []
@@ -533,6 +589,9 @@ class Game(object):
                 for flag in area[2]:
                     if flag == "required":
                         required.append(area)
+
+        # Check if all requirements are met for areas to spawn:
+        # TODO
 
         # Actually generate areas:
         for i in range(1, self.currentArea.newArea + 1):
@@ -551,7 +610,7 @@ class Game(object):
                     if newroll > highroll and not alreadyUsed:
                         newArea = aType
                         highroll = newroll
-            generatedArea = Area(self.areas[newArea[0]])
+            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents, self.globalRandomEvents, newArea[0])
             usedAreas.append(newArea[0])
             choices.append(generatedArea)
         return choices
@@ -572,8 +631,8 @@ class Game(object):
                 self.disp.displayHeader("Event")
                 self.disp.display(action[1])
                 self.disp.closeDisplay()
-                if self.gameSettings["EVENTDELAYENABLED"]:
-                    time.sleep(1)
+                # if self.gameSettings["EVENTDELAYENABLED"]:
+                #     time.sleep(1)
                 # input("\nEnter to continue")
                 self.disp.wait_for_enter()
                 self.disp.dprint("Processed say condition.")
@@ -586,9 +645,9 @@ class Game(object):
                 itemKey = action[1]
                 item = None
                 if itemKey in self.weapons.keys():
-                    item = generateWeapon(self.weapons[itemKey])
+                    item = generateWeapon(self.weapons[itemKey], self.modifiers)
                 elif itemKey in self.misc.keys():
-                    item = Misc(self.misc[itemKey])
+                    item = Misc(self.misc[itemKey], self.modifiers)
                 elif itemKey in self.armor.keys():
                     item = Armor(self.armor[itemKey])
                 if item != None:
@@ -605,8 +664,9 @@ class Game(object):
                         self.currentQuests.remove(quest)
                 self.disp.dprint("Processed questComplete condition.")
             elif action[0] == "spawnEnemy":
-                self.currentArea.enemy.append(Enemy(
-                    self.enemies[action[1]], self.weapons, self.armor, self.misc, self.modifiers))
+                for enemyid in action[1]:
+                    self.currentArea.enemy.append(Enemy(
+                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                 self.disp.dprint("Processed spawnEnemy condition.")
 
     def updateQuestInfo(self):
@@ -726,10 +786,11 @@ class Game(object):
 
             if cmd in range(1, 9) and cmd-1 <= len(toggleablePacks):
                 if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][0] != "official":
-                    self.dataPackSettings["packsToLoad"][cmd -
-                                                         1+9*packPage][1] ^= True
+                    self.dataPackSettings["packsToLoad"][cmd - 1+9*packPage][1] ^= True
                 else:
                     # TODO Display error when attempting to disable the official datapack.
+                    self.disp.clearScreen()
+                    self.disp.display("")
                     pass
                     # The official data pack should be allowed to be disabled, only if
                     # another data pack is enabled
