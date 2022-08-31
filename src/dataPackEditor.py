@@ -362,7 +362,7 @@ class MetaDataEditor(tk.Frame):
         self.enemyVarList = StringVar(value=[])
         self.enemyVar = Listbox(enemyVarsListFrame, listvariable=self.enemyVarList, font=self.fontText)
         self.enemyVar.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
-        self.enemyVar.bind("<<ListboxSelect>>", self._enemyLoadSelection)
+        self.enemyVar.bind("<<ListboxSelect>>", self._enemyLoadVariable)
         Button(enemyVarsListFrame, text="-", command=self.delEnemy, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
         Button(enemyVarsListFrame, text="+", command=self.newEnemy, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
 
@@ -687,6 +687,7 @@ class MetaDataEditor(tk.Frame):
     
     def enemyLoadSelection(self, idx):
         self.selectedEnemy = idx
+        self.selectedEnemyVar = None
 
         enemyFiles = self.metaFileData["enemies"]
 
@@ -725,12 +726,42 @@ class MetaDataEditor(tk.Frame):
         # Variables
         varList = []
         if "variables" in self.currentEnemy.keys():
-            varList = list(self.currentEnemy["variables"].keys())
-
+            self.currentEnemy["variables"] = dict(sorted(self.currentEnemy["variables"].items()))
+            varList = self.currentEnemy["variables"].keys()
+        varList = sorted(varList)
         self.enemyVarList.set(varList)
+        if len(varList) > 0:
+            self.selectedEnemyVar = 0
+            self.enemyVar.selection_clear(0, END)
+            self.enemyVar.see(self.selectedEnemyVar)
+            self.enemyLoadVariable(self.selectedEnemyVar)
+        else:
+            self.enemyVarName.delete(0,END)
+            self.enemyVarValue.delete("1.0",END)
+    
+    def _enemyLoadVariable(self, *args):
+        if len(self.enemyVar.curselection()) == 1:
+            idx = self.enemyVar.curselection()[0]
+            if (idx != self.selectedEnemyVar):
+                self.enemyLoadVariable(idx)
+
+    def enemyLoadVariable(self, idx):
+        if len(self.currentEnemy["variables"].keys()) > 0:
+            self.selectedEnemyVar = idx
+            varName = list(self.currentEnemy["variables"].keys())[self.selectedEnemyVar]
+            enemyVarData = self.currentEnemy["variables"][varName]
+            self.enemyVarName.delete(0,END)
+            self.enemyVarName.insert(0, varName)
+            # TODO: implement var type
+            self.enemyVarSetValue(enemyVarData["choices"])
+        else:
+            self.selectedEnemyVar = None
+            self.enemyVarName.delete(0,END)
+            self.enemyVarSetValue([])
 
     def enemySetNameField(self, lines):
         self.enemyName.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.enemyName.insert(END, lines.pop(0))
         for line in lines:
@@ -742,6 +773,7 @@ class MetaDataEditor(tk.Frame):
 
     def enemySetDescField(self, lines):
         self.enemyDesc.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.enemyDesc.insert(END, lines.pop(0))
         for line in lines:
@@ -753,6 +785,7 @@ class MetaDataEditor(tk.Frame):
 
     def enemySetDeathMessageField(self, lines):
         self.enemyDeathMsg.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.enemyDeathMsg.insert(END, lines.pop(0))
         for line in lines:
@@ -764,6 +797,7 @@ class MetaDataEditor(tk.Frame):
 
     def enemySetPosWepField(self, lines):
         self.enemyWeapons.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.enemyWeapons.insert(END, lines.pop(0))
         for line in lines:
@@ -775,6 +809,7 @@ class MetaDataEditor(tk.Frame):
 
     def enemySetPosArmField(self, lines):
         self.enemyArmors.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.enemyArmors.insert(END, lines.pop(0))
         for line in lines:
@@ -786,6 +821,7 @@ class MetaDataEditor(tk.Frame):
 
     def enemySetPosModField(self, lines):
         self.enemyMods.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             m = lines.pop(0)
             self.enemyMods.insert(END, "{}, {}".format(m[0], m[1]))
@@ -808,6 +844,7 @@ class MetaDataEditor(tk.Frame):
 
     def enemySetItemDropField(self, lines):
         self.enemyItemDrops.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             i = lines.pop(0)
             self.enemyItemDrops.insert(END, "{}, \"{}\"".format(i[0], i[1]))
@@ -829,6 +866,18 @@ class MetaDataEditor(tk.Frame):
             except:
                 pass
         return itemList
+        
+    def enemyVarSetValue(self, lines):
+        self.enemyVarValue.delete("1.0", END)
+        lines = copy.copy(lines)
+        if (len(lines)>=1):
+            self.enemyVarValue.insert(END, lines.pop(0))
+        for line in lines:
+            self.enemyVarValue.insert(END, "\n" + line)
+    
+    def enemyVarGetValue(self):
+        lines = self.enemyVarValue.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
 
     def _areaLoadSelection(self, *args):
         pass
@@ -970,6 +1019,7 @@ class MetaDataEditor(tk.Frame):
     
     def modifierSetModNameField(self, lines):
         self.modName.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.modName.insert(END, lines.pop(0))
         for line in lines:
@@ -981,6 +1031,7 @@ class MetaDataEditor(tk.Frame):
 
     def modifierSetModDescField(self, lines):
         self.modDesc.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.modDesc.insert(END, lines.pop(0))
         for line in lines:
@@ -1104,6 +1155,7 @@ class MetaDataEditor(tk.Frame):
 
     def weaponSetNameField(self, lines):
         self.wepName.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.wepName.insert(END, lines.pop(0))
         for line in lines:
@@ -1115,6 +1167,7 @@ class MetaDataEditor(tk.Frame):
 
     def weaponSetDescField(self, lines):
         self.wepDesc.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.wepDesc.insert(END, lines.pop(0))
         for line in lines:
@@ -1126,6 +1179,7 @@ class MetaDataEditor(tk.Frame):
 
     def weaponSetActionField(self, lines):
         self.wepActionText.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             self.wepActionText.insert(END, lines.pop(0))
         for line in lines:
@@ -1137,6 +1191,7 @@ class MetaDataEditor(tk.Frame):
 
     def weaponSetModField(self, lines):
         self.wepMods.delete("1.0", END)
+        lines = copy.copy(lines)
         if (len(lines)>=1):
             m = lines.pop(0)
             self.wepMods.insert(END, "{}, {}".format(m[0], m[1]))
