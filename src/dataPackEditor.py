@@ -343,7 +343,9 @@ class MetaDataEditor(tk.Frame):
         self.enemyModCount.grid(row=0, column=1, columnspan=1, padx=0, pady=5, sticky=W)
         self.enemyMods.grid(row=1, column=1, columnspan=2, padx=0, pady=5, sticky=N+S+W)
         self.enemyItemDropChance.grid(row=2, column=1, columnspan=2, padx=0, pady=5, sticky=W)
-        self.enemyItemDrops.grid(row=3, column=1, columnspan=2, padx=0, pady=5, sticky=N+S+W)
+        self.enemyItemDrops.grid(row=3, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+E)
+
+        self.enemyItemDrops.configure(wrap='none')
 
         enemyOptionalFrame.columnconfigure(3, weight=1)
         enemyOptionalFrame.rowconfigure(1, weight=1)
@@ -357,9 +359,10 @@ class MetaDataEditor(tk.Frame):
         enemyVarsListFrame.grid(row=0, column=0, columnspan=1, padx=0, pady=0, sticky=E+W+N+S)
 
         ttk.Label(enemyVarsListFrame, text="Variables", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
-        self.enemyFiles = Listbox(enemyVarsListFrame, listvariable=self.enemyFileList, font=self.fontText)
-        self.enemyFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
-        self.enemyFiles.bind("<<ListboxSelect>>", self._enemyLoadSelection)
+        self.enemyVarList = StringVar(value=[])
+        self.enemyVar = Listbox(enemyVarsListFrame, listvariable=self.enemyVarList, font=self.fontText)
+        self.enemyVar.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
+        self.enemyVar.bind("<<ListboxSelect>>", self._enemyLoadSelection)
         Button(enemyVarsListFrame, text="-", command=self.delEnemy, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
         Button(enemyVarsListFrame, text="+", command=self.newEnemy, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
 
@@ -405,6 +408,8 @@ class MetaDataEditor(tk.Frame):
         enemyDataFrame.pack(expand=1, fill=BOTH)
         enemyOptionalFrame.pack(expand=1, fill=BOTH)
         enemyVarFrame.pack(expand=1, fill=BOTH)
+
+        self.enemyInitialLoad()
 
     def create_weaponstab(self):
         self.weapontab = ttk.Frame(self.tabControl)
@@ -671,8 +676,159 @@ class MetaDataEditor(tk.Frame):
     def menuAbout(self):
         pass
 
+    def enemyInitialLoad(self):
+        self.enemyLoadSelection(0)
+
     def _enemyLoadSelection(self, *args):
-        pass
+        if len(self.enemyFiles.curselection()) == 1:
+            idx = self.enemyFiles.curselection()[0]
+            if (idx != self.selectedEnemy):
+                self.enemyLoadSelection(idx)
+    
+    def enemyLoadSelection(self, idx):
+        self.selectedEnemy = idx
+
+        enemyFiles = self.metaFileData["enemies"]
+
+        self.enemyFileList.set(enemyFiles)
+        
+        self.currentEnemy = loadJson(self.fileLoc+"/enemies/"+enemyFiles[self.selectedEnemy]+".json")
+        # Required Data
+        self.enemyId.delete(0,END)
+        self.enemyId.insert(0,enemyFiles[self.selectedEnemy])
+        self.enemyGroupId.delete(0,END)
+        self.enemyGroupId.insert(0,self.currentEnemy["eID"])
+        self.enemyHP.delete(0,END)
+        self.enemyHP.insert(0,self.currentEnemy["hp"])
+        self.enemyDMG.delete(0,END)
+        self.enemyDMG.insert(0,self.currentEnemy["damage"])
+        self.enemySetNameField(self.currentEnemy["name"])
+        self.enemySetDescField(self.currentEnemy["desc"])
+        self.enemySetDeathMessageField(self.currentEnemy["deathMsg"])
+        self.enemySetPosWepField(self.currentEnemy["weapon"])
+        self.enemySetPosArmField(self.currentEnemy["armor"])
+        # Optional Data
+        self.enemyModCount.delete(0,END)
+        if ("modCount" in self.currentEnemy.keys()):
+            self.enemyModCount.insert(0,self.currentEnemy["modCount"])
+        if ("modifier" in self.currentEnemy.keys()):
+            self.enemySetPosModField(self.currentEnemy["modifier"])
+        else:
+            self.enemySetPosModField([])
+        if ("itemDrops" in self.currentEnemy.keys()):
+            self.enemySetItemDropField(self.currentEnemy["itemDrops"])
+        else:
+            self.enemySetItemDropField([])
+        self.enemyItemDropChance.delete(0,END)
+        if ("itemChance" in self.currentEnemy.keys()):
+            self.enemyItemDropChance.insert(0,self.currentEnemy["itemChance"])
+        # Variables
+        varList = []
+        if "variables" in self.currentEnemy.keys():
+            varList = list(self.currentEnemy["variables"].keys())
+
+        self.enemyVarList.set(varList)
+
+    def enemySetNameField(self, lines):
+        self.enemyName.delete("1.0", END)
+        if (len(lines)>=1):
+            self.enemyName.insert(END, lines.pop(0))
+        for line in lines:
+            self.enemyName.insert(END, "\n" + line)
+    
+    def enemyGetNameField(self):
+        lines = self.enemyName.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def enemySetDescField(self, lines):
+        self.enemyDesc.delete("1.0", END)
+        if (len(lines)>=1):
+            self.enemyDesc.insert(END, lines.pop(0))
+        for line in lines:
+            self.enemyDesc.insert(END, "\n" + line)
+    
+    def enemyGetDescField(self):
+        lines = self.enemyDesc.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def enemySetDeathMessageField(self, lines):
+        self.enemyDeathMsg.delete("1.0", END)
+        if (len(lines)>=1):
+            self.enemyDeathMsg.insert(END, lines.pop(0))
+        for line in lines:
+            self.enemyDeathMsg.insert(END, "\n" + line)
+    
+    def enemyGetDeathMessageField(self):
+        lines = self.enemyDeathMsg.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def enemySetPosWepField(self, lines):
+        self.enemyWeapons.delete("1.0", END)
+        if (len(lines)>=1):
+            self.enemyWeapons.insert(END, lines.pop(0))
+        for line in lines:
+            self.enemyWeapons.insert(END, "\n" + line)
+    
+    def enemyGetPosWepField(self):
+        lines = self.enemyWeapons.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def enemySetPosArmField(self, lines):
+        self.enemyArmors.delete("1.0", END)
+        if (len(lines)>=1):
+            self.enemyArmors.insert(END, lines.pop(0))
+        for line in lines:
+            self.enemyArmors.insert(END, "\n" + line)
+    
+    def enemyGetPosArmField(self):
+        lines = self.enemyArmors.get('1.0',END).split("\n")
+        return [line for line in lines if line.strip()]
+
+    def enemySetPosModField(self, lines):
+        self.enemyMods.delete("1.0", END)
+        if (len(lines)>=1):
+            m = lines.pop(0)
+            self.enemyMods.insert(END, "{}, {}".format(m[0], m[1]))
+        for line in lines:
+            self.enemyMods.insert(END, "\n{}, {}".format(line[0], line[1]))
+    
+    def enemyGetPosModField(self):
+        lines = self.enemyMods.get('1.0',END).split("\n")
+        lines = [line for line in lines if line.strip()]
+        modsList = []
+        for line in lines:
+            try:
+                line = line.split(",")
+                modEffect = line[0].strip()
+                modLiklihood = line[1].strip()
+                modsList.append([modEffect,modLiklihood])
+            except:
+                pass
+        return modsList
+
+    def enemySetItemDropField(self, lines):
+        self.enemyItemDrops.delete("1.0", END)
+        if (len(lines)>=1):
+            i = lines.pop(0)
+            self.enemyItemDrops.insert(END, "{}, \"{}\"".format(i[0], i[1]))
+        for line in lines:
+            self.enemyItemDrops.insert(END, "\n{}, \"{}\"".format(line[0], line[1]))
+    
+    def enemyGetItemDropField(self):
+        lines = self.enemyItemDrops.get('1.0',END).split("\n")
+        lines = [line for line in lines if line.strip()]
+        itemList = []
+        for line in lines:
+            try:
+                line = line.split(", \"")
+                item = line[0].strip()
+                grabDesc = line[1]
+                grabDesc = grabDesc.split("\"")
+                grabDesc = grabDesc.strip()
+                itemList.append([item,grabDesc])
+            except:
+                pass
+        return itemList
 
     def _areaLoadSelection(self, *args):
         pass

@@ -2,7 +2,7 @@ import random
 import copy
 
 from itemGeneration import generateWeapon
-from textGeneration import generateString
+from textGeneration import generateStringWithVariables
 from armorClass import Armor
 from miscClass import Misc
 from dieClass import rollDice, maxRoll
@@ -10,9 +10,9 @@ from dieClass import rollDice, maxRoll
 
 class Enemy(object):
     def __init__(self, data, weapons, armor, misc, modifiers):
-        self.name = generateString(data)
+        self.name = generateStringWithVariables(data, "name")
         self.eID = data["eID"]
-        self.desc = generateString(data, "desc")
+        self.desc = generateStringWithVariables(data, "desc")
         self.hpMax = rollDice(data["hp"])
         self.damage = data["damage"]
         self.xp = data["xp"]
