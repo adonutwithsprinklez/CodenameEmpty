@@ -275,15 +275,15 @@ class MetaDataEditor(tk.Frame):
 
         # Sub Tabs setup
         
-        enemyTabs = ttk.Notebook(enemyFrame)
-        enemyTabs.grid(row=0, column=2, sticky=N+S+E+W)
+        self.enemyTabs = ttk.Notebook(enemyFrame)
+        self.enemyTabs.grid(row=0, column=2, sticky=N+S+E+W)
 
         enemyDataTab = ttk.Frame(self.enemytab)
-        enemyTabs.add(enemyDataTab, text = "  Required Data  ")
+        self.enemyTabs.add(enemyDataTab, text = "  Required Data  ")
         enemyOptionalTab = ttk.Frame(self.enemytab)
-        enemyTabs.add(enemyOptionalTab, text = "  Optional Data  ")
+        self.enemyTabs.add(enemyOptionalTab, text = "  Optional Data  ")
         enemyVarTab = ttk.Frame(self.enemytab)
-        enemyTabs.add(enemyVarTab, text = "  Variables  ")
+        self.enemyTabs.add(enemyVarTab, text = "  Variables  ")
 
         # Enemy Data subtab
 
@@ -363,8 +363,8 @@ class MetaDataEditor(tk.Frame):
         self.enemyVar = Listbox(enemyVarsListFrame, listvariable=self.enemyVarList, font=self.fontText)
         self.enemyVar.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
         self.enemyVar.bind("<<ListboxSelect>>", self._enemyLoadVariable)
-        Button(enemyVarsListFrame, text="-", command=self.delEnemy, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
-        Button(enemyVarsListFrame, text="+", command=self.newEnemy, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
+        Button(enemyVarsListFrame, text="-", command=self.delEnemyVar, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(enemyVarsListFrame, text="+", command=self.newEnemyVar, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
 
         ttk.Separator(enemyVarFrame, orient=VERTICAL).grid(row=0, column=1, columnspan=1, sticky=N+S)
 
@@ -688,6 +688,7 @@ class MetaDataEditor(tk.Frame):
     def enemyLoadSelection(self, idx):
         self.selectedEnemy = idx
         self.selectedEnemyVar = None
+        self.enemyTabs.select(0)
 
         enemyFiles = self.metaFileData["enemies"]
 
@@ -712,6 +713,8 @@ class MetaDataEditor(tk.Frame):
         self.enemyModCount.delete(0,END)
         if ("modCount" in self.currentEnemy.keys()):
             self.enemyModCount.insert(0,self.currentEnemy["modCount"])
+        else:
+            self.enemyModCount.insert(0, 0)
         if ("modifier" in self.currentEnemy.keys()):
             self.enemySetPosModField(self.currentEnemy["modifier"])
         else:
@@ -723,6 +726,8 @@ class MetaDataEditor(tk.Frame):
         self.enemyItemDropChance.delete(0,END)
         if ("itemChance" in self.currentEnemy.keys()):
             self.enemyItemDropChance.insert(0,self.currentEnemy["itemChance"])
+        else:
+            self.enemyItemDropChance.insert(0, 0)
         # Variables
         varList = []
         if "variables" in self.currentEnemy.keys():
@@ -893,6 +898,27 @@ class MetaDataEditor(tk.Frame):
 
     def saveEnemy(self):
         pass
+
+    def newEnemyVar(self):
+        newVarId = "UNNAMEDMODIFIER"
+        if "variables" in self.currentEnemy.keys() and newVarId not in list(self.currentEnemy["variables"]):
+            newVariable = {
+                "type":"choose",
+                "choices":[]
+            }
+            self.currentEnemy["variables"][newVarId] = newVariable
+            self.currentEnemy["variables"] = dict(sorted(self.currentEnemy["variables"].items()))
+            self.enemyVarList.set(self.currentEnemy["variables"])
+            self.enemyLoadVariable(list(self.currentEnemy["variables"].keys()).index(newVarId))
+
+    def delEnemyVar(self):
+        if (len(list(self.currentEnemy["variables"].keys())) > 0):
+            confirmation = messagebox.askokcancel("Confirm Delete", "Are you sure you want to delete the current Variable?\
+                \nThis cannot be undone.")
+            if (confirmation):
+                self.currentEnemy["variables"].pop(list(self.currentEnemy["variables"].keys())[self.selectedEnemyVar])
+                self.enemyVarList.set(list(self.currentEnemy["variables"].keys()))
+                self.enemyLoadVariable(0)
 
     def delArea(self):
         pass
