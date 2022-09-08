@@ -70,10 +70,10 @@ class MetaDataEditor(tk.Frame):
         self.tabControl = ttk.Notebook(self.masterframe)
 
         self.create_metadatatab()
-        self.create_areastab()
+        # self.create_areastab()
         # self.create_armorstab()
         self.create_enemiestab()
-        self.create_eventstab()
+        # self.create_eventstab()
         # self.create_misctab()
         self.create_modifiertab()
         # self.create_npcstab()
@@ -298,6 +298,7 @@ class MetaDataEditor(tk.Frame):
         ttk.Label(enemyDataFrame, text="Damage", font=self.fontBold).grid(row=5, column=2, padx=10, pady=5, sticky=E)
         ttk.Label(enemyDataFrame, text="Possible Weapons", font=self.fontBold).grid(row=6, column=0, padx=10, pady=5, sticky=E)
         ttk.Label(enemyDataFrame, text="Possible Armors", font=self.fontBold).grid(row=7, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(enemyDataFrame, text="XP Drop", font=self.fontBold).grid(row=8, column=0, padx=10, pady=5, sticky=E)
 
         self.enemyId = Entry(enemyDataFrame, font=self.fontText)
         self.enemyGroupId = Entry(enemyDataFrame, font=self.fontText)
@@ -308,6 +309,7 @@ class MetaDataEditor(tk.Frame):
         self.enemyDMG = Entry(enemyDataFrame, font=self.fontText)
         self.enemyWeapons = Text(enemyDataFrame, height=3, font=self.fontText)
         self.enemyArmors = Text(enemyDataFrame, height=3, font=self.fontText)
+        self.enemyXP = Entry(enemyDataFrame, font=self.fontText)
 
         self.enemyId.grid(row=0, column=1, columnspan=2, padx=0, pady=5, sticky=W+E)
         self.enemyGroupId.grid(row=1, column=1, columnspan=2, padx=0, pady=5, sticky=W+E)
@@ -318,6 +320,7 @@ class MetaDataEditor(tk.Frame):
         self.enemyDMG.grid(row=5, column=3, columnspan=1, padx=0, pady=5, sticky=W)
         self.enemyWeapons.grid(row=6, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W)
         self.enemyArmors.grid(row=7, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W)
+        self.enemyXP.grid(row=8, column=1, columnspan=1, padx=0, pady=5, sticky=W)
 
         enemyDataFrame.columnconfigure(3, weight=1)
         enemyDataFrame.rowconfigure(2, weight=1)
@@ -685,7 +688,7 @@ class MetaDataEditor(tk.Frame):
             if (idx != self.selectedEnemy):
                 self.enemyLoadSelection(idx)
     
-    def enemyLoadSelection(self, idx):
+    def enemyLoadSelection(self, idx, resetView=True):
         self.selectedEnemy = idx
         self.selectedEnemyVar = None
         self.enemyTabs.select(0)
@@ -709,6 +712,8 @@ class MetaDataEditor(tk.Frame):
         self.enemySetDeathMessageField(self.currentEnemy["deathMsg"])
         self.enemySetPosWepField(self.currentEnemy["weapon"])
         self.enemySetPosArmField(self.currentEnemy["armor"])
+        self.enemyXP.delete(0,END)
+        self.enemyXP.insert(0, self.currentEnemy["xp"])
         # Optional Data
         self.enemyModCount.delete(0,END)
         if ("modCount" in self.currentEnemy.keys()):
@@ -735,7 +740,7 @@ class MetaDataEditor(tk.Frame):
             varList = self.currentEnemy["variables"].keys()
         varList = sorted(varList)
         self.enemyVarList.set(varList)
-        if len(varList) > 0:
+        if resetView and len(varList) > 0:
             self.selectedEnemyVar = 0
             self.enemyVar.selection_clear(0, END)
             self.enemyVar.see(self.selectedEnemyVar)
@@ -891,25 +896,104 @@ class MetaDataEditor(tk.Frame):
         pass
 
     def delEnemy(self):
-        pass
+        confirmation = messagebox.askokcancel("Confirm Delete", "Are you sure you want to delete the current Enemy?\
+            \nThis cannot be undone.")
+        if (confirmation):
+            enemyId = self.metaFileData["enemies"].pop(self.selectedEnemy)
+            os.remove(self.fileLoc+"/enemies/"+enemyId+".json")
+            saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+            self.enemyLoadSelection(0)
 
     def newEnemy(self):
-        pass
+        newfilename = simpledialog.askstring("Enemy Name", "Enter new Enemy name", parent=self.master)
+        if (newfilename):
+            newfilename = newfilename.strip()
+        if (newfilename and newfilename not in self.metaFileData["enemies"]):
+            newEnemyData = {
+                "name":[],
+                "eID":"",
+                "desc":[],
+                "deathMsg":[],
+                "modifier":[],
+                "hp":"",
+                "damage":"",
+                "modCount":"0",
+                "modifier":[],
+                "weapon":[],
+                "armor":[],
+                "variables":{},
+                "itemChance":0,
+                "itemDrops":[],
+                "xp":0
+            }
+            saveJson(self.fileLoc+"/enemies/"+newfilename+".json", newEnemyData)
+            self.metaFileData["enemies"].append(newfilename)
+            self.metaFileData["enemies"] = sorted(self.metaFileData["enemies"])
+            saveJson(self.fileLoc+"/meta.json", self.metaFileData)
+            self.enemyLoadSelection(self.metaFileData["enemies"].index(newfilename))
 
     def saveEnemy(self):
-        pass
+        
+        enemyId = self.enemyId.get().strip()
+        enemyVariables = self.currentEnemy["variables"]
+        self.currentEnemy = {}
+        
+        # Required Data
+        self.currentEnemy["name"] = self.enemyGetNameField()
+        self.currentEnemy["eID"] = self.enemyGroupId.get().strip()
+        self.currentEnemy["desc"] = self.enemyGetDescField()
+        self.currentEnemy["deathMsg"] = self.enemyGetDeathMessageField()
+        self.currentEnemy["hp"] = self.enemyHP.get().strip()
+        self.currentEnemy["damage"] = self.enemyDMG.get().strip()
+        self.currentEnemy["weapon"] = self.enemyGetPosWepField()
+        self.currentEnemy["armor"] = self.enemyGetPosArmField()
+        try:
+            self.currentEnemy["xp"] = int(self.enemyXP.get().strip())
+        except:
+            self.currentEnemy["xp"] = 0
+        
+        # Optional Data
+        if (self.enemyModCount.get().strip()):
+            self.currentEnemy["modCount"] = self.enemyModCount.get().strip()
+        else:
+            self.currentEnemy["modCount"] = "0"
+        self.currentEnemy["modifier"] = self.enemyGetPosModField()
+        if (self.enemyItemDropChance.get().strip()):
+            self.currentEnemy["itemChance"] = self.enemyItemDropChance.get().strip()
+        else:
+            self.currentEnemy["itemChance"] = "0"
+        self.currentEnemy["itemDrops"] = self.enemyGetItemDropField()
+
+        # Variables
+        self.currentEnemy["variables"] = enemyVariables
+        
+        # Check if enemy ID changed, update if needed
+        if (enemyId != self.metaFileData["enemies"][self.selectedEnemy]):
+            oldID = self.metaFileData["enemies"].pop(self.selectedEnemy)
+            self.metaFileData["enemies"].append(enemyId)
+            self.metaFileData["enemies"] = sorted(self.metaFileData["enemies"])
+            self.selectedEnemy = self.metaFileData["enemies"].index(enemyId)
+            os.remove("{}/enemies/{}.json".format(self.fileLoc, oldID))
+            saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
+            self.enemyLoadSelection(self.selectedEnemy, False)
+            saveJson("{}/meta.json".format(self.fileLoc), self.metaFileData)
+        else:
+            saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
+            self.enemyLoadSelection(self.selectedEnemy)
+        
 
     def newEnemyVar(self):
         newVarId = "UNNAMEDMODIFIER"
-        if "variables" in self.currentEnemy.keys() and newVarId not in list(self.currentEnemy["variables"]):
+        if "variables" in self.currentEnemy.keys() and newVarId not in list(self.currentEnemy["variables"].keys()):
             newVariable = {
                 "type":"choose",
                 "choices":[]
             }
             self.currentEnemy["variables"][newVarId] = newVariable
-            self.currentEnemy["variables"] = dict(sorted(self.currentEnemy["variables"].items()))
-            self.enemyVarList.set(self.currentEnemy["variables"])
-            self.enemyLoadVariable(list(self.currentEnemy["variables"].keys()).index(newVarId))
+            variables = dict(sorted(self.currentEnemy["variables"].items()))
+            self.currentEnemy["variables"] = variables
+            self.enemyVarList.set(list(variables.keys()))
+            self.enemyLoadVariable(list(variables.keys()).index(newVarId))
 
     def delEnemyVar(self):
         if (len(list(self.currentEnemy["variables"].keys())) > 0):
@@ -1148,6 +1232,7 @@ class MetaDataEditor(tk.Frame):
             self.metaFileData["weapons"] = sorted(self.metaFileData["weapons"])
             self.selectedWeapon = self.metaFileData["weapons"].index(wepId)
             os.remove("{}/weapons/{}.json".format(self.fileLoc, oldID))
+            saveJson("{}/meta.json".format(self.fileLoc), self.metaFileData)
         saveJson("{}/weapons/{}.json".format(self.fileLoc, wepId), self.currentWeapon)
         self.weaponLoadSelection(self.selectedWeapon)
 
