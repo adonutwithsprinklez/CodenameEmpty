@@ -71,7 +71,7 @@ class MetaDataEditor(tk.Frame):
 
         self.create_metadatatab()
         # self.create_areastab()
-        # self.create_armorstab()
+        self.create_armorstab()
         self.create_enemiestab()
         # self.create_eventstab()
         # self.create_misctab()
@@ -243,6 +243,72 @@ class MetaDataEditor(tk.Frame):
 
         self.modifierInitialLoad()
     
+    def create_armorstab(self):
+        self.armortab = ttk.Frame(self.tabControl)
+        self.tabControl.add(self.armortab, text = "  Armors  ")
+
+        armorFrame = ttk.Frame(self.armortab)
+        armorFrame.grid(row=0, column=0, columnspan=1, padx=0, pady=0, sticky=E+W+N+S)
+
+        # ELEMENT CREATION
+        # Files display
+        self.armorFileList = StringVar(value=[])
+        armorFileFrame = ttk.Frame(armorFrame)
+        armorFileFrame.grid(row=0, column=0, sticky=N+E+W+S)
+        ttk.Label(armorFileFrame, text="Armors", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
+        self.weaponFiles = Listbox(armorFileFrame, listvariable=self.armorFileList, font=self.fontText)
+        self.weaponFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
+        self.weaponFiles.bind("<<ListboxSelect>>", self._weaponLoadSelection)
+        Button(armorFileFrame, text="-", command=self.delWeapon, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(armorFileFrame, text="+", command=self.newWeapon, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
+
+        ttk.Separator(armorFrame, orient=VERTICAL).grid(row=0, column=1, columnspan=1, sticky=N+S)
+
+        armorFileFrame.rowconfigure(1, weight=1)
+        armorFileFrame.columnconfigure(0, weight=1)
+        armorFileFrame.columnconfigure(1, weight=1)
+
+        # Data display
+        armorDataFrame = ttk.Frame(armorFrame)
+        armorDataFrame.grid(row=0, column=2, sticky=N+E+W+S)
+
+        ttk.Label(armorDataFrame, text="Armor ID", font=self.fontBold).grid(row=0, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(armorDataFrame, text="Name", font=self.fontBold).grid(row=1, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(armorDataFrame, text="Description", font=self.fontBold).grid(row=2, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(armorDataFrame, text="Defence", font=self.font).grid(row=3, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(armorDataFrame, text="Min Worth", font=self.font).grid(row=4, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(armorDataFrame, text="Max Worth", font=self.font).grid(row=4, column=2, padx=10, pady=5, sticky=E)
+
+        self.armId = Entry(armorDataFrame, font=self.fontText)
+        self.armName = Text(armorDataFrame, height=3, font=self.fontText)
+        self.armDesc = Text(armorDataFrame, height=3, font=self.fontText)
+        self.armDef = Entry(armorDataFrame, font=self.fontText)
+        self.armWorMin = Entry(armorDataFrame, font=self.fontText)
+        self.armWorMax = Entry(armorDataFrame, font=self.fontText)
+
+        self.armId.grid(row=0, column=1, columnspan=2, padx=0, pady=5, sticky=W+E)
+        self.armName.grid(row=1, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W)
+        self.armDesc.grid(row=2, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+E)
+        self.armDef.grid(row=3, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.armWorMin.grid(row=4, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.armWorMax.grid(row=4, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+
+        Button(armorDataFrame, text="Save", command=self.saveWeapon, font=self.font).grid(row=8, column=0, columnspan=4, sticky=N+E+W+S)
+
+        armorDataFrame.rowconfigure(1, weight=1)
+        armorDataFrame.rowconfigure(2, weight=1)
+        armorDataFrame.columnconfigure(3, weight=1)
+        
+        armorFrame.rowconfigure(0, weight=1)
+        armorFrame.columnconfigure(0, weight=1, minsize=200)
+        armorFrame.columnconfigure(1, weight=0)
+        armorFrame.columnconfigure(2, weight=5)
+
+        self.armortab.rowconfigure(0, weight=1)
+        self.armortab.columnconfigure(0, weight=1)
+
+        # self.weaponInitialLoad()
+
     def create_enemiestab(self):
         self.enemytab = ttk.Frame(self.tabControl)
         self.tabControl.add(self.enemytab, text = "  Enemies  ")
@@ -553,10 +619,6 @@ class MetaDataEditor(tk.Frame):
         # areaDataFrame.pack(expand=1, fill=BOTH)
         # areaOptionalFrame.pack(expand=1, fill=BOTH)
         # areaVarFrame.pack(expand=1, fill=BOTH)
-    
-    def create_armorstab(self):
-        self.armortab = ttk.Frame(self.tabControl)
-        self.tabControl.add(self.armortab, text = "  Armors  ")
     
     def create_eventstab(self):
         self.eventtab = ttk.Frame(self.tabControl)

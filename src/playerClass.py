@@ -300,11 +300,11 @@ class Player(object):
 
     # Class Getters
     def getDodge(self):
-        # TODO: Implement
+        # TODO: Implement getDodge
         return 0
 
     def getEquipmentString(self):
-        # TODO redo this whole part
+        # TODO Refactor getEquipmentString
         equipstr = ""
         if self.weapon:
             equipstr += "You are wielding a {}. {} ".format(
@@ -362,13 +362,13 @@ class Player(object):
     def getMaxHP(self):
         baseHealth = self.getStat("vitality") * 10
         bonusHealth = 0
-        # TODO add supprot for perks
+        # TODO add supprot for perks to getMaxHP
         return baseHealth + bonusHealth
 
     def getMaxInventorySlots(self):
         baseSlots = self.getStat("strength") + int(self.getStat("physique"))
         bonusSlots = 0
-        # TODO add support for perks
+        # TODO add support for perks to getMaxInventorySlots
         return baseSlots + bonusSlots
     
     def getBodyDescription(self):
