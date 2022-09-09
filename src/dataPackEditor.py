@@ -448,6 +448,7 @@ class MetaDataEditor(tk.Frame):
         ttk.Label(variableDataFrame, text="Name", font=self.fontBold).grid(row=0, column=0, columnspan=1, padx=5, pady=5, sticky=E)
         ttk.Label(variableDataFrame, text="Type", font=self.fontBold).grid(row=1, column=0, columnspan=1, padx=5, pady=5, sticky=E)
         ttk.Label(variableDataFrame, text="Value", font=self.fontBold).grid(row=2, column=0, columnspan=1, padx=5, pady=5, sticky=E)
+        Button(variableDataFrame, text="Save Variable", command=self.saveEnemyVariable, font=self.font).grid(row=3, column=0, columnspan=3, sticky=N+S+W+E)
 
         self.enemyVarName = Entry(variableDataFrame, font=self.fontText)
         self.enemyVarType = Entry(variableDataFrame, font=self.fontText)
@@ -805,9 +806,9 @@ class MetaDataEditor(tk.Frame):
         if resetView and len(varList) > 0:
             self.selectedEnemyVar = 0
             self.enemyVar.selection_clear(0, END)
-            self.enemyVar.see(self.selectedEnemyVar)
+            self.enemyVar.selection_set(self.selectedEnemyVar)
             self.enemyLoadVariable(self.selectedEnemyVar)
-        else:
+        elif len(varList) <= 0:
             self.enemyVarName.delete(0,END)
             self.enemyVarValue.delete("1.0",END)
     
@@ -830,6 +831,36 @@ class MetaDataEditor(tk.Frame):
             self.selectedEnemyVar = None
             self.enemyVarName.delete(0,END)
             self.enemyVarSetValue([])
+    
+    def saveEnemyVariable(self):
+        variableID = self.enemyVarName.get().strip()
+        oldVar =  list(self.currentEnemy["variables"].keys())[self.selectedEnemyVar]
+
+        if (variableID != oldVar):
+            oldVarData = self.currentEnemy["variables"][oldVar]
+            del self.currentEnemy["variables"][oldVar]
+            oldVarData["choices"] = self.enemyVarGetValue()
+            self.currentEnemy["variables"][variableID] = oldVarData
+            self.currentEnemy["variables"] = dict(sorted(self.currentEnemy["variables"].items()))
+            self.enemyVarList.set(list(self.currentEnemy["variables"].keys()))
+        else:
+            self.currentEnemy["variables"][variableID]["choices"] = self.enemyVarGetValue()
+        self.enemyLoadVariable(list(self.currentEnemy["variables"].keys()).index(variableID))
+
+        # Check if enemy ID changed, update if needed
+        # if (variableID != self.enemyVarList.get(self.enemyVar.curselection()[0])):
+        #     oldID = self.currentEnemy["variables"]
+        #     oldID = self.metaFileData["enemies"].pop(self.selectedEnemy)
+        #     self.metaFileData["enemies"].append(enemyId)
+        #     self.metaFileData["enemies"] = sorted(self.metaFileData["enemies"])
+        #     self.selectedEnemy = self.metaFileData["enemies"].index(enemyId)
+        #     os.remove("{}/enemies/{}.json".format(self.fileLoc, oldID))
+        #     saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
+        #     self.enemyLoadSelection(self.selectedEnemy, False)
+        #     saveJson("{}/meta.json".format(self.fileLoc), self.metaFileData)
+        # else:
+        #     saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
+        #     self.enemyLoadSelection(self.selectedEnemy)
 
     def enemySetNameField(self, lines):
         self.enemyName.delete("1.0", END)
@@ -1028,6 +1059,8 @@ class MetaDataEditor(tk.Frame):
 
         # Variables
         self.currentEnemy["variables"] = enemyVariables
+        if (len(self.currentEnemy["variables"]) > 0):
+            self.saveEnemyVariable()
         
         # Check if enemy ID changed, update if needed
         if (enemyId != self.metaFileData["enemies"][self.selectedEnemy]):
@@ -1041,8 +1074,7 @@ class MetaDataEditor(tk.Frame):
             saveJson("{}/meta.json".format(self.fileLoc), self.metaFileData)
         else:
             saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
-            self.enemyLoadSelection(self.selectedEnemy)
-        
+            self.enemyLoadSelection(self.selectedEnemy, False)
 
     def newEnemyVar(self):
         newVarId = "UNNAMEDMODIFIER"
