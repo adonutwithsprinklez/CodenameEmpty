@@ -1,4 +1,4 @@
-{ 
+{
     "name": "Official Data Pack",
     "author": "Sprinklez Media",
     "desc": "This is the official game data and assets for the game.",
@@ -86,6 +86,7 @@
     ],
     "modifiers": [
         "consumable_modifiers",
+        "cultist_modifiers",
         "enemy_modifiers",
         "enemy_wolf_modifiers",
         "forest_spirit",
@@ -111,6 +112,9 @@
     ],
     "weapons": [
         "weapon_club",
+        "weapon_cultist_ceremonialDagger",
+        "weapon_cultist_dagger",
+        "weapon_cultist_sword",
         "weapon_ironSword",
         "weapon_orcSword",
         "weapon_starter_sword",
