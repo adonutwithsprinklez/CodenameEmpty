@@ -1298,9 +1298,9 @@ class MetaDataEditor(tk.Frame):
         if (self.wepModCnt.get().strip()):
             self.currentWeapon["modifierCount"] = self.wepModCnt.get().strip()
             self.currentWeapon["modifiers"] = self.weaponGetModField()
-            if (self.wepModChance.get.strip()):
+            if (self.wepModChance.get().strip()):
                 try:
-                    self.currentWeapon["modifierChance"] = int(self.wepModChance.get.strip())
+                    self.currentWeapon["modifierChance"] = int(self.wepModChance.get().strip())
                 except:
                     pass
         if (self.wepWorMin.get().strip()):
