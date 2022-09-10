@@ -8,7 +8,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import simpledialog, messagebox
 from tkinter import *
-from tkinter.tix import NoteBook
 
 # Local Imports
 from jsonDecoder import loadJson, saveJson
@@ -74,7 +73,7 @@ class MetaDataEditor(tk.Frame):
         self.create_armorstab()
         self.create_enemiestab()
         # self.create_eventstab()
-        # self.create_misctab()
+        self.create_misctab()
         self.create_modifiertab()
         # self.create_npcstab()
         # self.create_queststab()
@@ -675,6 +674,83 @@ class MetaDataEditor(tk.Frame):
     def create_misctab(self):
         self.misctab = ttk.Frame(self.tabControl)
         self.tabControl.add(self.misctab, text = "  Misc  ")
+
+        miscFrame = ttk.Frame(self.misctab)
+        miscFrame.grid(row=0, column=0, columnspan=1, padx=0, pady=0, sticky=E+W+N+S)
+
+        # ELEMENT CREATION
+        # Files display
+        self.miscFileList = StringVar(value=[])
+        miscFileFrame = ttk.Frame(miscFrame)
+        miscFileFrame.grid(row=0, column=0, sticky=N+E+W+S)
+        ttk.Label(miscFileFrame, text="Items", font=self.font).grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=N+S+W+E)
+        self.miscFiles = Listbox(miscFileFrame, listvariable=self.miscFileList, font=self.fontText)
+        self.miscFiles.grid(row=1, column=0, columnspan=2, sticky=N+S+W+E)
+        self.miscFiles.bind("<<ListboxSelect>>", self._weaponLoadSelection)
+        Button(miscFileFrame, text="-", command=self.delWeapon, font=self.font).grid(row=2, column=0, sticky=N+S+W+E)
+        Button(miscFileFrame, text="+", command=self.newWeapon, font=self.font).grid(row=2, column=1, sticky=N+S+W+E)
+
+        ttk.Separator(miscFrame, orient=VERTICAL).grid(row=0, column=1, columnspan=1, sticky=N+S)
+
+        miscFileFrame.rowconfigure(1, weight=1)
+        miscFileFrame.columnconfigure(0, weight=1)
+        miscFileFrame.columnconfigure(1, weight=1)
+
+        # Data display
+        miscDataFrame = ttk.Frame(miscFrame)
+        miscDataFrame.grid(row=0, column=2, sticky=N+E+W+S)
+
+        ttk.Label(miscDataFrame, text="Weapon ID", font=self.fontBold).grid(row=0, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Name", font=self.fontBold).grid(row=1, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Description", font=self.fontBold).grid(row=2, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Action Text", font=self.fontBold).grid(row=3, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Damage", font=self.fontBold).grid(row=4, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Num Hands", font=self.font).grid(row=4, column=2, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Min Worth", font=self.font).grid(row=5, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Max Worth", font=self.font).grid(row=5, column=2, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Mod Chance", font=self.font).grid(row=6, column=0, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Mod Count", font=self.font).grid(row=6, column=2, padx=10, pady=5, sticky=E)
+        ttk.Label(miscDataFrame, text="Mods", font=self.font).grid(row=7, column=0, padx=10, pady=5, sticky=E)
+
+        self.wepId = Entry(miscDataFrame, font=self.fontText)
+        self.wepName = Text(miscDataFrame, height=3, font=self.fontText)
+        self.wepDesc = Text(miscDataFrame, height=3, font=self.fontText)
+        self.wepActionText = Text(miscDataFrame, height=3, font=self.fontText)
+        self.wepDmg = Entry(miscDataFrame, font=self.fontText)
+        self.wepHand = Entry(miscDataFrame, font=self.fontText)
+        self.wepWorMin = Entry(miscDataFrame, font=self.fontText)
+        self.wepWorMax = Entry(miscDataFrame, font=self.fontText)
+        self.wepModChance = Entry(miscDataFrame, font=self.fontText)
+        self.wepModCnt = Entry(miscDataFrame, font=self.fontText)
+        self.wepMods = Text(miscDataFrame, height=3, font=self.fontText)
+
+        self.wepId.grid(row=0, column=1, columnspan=2, padx=0, pady=5, sticky=W+E)
+        self.wepName.grid(row=1, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W)
+        self.wepDesc.grid(row=2, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+E)
+        self.wepActionText.grid(row=3, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+E)
+        self.wepDmg.grid(row=4, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepHand.grid(row=4, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepWorMin.grid(row=5, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepWorMax.grid(row=5, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepModChance.grid(row=6, column=1, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepModCnt.grid(row=6, column=3, columnspan=1, padx=0, pady=5, sticky=W)
+        self.wepMods.grid(row=7, column=1, columnspan=3, padx=0, pady=5, sticky=N+S+W+N)
+
+        Button(miscDataFrame, text="Save", command=self.saveWeapon, font=self.font).grid(row=8, column=0, columnspan=4, sticky=N+E+W+S)
+
+        miscDataFrame.rowconfigure(1, weight=1)
+        miscDataFrame.rowconfigure(2, weight=1)
+        miscDataFrame.rowconfigure(3, weight=1)
+        miscDataFrame.rowconfigure(7, weight=1)
+        miscDataFrame.columnconfigure(3, weight=1)
+        
+        miscFrame.rowconfigure(0, weight=1)
+        miscFrame.columnconfigure(0, weight=1, minsize=200)
+        miscFrame.columnconfigure(1, weight=0)
+        miscFrame.columnconfigure(2, weight=5)
+
+        self.misctab.rowconfigure(0, weight=1)
+        self.misctab.columnconfigure(0, weight=1)
     
     def create_npcstab(self):
         self.npcstab = ttk.Frame(self.tabControl)
@@ -846,21 +922,6 @@ class MetaDataEditor(tk.Frame):
         else:
             self.currentEnemy["variables"][variableID]["choices"] = self.enemyVarGetValue()
         self.enemyLoadVariable(list(self.currentEnemy["variables"].keys()).index(variableID))
-
-        # Check if enemy ID changed, update if needed
-        # if (variableID != self.enemyVarList.get(self.enemyVar.curselection()[0])):
-        #     oldID = self.currentEnemy["variables"]
-        #     oldID = self.metaFileData["enemies"].pop(self.selectedEnemy)
-        #     self.metaFileData["enemies"].append(enemyId)
-        #     self.metaFileData["enemies"] = sorted(self.metaFileData["enemies"])
-        #     self.selectedEnemy = self.metaFileData["enemies"].index(enemyId)
-        #     os.remove("{}/enemies/{}.json".format(self.fileLoc, oldID))
-        #     saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
-        #     self.enemyLoadSelection(self.selectedEnemy, False)
-        #     saveJson("{}/meta.json".format(self.fileLoc), self.metaFileData)
-        # else:
-        #     saveJson("{}/enemies/{}.json".format(self.fileLoc, enemyId), self.currentEnemy)
-        #     self.enemyLoadSelection(self.selectedEnemy)
 
     def enemySetNameField(self, lines):
         self.enemyName.delete("1.0", END)
