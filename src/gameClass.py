@@ -75,7 +75,7 @@ class Game(object):
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
-            self.disp.initiate_window(f'Project: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+            self.disp.initiate_window(f'Codename: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
