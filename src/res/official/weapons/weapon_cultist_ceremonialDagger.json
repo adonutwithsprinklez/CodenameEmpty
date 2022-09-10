@@ -1,0 +1,16 @@
+{
+    "name": [
+        "Ceremonial Dagger"
+    ],
+    "damage": "1d3+2",
+    "desc": [
+        "The dagger appears to be made of clean bronze metal. It is covered in many strange looking glyphs."
+    ],
+    "actionText": [
+        "There is a blur as the dagger swings through the air.",
+        "The dagger is silent as is is stabbed into its target."
+    ],
+    "worthMin": 30,
+    "worthMax": 40,
+    "requiredHands": 1
+}
