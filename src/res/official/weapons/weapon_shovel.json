@@ -1,0 +1,17 @@
+{
+    "name": [
+        "Shovel",
+        "Dirty Shovel",
+        "Rusted Shovel"
+    ],
+    "damage": "1d3",
+    "desc": [
+        "A tool that likely not intended to be used as a weapon."
+    ],
+    "actionText": [
+        "The shovel is clumsily swung through the air."
+    ],
+    "worthMin": 10,
+    "worthMax": 15,
+    "requiredHands": 2
+}

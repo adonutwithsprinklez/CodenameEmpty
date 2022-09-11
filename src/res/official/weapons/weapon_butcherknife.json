@@ -1,0 +1,28 @@
+{
+    "name": [
+        "Butcher's Knife"
+    ],
+    "damage": "1d2+1",
+    "desc": [
+        "The blade is thick and heavy. It was obviously made for a different purpose than being used as a weapon."
+    ],
+    "actionText": [
+        "There is a blur as the sword swings through the air.",
+        "The heavy blade smashes against the opponent."
+    ],
+    "modifierCount": "+1",
+    "modifiers": [
+        [
+            "wep_damaged",
+            "1d6"
+        ],
+        [
+            "wep_goodShape",
+            "1d6"
+        ]
+    ],
+    "modifierChance": 50,
+    "worthMin": 10,
+    "worthMax": 20,
+    "requiredHands": 1
+}
