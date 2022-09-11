@@ -11,6 +11,18 @@
         "There is a blur as the dagger swings through the air.",
         "The dagger is silent as is is stabbed into its target."
     ],
+    "modifierCount": "+1",
+    "modifiers": [
+        [
+            "cult_dagger_bloodpainted",
+            "1d6"
+        ],
+        [
+            "cult_wep_sharpened",
+            "1d6"
+        ]
+    ],
+    "modifierChance": 50,
     "worthMin": 20,
     "worthMax": 30,
     "requiredHands": 1

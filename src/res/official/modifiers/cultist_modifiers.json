@@ -22,7 +22,7 @@
         "effect": "damage",
         "strength": "1d2-1"
     },
-    "cult_sword_sharpened": {
+    "cult_wep_sharpened": {
         "name": [
             "Sharpened"
         ],
