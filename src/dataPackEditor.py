@@ -1341,7 +1341,7 @@ class MetaDataEditor(tk.Frame):
             self.weaponLoadSelection(0)
 
     def newWeapon(self):
-        newfilename = simpledialog.askstring("New Weapon ID", "Enter new modifier collection name", parent=self.master)
+        newfilename = simpledialog.askstring("New Weapon ID", "Enter new weapon ID", parent=self.master)
         if (newfilename):
             newfilename = newfilename.strip()
         if (newfilename and newfilename not in self.metaFileData["weapons"]):
