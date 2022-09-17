@@ -1,0 +1,15 @@
+{
+	"name":[
+		"Dragon Skin Armor"
+	],
+	"desc":[
+		"The armor is made of dragon skin. Dark red scales adorn the areas where leather would usually go.",
+		"The armor is made of dragon skin. Dark blue scales adorn the areas where leather would usually go.",
+		"The armor is made of dragon skin. Bright gold scales adorn the areas where leather would usually go.",
+		"The armor is made of dragon skin. Bright white scales adorn the areas where leather would usually go.",
+		"The armor is made of dragon skin. Dark black scales adorn the areas where leather would usually go."
+	],
+	"defence":"1d3+2",
+	"worthMin":80,
+	"worthMax":90
+}

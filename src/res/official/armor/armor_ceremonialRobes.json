@@ -1,0 +1,11 @@
+{
+	"name":[
+		"Ceremonial Robes"
+	],
+	"desc":[
+		"Robes and other germents covered with intricate designs. They were definitely used during a ceremony of some kind."
+	],
+	"defence":"1d2",
+	"worthMin":50,
+	"worthMax":55
+}

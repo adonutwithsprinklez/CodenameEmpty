@@ -1,0 +1,11 @@
+{
+	"name":[
+		"Cultist Armor"
+	],
+	"desc":[
+		"Armor with markings of a strange cult."
+	],
+	"defence":"1d3",
+	"worthMin":40,
+	"worthMax":55
+}

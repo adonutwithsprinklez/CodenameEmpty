@@ -1,0 +1,11 @@
+{
+	"name":[
+		"Kitchen Apparel"
+	],
+	"desc":[
+		"A white shirt and black pants. Complete with a small white kitchen cap. Not particularly safe or useful."
+	],
+	"defence":"1d2",
+	"worthMin":10,
+	"worthMax":20
+}
