@@ -1,0 +1,11 @@
+{
+	"name":[
+		"Cultist Robes"
+	],
+	"desc":[
+		"Robes and other various garments all bearing the mark of a strange cult."
+	],
+	"worthMin":10,
+	"worthMax":20,
+	"defence":"1d2-1"
+}
