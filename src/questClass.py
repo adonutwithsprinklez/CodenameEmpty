@@ -18,6 +18,7 @@ class Quest(object):
 		self.qID = data["qID"] + str(Quest.qNum)
 		self.title = data["title"]
 		self.desc  = data["desc"]
+		self.hidden = False
 		self.complete = False
 		self.started = False
 		self.spawnConditions = []
@@ -72,8 +73,11 @@ class Quest(object):
 				requirements.append(Flag(f))
 			self.requirements = requirements
 		for action in do:
+			print(action)
 			if action[0] == "setDesc":
 				self.desc = action[1]
+			elif action[0] == "hideFromQuestLog":
+				self.hidden = action[1]
 			else:
 				action.append(self.qID)
 		return do
