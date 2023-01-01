@@ -170,7 +170,10 @@ class Game(object):
         self.loaded = True
 
     def loadStartingArea(self):
-        self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+        if self.gameSettings["TUTORIALAREA"]:
+            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+        else:
+            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
         '''
         # TODO deprecate this loading function
