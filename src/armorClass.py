@@ -5,24 +5,24 @@ from textGeneration import generateString
 ARMOR_TYPES_LIGHT = {
 	"head": ["Cap","Hood"],
 	"torso": ["Robe","Garmet"],
-	"arm":["Wraps"],
-	"leg":["Pants"],
+	"arm":["Wrap"],
+	"leg":["Pant"],
 	"tail":["Tailcover"]
 }
 
 ARMOR_TYPES_MEDIUM = {
 	"head": ["Helmet"],
 	"torso": ["Armor"],
-	"arm":["Gloves"],
-	"leg":["Leggings"],
-	"tail":["Cover"]
+	"arm":["Glove"],
+	"leg":["Legging"],
+	"tail":["Tailcover", "Tailguard"]
 }
 
 ARMOR_TYPES_HEAVY = {
 	"head": ["Helm"],
 	"torso": ["Breastplate"],
-	"arm":["Gauntles"],
-	"leg":["Legguards"],
+	"arm":["Gauntlet"],
+	"leg":["Legguard"],
 	"tail":["Tailguard"]
 }
 

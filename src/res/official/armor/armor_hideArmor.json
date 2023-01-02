@@ -11,11 +11,11 @@
 	"worthMin":30,
 	"worthMax":50,
 	"weight":"light",
-	"size":[1,3],
+	"size":[2,4],
 	"limb":{
 		"head": ["Cap","Hood"],
 		"torso": ["Robe","Garmet"],
 		"arm":["Wraps"],
-		"leg":["Pants"]
+		"leg":["Boot"]
 	}
 }

@@ -1,11 +1,20 @@
 {
 	"name":[
-		"Kitchen Apparel"
+		"Kitchen",
+		"Cooking",
+		"Chef's"
 	],
 	"desc":[
-		"A white shirt and black pants. Complete with a small white kitchen cap. Not particularly safe or useful."
+		"Not particularly safe or useful."
 	],
 	"defence":"1d2",
 	"worthMin":10,
-	"worthMax":20
+	"worthMax":20,
+	"weight":"light",
+	"size":[1,4],
+	"limb":{
+		"head": ["Cap","Hat"],
+		"torso": ["Robe","Garmet"],
+		"leg":["Shoes"]
+	}
 }
