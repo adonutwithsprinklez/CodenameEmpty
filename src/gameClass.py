@@ -16,7 +16,7 @@ from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
 from enemyClass import Enemy
-from itemGeneration import generateWeapon
+from itemGeneration import generateWeapon, generateAmorSet
 from jsonDecoder import loadJson
 from miscClass import Misc
 from modifierClass import Modifier
@@ -202,6 +202,8 @@ class Game(object):
 
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
         self.player.armor = Armor(self.armor[self.starterArmor])
+        armor = generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"])
+        self.player.equipArmorSet(armor)
 
         # Add all the extra inventory gear
         for item in self.starterInventory:

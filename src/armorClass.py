@@ -62,11 +62,16 @@ class Armor(object):
 			self.armorWeight = random.choice(list(ARMOR_TYPES.keys()))
 		
 		# Limb Type:
+		if limb:
+			self.limb = limb
+		else:
+			if "limb" in data.keys():
+				self.limb = random.choice(list(data["limb"].keys()))
+			else:
+				self.limb = random.choice(list(ARMOR_TYPES[self.armorWeight].keys()))
 		if "limb" in data.keys():
-			self.limb = random.choice(list(data["limb"].keys()))
 			self.nameSuffix = random.choice(data["limb"][self.limb])
 		else:
-			self.limb = random.choice(list(ARMOR_TYPES[self.armorWeight].keys()))
 			self.nameSuffix = random.choice(ARMOR_TYPES[self.armorWeight][self.limb])
 		
 		print(vars(self))

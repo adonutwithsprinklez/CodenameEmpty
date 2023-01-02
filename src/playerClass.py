@@ -350,6 +350,15 @@ class Player(object):
                 # Open menu to unequip armor from a limb
                 equipped = self.viewAttemptUnequipArmor(armor, limbs)
         return equipped
+    
+    def equipArmorSet(self, armors):
+        for armor in armors:
+            equipped = False
+            limbs = self.race.getLimbsOfLimbType(armor.limb)
+            for limb in limbs:
+                if not equipped and not limb.armor:
+                    limb.armor = armor
+                    equipped = True
 
     def setRace(self, race):
         # TODO check for equipped gear to make sure the player can still wield it
@@ -368,12 +377,20 @@ class Player(object):
                 self.weapon, self.weapon.desc)
         else:
             equipstr += "You are wielding your fists as your weapon. "
-        # TODO: Rewrite
-        if self.armor:
-            equipstr += "You are wearing {}. {} ".format(
-                self.armor, self.armor.desc)
-        else:
+        limbs = self.race.getLimbsEquippableLimbs()
+        armors = []
+        for limb in limbs:
+            if limb.armor:
+                armors.append(limb.armor)
+        if len(armors) == 0:
             equipstr += "You are not wearing any kind of protective armor. "
+        else:
+            armorString = armors.pop(0).getName()
+            while len(armors) > 1:
+                armorString += ", %s" % armors.pop(0)
+            if len(armors) == 1:
+                armorString += ", and %s" % armors.pop(0)
+            equipstr += "You are wearing {}.".format(armorString)
         return equipstr
 
     def getUserInfo(self):
