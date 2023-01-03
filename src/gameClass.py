@@ -265,14 +265,14 @@ class Game(object):
         title = "%s (%s) - Hostility: %d" % (self.areaController.getCurrentAreaName(),
                 self.areaController.getCurrentAreaType(), self.areaController.getCurrentAreaHostility())
         self.disp.displayHeader(title)
-        for desc in self.currentArea.desc.split("\n"):
+        for desc in self.areaController.getCurrentAreaDesc().split("\n"):
             self.disp.display(desc)
         # Display enemies that are in the area (if there are any)
-        if self.currentArea.enemy != []:
+        if self.areaController.getCurrentAreaHasEnemies():
             self.disp.closeDisplay()
             enemyMessage = "You can see enemies in the distance:"
-            if self.currentArea.enemyMessage != None:
-                enemyMessage = self.currentArea.enemyMessage
+            if self.areaController.getCurrentAreaEnemyMessage() != None:
+                enemyMessage = self.areaController.getCurrentAreaEnemyMessage()
             self.disp.display(enemyMessage, 1, 1)
             for enemy in self.areaController.getCurrentAreaEnemies():
                 self.disp.display(f'{enemy.getName()} (Danger - {enemy.getDanger()})', 0, 0)
@@ -288,17 +288,15 @@ class Game(object):
         objectives getting updated.'''
 
         ##### Random event Code #####
-        if self.currentArea.event and self.gameSettings["DISABLEFLAVOREVENTS"] and self.currentArea.event.eventType == "flavor":
-            self.currentArea.event = None
-        if self.currentArea.event:
-            self.disp.dprint(self.currentArea.event.name)
-            while not self.currentArea.event.finished:
+        if self.areaController.getCurrentAreaHasEvent(self.gameSettings["DISABLEFLAVOREVENTS"]):
+            event = self.areaController.getCurrentAreaEvent()
+            self.disp.dprint(event.name)
+            while not event.finished:
                 self.disp.clearScreen()
-                self.disp.displayHeader(self.currentArea.event.name)
-                self.disp.display(self.currentArea.event.msg, 1)
+                self.disp.displayHeader(event.name)
+                self.disp.display(event.msg, 1)
                 x = 0
-                choices = self.currentArea.event.getPossibleActions(
-                    self.player)
+                choices = event.getPossibleActions(self.player)
                 if len(choices) > 0:
                     self.disp.displayHeader("Actions", 1, 1)
                     for choice in choices:
@@ -318,34 +316,34 @@ class Game(object):
                             if action[0] == "say":
                                 self.displayEventAction(action[1])
                             elif action[0] == "goto":
-                                self.currentArea.event.gotoPart(
-                                    random.choice(action[1]))
+                                event.gotoPart(random.choice(action[1]))
                             elif action[0] == "addTag":
-                                self.player.tags.append(
-                                    self.currentArea.event.getTag(action[1]))
+                                self.player.tags.append(event.getTag(action[1]))
                             elif action[0] == "take":
-                                self.currentArea.event.takeItem(
-                                    action[1], action[2], self.player)
+                                event.takeItem(action[1], action[2], self.player)
                             elif action[0] == "give":
                                 for i in range(action[2]):
-                                    result = self.currentArea.event.giveItem(action[1], action[2], self.player,
-                                                                    self.weapons, self.armor, self.misc, self.modifiers)
+                                    result = event.giveItem(action[1], action[2], self.player,
+                                                            self.weapons, self.armor, self.misc,
+                                                            self.modifiers)
                                     if self.settings["DEBUG"] and not result:
                                         raise Exception("Something went wrong when processing an event's 'give' command.")
                             elif action[0] == "spawnEnemy":
                                 for enemyid in action[1]:
-                                    self.currentArea.enemy.append(Enemy(
+                                    self.areaController.addEnemyToCurrentArea(Enemy(
                                         self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                             elif action[0] == "finish":
-                                self.currentArea.event.finish()
+                                event.finish()
                 else:
                     self.disp.closeDisplay()
-                    self.currentArea.event.finish()
+                    event.finish()
                     if self.gameSettings["EVENTDELAYENABLED"]:
                         time.sleep(EVENTDELAY)
                     #input("\nEnter to continue")
                     self.disp.wait_for_enter()
-        
+        else:
+            self.areaController.clearEvent()
+
         self.fightEnemies()
         if self.player.quit:
             return None
@@ -385,26 +383,18 @@ class Game(object):
                     cmd = -1
                     self.disp.clearScreen()
                     while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
-                        self.disp.displayHeader("Enemy Encountered - %s" %
-                                                (areaEnemy.name))
+                        self.disp.displayHeader("Enemy Encountered - %s" % (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
                                           (areaEnemy.getDesc(), areaEnemy.getDanger()), 1, 1)
                         self.disp.displayHeader("Info")
-                        self.disp.display("Player: %s - %dHP" %
-                                          (self.player.name, self.player.hp))
-                        self.disp.display("HP: %s" % ("#" * self.player.getHealth()),
-                                          0)
-                        self.disp.display("Weapon: %s" %
-                                          (str(self.player.weapon)), 0)
-                        self.disp.display("Enemy: %s - %dHP" %
-                                          (areaEnemy.name, areaEnemy.hp))
-                        self.disp.display("HP: %s" %
-                                          ("#" * areaEnemy.getHealth()), 0)
-                        self.disp.display("Weapon: %s" %
-                                          (str(areaEnemy.weapon)), 0, 1)
+                        self.disp.display("Player: %s - %dHP" % (self.player.name, self.player.hp))
+                        self.disp.display("HP: %s" % ("#" * self.player.getHealth()), 0)
+                        self.disp.display("Weapon: %s" % (str(self.player.weapon)), 0)
+                        self.disp.display("Enemy: %s - %dHP" % (areaEnemy.name, areaEnemy.hp))
+                        self.disp.display("HP: %s" % ("#" * areaEnemy.getHealth()), 0)
+                        self.disp.display("Weapon: %s" % (str(areaEnemy.weapon)), 0, 1)
                         self.disp.displayHeader("Actions")
-                        self.disp.display("1. Use your weapon (%s)" %
-                                          str(self.player.weapon))
+                        self.disp.display("1. Use your weapon (%s)" % str(self.player.weapon))
                         self.disp.display("2. Attempt to escape", 0)
                         self.disp.display("0. Player Menu")
                         self.disp.closeDisplay()
@@ -429,8 +419,7 @@ class Game(object):
                             self.player.hp = self.player.getMaxHP()
                         elif cmd not in (1, 2, 0):
                             self.disp.displayHeader("Error")
-                            self.disp.display("That was not a valid response.",
-                                              1, 1)
+                            self.disp.display("That was not a valid response.", 1, 1)
 
                     if cmd == 1 or cmd == 90:
                         self.disp.clearScreen()
