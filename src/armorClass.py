@@ -73,9 +73,6 @@ class Armor(object):
 			self.nameSuffix = random.choice(data["limb"][self.limb])
 		else:
 			self.nameSuffix = random.choice(ARMOR_TYPES[self.armorWeight][self.limb])
-		
-		print(vars(self))
-		print(self)
 	
 	def getName(self):
 		return self.name + " " + self.nameSuffix

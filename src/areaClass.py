@@ -122,3 +122,23 @@ class Area(object):
             self.enemy = e
         if self.event:
             self.event = Event(events[self.event], self.event)
+        
+    
+    # GETTERS
+    def getName(self):
+        return self.name
+        
+    def getAreaId(self):
+        return self.aId
+        
+    def getAreaType(self):
+        return self.aType
+        
+    def getEnemies(self):
+        return self.enemy
+    
+    def getEnemyMessage(self):
+        return self.enemyMessage
+        
+    def getHostility(self):
+        return self.hostility

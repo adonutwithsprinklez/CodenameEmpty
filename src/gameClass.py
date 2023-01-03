@@ -185,7 +185,7 @@ class Game(object):
                               self.enemies, self.npcs, self.events, self.modifiers)
         '''
 
-        self.currentArea = self.areaController.loadArea((0,0))
+        self.currentArea = self.areaController.getCurrentArea()
 
     def loadPlayer(self):
         # TODO: Add player creation menu here
@@ -262,8 +262,8 @@ class Game(object):
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
         self.disp.clearScreen()
-        title = "%s (%s) - Hostility: %d" % (self.currentArea.name,
-                                             self.currentArea.aType, self.currentArea.hostility)
+        title = "%s (%s) - Hostility: %d" % (self.areaController.getCurrentAreaName(),
+                self.areaController.getCurrentAreaType(), self.areaController.getCurrentAreaHostility())
         self.disp.displayHeader(title)
         for desc in self.currentArea.desc.split("\n"):
             self.disp.display(desc)
@@ -274,8 +274,8 @@ class Game(object):
             if self.currentArea.enemyMessage != None:
                 enemyMessage = self.currentArea.enemyMessage
             self.disp.display(enemyMessage, 1, 1)
-            for enemy in self.currentArea.enemy:
-                self.disp.display(f'{enemy.name} (Danger - {enemy.getDanger()})', 0, 0)
+            for enemy in self.areaController.getCurrentAreaEnemies():
+                self.disp.display(f'{enemy.getName()} (Danger - {enemy.getDanger()})', 0, 0)
         self.disp.closeDisplay()
 
         # input("\nEnter to continue")
@@ -520,7 +520,7 @@ class Game(object):
     def chooseNewArea(self):
         '''This lets the player choose a new area to travel to.'''
         # Create various area choices:
-        choices = self.randomAreaChoices()
+        choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
         random.shuffle(choices)
         cmd = -1
@@ -562,9 +562,9 @@ class Game(object):
                     return None
 
         # Load the new area
-        self.currentArea = choices[cmd - 1]
-        self.currentArea.load(self.weapons, self.armor, self.misc,
-                              self.enemies, self.npcs, self.events, self.modifiers)
+        self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
+                            self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+        self.currentArea = self.areaController.getCurrentArea()
         
         if self.currentArea.event:
             if not self.currentArea.event.isRepeatable:
@@ -577,48 +577,6 @@ class Game(object):
 
         self.updateQuestInfo()
 
-    def randomAreaChoices(self):
-        '''This randomly generates areas for the player to choose from.'''
-        
-        print("")
-        choices = []
-        # This is to guarantee that no "limited" areas are used more than once
-        usedAreas = []
-
-        # Grab all required areas and throw them into a seperate list. This is to
-        # guarantee that they are generated.
-        areatypes = self.currentArea.newAreaTypes[::]
-        required = []
-        for area in areatypes:
-            if len(area) > 2:
-                for flag in area[2]:
-                    if flag == "required":
-                        required.append(area)
-
-        # Check if all requirements are met for areas to spawn:
-        # TODO
-
-        # Actually generate areas:
-        for i in range(1, self.currentArea.newArea + 1):
-            if len(required) > 0:
-                newArea = required.pop(0)
-            else:
-                areatypes = self.currentArea.newAreaTypes[::]
-                highroll = 0
-                for aType in areatypes:
-                    newroll = rollDice(aType[1])
-                    alreadyUsed = False
-                    if len(aType) > 2:
-                        if "limited" in aType[2]:
-                            if aType[0] in usedAreas:
-                                alreadyUsed = True
-                    if newroll > highroll and not alreadyUsed:
-                        newArea = aType
-                        highroll = newroll
-            generatedArea = Area(self.areas[newArea[0]], self.nonRepeatableEvents, self.globalRandomEvents, newArea[0])
-            usedAreas.append(newArea[0])
-            choices.append(generatedArea)
-        return choices
 
     def workOnBacklog(self):
         '''This collects and organizes the information in the backlog of
