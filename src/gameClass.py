@@ -7,10 +7,6 @@ import os
 
 # Local module imports
 
-# TODO deprecate this areaClass import and fully replace it with the
-# areaControllerClass import
-from areaClass import Area
-
 from ApplicationWindowClass import ApplicationWindow
 from areaControllerClass import AreaController
 from armorClass import Armor
@@ -45,8 +41,6 @@ class Game(object):
         self.gameSettings = {}
         self.dataPackSettings = {}
 
-        # TODO deprecate self.currentArea and replace with self.areaController
-        self.currentArea = None
         self.areaController = None
         self.starter = None
 
@@ -177,30 +171,12 @@ class Game(object):
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0),
             self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
-        '''
-        # TODO deprecate this loading function
-        self.currentArea = Area(self.areas[self.packs[self.starter][
-                                "startingArea"]], DEBUG, **{"playerLevel": 1, "difficultyModifier": 1})
-        self.currentArea.load(self.weapons, self.armor, self.misc,
-                              self.enemies, self.npcs, self.events, self.modifiers)
-        '''
-
-        self.currentArea = self.areaController.getCurrentArea()
-
     def loadPlayer(self):
         # TODO: Add player creation menu here
         self.player = Player()
         self.player.race = Race(self.races["human"])
         #self.player.race.limbs[0] = Limb(self.races["drakt"]["limbs"][0], "Draktilien")
         self.player.disp = self.disp
-        
-        # Sets some defualt equipment to the player
-        '''
-        self.player.weapon = Weapon(self.weapons["weapon_ironSword"], self.modifiers)
-        self.player.armor = Armor(self.armor["armor_hideArmor"])
-        self.player.inv.append(generateWeapon(
-            self.weapons["template_IronSword"], self.modifiers))
-        '''
 
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
         armor = generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"])
@@ -349,14 +325,16 @@ class Game(object):
             return None
 
         ##### Interacting with an NPC Code #####
+        '''
         if self.currentArea.npc:
             self.disp.clearScreen()
             self.disp.displayHeader(self.currentArea.npc.name)
             self.disp.display(self.currentArea.npc)
+        '''
 
     def displayEventAction(self, message):
         self.disp.clearScreen()
-        self.disp.displayHeader(self.currentArea.event.name)
+        self.disp.displayHeader(self.areaController.getCurrentAreaEvent().name)
         self.disp.display(message)
         self.disp.closeDisplay()
         # input("\nEnter to continue")
@@ -364,9 +342,9 @@ class Game(object):
 
     def fightEnemies(self):
         ##### Fighting Code #####
-        if self.currentArea.enemy != [] and not self.gameSettings["DISABLEENEMIES"]:
+        if self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]:
             self.disp.clearScreen()
-            for areaEnemy in self.currentArea.enemy:
+            for areaEnemy in self.areaController.getCurrentAreaEnemies():
                 enemyhp = areaEnemy.getHealth()
                 while enemyhp > 0 and self.player.hp:
                     self.disp.dprint(
@@ -553,16 +531,13 @@ class Game(object):
         # Load the new area
         self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
                             self.misc, self.enemies, self.npcs, self.events, self.modifiers)
-        self.currentArea = self.areaController.getCurrentArea()
         
-        if self.currentArea.event:
-            if not self.currentArea.event.isRepeatable:
-                self.nonRepeatableEvents.append(self.currentArea.event.resourceId)
+        if self.areaController.getCurrentAreaHasEvent():
+            if not self.areaController.getCurrentAreaEvent().isRepeatable:
+                self.nonRepeatableEvents.append(self.areaController.getCurrentAreaEvent().resourceId)
 
-        self.importantQuestInfo.append(
-            ["inAreaType", self.currentArea.aType, True, False])
-        self.importantQuestInfo.append(
-            ["inAreaId", self.currentArea.aId, True, False])
+        self.importantQuestInfo.append(["inAreaType", self.areaController.getCurrentAreaType(), True, False])
+        self.importantQuestInfo.append(["inAreaId", self.areaController.getCurrentAreaId(), True, False])
 
         self.updateQuestInfo()
 
@@ -617,8 +592,8 @@ class Game(object):
                 self.disp.dprint("Processed questComplete condition.")
             elif action[0] == "spawnEnemy":
                 for enemyid in action[1]:
-                    self.currentArea.enemy.append(Enemy(
-                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
+                    self.areaController.addEnemyToCurrentArea(
+                        Enemy(self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                 self.disp.dprint("Processed spawnEnemy condition.")
 
     def updateQuestInfo(self):
