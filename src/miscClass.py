@@ -62,3 +62,6 @@ class Misc(object):
 		
 		player.disp.closeDisplay()
 		player.disp.wait_for_enter()
+	
+	def getName(self):
+		return self.name

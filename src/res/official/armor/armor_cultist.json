@@ -1,11 +1,20 @@
 {
 	"name":[
-		"Cultist Armor"
+		"Cultist"
 	],
 	"desc":[
 		"Armor with markings of a strange cult."
 	],
 	"defence":"1d3",
 	"worthMin":40,
-	"worthMax":55
+	"worthMax":55,
+	"weight":"medium",
+	"size":[2,4],
+	"limb":{
+		"head": ["Helmet"],
+		"torso": ["Armor"],
+		"arm":["Gauntlet"],
+		"leg":["Boot"],
+		"tail":["Tailcover", "Tailguard"]
+	}
 }

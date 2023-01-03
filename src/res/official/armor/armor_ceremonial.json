@@ -1,11 +1,19 @@
 {
 	"name":[
-		"Ceremonial Armor"
+		"Ceremonial"
 	],
 	"desc":[
 		"Leather armor with intricate patterns sewn into it. Most definitely used for a ceremonial purpose."
 	],
 	"defence":"2d2",
 	"worthMin":60,
-	"worthMax":70
+	"worthMax":70,
+	"weight":"light",
+	"size":[2,4],
+	"limb":{
+		"head": ["Helm"],
+		"torso": ["Armor"],
+		"arm":["Glove"],
+		"leg":["Boot"]
+	}
 }

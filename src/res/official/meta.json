@@ -138,8 +138,11 @@
         "weapon_treeBranch",
         "weapon_wolfClaws"
     ],
+    "tutorialArea":[
+        "area_start_1"
+    ],
     "startingArea": [
-        "area_gen_forest_2"
+        "area_gen_forest_1"
     ],
     "startingWeapon": [
         "weapon_starter_sword"
