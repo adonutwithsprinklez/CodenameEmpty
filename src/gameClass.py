@@ -171,9 +171,11 @@ class Game(object):
 
     def loadStartingArea(self):
         if self.gameSettings["TUTORIALAREA"]:
-            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]), (0, 0),
+            self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
         else:
-            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0), self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0),
+            self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
         '''
         # TODO deprecate this loading function
@@ -201,9 +203,10 @@ class Game(object):
         '''
 
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
-        self.player.armor = Armor(self.armor[self.starterArmor])
         armor = generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"])
         self.player.equipArmorSet(armor)
+        for armor in generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"]):
+            self.player.inv.append(armor)
 
         # Add all the extra inventory gear
         for item in self.starterInventory:
@@ -443,8 +446,7 @@ class Game(object):
                         self.disp.display("%s You dealt %d damage." % (msg, damage), 1, 1)
                         self.disp.displayHeader(areaEnemy.name)
                         damage = areaEnemy.getWeaponDamage()
-                        if self.player.armor:
-                            damage -= self.player.getArmorDefence()
+                        damage -= self.player.getArmorDefence()
                         if damage < 0:
                             self.disp.display("You deflect %s's attack." % areaEnemy.name)
                         elif self.player.getDodge() - areaEnemy.getAccuracy() > random.randint(1,100):
@@ -471,9 +473,7 @@ class Game(object):
                                               (areaEnemy.name), 1, 1)
                             self.disp.displayHeader(areaEnemy.name)
                             damage = areaEnemy.weapon.damage
-                            if self.player.armor:
-                                damage += "-{0}".format(
-                                    self.player.getArmorDefence())
+                            damage += "-{0}".format(self.player.getArmorDefence())
                             damage = rollDice(damage)
                             if damage < 0:
                                 damage = 0

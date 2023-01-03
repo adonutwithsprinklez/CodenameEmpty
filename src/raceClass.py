@@ -83,13 +83,6 @@ class Race(object):
             if limb.armorable:
                 limbs.append(limb)
         return limbs
-    
-    def getLimbsEquippableLimbs(self):
-        limbs = []
-        for limb in self.limbs:
-            if limb.armorable:
-                limbs.append(limb)
-        return limbs
 
     def getDescription(self):
         ''' Generates a description of the race's appearance. '''

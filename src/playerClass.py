@@ -129,15 +129,15 @@ class Player(object):
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "a":
-            self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
-            self.disp.display("\t%s - %s defence" %
-                              (self.inv[cmd-1].name, self.inv[cmd-1].defence))
-            self.disp.display(self.inv[cmd-1].desc, 0)
+            self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].getName()))
+            self.disp.display("Inspecting: %s - %s defence" % (self.inv[cmd-1].name, self.inv[cmd-1].defence))
+            self.disp.display("\tClass - %s" % (self.inv[cmd-1].armorWeight), 0, 0)
+            self.disp.display("\tMin size - %s | Max Size - %s" % (self.inv[cmd-1].sizeMin, self.inv[cmd-1].sizeMax), 0, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("\t%s - %s defence" %
-                              (self.armor.getName(), self.armor.getDefenceRating()), 0)
-            self.disp.display(self.armor.desc, 0, 1)
-            self.disp.display("1. Equip", 0)
+            limbs = self.race.getLimbsOfLimbType(self.inv[cmd-1].limb, True)
+            for limb in limbs:
+                self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
+            self.disp.display("1. Equip", 1)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "consumable":
@@ -419,12 +419,15 @@ class Player(object):
             return 0
 
     def getArmorDefence(self):
-        if self.armor:
-            armor = rollDice(self.armor.defence)
-            self.disp.dprint("Player defended with {} armor".format(armor))
-            return armor
-        else:
-            return 0
+        armorTotal = 0
+        for limb in self.race.getLimbsEquippableLimbs():
+            if limb.armor:
+                armorTotal += rollDice(limb.armor.getDefenceRating())
+        if armorTotal > 0:
+            self.disp.dprint("Player defended with {} armor".format(armorTotal))
+        else: 
+            armorTotal = 0
+        return armorTotal
     
     def getStat(self, stat):
         baseStat = self.race.getStat(stat)
