@@ -68,6 +68,21 @@ class Race(object):
                 returnable[limb.race] = {}
                 returnable[limb.race][limb.type] = 1
         return returnable
+    
+    def getLimbsOfLimbType(self, limbType, equippableOnly=False):
+        limbs = []
+        for limb in self.limbs:
+            if limb.type == limbType:
+                if not equippableOnly or limb.armorable:
+                    limbs.append(limb)
+        return limbs
+    
+    def getLimbsEquippableLimbs(self):
+        limbs = []
+        for limb in self.limbs:
+            if limb.armorable:
+                limbs.append(limb)
+        return limbs
 
     def getDescription(self):
         ''' Generates a description of the race's appearance. '''
@@ -163,3 +178,7 @@ class Limb(object):
             self.attacks = []
             self.flags = []
             self.race = None
+        self.armor = None
+        self.armorable = True
+        if self.armorable in data.keys():
+            self.armorable = data["armorable"]

@@ -1,11 +1,20 @@
 {
 	"name":[
-		"Cultist Robes"
+		"Cultist"
 	],
 	"desc":[
 		"Robes and other various garments all bearing the mark of a strange cult."
 	],
 	"worthMin":10,
 	"worthMax":20,
-	"defence":"1d2-1"
+	"defence":"1d2-1",
+	"weight":"light",
+	"size":[2,4],
+	"limb":{
+		"head": ["Hood"],
+		"torso": ["Robe"],
+		"arm":["Glove", "Hand Wrap"],
+		"leg":["Shoe", "Foot Covering"],
+		"tail":["Tailcover"]
+	}
 }

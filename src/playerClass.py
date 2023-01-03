@@ -37,8 +37,15 @@ class Player(object):
             self.disp.display("Quick Stats:")
             for stat in self.getUserInfo():
                 self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
-            self.disp.display("Wielding: %s (%s damage)" % (self.weapon.name, self.weapon.damage))
-            self.disp.display("Wearing: %s (%s defence)" % (self.armor.name, self.armor.defence), 0)
+            self.disp.display("Wielding:")
+            self.disp.display("\t%s (%s damage)" % (self.weapon.name, self.weapon.damage),0)
+            self.disp.display("Wearing:")
+            for limb in self.race.getLimbsEquippableLimbs():
+                if limb.armor:
+                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor, limb.armor.getDefenceRating()),0)
+                else:
+                    self.disp.display("\t%s - Nothing" % (limb.name),0)
+            #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
             self.disp.display("1. View Inventory")
             self.disp.display("2. View Quests", 0)
@@ -84,8 +91,7 @@ class Player(object):
                 x = 0
                 for item in self.inv:
                     x += 1
-                    self.disp.display("     %d. %s" %
-                                      (x, item.name), 0)
+                    self.disp.display("     %d. %s" % (x, item.getName()), 0)
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
             try:
@@ -123,15 +129,15 @@ class Player(object):
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "a":
-            self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].name))
-            self.disp.display("\t%s - %s defence" %
-                              (self.inv[cmd-1].name, self.inv[cmd-1].defence))
-            self.disp.display(self.inv[cmd-1].desc, 0)
+            self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].getName()))
+            self.disp.display("Inspecting: %s - %s defence" % (self.inv[cmd-1].name, self.inv[cmd-1].defence))
+            self.disp.display("\tClass - %s" % (self.inv[cmd-1].armorWeight), 0, 0)
+            self.disp.display("\tMin size - %s | Max Size - %s" % (self.inv[cmd-1].sizeMin, self.inv[cmd-1].sizeMax), 0, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("\t%s - %s defence" %
-                              (self.armor.name, self.armor.defence), 0)
-            self.disp.display(self.armor.desc, 0, 1)
-            self.disp.display("1. Equip", 0)
+            limbs = self.race.getLimbsOfLimbType(self.inv[cmd-1].limb, True)
+            for limb in limbs:
+                self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
+            self.disp.display("1. Equip", 1)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
         elif self.inv[cmd-1].t == "consumable":
@@ -160,8 +166,13 @@ class Player(object):
             self.inv.append(self.weapon)
             self.weapon = self.inv.pop(cmd-1)
         elif self.inv[cmd-1].t == "a" and equip == 1:
+            armor = self.inv[cmd-1]
+            if self.equipArmor(armor):
+                self.inv.pop(cmd-1)
+            '''
             self.inv.append(self.armor)
             self.armor = self.inv.pop(cmd-1)
+            '''
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
             self.inv[cmd-1].consumableEffect(self)
             self.inv.pop(cmd-1)
@@ -172,6 +183,30 @@ class Player(object):
             # input("\nEnter to continue")
             self.disp.wait_for_enter()
             self.disp.clearScreen()
+        
+    def viewAttemptUnequipArmor(self, armor, limbs):
+        self.disp.displayHeader("Unequip Armor")
+        self.disp.display("All armor slots of that type are taken. Replace a piece of armor?", 1, 1)
+        self.disp.display("Equipping: %s(%s defence)" % (armor, armor.getDefenceRating()), 0, 0)
+        self.disp.display("Replace:")
+        limbNum = 0
+        for limb in limbs:
+            limbNum += 1
+            self.disp.display("\t%s. %s: %s(%s defence)" %(limbNum, limb.name, limb.armor, limb.armor.getDefenceRating()),0,0)
+        self.disp.display("Anything else to cancel", 1)
+        self.disp.closeDisplay()
+        try:
+            # equip = int(input())
+            equip = self.disp.get_input(True, True, True)
+        except:
+            equip = -1
+        status = False
+        if equip > 0 and equip <= limbNum:
+            self.inv.append(limbs[equip-1].armor)
+            limbs[equip-1].armor = armor
+            status = True
+        self.disp.clearScreen()
+        return status
     
     def viewPlayerDetails(self):
         cmd = -1
@@ -289,10 +324,6 @@ class Player(object):
             else:
                 # TODO Incorrect input notification
                 pass
-
-    def setRace(self, race):
-        # TODO check for equipped gear to make sure the player can still wield it
-        self.race = race
     
     def giveXP(self, xp):
         ''' Gives the player the passed amount of experience. '''
@@ -306,6 +337,32 @@ class Player(object):
         self.hp += hp
         if self.hp > self.getMaxHP():
             self.hp = self.getMaxHP()
+        
+    def equipArmor(self, armor):
+        limbs = self.race.getLimbsOfLimbType(armor.limb, True)
+        equipped = False
+        if len(limbs) > 0:
+            for limb in limbs:
+                if not equipped and limb.armor == None:
+                    limb.armor = armor
+                    equipped = True
+            if not equipped:
+                # Open menu to unequip armor from a limb
+                equipped = self.viewAttemptUnequipArmor(armor, limbs)
+        return equipped
+    
+    def equipArmorSet(self, armors):
+        for armor in armors:
+            equipped = False
+            limbs = self.race.getLimbsOfLimbType(armor.limb)
+            for limb in limbs:
+                if not equipped and not limb.armor:
+                    limb.armor = armor
+                    equipped = True
+
+    def setRace(self, race):
+        # TODO check for equipped gear to make sure the player can still wield it
+        self.race = race
 
     # Class Getters
     def getDodge(self):
@@ -320,11 +377,20 @@ class Player(object):
                 self.weapon, self.weapon.desc)
         else:
             equipstr += "You are wielding your fists as your weapon. "
-        if self.armor:
-            equipstr += "You are wearing {}. {} ".format(
-                self.armor, self.armor.desc)
-        else:
+        limbs = self.race.getLimbsEquippableLimbs()
+        armors = []
+        for limb in limbs:
+            if limb.armor:
+                armors.append(limb.armor)
+        if len(armors) == 0:
             equipstr += "You are not wearing any kind of protective armor. "
+        else:
+            armorString = armors.pop(0).getName()
+            while len(armors) > 1:
+                armorString += ", %s" % armors.pop(0)
+            if len(armors) == 1:
+                armorString += ", and %s" % armors.pop(0)
+            equipstr += "You are wearing {}.".format(armorString)
         return equipstr
 
     def getUserInfo(self):
@@ -353,12 +419,15 @@ class Player(object):
             return 0
 
     def getArmorDefence(self):
-        if self.armor:
-            armor = rollDice(self.armor.defence)
-            self.disp.dprint("Player defended with {} armor".format(armor))
-            return armor
-        else:
-            return 0
+        armorTotal = 0
+        for limb in self.race.getLimbsEquippableLimbs():
+            if limb.armor:
+                armorTotal += rollDice(limb.armor.getDefenceRating())
+        if armorTotal > 0:
+            self.disp.dprint("Player defended with {} armor".format(armorTotal))
+        else: 
+            armorTotal = 0
+        return armorTotal
     
     def getStat(self, stat):
         baseStat = self.race.getStat(stat)

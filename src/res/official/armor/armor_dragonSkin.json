@@ -1,6 +1,6 @@
 {
 	"name":[
-		"Dragon Skin Armor"
+		"Dragon Skin"
 	],
 	"desc":[
 		"The armor is made of dragon skin. Dark red scales adorn the areas where leather would usually go.",
@@ -11,5 +11,14 @@
 	],
 	"defence":"1d3+2",
 	"worthMin":80,
-	"worthMax":90
+	"worthMax":90,
+	"weight":"Medium",
+	"size":[3,5],
+	"limb":{
+		"head": ["Helmet", "Helm"],
+		"torso": ["Armor"],
+		"arm":["Gauntlet", "Bracer"],
+		"leg":["Boot", "Leg Guard"],
+		"tail":["Tailguard"]
+	}
 }

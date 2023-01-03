@@ -63,6 +63,9 @@ class Weapon(object):
 
 	def getAction(self):
 		return random.choice(self.actionText)
+	
+	def getName(self):
+		return self.name
 
 	def __str__(self):
-		return self.name
+		return self.getName()

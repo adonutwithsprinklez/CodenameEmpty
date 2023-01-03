@@ -32,9 +32,9 @@
             "maxHealth":1,
             "attacks":[],
             "flags":[
-                "unattackable",
-                "specialArmor"
-            ]
+                "unattackable"
+            ],
+            "armorable":false
         },
         {
             "type":"torso",

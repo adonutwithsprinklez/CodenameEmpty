@@ -27,6 +27,11 @@
             false
         ],
         [
+            "TUTORIALAREA",
+            "Play through Tutorial Area",
+            false
+        ],
+        [
             "DEBUGDISPLAY",
             "Developer Display (Used for debugging)",
             false
@@ -34,7 +39,7 @@
         [
             "DISABLEENEMIES",
             "Disable Enemy Encounters (Used for debugging)",
-            true
+            false
         ]
     ],
     "DATAPACKSETTINGS": {
