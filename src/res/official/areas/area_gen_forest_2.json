@@ -1,8 +1,7 @@
 {
     "name":[
-		"The $names's $forest",
-		"The $adjs $forest",
-		"$adjs $forest"
+		"Deep $adjs $forest",
+		"Deep $adjs $forest"
 	],
 	"names":{
 		"type":"choose",
@@ -67,7 +66,7 @@
 	"maxNewAreas":6,
 	"areas":[
         ["area_gen_forest_2", "1d8"],
-        ["area_gen_forest_1", "2d6"],
+        ["area_abandoned_church", "1d8", ["limited"]],
         ["area_gen_forest_3", "2d6"],
         ["area_gen_forest_4", "2d6"]
 	]

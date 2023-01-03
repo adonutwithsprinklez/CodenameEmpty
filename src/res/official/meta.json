@@ -27,6 +27,7 @@
         "The gods have forsaken us"
     ],
     "areas": [
+        "area_abandoned_church",
         "area_start_1",
         "area_start_2",
         "area_gen_forest_1",

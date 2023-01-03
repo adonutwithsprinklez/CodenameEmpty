@@ -1,0 +1,46 @@
+{
+	"name":[
+        "$adjs $names Ruins",
+        "$names Ruins"
+	],
+	"names":{
+		"type":"choose",
+		"choices":[
+			"Church",
+            "Temple",
+            "Shrine"
+		]
+	},
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Old",
+            "Abandoned",
+            "Overgrown"
+		]
+	},
+	"desc":[
+		""
+	],
+	"aType":"Ruins",
+	"hostilityMin":3,
+	"hostilityMax":5,
+	"eventChance":0,
+	"events":[
+	],
+	"hostilityAffectsEnemyChance":true,
+	"enemyChance":50,
+	"enemyPointsPerHostility":2,
+	"enemies":[
+		["enemy_rodentOfUnusualSize", 2]
+	],
+	"npcChance":0,
+	"npcs":[
+	],
+	"minNewAreas":3,
+	"maxNewAreas":6,
+	"areas":[
+		["area_gen_forest_1","2d5", ["required"]],
+		["area_gen_forest_2","2d5"]
+	]
+}
