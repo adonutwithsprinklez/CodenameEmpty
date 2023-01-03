@@ -122,6 +122,9 @@ class Area(object):
             self.enemy = e
         if self.event:
             self.event = Event(events[self.event], self.event)
+    
+    def addEnemy(self, enemy):
+        self.enemy.append(enemy)
         
     
     # GETTERS
@@ -133,7 +136,10 @@ class Area(object):
         
     def getAreaType(self):
         return self.aType
-        
+
+    def getAreaDesc(self):
+        return self.desc
+
     def getEnemies(self):
         return self.enemy
     
@@ -142,3 +148,6 @@ class Area(object):
         
     def getHostility(self):
         return self.hostility
+    
+    def getEvent(self):
+        return self.event

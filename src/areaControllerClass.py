@@ -42,6 +42,14 @@ class AreaController(object):
         ''' Sets the current area and loads it in a single call'''
         self.currentArea = area
         self.loadCurrentArea(weapons, armor, misc, enemies, npcs, events, modifiers)
+    
+    def clearEvent(self):
+        ''' Wipes any event that is in the current area '''
+        self.currentArea.event = None
+    
+    def addEnemyToCurrentArea(self, enemy):
+        ''' Adds the passed enemy to the list of enemies in the current area '''
+        self.currentArea.addEnemy(enemy)
 
     # GETTERS
     # Getters for current Area Data
@@ -61,6 +69,14 @@ class AreaController(object):
         ''' Returns the current area type '''
         return self.currentArea.getAreaType()
     
+    def getCurrentAreaDesc(self):
+        ''' Returns the current area description '''
+        return self.currentArea.getAreaDesc()
+    
+    def getCurrentAreaHasEnemies(self):
+        ''' Returns a bool depending on if the current area has enemies or not '''
+        return len(self.currentArea.getEnemies()) > 0
+    
     def getCurrentAreaEnemies(self):
         ''' Returns a list of enemies in the current area '''
         return self.currentArea.getEnemies()
@@ -73,6 +89,18 @@ class AreaController(object):
         ''' Returns the current area hostility '''
         return self.currentArea.getHostility()
     
+    def getCurrentAreaHasEvent(self, onlyNonFlavorTextEvents = False):
+        ''' Returns a bool depending on if the current area has enemies or not '''
+        event = self.currentArea.getEvent()
+        if event:
+            if event.eventType != "flavor" or not onlyNonFlavorTextEvents:
+                return True
+        return False
+
+    def getCurrentAreaEvent(self):
+        ''' Returns the current area event '''
+        return self.currentArea.getEvent()
+
     def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
         ''' Generates a list of exits for the user to travel to next, based on the current area '''
         print("")
