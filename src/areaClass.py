@@ -163,3 +163,9 @@ class Area(object):
     
     def getIsSafeToTravelTo(self):
         return self.isSafeToTravelTo
+    
+    def __str__(self):
+        return "Area ID: " + self.getAreaId() + " | Title: " + self.getName()
+
+    def __eq__(self, comp):
+        return comp.getAreaId() == self.getAreaId()

@@ -181,8 +181,11 @@ class Game(object):
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
         armor = generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"])
         self.player.equipArmorSet(armor)
+        '''
         for armor in generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"]):
+           
             self.player.inv.append(armor)
+        '''
 
         # Add all the extra inventory gear
         for item in self.starterInventory:
@@ -531,12 +534,15 @@ class Game(object):
 
             if 0 < cmd <= len(travelTypes):
                 # TODO open revistable areas menu
+                '''
                 self.disp.clearScreen()
                 self.disp.displayHeader("Not Yet Implemented")
                 self.disp.display("This menu has not yet been fully implemented.")
                 self.disp.closeDisplay()
                 self.disp.wait_for_enter()
-                # return None
+                '''
+                if self.chooseLoadedArea(travelTypes[cmd-1]):
+                    return None
             elif cmd == 0:
                 self.player.playerMenu(self.currentQuests, self.completedQuests)
                 if self.player.quit:
@@ -548,6 +554,49 @@ class Game(object):
         self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
                             self.misc, self.enemies, self.npcs, self.events, self.modifiers)
         
+        self.updateTravelInfoForQuests()
+    
+    def chooseLoadedArea(self, loadedKey):
+        ''' Displays a list of areas that match the loadedKey and are not the current area '''
+        choices = self.areaController.getSavedAreas(loadedKey)
+        cmd = -1
+        for area in choices:
+            if self.areaController.getCurrentArea() == area:
+                choices.remove(area)
+
+        while not 1 <= cmd <= len(choices):
+            print("CMD: " + str(cmd) + " | Areas: " + str(len(choices)))
+            self.disp.clearScreen()
+            self.disp.displayHeader("Travel to %s Location" % loadedKey.capitalize())
+            x = 0
+            for area in choices:
+                x += 1
+                self.disp.display("%d. %s" % (x, str(area)))
+            self.disp.display("0. to exit")
+            self.disp.closeDisplay()
+            try:
+                # cmd = int(input())
+                cmd = self.disp.get_input(True)
+                # Make sure the GUI window is still open. Exit if it is not
+                if not self.disp.window_is_open:
+                    self.player.quit = True
+                    return None
+            except ValueError:
+                self.disp.clearScreen()
+                self.disp.displayHeader("Error")
+                self.disp.display("That was not a valid response.")
+                self.disp.closeDisplay()
+                cmd = -1
+                # time.sleep(DELAY)
+                # input("\nEnter to continue")
+                self.disp.wait_for_enter()
+            if cmd == 0:
+                return None
+        self.areaController.setCurrentArea(choices[cmd - 1])
+        self.updateTravelInfoForQuests()
+        return True
+    
+    def updateTravelInfoForQuests(self):
         if self.areaController.getCurrentAreaHasEvent():
             if not self.areaController.getCurrentAreaEvent().isRepeatable:
                 self.nonRepeatableEvents.append(self.areaController.getCurrentAreaEvent().resourceId)
@@ -556,7 +605,6 @@ class Game(object):
         self.importantQuestInfo.append(["inAreaId", self.areaController.getCurrentAreaId(), True, False])
 
         self.updateQuestInfo()
-
 
     def workOnBacklog(self):
         '''This collects and organizes the information in the backlog of
