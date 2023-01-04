@@ -29,7 +29,7 @@
         [
             "TUTORIALAREA",
             "Play through Tutorial Area",
-            false
+            true
         ],
         [
             "DEBUGDISPLAY",

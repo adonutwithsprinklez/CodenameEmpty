@@ -86,6 +86,9 @@ class Enemy(object):
 
     def getHealth(self):
         return int(((1.0*self.hp)/self.hpMax)*68 + 0.5)
+    
+    def getName(self):
+        return self.name
 
     def getWeaponDamage(self, rand=True):
         if self.weapon:

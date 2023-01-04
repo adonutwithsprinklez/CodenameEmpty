@@ -71,5 +71,11 @@
 		["area_gen_forest_1","2d5", ["required"]],
 		["area_gen_forest_2","2d5"],
 		["area_gen_forest_3","2d5"]
-	]
+	],
+    "safeToTravel":[
+        "local"
+    ],
+    "revisitable":[
+        "local"
+    ]
 }
