@@ -20,6 +20,8 @@ class Area(object):
         self.event = None
         self.npc = None
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
+        self.revisitable = []
+        self.isSafeToTravelTo = []
 
         self.kwargs = kwargs
         
@@ -76,6 +78,10 @@ class Area(object):
         self.enemyMessage = None
         if "enemyMessage" in datakeys and len(areaType["enemyMessage"]):
             self.enemyMessage = generateString(areaType, "enemyMessage")
+        if "revisitable" in datakeys:
+            self.revisitable = areaType["revisitable"]
+        if "safeToTravel" in datakeys:
+            self.isSafeToTravelTo = areaType["safeToTravel"]
 
         '''
         chance = areaType["enemyChance"]
@@ -122,3 +128,44 @@ class Area(object):
             self.enemy = e
         if self.event:
             self.event = Event(events[self.event], self.event)
+    
+    def addEnemy(self, enemy):
+        self.enemy.append(enemy)
+        
+    
+    # GETTERS
+    def getName(self):
+        return self.name
+        
+    def getAreaId(self):
+        return self.aId
+        
+    def getAreaType(self):
+        return self.aType
+
+    def getAreaDesc(self):
+        return self.desc
+
+    def getEnemies(self):
+        return self.enemy
+    
+    def getEnemyMessage(self):
+        return self.enemyMessage
+        
+    def getHostility(self):
+        return self.hostility
+    
+    def getEvent(self):
+        return self.event
+    
+    def getRevisitable(self):
+        return self.revisitable
+    
+    def getIsSafeToTravelTo(self):
+        return self.isSafeToTravelTo
+    
+    def __str__(self):
+        return "Area ID: " + self.getAreaId() + " | Title: " + self.getName()
+
+    def __eq__(self, comp):
+        return comp.getAreaId() == self.getAreaId()
