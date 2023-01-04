@@ -20,6 +20,8 @@ class Area(object):
         self.event = None
         self.npc = None
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
+        self.revisitable = []
+        self.isSafeToTravelTo = []
 
         self.kwargs = kwargs
         
@@ -76,6 +78,10 @@ class Area(object):
         self.enemyMessage = None
         if "enemyMessage" in datakeys and len(areaType["enemyMessage"]):
             self.enemyMessage = generateString(areaType, "enemyMessage")
+        if "revisitable" in datakeys:
+            self.revisitable = areaType["revisitable"]
+        if "safeToTravel" in datakeys:
+            self.isSafeToTravelTo = areaType["safeToTravel"]
 
         '''
         chance = areaType["enemyChance"]
@@ -151,3 +157,9 @@ class Area(object):
     
     def getEvent(self):
         return self.event
+    
+    def getRevisitable(self):
+        return self.revisitable
+    
+    def getIsSafeToTravelTo(self):
+        return self.isSafeToTravelTo

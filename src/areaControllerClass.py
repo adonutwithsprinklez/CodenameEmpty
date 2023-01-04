@@ -29,7 +29,7 @@ class AreaController(object):
     def generateArea(self, areaType=None, weapons=None, armor=None, misc=None, enemies=None,
                      npcs=None, events=None, modifiers=None):
         ''' Generates an area of the specified type then sets it as the current area '''
-        self.setAndLoadCurrentArea(Area(self.areaData[areaType]), weapons, armor, misc,
+        self.setAndLoadCurrentArea(Area(self.areaData[areaType], [], [], areaType), weapons, armor, misc,
                                         enemies, npcs, events, modifiers)
     
     def loadCurrentArea(self, weapons=None, armor=None, misc=None, enemies=None, npcs=None,
@@ -42,6 +42,9 @@ class AreaController(object):
         ''' Sets the current area and loads it in a single call'''
         self.currentArea = area
         self.loadCurrentArea(weapons, armor, misc, enemies, npcs, events, modifiers)
+        for category in self.currentArea.revisitable:
+            if self.currentArea.aId not in self.savedAreas[category]:
+                self.savedAreas[category].append(self.currentArea.aId)
     
     def clearEvent(self):
         ''' Wipes any event that is in the current area '''
@@ -148,8 +151,11 @@ class AreaController(object):
     def getTravelableTypes(self):
         ''' Returns a list of the savedArea types that are not empty. '''
         areaTypes = []
-        for key in self.savedAreas.keys():
-            if len(self.savedAreas[key]) > 0:
+        for key in self.currentArea.getIsSafeToTravelTo():
+            areas = self.savedAreas[key][::]
+            if self.getCurrentAreaId() in areas:
+                areas.remove(self.getCurrentAreaId())
+            if len(areas) > 0:
                 areaTypes.append(key)
         return areaTypes
 

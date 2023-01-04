@@ -491,13 +491,19 @@ class Game(object):
         # Shuffle the choices to make sure "required" areas don't always appaear first
         random.shuffle(choices)
         cmd = -1
+        travelTypes = self.areaController.getTravelableTypes()
 
         # Allow the player to choose from those places:
-        while not 1 <= cmd <= len(choices):
+        while not len(travelTypes) < cmd < len(choices) + 1:
             self.disp.clearScreen()
             self.disp.displayHeader("Where to next?")
             self.disp.display("", 1, 0)
             x = 0
+            if len(travelTypes) > 0:
+                for category in travelTypes:
+                    x += 1
+                    self.disp.display("%d. %s Travel Locations" % (x, category.capitalize()), 0)
+                self.disp.display("", 1, 0)
             for area in choices:
                 x += 1
                 self.disp.display("%d. %-37s %12s   Hostility - %2d" %
@@ -521,14 +527,24 @@ class Game(object):
                 # input("\nEnter to continue")
                 self.disp.wait_for_enter()
 
-            if cmd == 0:
-                self.player.playerMenu(
-                    self.currentQuests, self.completedQuests)
+            # Load the new area
+
+            if 0 < cmd <= len(travelTypes):
+                # TODO open revistable areas menu
+                self.disp.clearScreen()
+                self.disp.displayHeader("Not Yet Implemented")
+                self.disp.display("This menu has not yet been fully implemented.")
+                self.disp.closeDisplay()
+                self.disp.wait_for_enter()
+                # return None
+            elif cmd == 0:
+                self.player.playerMenu(self.currentQuests, self.completedQuests)
                 if self.player.quit:
                     # TODO Exit the game completely
                     return None
 
-        # Load the new area
+        if cmd > len(travelTypes):
+            cmd -= len(travelTypes)
         self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
                             self.misc, self.enemies, self.npcs, self.events, self.modifiers)
         
