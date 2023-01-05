@@ -82,11 +82,9 @@
             "hitChance":"1d3",
             "maxHealth":50,
             "attacks":[
-                ["Sweep", "$user sweeps at the target with its tail.", "1d5"]
+                ["Sweep", "$user sweeps at the target with its tail.", "1d5-1"]
             ],
-            "flags":[
-                "specialArmor"
-            ]
+            "flags":[]
         }
     ]
 }

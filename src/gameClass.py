@@ -157,10 +157,6 @@ class Game(object):
                     self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
         self.loadStartingArea()
-
-        # Sets up the player variables and also gives the player some starting gear.
-        # Spawns in an extra weapon for the player to switch between.
-        self.loadPlayer()
         self.loaded = True
 
     def loadStartingArea(self):
@@ -172,10 +168,11 @@ class Game(object):
             self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
     def loadPlayer(self):
-        # TODO: Add player creation menu here
         self.player = Player()
         self.player.race = Race(self.races["human"])
         #self.player.race.limbs[0] = Limb(self.races["drakt"]["limbs"][0], "Draktilien")
+        #self.player = self.newGameMenu()
+
         self.player.disp = self.disp
 
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
@@ -685,6 +682,80 @@ class Game(object):
         for quest in self.completedQuests:
             self.disp.dprint(quest)
         self.importantQuestInfo = []
+    
+    def newGameMenu(self):
+        ''' This displays all required info for a player to start a new game '''
+        cmd = -1
+        ready = False
+        playerName = ""
+        playerRace = "human"
+        while True:
+            if playerName != "" and playerRace != "":
+                ready = True
+            self.disp.clearScreen()
+            self.disp.displayHeader("New Game")
+            self.disp.display("Name: %s" % playerName)
+            if playerRace == "":
+                self.disp.display("Race: ")
+            else:
+                r = Race(self.races[playerRace])
+                self.disp.display("Race: %s" % (r.getName()))
+                self.disp.display("\t%s" %(r.getDescription()),0)
+                self.disp.display("Stats:")
+
+            self.disp.closeDisplay()
+            self.disp.display("1. Change Name")
+            self.disp.display("2. Change Race", 0)
+            self.disp.display("3. [DISABLED] Change Stats", 0)
+            self.disp.display("4. [DISABLED] Change Skills", 0)
+            self.disp.display("5. [DISABLED] Randomize All", 1, 1)
+            if ready:
+                self.disp.display("9. Start", 0)
+            self.disp.display("0. Exit", 0)
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True)
+            if ready and cmd == 9:
+                # TODO set the player object and return True
+                return None # True
+            elif cmd == 0:
+                # Returns a None which causes the game to return to the main menu
+                return None
+            elif cmd == 1:
+                playerName = self.newGameSetName(playerName)
+            elif cmd == 2:
+                playerRace = self.newGameSetRace(playerRace)
+            elif cmd == 3:
+                # TODO Randomize Money
+                pass
+            elif cmd == 4:
+                # TODO Randomize race
+                pass
+            elif cmd == 5:
+                # TODO Randomize full character
+                pass
+    
+    def newGameSetName(self, currentName):
+        self.disp.clearScreen()
+        self.disp.displayHeader("Name Select")
+        self.disp.display("Current Name: %s" % currentName)
+        self.disp.display("Enter your desired name")
+        self.disp.display("0. to Cancel")
+        self.disp.closeDisplay()
+        name = self.disp.get_input()
+        if name == "0" or name == "":
+            return currentName
+        return name
+
+    def newGameSetRace(self, currentRace):
+        r = Race(self.races[currentRace])
+        self.disp.clearScreen()
+        self.disp.displayHeader("Race Select")
+        self.disp.display("Current Race: %s" % r.getName())
+        self.disp.closeDisplay()
+        return currentRace
+    
+    def newGameRaceInspect(self, race):
+        pass
 
     def displayMainMenu(self):
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
@@ -699,11 +770,15 @@ class Game(object):
             self.disp.display(line, 0)
         
         self.disp.display(f'Version: {self.settings["VERSION"]}')
-
         self.disp.display(random.choice(self.descs))
+        self.disp.closeDisplay()
+
         self.disp.display("1. New Game")
-        self.disp.display("2. Settings", 0)
-        self.disp.display("3. Data Packs", 0)
+        # TODO: Check for save files and display below option if there are any
+        if False:
+            self.disp.display("2. Load Game", 0)
+        self.disp.display("3. Settings")
+        self.disp.display("4. Data Packs", 0)
         self.disp.display("0. Exit")
         self.disp.closeDisplay()
 

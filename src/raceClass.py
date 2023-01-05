@@ -83,10 +83,13 @@ class Race(object):
             if limb.armorable:
                 limbs.append(limb)
         return limbs
+    
+    def getIsPureRace(self):
+        return len(self.getLimbCounts().keys()) == 1
 
     def getDescription(self):
         ''' Generates a description of the race's appearance. '''
-        if len(self.getLimbCounts().keys()) == 1:
+        if self.getIsPureRace():
             return self.getPureRaceDescription()
         else:
             return self.getMixedRaceDescription()
@@ -152,6 +155,12 @@ class Race(object):
             return self.baseSkills[skill]
         else:
             return 0
+        
+    def getName(self, includePureRace = True):
+        name = self.name
+        if includePureRace and self.getIsPureRace():
+            name = "Pure Blooded %s" % name
+        return name
 
 
 class Limb(object):
