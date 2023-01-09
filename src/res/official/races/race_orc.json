@@ -7,6 +7,8 @@
         "physique":3,
         "intelligence":4
     },
+    "shortDescription":"A race with low physique and intelligence, but overpowering strength and vitality.",
+    "longDescription":[],
     "baseSkills":[],
     "standing":{
         "elf":-4,

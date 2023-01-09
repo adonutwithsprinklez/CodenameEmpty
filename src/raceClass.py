@@ -20,6 +20,14 @@ class Race(object):
             for limb in data["limbs"]:
                 newLimb = copy.copy(Limb(limb, self.id))
                 self.limbs.append(newLimb)
+            if "shortDescription" in data.keys():
+                self.shortDescription = data["shortDescription"]
+            else:
+                self.shortDescription = ""
+            if "playerCreationDescription" in data.keys():
+                self.playerCreationDescription = data["playerCreationDescription"]
+            else:
+                self.playerCreationDescription = ""
         else:
             self.id = ""
             self.name = ""
@@ -29,6 +37,8 @@ class Race(object):
             self.standing = {}
             self.playable = False
             self.limbs = []
+            self.shortDescription = ""
+            self.playerCreationDescription = ""
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -161,6 +171,18 @@ class Race(object):
         if includePureRace and self.getIsPureRace():
             name = "Pure Blooded %s" % name
         return name
+    
+    def getId(self):
+        return self.id
+
+    def getShortDescription(self):
+        return self.shortDescription
+    
+    def getPlayerCreationDescription(self):
+        return self.playerCreationDescription
+    
+    def __str__(self):
+        return f"{self.getId()} - {self.getName(False)}"
 
 
 class Limb(object):
