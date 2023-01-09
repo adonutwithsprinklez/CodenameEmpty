@@ -25,6 +25,9 @@ SETTINGS = None
 
 # Starts the gameloop
 def startGame(game):
+	game.newGameMenu()
+	if game.player == None:
+		return False
 	game.loadPlayer()
 	while True:
 		game.displayCurrentArea()
@@ -97,10 +100,10 @@ def startApplication():
 		if cmd == 1:
 			# Actually start the game
 			startGame(game)
-		elif cmd == 2:
+		elif cmd == 3:
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)
-		elif cmd == 3:
+		elif cmd == 4:
 			# Displays the data pack menu
 			openDataPacks(game, SETTINGS_FILE)
 		elif cmd == 0:

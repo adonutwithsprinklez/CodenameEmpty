@@ -7,6 +7,8 @@
         "physique":6,
         "intelligence":5
     },
+    "shortDescription":"A generalized race that can adapt to most play styles.",
+    "longDescription":[],
     "baseSkills":[],
     "standing":{
         "elf":6,
@@ -15,6 +17,7 @@
         "dwarf":3
     },
     "playable":true,
+    "playerCreationDescription":"Humnas, due to their natural adaptability have become the most common of their races. They have spread over most of the mainland.",
     "limbs":[
         {
             "type":"head",

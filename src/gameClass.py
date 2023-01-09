@@ -98,40 +98,32 @@ class Game(object):
 
                 # Asset loading
                 for w in self.packs[pack]["weapons"]:
-                    self.weapons[w] = loadJson(
-                        "%s%s/weapons/%s.json" % (folder, pack, w))
+                    self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
                     self.disp.dprint("Loaded asset %s" % w)
                 for a in self.packs[pack]["armor"]:
-                    self.armor[a] = loadJson(
-                        "%s%s/armor/%s.json" % (folder, pack, a))
+                    self.armor[a] = loadJson("%s%s/armor/%s.json" % (folder, pack, a))
                     self.disp.dprint("Loaded asset %s" % a)
                 for m in self.packs[pack]["misc"]:
-                    self.misc[m] = loadJson(
-                        "%s%s/misc/%s.json" % (folder, pack, m))
+                    self.misc[m] = loadJson("%s%s/misc/%s.json" % (folder, pack, m))
                     self.disp.dprint("Loaded asset %s" % m)
                 for a in self.packs[pack]["areas"]:
-                    self.areas[a] = loadJson(
-                        "%s%s/areas/%s.json" % (folder, pack, a))
+                    self.areas[a] = loadJson("%s%s/areas/%s.json" % (folder, pack, a))
                     self.disp.dprint("Loaded asset %s" % a)
                 for r in self.packs[pack]["races"]:
                     raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
                     self.races[raceData["id"]] = raceData
                     self.disp.dprint("Loaded asset %s" % r)
                 for n in self.packs[pack]["npcs"]:
-                    self.npcs[n] = loadJson(
-                        "%s%s/npcs/%s.json" % (folder, pack, n))
+                    self.npcs[n] = loadJson("%s%s/npcs/%s.json" % (folder, pack, n))
                     self.disp.dprint("Loaded asset %s" % n)
                 for e in self.packs[pack]["enemies"]:
-                    self.enemies[e] = loadJson(
-                        "%s%s/enemies/%s.json" % (folder, pack, e))
+                    self.enemies[e] = loadJson("%s%s/enemies/%s.json" % (folder, pack, e))
                     self.disp.dprint("Loaded asset %s" % e)
                 for q in self.packs[pack]["quests"]:
-                    self.quests[q] = loadJson(
-                        "%s%s/quests/%s.json" % (folder, pack, q))
+                    self.quests[q] = loadJson("%s%s/quests/%s.json" % (folder, pack, q))
                     self.disp.dprint("Loaded asset %s" % q)
                 for e in self.packs[pack]["events"]:
-                    self.events[e] = loadJson(
-                        "%s%s/events/%s.json" % (folder, pack, e))
+                    self.events[e] = loadJson("%s%s/events/%s.json" % (folder, pack, e))
                     self.disp.dprint("Loaded asset %s" % e)
                 for m in self.packs[pack]["modifiers"]:
                     mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
@@ -157,10 +149,6 @@ class Game(object):
                     self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
         self.loadStartingArea()
-
-        # Sets up the player variables and also gives the player some starting gear.
-        # Spawns in an extra weapon for the player to switch between.
-        self.loadPlayer()
         self.loaded = True
 
     def loadStartingArea(self):
@@ -172,10 +160,11 @@ class Game(object):
             self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
     def loadPlayer(self):
-        # TODO: Add player creation menu here
-        self.player = Player()
-        self.player.race = Race(self.races["human"])
+        #self.player = Player()
+        #self.player.race = Race(self.races["human"])
         #self.player.race.limbs[0] = Limb(self.races["drakt"]["limbs"][0], "Draktilien")
+        #self.player = self.newGameMenu()
+
         self.player.disp = self.disp
 
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
@@ -685,6 +674,130 @@ class Game(object):
         for quest in self.completedQuests:
             self.disp.dprint(quest)
         self.importantQuestInfo = []
+    
+    def newGameMenu(self):
+        ''' This displays all required info for a player to start a new game '''
+        cmd = -1
+        ready = False
+        playerName = ""
+        playerRace = "human"
+        while True:
+            if playerName != "" and playerRace != "":
+                ready = True
+            self.disp.clearScreen()
+            self.disp.displayHeader("New Game")
+            self.disp.display("Name: %s" % playerName)
+            if playerRace == "":
+                self.disp.display("Race: ")
+            else:
+                r = Race(self.races[playerRace])
+                self.disp.display("Race: %s" % (r.getName()))
+                self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
+                self.disp.display("\t%s" %(r.getDescription()),0)
+                self.disp.closeDisplay()
+                self.disp.display("Stats:")
+                self.disp.display(f'\tStrength     - {r.getStat("strength")}', 0)
+                self.disp.display(f'\tVitality     - {r.getStat("vitality")}', 0)
+                self.disp.display(f'\tPhysique     - {r.getStat("physique")}', 0)
+                self.disp.display(f'\tIntelligence - {r.getStat("intelligence")}', 0)
+
+            self.disp.closeDisplay()
+            self.disp.display("1. Change Name")
+            self.disp.display("2. Change Race", 0)
+            self.disp.display("3. [DISABLED] Change Stats", 0)
+            self.disp.display("4. [DISABLED] Change Skills", 0)
+            self.disp.display("5. [DISABLED] Randomize All", 1, 1)
+            if ready:
+                self.disp.display("9. Start", 0)
+            self.disp.display("0. Exit", 0)
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True)
+            if ready and cmd == 9:
+                self.player = Player()
+                self.player.setName(playerName)
+                self.player.setRace(Race(self.races[playerRace]))
+                return True
+            elif cmd == 0:
+                # Returns a None which causes the game to return to the main menu
+                return None
+            elif cmd == 1:
+                playerName = self.newGameSetName(playerName)
+            elif cmd == 2:
+                playerRace = self.newGameSetRace(playerRace)
+            elif cmd == 3:
+                # TODO Randomize Money
+                pass
+            elif cmd == 4:
+                # TODO Randomize race
+                pass
+            elif cmd == 5:
+                # TODO Randomize full character
+                pass
+    
+    def newGameSetName(self, currentName):
+        self.disp.clearScreen()
+        self.disp.displayHeader("Name Select")
+        self.disp.display("Current Name: %s" % currentName)
+        self.disp.display("Enter your desired name")
+        self.disp.display("0. to Cancel")
+        self.disp.closeDisplay()
+        name = self.disp.get_input()
+        if name == "0" or name == "":
+            return currentName
+        return name
+
+    def newGameSetRace(self, currentRace):
+        r = Race(self.races[currentRace])
+        # Get all races to display
+        races = []
+        for raceData in self.races:
+            additionalRace = Race(self.races[raceData])
+            if additionalRace.getPlayeable():
+                races.append(additionalRace)
+
+        # Show menu to choose race:
+        while True:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Race Select")
+            self.disp.display("Current Race: %s" % r.getName(False))
+            self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
+            self.disp.display("Choices:")
+            x = 0
+            for race in races:
+                x += 1
+                self.disp.display(f"\t{x}. {race.getName(False)} - {race.getShortDescription()}")
+            self.disp.closeDisplay()
+            self.disp.display("0. to Cancel")
+            self.disp.closeDisplay()
+            # Get input, convert to int
+            cmd = self.disp.get_input(True)
+            if 1 <= cmd <= len(races):
+                # Display further race info
+                if self.newGameRaceInspect(races[cmd-1]):
+                    return races[cmd-1].getId()
+            elif cmd == 0:
+                # Cancel race selection
+                return currentRace
+    
+    def newGameRaceInspect(self, race):
+        self.disp.clearScreen()
+        self.disp.displayHeader(f"Race Select: {race.getName(False)}")
+        self.disp.display(f"Select {race.getName(False)}?")
+        self.disp.display(f"Stats:")
+        self.disp.display(f'\tStrength     - {race.getStat("strength")}', 0)
+        self.disp.display(f'\tVitality     - {race.getStat("vitality")}', 0)
+        self.disp.display(f'\tPhysique     - {race.getStat("physique")}', 0)
+        self.disp.display(f'\tIntelligence - {race.getStat("intelligence")}', 0)
+        self.disp.display(f"Description:")
+        self.disp.display(f"\t{race.getPlayerCreationDescription()}", 0)
+        self.disp.display(f"\t{race.getPureRaceDescription()}", 0)
+        self.disp.closeDisplay()
+        self.disp.display("1. to Confirm")
+        self.disp.display("Anything else to cancel", 0)
+        self.disp.closeDisplay()
+        if self.disp.get_input(True, True, True) == 1:
+            return True
+        return False
 
     def displayMainMenu(self):
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
@@ -699,11 +812,15 @@ class Game(object):
             self.disp.display(line, 0)
         
         self.disp.display(f'Version: {self.settings["VERSION"]}')
-
         self.disp.display(random.choice(self.descs))
+        self.disp.closeDisplay()
+
         self.disp.display("1. New Game")
-        self.disp.display("2. Settings", 0)
-        self.disp.display("3. Data Packs", 0)
+        # TODO: Check for save files and display below option if there are any
+        if False:
+            self.disp.display("2. Load Game", 0)
+        self.disp.display("3. Settings")
+        self.disp.display("4. Data Packs", 0)
         self.disp.display("0. Exit")
         self.disp.closeDisplay()
 
