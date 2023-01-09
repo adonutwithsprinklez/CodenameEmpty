@@ -459,3 +459,9 @@ class Player(object):
         if self.level < 10:
             return 100 * self.level
         return ( self.level ** 2 ) * 10
+    
+    def getName(self):
+        return self.name
+    
+    def setName(self, name):
+        self.name = name
