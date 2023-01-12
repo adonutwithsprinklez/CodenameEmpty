@@ -938,8 +938,7 @@ class Game(object):
         for pack in listOfOptions:
             i += 1
             enabled = "ENABLED" if pack[1] else "DISABLED"
-            pack = loadJson(
-                self.dataPackSettings["folder"] + pack[0] + "meta.json")
+            pack = loadJson(f'{self.dataPackSettings["folder"]}{pack[0]}/meta.json')
             packName = pack["name"]
             packDesc = pack["desc"]
             packAuth = pack["author"]

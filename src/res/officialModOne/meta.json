@@ -1,0 +1,26 @@
+{
+    "name": "Official Additional Content Data Pack",
+    "author": "Sprinklez Media",
+    "desc": "This is the first official content add on for Codename: Empty. These additions are non-canon.",
+    "packType": "addition",
+    "version": 0.1,
+    "gameDesc": [],
+    "areas": [
+        "area_start_1"
+    ],
+    "armor": [],
+    "enemies": [],
+    "events": [],
+    "misc": [],
+    "modifiers": [],
+    "npcs": [],
+    "quests": [],
+    "races": [],
+    "startableRaces": [],
+    "weapons": [],
+    "tutorialArea":[],
+    "startingArea": [],
+    "startingWeapon": [],
+    "startingArmor": [],
+    "startingInventory": []
+}
