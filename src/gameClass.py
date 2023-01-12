@@ -153,10 +153,10 @@ class Game(object):
 
     def loadStartingArea(self):
         if self.gameSettings["TUTORIALAREA"]:
-            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]), (0, 0),
+            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]),
             self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
         else:
-            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]), (0, 0),
+            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]),
             self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
     def loadPlayer(self):
@@ -291,9 +291,8 @@ class Game(object):
                                 event.takeItem(action[1], action[2], self.player)
                             elif action[0] == "give":
                                 for i in range(action[2]):
-                                    result = event.giveItem(action[1], action[2], self.player,
-                                                            self.weapons, self.armor, self.misc,
-                                                            self.modifiers)
+                                    result = event.giveItem(action[1], action[2], self.player, self.weapons,
+                                                            self.armor, self.misc, self.modifiers)
                                     if self.settings["DEBUG"] and not result:
                                         raise Exception("Something went wrong when processing an event's 'give' command.")
                             elif action[0] == "spawnEnemy":
@@ -681,7 +680,7 @@ class Game(object):
         ready = False
         playerName = ""
         playerRace = "human"
-        while True:
+        while self.disp.window_is_open:
             if playerName != "" and playerRace != "":
                 ready = True
             self.disp.clearScreen()
@@ -945,7 +944,7 @@ class Game(object):
 
             self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
             self.disp.display(f'\t{packDesc}', 0)
-            self.disp.display(f'\tBy {packAuth}', 0)
+            self.disp.display(f'\tBy: {packAuth}', 0)
         self.disp.display(
             "Input pack # to toggle. Changes to enabled data packs take effect on screen exit.")
         pagebreak = 1

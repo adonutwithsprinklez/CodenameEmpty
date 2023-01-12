@@ -73,6 +73,11 @@ def startApplication():
 	for pack in SETTINGS["DATAPACKSETTINGS"]["packsToLoad"]:
 		if pack[0] not in dataPackFolders:
 			dps.remove(pack)
+			# If the removed datapack = the starting datapack,
+			# reset the starting datapack to the official one
+			if pack[0] == SETTINGS["DATAPACKSETTINGS"]["start"]:
+				SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][0][1] = True
+				SETTINGS["DATAPACKSETTINGS"]["start"] = "official"
 		# Remove datapak from datapackfolders because it is already saved in settings
 		elif pack[0] in dataPackFolders:
 			dataPackFolders.remove(pack[0])
@@ -82,9 +87,6 @@ def startApplication():
 	SETTINGS["DATAPACKSETTINGS"]["packsToLoad"] = dps
 	# Save the settings file
 	saveJson(SETTINGS_FILE, SETTINGS)
-	
-		
-
 
 	# TODO Rewrite this bs
 	'''
