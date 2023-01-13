@@ -30,17 +30,14 @@
 	"events":[
 	],
 	"enemyChance":50,
-	"enemyMessage":[
-		""
-	],
 	"enemyPointsPerHostility":4,
 	"enemies":[
         ["enemy_wolf", 2]
 	],
 	"npcChance":0,
 	"npcs":[],
-	"minNewAreas":1,
-	"maxNewAreas":2,
+	"minNewAreas":3,
+	"maxNewAreas":5,
 	"areas":[
         ["area_gen_forest_1", "1d6", ["required"]],
         ["area_gen_forest_2", "1d6", ["required"]],

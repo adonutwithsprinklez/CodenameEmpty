@@ -69,7 +69,8 @@ class Game(object):
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
-            self.disp.initiate_window(f'Codename: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+            self.disp.initiate_window(f'Codename: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS,
+                                      DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
@@ -83,7 +84,7 @@ class Game(object):
             if pack[1]:
                 pack = pack[0]
 
-                print("Loading pack \"{}\"...".format(pack))
+                print("\tLoading pack \"{}\"...".format(pack))
                 self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
                 if self.packs[pack]["packType"] == "standalone":
                     self.starterWeapon = random.choice(self.packs[pack]["startingWeapon"])
@@ -99,38 +100,42 @@ class Game(object):
                 # Asset loading
                 for w in self.packs[pack]["weapons"]:
                     self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
-                    self.disp.dprint("Loaded asset %s" % w)
+                    self.disp.dprint("\t\tLoaded asset %s" % w)
                 for a in self.packs[pack]["armor"]:
                     self.armor[a] = loadJson("%s%s/armor/%s.json" % (folder, pack, a))
-                    self.disp.dprint("Loaded asset %s" % a)
+                    self.disp.dprint("\t\tLoaded asset %s" % a)
                 for m in self.packs[pack]["misc"]:
                     self.misc[m] = loadJson("%s%s/misc/%s.json" % (folder, pack, m))
-                    self.disp.dprint("Loaded asset %s" % m)
+                    self.disp.dprint("\t\tLoaded asset %s" % m)
                 for a in self.packs[pack]["areas"]:
                     self.areas[a] = loadJson("%s%s/areas/%s.json" % (folder, pack, a))
-                    self.disp.dprint("Loaded asset %s" % a)
+                    if "injectArea" in self.areas[a].keys():
+                        for aKey in self.areas[a]["injectArea"].keys():
+                            injectData = [a] + self.areas[a]["injectArea"][aKey]
+                            self.areas[aKey]["areas"].append(injectData)
+                    self.disp.dprint("\t\tLoaded asset %s" % a)
                 for r in self.packs[pack]["races"]:
                     raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
                     self.races[raceData["id"]] = raceData
-                    self.disp.dprint("Loaded asset %s" % r)
+                    self.disp.dprint("\t\tLoaded asset %s" % r)
                 for n in self.packs[pack]["npcs"]:
                     self.npcs[n] = loadJson("%s%s/npcs/%s.json" % (folder, pack, n))
-                    self.disp.dprint("Loaded asset %s" % n)
+                    self.disp.dprint("\t\tLoaded asset %s" % n)
                 for e in self.packs[pack]["enemies"]:
                     self.enemies[e] = loadJson("%s%s/enemies/%s.json" % (folder, pack, e))
-                    self.disp.dprint("Loaded asset %s" % e)
+                    self.disp.dprint("\t\tLoaded asset %s" % e)
                 for q in self.packs[pack]["quests"]:
                     self.quests[q] = loadJson("%s%s/quests/%s.json" % (folder, pack, q))
-                    self.disp.dprint("Loaded asset %s" % q)
+                    self.disp.dprint("\t\tLoaded asset %s" % q)
                 for e in self.packs[pack]["events"]:
                     self.events[e] = loadJson("%s%s/events/%s.json" % (folder, pack, e))
-                    self.disp.dprint("Loaded asset %s" % e)
+                    self.disp.dprint("\t\tLoaded asset %s" % e)
                 for m in self.packs[pack]["modifiers"]:
                     mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
                     for mod in mods.keys():
                         self.modifiers[mod] = Modifier(mod, mods[mod])
-                    self.disp.dprint("Loaded asset %s" % m)
-                print("Finished loading assets.")
+                    self.disp.dprint("\t\tLoaded asset %s" % m)
+                print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as
         # loads thems into actual objects
