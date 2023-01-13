@@ -70,12 +70,10 @@
 	"areas":[
 		["area_gen_forest_1","2d5", ["required"]],
 		["area_gen_forest_2","2d5"],
+		["area_forest_trail_crossroad","1d8+2", ["limited"]],
 		["area_gen_forest_3","2d5"]
 	],
     "safeToTravel":[
-        "local"
-    ],
-    "revisitable":[
         "local"
     ]
 }

@@ -559,7 +559,7 @@ class Game(object):
             x = 0
             for area in choices:
                 x += 1
-                self.disp.display("%d. %s" % (x, str(area)))
+                self.disp.display("%d. %s" % (x, area.getName()))
             self.disp.display("0. to exit")
             self.disp.closeDisplay()
             try:

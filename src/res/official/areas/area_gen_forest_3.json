@@ -72,7 +72,7 @@
         ["area_gen_forest_2", "2d6"],
         ["area_gen_forest_3", "1d8", ["required"]],
         ["area_gen_forest_4", "1d12"],
-        ["cave_wolf_entrance", "1d8"],
+		["area_gen_forest_2","1d10+2", ["limited"]],
 		["area_village_gate_east", "2d6", ["limited"]]
 	]
 }

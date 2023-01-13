@@ -78,7 +78,7 @@ def startApplication():
 			if pack[0] == SETTINGS["DATAPACKSETTINGS"]["start"]:
 				SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][0][1] = True
 				SETTINGS["DATAPACKSETTINGS"]["start"] = "official"
-		# Remove datapak from datapackfolders because it is already saved in settings
+		# Remove datapack from datapackfolders because it is already saved in settings
 		elif pack[0] in dataPackFolders:
 			dataPackFolders.remove(pack[0])
 	# add saved datapacks to settings
