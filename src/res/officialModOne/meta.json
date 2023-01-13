@@ -4,7 +4,9 @@
     "desc": "This is the first official content add on for Codename: Empty. These additions are non-canon.",
     "packType": "addition",
     "version": 0.1,
-    "gameDesc": [],
+    "gameDesc": [
+        "What is this, a mod for ants?"
+    ],
     "areas": [
         "area_start_1"
     ],
@@ -16,7 +18,6 @@
     "npcs": [],
     "quests": [],
     "races": [],
-    "startableRaces": [],
     "weapons": [],
     "tutorialArea":[],
     "startingArea": [],
