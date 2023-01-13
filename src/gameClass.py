@@ -133,6 +133,9 @@ class Game(object):
                         for aKey in self.events[e]["injectArea"].keys():
                             injectionEvent = [e, self.events[e]["injectArea"][aKey]]
                             self.areas[aKey]["events"].append(injectionEvent)
+                            if "injectAreaMinChance" in self.events[e].keys():
+                                self.areas[aKey]["eventChance"] = max(self.areas[aKey]["eventChance"],
+                                                                      self.events[e]["injectAreaMinChance"])
                     self.disp.dprint("\t\tLoaded asset %s" % e)
                 for m in self.packs[pack]["modifiers"]:
                     mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
