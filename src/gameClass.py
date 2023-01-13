@@ -179,9 +179,20 @@ class Game(object):
 
         self.player.disp = self.disp
 
+        startingWeapons = []
+        for weapon in self.player.getStartingWeapons():
+            pass
+        for armor in self.player.getStartingArmor():
+            # TODO: Allow for starting armors to have modifiers
+            modifiers = None
+            armorSet = generateAmorSet(self.armor[armor[0]], modifiers, armor[1])
+            self.player.equipArmorSet(armorSet)
+        
+        '''
         self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
         armor = generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"])
         self.player.equipArmorSet(armor)
+        '''
         '''
         for armor in generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"]):
            

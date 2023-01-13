@@ -28,6 +28,14 @@ class Race(object):
                 self.playerCreationDescription = data["playerCreationDescription"]
             else:
                 self.playerCreationDescription = ""
+            if "startingWeapon" in data.keys():
+                self.startingWeapon = data["startingWeapon"]
+            else:
+                self.startingWeapon = []
+            if "startingArmor" in data.keys():
+                self.startingArmor =  data["startingArmor"]
+            else:
+                self.startingArmor = []
         else:
             self.id = ""
             self.name = ""
@@ -39,6 +47,8 @@ class Race(object):
             self.limbs = []
             self.shortDescription = ""
             self.playerCreationDescription = ""
+            self.startingWeapon = []
+            self.startingArmor = []
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -180,6 +190,12 @@ class Race(object):
     
     def getPlayerCreationDescription(self):
         return self.playerCreationDescription
+    
+    def getStartingWeapons(self):
+        return self.startingWeapon
+    
+    def getStartingArmor(self):
+        return self.startingArmor
     
     def __str__(self):
         return f"{self.getId()} - {self.getName(False)}"
