@@ -36,9 +36,13 @@ def startGame(game):
 			return None
 		game.chooseNewArea()
 		if game.player.quit:
+			# Removes the player object from the game object once done
+			game.player = None
 			return None
 		if game.player.hp <= 0:
 			# TODO have actual end of game code due to player death
+			# Removes the player object from the game object once done
+			game.player = None
 			return False
 
 def openSettings(game, settingsFile):
