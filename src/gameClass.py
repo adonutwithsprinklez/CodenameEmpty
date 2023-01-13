@@ -129,6 +129,10 @@ class Game(object):
                     self.disp.dprint("\t\tLoaded asset %s" % q)
                 for e in self.packs[pack]["events"]:
                     self.events[e] = loadJson("%s%s/events/%s.json" % (folder, pack, e))
+                    if "injectArea" in self.events[e].keys():
+                        for aKey in self.events[e]["injectArea"].keys():
+                            injectionEvent = [e, self.events[e]["injectArea"][aKey]]
+                            self.areas[aKey]["events"].append(injectionEvent)
                     self.disp.dprint("\t\tLoaded asset %s" % e)
                 for m in self.packs[pack]["modifiers"]:
                     mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
