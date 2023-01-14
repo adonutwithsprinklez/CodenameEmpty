@@ -177,7 +177,10 @@ class Game(object):
 
         startingWeapons = []
         for weapon in self.player.getStartingWeapons():
-            pass
+            # TODO: Allow for starting armors to have modifiers
+            modifiers = None
+            # TODO: Implement the ability to equip multiple weapons
+            self.player.weapon = generateWeapon(self.weapons[weapon], modifiers)
         for armor in self.player.getStartingArmor():
             # TODO: Allow for starting armors to have modifiers
             modifiers = None
