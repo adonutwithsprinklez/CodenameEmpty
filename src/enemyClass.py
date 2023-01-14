@@ -16,9 +16,9 @@ class Enemy(object):
         self.hpMax = rollDice(data["hp"])
         self.damage = data["damage"]
         self.xp = data["xp"]
+        self.weapon = None
         if data["weapon"]:
-            self.weapon = generateWeapon(
-                weapons[random.choice(data["weapon"])], modifiers)
+            self.weapon = generateWeapon(weapons[random.choice(data["weapon"])], modifiers)
 
         # Adds modifiers to the enemy
         self.modifiers = []
@@ -90,7 +90,7 @@ class Enemy(object):
     def getName(self):
         return self.name
 
-    def getWeaponDamage(self, rand=True):
+    def getWeaponDamage(self):
         if self.weapon:
             return rollDice(self.damage) + self.weapon.getAttack()
         else:
@@ -109,7 +109,7 @@ class Enemy(object):
         if self.weapon:
             return random.choice(self.weapon.actionText)
         else:
-            return "Something happens. Blame the developer for this. This was implemented very late one night."
+            return f"{self.getName} attacks."
 
     def getArmorDefence(self):
         if self.armor:
@@ -122,4 +122,8 @@ class Enemy(object):
             armor = self.armor.defence
         else:
             armor = "0"
-        return int((1.0*(self.hpMax+self.hp) + maxRoll(self.damage) + maxRoll(self.weapon.damage) + maxRoll(armor))/5)
+        maxDamage = maxRoll(self.damage)
+        maxWeaponDamage = maxRoll(self.weapon.damage)
+        maxArmor = maxRoll(armor)
+        danger = int((1.0*(self.hpMax+self.hp) + maxDamage + maxWeaponDamage + maxArmor)/5)
+        return danger
