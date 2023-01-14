@@ -1,0 +1,13 @@
+{
+	"name":[
+		"Tusks"
+	],
+	"damage":"1d5",
+	"desc":[
+		"The developer screwed up on this one. Contact him on how you got this."
+	],
+	"actionText":[
+		"The claws swiftly slash their target.",
+		"The claws were completely silent in their attack."
+	]
+}

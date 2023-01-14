@@ -1,0 +1,64 @@
+{
+	"name":[
+		"$color Furred Boar",
+        "$color2 Boar"
+	],
+	"variables":{
+		"color":{
+			"type":"choose",
+			"choices":[
+				"Black",
+				"Onyx",
+				"Pitch-Black",
+				"Charcoal",
+				"Dark Gray",
+				"Slate",
+				"Darkly"
+			]
+		},
+		"color2":{
+			"type":"choose",
+			"choices":[
+				"Black",
+				"Dark Gray",
+				"Jet-Black",
+				"Pitch-Black"
+			]
+		}
+	},
+	"eID":"giantBoar",
+    "injectArea":[
+        ["area_forest_trail_crossroad", 2]
+    ],
+    "areaMinEnemyChance":100,
+    "areaEnemyPointsPerHostility":10,
+	"desc":[
+		"The boar eyes you intently. Its tusks glinting in the light.",
+		"The scars across the boar's body lets any of its enemies know that its not new to fighting.",
+        "The boar weilds two mighty tusks, quite obviously able to deal some major damage."
+	],
+	"deathMsg":[
+		"gives one last roar before succumbing to its wounds.",
+		"groans before collapsing on the ground."
+	],
+	"hp":"3d4+8",
+	"damage":"1d3+2",
+	"modCount":"1d3",
+	"modifier":[
+		["None",3],
+		["strong",2],
+		["veryStrong",2],
+		["strong",2],
+        ["weak",2],
+        ["sick",1]
+	],
+	"weapon":[
+		"mod_weapon_boarTusks"
+	],
+	"armor":[
+		"armor_greatWolfHide"
+	],
+	"itemChance":0,
+	"itemDrops":[],
+	"xp":15
+}

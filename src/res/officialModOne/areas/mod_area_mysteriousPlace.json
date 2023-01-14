@@ -1,0 +1,58 @@
+{
+    "name":[
+        "Injected Area"
+    ],
+	"split":{
+		"type":"choose",
+		"choices":[
+			"Crossroads",
+            "Fork",
+            "Split"
+		]
+	},
+	"crossRoadSign":{
+		"type":"choose",
+		"choices":[
+			"Nailed to some trees are signs explaining where each trail leads.",
+			"A well worn sign states the direction of each trail.",
+			"There are several wooden signs with vague descriptions of each of the paths."
+		]
+	},
+	"desc":[
+		"There are several signs hanging on the trees surrounding the crossroads. $crossRoadSign",
+        "You see the crossroads ahead of you. There are paths leading in a few different directions. $crossRoadSign",
+        "As you continue moving forward, you see that the trail splits in multiple directions. $crossRoadSign"
+	],
+	"aType":"Forest",
+	"hostilityMin":1,
+	"hostilityMax":3,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":50,
+	"enemyPointsPerHostility":4,
+	"enemies":[
+        ["enemy_wolf", 2]
+	],
+	"npcChance":0,
+	"npcs":[],
+    "injectArea":{
+        "area_forest_trail_crossroad": ["1d6", ["required"]]
+    },
+	"minNewAreas":1,
+	"maxNewAreas":2,
+	"areas":[
+        ["area_gen_forest_1", "1d6", ["required"]],
+        ["area_gen_forest_2", "1d6", ["required"]],
+        ["area_gen_forest_3", "1d6"],
+        ["area_gen_forest_4", "1d6"]
+	],
+    "safeToTravel":[
+        "local",
+		"important"
+    ],
+    "revisitable":[
+        "local",
+		"important"
+    ]
+}

@@ -32,7 +32,10 @@
 	"enemyChance":50,
 	"enemyPointsPerHostility":4,
 	"enemies":[
-        ["enemy_wolf", 2]
+        ["enemy_wolf", 4],
+        ["enemy_bandit", 8],
+		["enemy_greatWolf", 6],
+		["enemy_rodentOfUnusualSize", 1]
 	],
 	"npcChance":0,
 	"npcs":[],
@@ -42,7 +45,8 @@
         ["area_gen_forest_1", "1d6", ["required"]],
         ["area_gen_forest_2", "1d6", ["required"]],
         ["area_gen_forest_3", "1d6"],
-        ["area_gen_forest_4", "1d6"]
+        ["area_gen_forest_4", "1d6"],
+		["area_village_gate_east", "2d6", ["limited"]]
 	],
     "safeToTravel":[
         "local",

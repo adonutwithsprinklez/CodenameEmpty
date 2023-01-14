@@ -8,20 +8,22 @@
         "What is this, a mod for ants?"
     ],
     "areas": [
-        "area_start_1"
+        "area_start_1",
+        "mod_area_mysteriousPlace"
     ],
     "armor": [],
-    "enemies": [],
-    "events": [],
+    "enemies": [
+        "mod_enemy_giantBoar"
+    ],
+    "events": [
+        "mod_event_caveWolfMisc"
+    ],
     "misc": [],
     "modifiers": [],
     "npcs": [],
     "quests": [],
     "races": [],
-    "weapons": [],
-    "tutorialArea":[],
-    "startingArea": [],
-    "startingWeapon": [],
-    "startingArmor": [],
-    "startingInventory": []
+    "weapons": [
+        "mod_weapon_boarTusks"
+    ]
 }

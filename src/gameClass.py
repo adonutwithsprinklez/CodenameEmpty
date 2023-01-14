@@ -94,6 +94,9 @@ class Game(object):
                         self.descs.append(desc)
 
                 # Asset loading
+                # TODO: Clean this up. Either seperate into different functions or
+                # rewrite. This was fine until data injection became a feature. Now
+                # it's waaay too cluttered.
                 for w in self.packs[pack]["weapons"]:
                     self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
                     self.disp.dprint("\t\tLoaded asset %s" % w)
@@ -119,6 +122,15 @@ class Game(object):
                     self.disp.dprint("\t\tLoaded asset %s" % n)
                 for e in self.packs[pack]["enemies"]:
                     self.enemies[e] = loadJson("%s%s/enemies/%s.json" % (folder, pack, e))
+                    if "injectArea" in self.enemies[e].keys():
+                        for injection in self.enemies[e]["injectArea"]:
+                            injectionEnemy = [e, injection[1]]
+                            self.areas[injection[0]]["enemies"].append(injectionEnemy)
+                            if "areaMinEnemyChance" in self.enemies[e].keys():
+                                self.areas[aKey]["enemyChance"] = max(self.areas[injection[0]]["enemyChance"],
+                                                                      self.enemies[e]["areaMinEnemyChance"])
+                            if "areaEnemyPointsPerHostility" in self.enemies[e].keys():
+                                self.areas[injection[0]]["enemyPointsPerHostility"] = self.enemies[e]["areaEnemyPointsPerHostility"]
                     self.disp.dprint("\t\tLoaded asset %s" % e)
                 for q in self.packs[pack]["quests"]:
                     self.quests[q] = loadJson("%s%s/quests/%s.json" % (folder, pack, q))
