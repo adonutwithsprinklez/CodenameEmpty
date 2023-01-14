@@ -21,6 +21,9 @@
     "startingArmor":[
         ["armor_starting_armor", ["torso", "leg", "leg"]]
     ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
     "startingInventory": [
         "consumable_potion_health"
     ],
