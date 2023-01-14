@@ -62,6 +62,7 @@
         "enemy_bandit",
         "enemy_banditStrong",
         "enemy_bear",
+        "enemy_cultist_basic",
         "enemy_greatWolf",
         "enemy_orc",
         "enemy_orcCaptain",
@@ -136,7 +137,7 @@
         "weapon_wolfClaws"
     ],
     "startingArea": [
-        "area_start_1"
+        "area_gen_forest_2"
     ],
     "startingWeapon": [
         "weapon_starter_sword"

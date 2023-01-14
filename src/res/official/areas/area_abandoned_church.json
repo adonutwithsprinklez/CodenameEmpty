@@ -32,7 +32,8 @@
 	"enemyChance":50,
 	"enemyPointsPerHostility":2,
 	"enemies":[
-		["enemy_rodentOfUnusualSize", 2]
+		["enemy_rodentOfUnusualSize", 2],
+		["enemy_cultist_basic", 4]
 	],
 	"npcChance":0,
 	"npcs":[
