@@ -3,5 +3,6 @@
 .VSCodeCounter/
 
 *.pyc
+*.DS_Store
 
 build/
