@@ -21,6 +21,9 @@
     "startingArmor":[
         ["armor_starting_armor", ["head", "torso", "arm", "arm", "leg", "leg"]]
     ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ],
     "limbs":[
         {
             "type":"head",

@@ -86,10 +86,6 @@ class Game(object):
 
                 print("\tLoading pack \"{}\"...".format(pack))
                 self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
-                if self.packs[pack]["packType"] == "standalone":
-                    self.starterWeapon = random.choice(self.packs[pack]["startingWeapon"])
-                    self.starterArmor = random.choice(self.packs[pack]["startingArmor"])
-                    self.starterInventory = self.packs[pack]["startingInventory"]
 
                 if "gameLogo" in self.packs[pack].keys():
                     self.logos.append(self.packs[pack]["gameLogo"])
@@ -200,7 +196,7 @@ class Game(object):
         '''
 
         # Add all the extra inventory gear
-        for item in self.starterInventory:
+        for item in self.player.getStartingInventory():
             newItem = None
             if item in self.misc.keys():
                 newItem = Misc(self.misc[item], self.modifiers)

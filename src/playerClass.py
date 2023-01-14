@@ -469,6 +469,9 @@ class Player(object):
     def getStartingWeapons(self):
         return self.race.getStartingWeapons()
     
+    def getStartingInventory(self):
+        return self.race.getStartingInventory()
+    
     def getName(self):
         return self.name
     

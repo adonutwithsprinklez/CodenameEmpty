@@ -134,14 +134,5 @@
     ],
     "startingArea": [
         "area_gen_forest_1"
-    ],
-    "startingWeapon": [
-        "weapon_starter_sword"
-    ],
-    "startingArmor": [
-        "armor_starting_armor"
-    ],
-    "startingInventory": [
-        "consumable_potion_health"
     ]
 }
