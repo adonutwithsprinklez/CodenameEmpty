@@ -61,14 +61,15 @@
 		["enemy_greatWolf",8]
 	],
 	"npcChance":0,
-	"npcs":[
-	],
+	"npcs":[],
 	"minNewAreas":2,
 	"maxNewAreas":6,
 	"areas":[
         ["area_gen_forest_2", "1d8"],
         ["area_gen_forest_1", "2d6"],
         ["area_gen_forest_3", "2d6"],
-        ["area_gen_forest_4", "2d6"]
+        ["area_gen_forest_4", "1d10+2"],
+		["area_forest_trail_crossroad", "1d10+2", ["limited"]],
+		["cave_wolf_entrance","1d10", ["limited"]]
 	]
 }

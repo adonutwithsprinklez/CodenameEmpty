@@ -24,7 +24,8 @@
         "Now with some dev tools!",
         "Inspired by Huw2k8's \"The Wastes\"",
         "This project has been in development for way too long",
-        "The gods have forsaken us"
+        "The gods have forsaken us",
+        "This has \"drag 'n drop\" mod support!"
     ],
     "areas": [
         "area_start_1",
@@ -33,6 +34,7 @@
         "area_gen_forest_2",
         "area_gen_forest_3",
         "area_gen_forest_4",
+        "area_forest_trail_crossroad",
         "cave_wolf_entrance",
         "cave_wolf_room_1a",
         "cave_wolf_room_1b",
@@ -111,13 +113,6 @@
         "race_dwarf",
         "race_draktilien"
     ],
-    "startableRaces": [
-        "race_human",
-        "race_elf",
-        "race_orc",
-        "race_dwarf",
-        "race_draktilien"
-    ],
     "weapons": [
         "weapon_butcherknife",
         "weapon_castironskillet",
@@ -139,14 +134,5 @@
     ],
     "startingArea": [
         "area_gen_forest_1"
-    ],
-    "startingWeapon": [
-        "weapon_starter_sword"
-    ],
-    "startingArmor": [
-        "armor_starting_armor"
-    ],
-    "startingInventory": [
-        "consumable_potion_health"
     ]
 }

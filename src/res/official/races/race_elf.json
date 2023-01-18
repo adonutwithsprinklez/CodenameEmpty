@@ -18,6 +18,15 @@
     },
     "playable":true,
     "playerCreationDescription":"Elves were never one to use brute force when a more sophisticated solution was available. This has lead to their natural aptitude towards magic over more \"barbaric\" weapons.",
+    "startingArmor":[
+        ["armor_starting_armor", ["head", "torso", "arm", "arm", "leg", "leg"]]
+    ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ],
     "limbs":[
         {
             "type":"head",

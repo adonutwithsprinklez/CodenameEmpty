@@ -25,7 +25,7 @@ class Area(object):
 
         self.kwargs = kwargs
         
-        if random.randint(1,100) <= areaType["eventChance"]:
+        if random.randint(1,100) <= areaType["eventChance"] and len(areaType["events"])>0:
             self.event = self.chooseAnEvent(areaType, nonrepeatableevents, globalEvents)
         
         # Enemy Generation/Spawning

@@ -1,0 +1,31 @@
+{
+    "name": "Official Additional Content Data Pack",
+    "author": "Sprinklez Media",
+    "desc": "This is the first official content add on for Codename: Empty. These additions are non-canon.",
+    "packType": "addition",
+    "version": 0.1,
+    "gameDesc": [
+        "What is this, a mod for ants?"
+    ],
+    "areas": [
+        "area_start_1",
+        "mod_area_mysteriousPlace"
+    ],
+    "armor": [],
+    "enemies": [
+        "mod_enemy_giantBoar"
+    ],
+    "events": [
+        "mod_event_caveWolfMisc"
+    ],
+    "misc": [],
+    "modifiers": [],
+    "npcs": [],
+    "quests": [],
+    "races": [
+        "mod_race_dog"
+    ],
+    "weapons": [
+        "mod_weapon_boarTusks"
+    ]
+}
