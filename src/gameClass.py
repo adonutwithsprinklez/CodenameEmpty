@@ -887,7 +887,7 @@ class Game(object):
                 enabled = "ENABLED" if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] else "DISABLED"
                 toggle = self.displayPackDetails(packData, enabled)
                 if toggle:
-                    if not self.dataPackSettings["start"] and not packData["packType"] == "standalone":
+                    if not self.dataPackSettings["start"] == packId and not packData["packType"] == "standalone":
                         self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
                     # TODO Disable current standalone pack and enable new one
                     '''
