@@ -31,7 +31,7 @@
         ["area_forest_trail_crossroad", 2]
     ],
     "areaMinEnemyChance":100,
-    "areaEnemyPointsPerHostility":10,
+    "areaEnemyPointsPerHostility":2,
 	"desc":[
 		"The boar eyes you intently. Its tusks glinting in the light.",
 		"The scars across the boar's body lets any of its enemies know that its not new to fighting.",

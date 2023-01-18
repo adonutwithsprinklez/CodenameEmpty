@@ -3,7 +3,7 @@
         "FIRST AREA MOD TEST"
 	],
 	"desc":[
-        "Mods are working if you are reading this."
+        "Mods are working if you are reading this. This serves as proof that datapacks can overwrite existing data."
 	],
 	"aType":"Forest",
 	"hostilityMin":1,

@@ -22,7 +22,9 @@
     "modifiers": [],
     "npcs": [],
     "quests": [],
-    "races": [],
+    "races": [
+        "mod_race_dog"
+    ],
     "weapons": [
         "mod_weapon_boarTusks"
     ]
