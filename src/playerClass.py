@@ -13,7 +13,7 @@ class Player(object):
         self.xp = 0
         self.race = None
         self.perks = []
-        self.weapon = []
+        self.weapon = None
         self.armor = None
         self.unarmed = 1
         self.gold = 0
@@ -38,11 +38,14 @@ class Player(object):
             for stat in self.getUserInfo():
                 self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
             self.disp.display("Wielding:")
-            self.disp.display("\t%s (%s damage)" % (self.weapon.name, self.weapon.damage),0)
+            if self.weapon != None:
+                self.disp.display("\t%s (%s damage)" % (self.weapon.name, self.weapon.damage),0)
+            else:
+                self.disp.display("\tYou are not currently wielding a weapon",0)
             self.disp.display("Wearing:")
             for limb in self.race.getLimbsEquippableLimbs():
-                if limb.armor:
-                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor, limb.armor.getDefenceRating()),0)
+                if limb.getArmor():
+                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.getArmor(), limb.armor.getDefenceRating()),0)
                 else:
                     self.disp.display("\t%s - Nothing" % (limb.name),0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
@@ -410,13 +413,15 @@ class Player(object):
         if self.weapon:
             return self.weapon.getAttack()
         else:
+            # TODO: Get racial stuff
             return 0
 
     def getWeaponAction(self):
         if self.weapon:
             return self.weapon.getAction()
         else:
-            return 0
+            # TODO: Get racial stuff
+            return ""
 
     def getArmorDefence(self):
         armorTotal = 0
@@ -459,6 +464,15 @@ class Player(object):
         if self.level < 10:
             return 100 * self.level
         return ( self.level ** 2 ) * 10
+    
+    def getStartingArmor(self):
+        return self.race.getStartingArmor()
+    
+    def getStartingWeapons(self):
+        return self.race.getStartingWeapons()
+    
+    def getStartingInventory(self):
+        return self.race.getStartingInventory()
     
     def getName(self):
         return self.name

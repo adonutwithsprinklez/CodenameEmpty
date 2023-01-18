@@ -15,6 +15,7 @@
 	"limb":{
 		"torso": ["Cloak"],
 		"arm":["Gloves"],
-		"leg":["Boots"]
+		"leg":["Boots"],
+		"head":["Hood"]
 	}
 }

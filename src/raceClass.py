@@ -28,6 +28,18 @@ class Race(object):
                 self.playerCreationDescription = data["playerCreationDescription"]
             else:
                 self.playerCreationDescription = ""
+            if "startingWeapon" in data.keys():
+                self.startingWeapon = data["startingWeapon"]
+            else:
+                self.startingWeapon = []
+            if "startingArmor" in data.keys():
+                self.startingArmor =  data["startingArmor"]
+            else:
+                self.startingArmor = []
+            if "startingInventory" in data.keys():
+                self.startingInventory = data["startingInventory"]
+            else:
+                self.startingInventory = []
         else:
             self.id = ""
             self.name = ""
@@ -39,6 +51,9 @@ class Race(object):
             self.limbs = []
             self.shortDescription = ""
             self.playerCreationDescription = ""
+            self.startingWeapon = []
+            self.startingArmor = []
+            self.startingInventory = []
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -181,6 +196,15 @@ class Race(object):
     def getPlayerCreationDescription(self):
         return self.playerCreationDescription
     
+    def getStartingWeapons(self):
+        return self.startingWeapon
+    
+    def getStartingArmor(self):
+        return self.startingArmor
+    
+    def getStartingInventory(self):
+        return self.startingInventory
+    
     def __str__(self):
         return f"{self.getId()} - {self.getName(False)}"
 
@@ -211,5 +235,12 @@ class Limb(object):
             self.race = None
         self.armor = None
         self.armorable = True
-        if self.armorable in data.keys():
+        if "armorable" in data.keys():
             self.armorable = data["armorable"]
+        
+    def getArmor(self):
+        if self.armor:
+            return self.armor
+        elif not self.armorable:
+            return "Unequippable"
+        return None

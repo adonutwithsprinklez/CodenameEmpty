@@ -18,6 +18,15 @@
     },
     "playable":true,
     "playerCreationDescription":"Dwarves area a hearty and well varied race. Their expansion into the mountains always required jobs of various specialties, leading most races to need their help for one reason or another.",
+    "startingArmor":[
+        ["armor_starting_armor", ["torso", "arm", "arm", "leg", "leg"]]
+    ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ],
     "limbs":[
         {
             "type":"head",

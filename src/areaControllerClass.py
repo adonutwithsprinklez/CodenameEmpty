@@ -6,7 +6,7 @@ from dieClass import rollDice
 class AreaController(object):
     ''' This class generates and stores all needed data for the world. Whenever
         a new area needs generated or reloaded this class will handle it. '''
-    def __init__(self, areaData=None, startingAreaID=None, currentXY=(0, 0), weapons=None,
+    def __init__(self, areaData=None, startingAreaID=None, weapons=None,
     armor=None, misc=None, enemies=None, npcs=None, events=None, modifiers=None, DEBUG = 0):
         self.currentArea = None
 

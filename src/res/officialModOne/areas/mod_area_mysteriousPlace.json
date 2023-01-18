@@ -1,0 +1,40 @@
+{
+    "name":[
+        "Injected Area"
+    ],
+	"desc":[
+		"Proof that this datapack is working and was able to inject an area"
+	],
+	"aType":"Forest",
+	"hostilityMin":1,
+	"hostilityMax":3,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":50,
+	"enemyPointsPerHostility":4,
+	"enemies":[
+        ["enemy_wolf", 2]
+	],
+	"npcChance":0,
+	"npcs":[],
+    "injectArea":{
+        "area_forest_trail_crossroad": ["1d6", ["required"]]
+    },
+	"minNewAreas":1,
+	"maxNewAreas":2,
+	"areas":[
+        ["area_gen_forest_1", "1d6", ["required"]],
+        ["area_gen_forest_2", "1d6", ["required"]],
+        ["area_gen_forest_3", "1d6"],
+        ["area_gen_forest_4", "1d6"]
+	],
+    "safeToTravel":[
+        "local",
+		"important"
+    ],
+    "revisitable":[
+        "local",
+		"important"
+    ]
+}

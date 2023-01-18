@@ -101,10 +101,6 @@
 		["area_gen_forest_3","1d5", ["required"]],
 		["area_gen_forest_4","1d5"]
 	],
-    "safeToTravel":[
-        "important",
-        "local"
-    ],
     "revisitable":[
         "local"
     ]

@@ -18,6 +18,15 @@
     },
     "playable":true,
     "playerCreationDescription":"Humnas, due to their natural adaptability have become the most common of their races. They have spread over most of the mainland.",
+    "startingArmor":[
+        ["armor_starting_armor", ["torso", "arm", "arm", "leg", "leg"]]
+    ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ],
     "limbs":[
         {
             "type":"head",

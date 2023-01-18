@@ -36,9 +36,13 @@ def startGame(game):
 			return None
 		game.chooseNewArea()
 		if game.player.quit:
+			# Removes the player object from the game object once done
+			game.player = None
 			return None
 		if game.player.hp <= 0:
 			# TODO have actual end of game code due to player death
+			# Removes the player object from the game object once done
+			game.player = None
 			return False
 
 def openSettings(game, settingsFile):
@@ -60,7 +64,33 @@ def startApplication():
 	# Loads some resource stuff
 	RES_FOLDER = "res/"
 	SETTINGS_FILE = RES_FOLDER + "settings.json"
-	SETTINGS = loadJson("{}".format(SETTINGS_FILE))
+	SETTINGS = loadJson(SETTINGS_FILE)
+
+	# Check for datapacks in the resource folder
+	dataPackFolders = []
+	for item in os.listdir(RES_FOLDER):
+		possibleDirectory = os.path.join(RES_FOLDER, item)
+		if os.path.isdir(possibleDirectory):
+			dataPackFolders.append(item)
+	# Remove from the settings file any datapacks that no longer exist in the res folder
+	dps = SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][::]
+	for pack in SETTINGS["DATAPACKSETTINGS"]["packsToLoad"]:
+		if pack[0] not in dataPackFolders:
+			dps.remove(pack)
+			# If the removed datapack = the starting datapack,
+			# reset the starting datapack to the official one
+			if pack[0] == SETTINGS["DATAPACKSETTINGS"]["start"]:
+				SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][0][1] = True
+				SETTINGS["DATAPACKSETTINGS"]["start"] = "official"
+		# Remove datapack from datapackfolders because it is already saved in settings
+		elif pack[0] in dataPackFolders:
+			dataPackFolders.remove(pack[0])
+	# add saved datapacks to settings
+	for pack in dataPackFolders:
+		dps.append([pack, False])
+	SETTINGS["DATAPACKSETTINGS"]["packsToLoad"] = dps
+	# Save the settings file
+	saveJson(SETTINGS_FILE, SETTINGS)
 
 	# TODO Rewrite this bs
 	'''
@@ -77,8 +107,6 @@ def startApplication():
 					print ("\t\tDecompressing datapack...")
 					shutil.unpack_archive(RES_FOLDER + file, RES_FOLDER + file.split(".zip")[0])
 	'''
-	if __name__ != "__main__":
-		pass
 
 	# Inital game / menu loading
 	game = Game()
