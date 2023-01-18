@@ -180,14 +180,9 @@ class Game(object):
             self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
 
     def loadPlayer(self):
-        #self.player = Player()
-        #self.player.race = Race(self.races["human"])
-        #self.player.race.limbs[0] = Limb(self.races["drakt"]["limbs"][0], "Draktilien")
-        #self.player = self.newGameMenu()
 
         self.player.disp = self.disp
-
-        startingWeapons = []
+        
         for weapon in self.player.getStartingWeapons():
             # TODO: Allow for starting armors to have modifiers
             modifiers = None
@@ -198,17 +193,6 @@ class Game(object):
             modifiers = None
             armorSet = generateAmorSet(self.armor[armor[0]], modifiers, armor[1])
             self.player.equipArmorSet(armorSet)
-        
-        '''
-        self.player.weapon = generateWeapon(self.weapons[self.starterWeapon], self.modifiers)
-        armor = generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"])
-        self.player.equipArmorSet(armor)
-        '''
-        '''
-        for armor in generateAmorSet(self.armor[self.starterArmor], None, ["torso", "arm", "arm", "leg", "leg"]):
-           
-            self.player.inv.append(armor)
-        '''
 
         # Add all the extra inventory gear
         for item in self.player.getStartingInventory():
@@ -338,8 +322,6 @@ class Game(object):
                 else:
                     self.disp.closeDisplay()
                     event.finish()
-                    if self.gameSettings["EVENTDELAYENABLED"]:
-                        time.sleep(EVENTDELAY)
                     #input("\nEnter to continue")
                     self.disp.wait_for_enter()
         else:
@@ -447,7 +429,6 @@ class Game(object):
                             self.player.hp -= damage
                             self.disp.display("%s %s dealt %d damage." % (areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
-                        time.sleep(DELAY)
                         # input("\nEnter to continue.")
                         self.disp.wait_for_enter()
                     elif cmd == 2:
@@ -461,8 +442,7 @@ class Game(object):
                                 "You successfully escape from %s." % (areaEnemy.name))
                         else:
                             self.disp.displayHeader("Escape Failed")
-                            self.disp.display("You fail to escape from %s." %
-                                              (areaEnemy.name), 1, 1)
+                            self.disp.display("You fail to escape from %s." % (areaEnemy.name), 1, 1)
                             self.disp.displayHeader(areaEnemy.name)
                             damage = areaEnemy.weapon.damage
                             damage += "-{0}".format(self.player.getArmorDefence())
@@ -473,8 +453,6 @@ class Game(object):
                             self.disp.display("%s %s dealt %d damage." % (
                                 areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
-                        time.sleep(DELAY)
-                        # input("\nEnter to continue")
                         self.disp.wait_for_enter()
                         if escape:
                             break
@@ -485,23 +463,17 @@ class Game(object):
                 if self.player.hp > 0 and areaEnemy.hp <= 0:
                     self.disp.clearScreen()
                     self.disp.displayHeader("Victory")
-                    self.disp.display(
-                        "You defeated the enemy, and got %d experience." % areaEnemy.xp)
-                    self.importantQuestInfo.append(
-                        ["isKilled", areaEnemy.eID, True, False])
-                    self.disp.display("%s %s" %
-                                      (areaEnemy.name, areaEnemy.deathMsg))
+                    self.disp.display( "You defeated the enemy, and got %d experience." % areaEnemy.xp)
+                    self.importantQuestInfo.append( ["isKilled", areaEnemy.eID, True, False])
+                    self.disp.display("%s %s" % (areaEnemy.name, areaEnemy.deathMsg))
                     if random.randint(1, 100) < areaEnemy.itemChance:
                         self.disp.display("")
                         self.disp.displayHeader("Reward")
                         itemMessage = areaEnemy.itemDrop[1].replace("$name", areaEnemy.name)
                         self.disp.display(itemMessage)
-                        self.disp.display("You recieved %s." %
-                                          (areaEnemy.itemDrop[0].name))
+                        self.disp.display("You recieved %s." % (areaEnemy.itemDrop[0].name))
                         self.player.inv.append(areaEnemy.itemDrop[0])
                     self.disp.closeDisplay()
-                    # time.sleep(DELAY)
-                    # input("\nEnter to continue")
                     self.disp.wait_for_enter()
                     self.player.giveXP(areaEnemy.xp)
 
@@ -536,7 +508,6 @@ class Game(object):
             self.disp.display("0. Player Menu")
             self.disp.closeDisplay()
             try:
-                # cmd = int(input())
                 cmd = self.disp.get_input(True)
                 # Make sure the GUI window is still open. Exit if it is not
                 if not self.disp.window_is_open:
@@ -548,21 +519,10 @@ class Game(object):
                 self.disp.display("That was not a valid response.")
                 self.disp.closeDisplay()
                 cmd = -1
-                # time.sleep(DELAY)
-                # input("\nEnter to continue")
                 self.disp.wait_for_enter()
 
             # Load the new area
-
             if 0 < cmd <= len(travelTypes):
-                # TODO open revistable areas menu
-                '''
-                self.disp.clearScreen()
-                self.disp.displayHeader("Not Yet Implemented")
-                self.disp.display("This menu has not yet been fully implemented.")
-                self.disp.closeDisplay()
-                self.disp.wait_for_enter()
-                '''
                 if self.chooseLoadedArea(travelTypes[cmd-1]):
                     return None
             elif cmd == 0:
@@ -597,7 +557,6 @@ class Game(object):
             self.disp.display("0. to exit")
             self.disp.closeDisplay()
             try:
-                # cmd = int(input())
                 cmd = self.disp.get_input(True)
                 # Make sure the GUI window is still open. Exit if it is not
                 if not self.disp.window_is_open:
@@ -609,8 +568,6 @@ class Game(object):
                 self.disp.display("That was not a valid response.")
                 self.disp.closeDisplay()
                 cmd = -1
-                # time.sleep(DELAY)
-                # input("\nEnter to continue")
                 self.disp.wait_for_enter()
             if cmd == 0:
                 return None
@@ -644,15 +601,11 @@ class Game(object):
                 self.disp.displayHeader("Event")
                 self.disp.display(action[1])
                 self.disp.closeDisplay()
-                # if self.gameSettings["EVENTDELAYENABLED"]:
-                #     time.sleep(1)
-                # input("\nEnter to continue")
                 self.disp.wait_for_enter()
                 self.disp.dprint("Processed say condition.")
             elif action[0] == "giveXP":
                 self.player.xp += action[1]
-                self.disp.display("You gained %d experience." %
-                                  action[1])
+                self.disp.display("You gained %d experience." % action[1])
                 self.disp.dprint("Processed giveXP condition.")
             elif action[0] == "giveItem":
                 itemKey = action[1]
@@ -794,6 +747,7 @@ class Game(object):
             self.disp.displayHeader("Race Select")
             self.disp.display("Current Race: %s" % r.getName(False))
             self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
+            self.disp.closeDisplay()
             self.disp.display("Choices:")
             x = 0
             for race in races:
@@ -896,8 +850,8 @@ class Game(object):
             i += 1
             enabled = "ENABLED" if option[2] else "DISABLED"
             self.disp.display(f'{i}. {option[1]:<50} {enabled:>18}', 0)
-        self.disp.display(
-            "Input option # to toggle. Settings take effect on screen exit.")
+        self.disp.closeDisplay()
+        self.disp.display( "Input option # to toggle. Settings take effect on screen exit.")
         pagebreak = 1
         if page < numPages:
             self.disp.display("12. for next page of settings")
@@ -926,15 +880,20 @@ class Game(object):
                 cmd = -1
 
             if cmd in range(1, 9) and cmd-1 <= len(toggleablePacks):
-                if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][0] != "official":
-                    self.dataPackSettings["packsToLoad"][cmd - 1+9*packPage][1] ^= True
-                else:
-                    # TODO Display error when attempting to disable the official datapack.
-                    self.disp.clearScreen()
-                    self.disp.display("")
-                    pass
-                    # The official data pack should be allowed to be disabled, only if
-                    # another data pack is enabled
+                packId = self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][0]
+                # Display pack info and toggle if the user responds affirmative
+                loadString = f'{self.dataPackSettings["folder"]}{packId}/meta.json'
+                packData = loadJson(loadString)
+                enabled = "ENABLED" if self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] else "DISABLED"
+                toggle = self.displayPackDetails(packData, enabled)
+                if toggle:
+                    if not self.dataPackSettings["start"] and not packData["packType"] == "standalone":
+                        self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
+                    # TODO Disable current standalone pack and enable new one
+                    '''
+                    elif not self.dataPackSettings["start"] and packData["packType"] == "standalone":
+                        self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
+                    '''
             elif cmd == 12 and packPage < numPages:
                 packPage += 1
             elif cmd == 11 and packPage > 0:
@@ -943,6 +902,36 @@ class Game(object):
                 dataPacksWindow = False
 
         self.settings["DATAPACKSETTINGS"] = self.dataPackSettings
+    
+    def displayPackDetails(self, pack, enabled):
+        
+        packName = pack["name"]
+        packType = pack["packType"]
+        packDesc = pack["desc"]
+        packAuth = pack["author"]
+
+        self.disp.clearScreen()
+        self.disp.displayHeader(f'{packName}')
+
+        self.disp.display(f'{packName}')
+        self.disp.display(f'Status: {enabled}')
+        self.disp.display(f'Author: {packAuth}')
+        self.disp.display(f'Info: {packDesc}')
+        self.disp.display(f'Type:{packType}')
+
+        self.disp.closeDisplay()
+        if pack["packType"] == "standalone" and enabled:
+            self.disp.display("INFO: This data pack cannot be disabled. You must enabled a different " +
+                              "\"standalone\" data pack in order for this one to be disabled.")
+            self.disp.display("Enter to exit")
+        elif pack["packType"] == "standalone" and not enabled:
+            self.disp.display("1. to change the currently active \"standalone\" data pack to this one")
+            self.disp.display("Anything else to cancel", 0)
+        else:
+            self.disp.display("1. to toggle status")
+            self.disp.display("Anything else to cancel", 0)
+        self.disp.closeDisplay()
+        return self.disp.get_input(True, True, True) == 1
 
     def displayPacks(self, numPages=1, page=0):
         self.disp.clearScreen()
@@ -951,36 +940,20 @@ class Game(object):
         startOptions = page*9
         endOptions = 9+(page*9)
 
+        i = 0
         listOfOptions = self.dataPackSettings["packsToLoad"][startOptions:endOptions]
-        firstOption = listOfOptions.pop(0)
-        enabled = "ENABLED" if firstOption[1] else "DISABLED"
-        firstOption = loadJson(
-            self.dataPackSettings["folder"] + firstOption[0] + "/meta.json")
-        packName = firstOption["name"]
-        packDesc = firstOption["desc"]
-        packAuth = firstOption["author"]
-        packType = firstOption["packType"].upper()
-
-        self.disp.display(f'1. {packName:<50} {enabled:>18}')
-        self.disp.display(f'\tPack Type: {packType}', 0)
-        self.disp.display(f'\t{packDesc}', 0)
-        self.disp.display(f'\tBy: {packAuth}', 0)
-
-        i = 1
 
         for pack in listOfOptions:
             i += 1
             enabled = "ENABLED" if pack[1] else "DISABLED"
             pack = loadJson(f'{self.dataPackSettings["folder"]}{pack[0]}/meta.json')
             packName = pack["name"]
-            packDesc = pack["desc"]
+            packType = pack["packType"]
             packAuth = pack["author"]
 
             self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
-            self.disp.display(f'\t{packDesc}', 0)
-            self.disp.display(f'\tBy: {packAuth}', 0)
-        self.disp.display(
-            "Input pack # to toggle. Changes to enabled data packs take effect on screen exit.")
+            self.disp.display(f'\tPack Type: {packType.upper()} | Author: {packAuth}', 0)
+        self.disp.closeDisplay()
         pagebreak = 1
         if page < numPages:
             self.disp.display("12. for next page of settings")
