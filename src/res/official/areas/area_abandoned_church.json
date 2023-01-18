@@ -1,0 +1,85 @@
+{
+	"name":[
+        "$adjs $names Ruins",
+        "$names Ruins"
+	],
+	"names":{
+		"type":"choose",
+		"choices":[
+			"Church",
+            "Temple",
+            "Shrine"
+		]
+	},
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Old",
+            "Abandoned",
+            "Overgrown"
+		]
+	},
+	"walking":{
+		"type":"choose",
+		"choices":[
+			"You push past wild branches sticking out into the beaten trail",
+			"You hike through past some overgrown brush"
+		]
+	},
+	"walkModifiier":{
+		"type":"choose",
+		"choices":[
+			"making your way into a large clearing",
+			"eventually, the trail opens up into a clearing"
+		]
+	},
+	"building":{
+		"type":"choose",
+		"choices":[
+			"At the center of the clearing stands a massive stone structure. Pillars reach out to the sky, blocking the bit of sunlight that makes it past the trees",
+			"A massive building, made from carved stone, sits at the center of the clearing. Tall openings of shattered stained glass windows clearly visible"
+		]
+	},
+	"upkeep":{
+		"type":"choose",
+		"choices":[
+			"The building has been clearly worn down by the elements and time itself. Its a wonder how it is still standing",
+			"Ivy has grown along the stone walls, cracking the stone bricks weathered by time. It appears to have seen better days"
+		]
+	},
+	"door":{
+		"type":"choose",
+		"choices":[
+			"An ornately carved wooden door stands open in the side of the building.",
+			"You can see the building's rotted oak door, half fallen apart."
+		]
+	},
+	"desc":[
+		"$walking.\n$building. $upkeep.\n$door.",
+		"$walking, $walkModifiier.\n$building. $upkeep\n$door."
+	],
+	"aType":"Ruins",
+	"hostilityMin":3,
+	"hostilityMax":5,
+	"eventChance":50,
+	"events":[
+		["event_shrine_ambush", "1d6"]
+	],
+	"hostilityAffectsEnemyChance":true,
+	"enemyChance":35,
+	"enemyPointsPerHostility":2,
+	"enemies":[
+		["enemy_rodentOfUnusualSize", 2],
+		["enemy_wolf", 5]
+	],
+	"npcChance":0,
+	"npcs":[
+	],
+	"minNewAreas":3,
+	"maxNewAreas":6,
+	"areas":[
+		["area_gen_forest_1","2d5", ["required"]],
+		["area_abandoned_church_interior", "1d6", ["required", "limited"]],
+		["area_gen_forest_2","2d5"]
+	]
+}

@@ -28,6 +28,8 @@
         "This has \"drag 'n drop\" mod support!"
     ],
     "areas": [
+        "area_abandoned_church",
+        "area_abandoned_church_interior",
         "area_start_1",
         "area_start_2",
         "area_gen_forest_1",
@@ -63,6 +65,7 @@
         "enemy_bandit",
         "enemy_banditStrong",
         "enemy_bear",
+        "enemy_cultist_basic",
         "enemy_greatWolf",
         "enemy_orc",
         "enemy_orcCaptain",
@@ -82,6 +85,7 @@
         "event_forest_apple",
         "event_cave_wolf_1",
         "event_cave_found_item_1",
+        "event_shrine_ambush",
         "event_tower_forest"
     ],
     "misc": [

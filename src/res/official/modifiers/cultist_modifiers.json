@@ -22,6 +22,19 @@
         "effect": "damage",
         "strength": "1d2-1"
     },
+    "cult_enemy_weak": {
+        "name": [
+            "Tired",
+            "Starved",
+            "Gaunt"
+        ],
+        "desc": [
+            "The cultist appears to be in a weakened state.",
+            "The cultist does not look to be very strong."
+        ],
+        "effect": "damage",
+        "strength": "-1d3"
+    },
     "cult_wep_sharpened": {
         "name": [
             "Sharpened"
