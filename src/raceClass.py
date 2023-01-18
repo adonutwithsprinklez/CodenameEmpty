@@ -235,5 +235,12 @@ class Limb(object):
             self.race = None
         self.armor = None
         self.armorable = True
-        if self.armorable in data.keys():
+        if "armorable" in data.keys():
             self.armorable = data["armorable"]
+        
+    def getArmor(self):
+        if self.armor:
+            return self.armor
+        elif not self.armorable:
+            return "Unequippable"
+        return None

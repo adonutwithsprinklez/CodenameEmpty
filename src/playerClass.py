@@ -44,8 +44,8 @@ class Player(object):
                 self.disp.display("\tYou are not currently wielding a weapon",0)
             self.disp.display("Wearing:")
             for limb in self.race.getLimbsEquippableLimbs():
-                if limb.armor:
-                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor, limb.armor.getDefenceRating()),0)
+                if limb.getArmor():
+                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.getArmor(), limb.armor.getDefenceRating()),0)
                 else:
                     self.disp.display("\t%s - Nothing" % (limb.name),0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
@@ -413,13 +413,15 @@ class Player(object):
         if self.weapon:
             return self.weapon.getAttack()
         else:
+            # TODO: Get racial stuff
             return 0
 
     def getWeaponAction(self):
         if self.weapon:
             return self.weapon.getAction()
         else:
-            return 0
+            # TODO: Get racial stuff
+            return ""
 
     def getArmorDefence(self):
         armorTotal = 0
