@@ -1,16 +1,15 @@
 {
-    "id":"towerEnemies",
+    "id":"forestShrineEnemies",
     "type":"random",
     "name":[
-        "Reaching the Tower",
-        "At the Tower"
+        "Reaching the Shrine",
+        "Ambush At the Ruins"
     ],
     "start":[
-        "#wolves",
-        "#bandits",
+        "#cultists",
         "#bear"
     ],
-    "#wolves":{
+    "#cultists":{
         "msg":[
             ""
         ],
@@ -18,21 +17,7 @@
             {
                 "action":"Prepare yourself for a fight",
                 "eventDo":[
-                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
-                    ["finish"]
-                ]
-            }
-        ]
-    },
-    "#bandits":{
-        "msg":[
-            ""
-        ],
-        "actions":[
-            {
-                "action":"Prepare yourself for a fight",
-                "eventDo":[
-                    ["spawnEnemy",["enemy_bandit", "enemy_bandit", "enemy_bandit","enemy_bandit"]],
+                    ["spawnEnemy",["enemy_cultist_basic", "enemy_cultist_basic", "enemy_cultist_basic"]],
                     ["finish"]
                 ]
             }

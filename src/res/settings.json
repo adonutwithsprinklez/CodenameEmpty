@@ -34,7 +34,7 @@
         [
             "DISABLEENEMIES",
             "Disable Enemy Encounters (Used for debugging)",
-            true
+            false
         ]
     ],
     "DATAPACKSETTINGS": {
