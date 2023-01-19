@@ -340,10 +340,6 @@ class Game(object):
         if self.player.quit:
             return None
 
-        ##### Interacting with an NPC Code #####
-        if self.areaController.getCurrentAreaNPC():
-            self.player.converseNPC(self.areaController.getCurrentAreaNPC())
-
     def displayEventAction(self, message):
         self.disp.clearScreen()
         self.disp.displayHeader(self.areaController.getCurrentAreaEvent().name)
@@ -485,9 +481,63 @@ class Game(object):
                 # UPDATE QUEST INFO
                 self.updateQuestInfo()
                 self.workOnBacklog()
+    
+    def areaHub(self):
+        ''' Acts as the area hub if there are NPCs'''
+        npcList = self.areaController.getCurrentAreaNPCs()
+        if len(npcList) > 0:
+            npcDialogCheck = False
+            while True:
+                self.disp.clearScreen()
+                self.disp.displayHeader(f"{self.areaController.getCurrentAreaName()}")
+                if not npcDialogCheck and random.randint(0,100) > 25:
+                    # Random NPC idle dialog
+                    query = self.generateDialogueQuery("idle")
+                    npc = random.choice(npcList)
+                    npcdialog = npc.getDialogueLine(query)
+                    self.disp.display("You hear someone mutter something.")
+                    self.disp.display(f"{npc.getName()} - \"{npcdialog}\"  ")
+                    self.disp.closeDisplay()
+                    npcDialogCheck = True
+                i = 1
+                self.disp.display("1. Travel")
+                for npc in npcList:
+                    i+=1
+                    npcProfessions = npc.getProfessions()
+                    if len(npcProfessions) > 0:
+                        npcProfessions = ", ".join(npcProfessions).upper()
+                        self.disp.display(f"{i}. [{npcProfessions}] - {npc.getName()}")
+                    else:
+                        self.disp.display(f"{i}. {npc.getName()}")
+                    pass
+                self.disp.display("0. Player Menu")
+                self.disp.closeDisplay()
+                cmd = self.disp.get_input(True)
+                if cmd == 1:
+                    if self.chooseNewArea(True):
+                        return None
+                elif cmd == 0:
+                    self.player.playerMenu(self.currentQuests, self.completedQuests)
+                if self.player.quit:
+                    return None
+            '''
+            query = self.generateDialogueQuery()
+            # Add selections
+            self.player.converseNPC(self.areaController.getCurrentAreaNPCs()[0], query)
+            self.chooseNewArea(False)'''
+        else:
+            return self.chooseNewArea(False)
+    
+    def generateDialogueQuery(self, action = None):
+        query = {
+        }
+        if action:
+            query["isAction"] = action
+        return query
 
-    def chooseNewArea(self):
-        '''This lets the player choose a new area to travel to.'''
+    def chooseNewArea(self, canCancel=True):
+        '''This lets the player choose a new area to travel to.
+           Returns True if travel occured, otherwise False'''
         # Create various area choices:
         choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
@@ -496,9 +546,9 @@ class Game(object):
         travelTypes = self.areaController.getTravelableTypes()
 
         # Allow the player to choose from those places:
-        while not len(travelTypes) < cmd < len(choices) + 1:
+        while not len(travelTypes) < cmd < len(choices) + len(travelTypes) + 1:
             self.disp.clearScreen()
-            self.disp.displayHeader("Where to next?")
+            self.disp.displayHeader("Travel")
             self.disp.display("", 1, 0)
             x = 0
             if len(travelTypes) > 0:
@@ -510,7 +560,10 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %-37s %12s   Hostility - %2d" %
                                   (x, area.name, area.aType, area.hostility), 0)
-            self.disp.display("0. Player Menu")
+            if canCancel:
+                self.disp.display("0. Back")
+            else:
+                self.disp.display("0. Player Menu")
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)
@@ -529,12 +582,15 @@ class Game(object):
             # Load the new area
             if 0 < cmd <= len(travelTypes):
                 if self.chooseLoadedArea(travelTypes[cmd-1]):
-                    return None
+                    return True
             elif cmd == 0:
-                self.player.playerMenu(self.currentQuests, self.completedQuests)
-                if self.player.quit:
-                    # TODO Exit the game completely
-                    return None
+                if canCancel:
+                    return False
+                else:
+                    self.player.playerMenu(self.currentQuests, self.completedQuests)
+                    if self.player.quit:
+                        # TODO Exit the game completely
+                        return False
 
         if cmd > len(travelTypes):
             cmd -= len(travelTypes)
@@ -542,6 +598,8 @@ class Game(object):
                             self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
         
         self.updateTravelInfoForQuests()
+
+        return True
     
     def chooseLoadedArea(self, loadedKey):
         ''' Displays a list of areas that match the loadedKey and are not the current area '''

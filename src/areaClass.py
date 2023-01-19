@@ -19,8 +19,8 @@ class Area(object):
         self.aType = areaType["aType"]
         self.enemy = []
         self.event = None
-        self.npc = None
-        self.npcId = None
+        self.npc = []
+        self.npcId = []
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
         self.revisitable = []
         self.isSafeToTravelTo = []
@@ -100,7 +100,7 @@ class Area(object):
 
         # NPC's not yet implemented
         if random.randint(0,100) < areaType["npcChance"] and len(areaType["npcs"])>0:
-            self.npcId = random.choice(areaType["npcs"])
+            self.npcId = random.choices(areaType["npcs"][::], k=len(areaType["npcs"]))
         
     def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
         areaChoices = areaType["events"][::]
@@ -129,9 +129,11 @@ class Area(object):
             self.enemy = e
         if self.event:
             self.event = Event(events[self.event], self.event)
-        if self.npcId:
-            self.npc = NPC(npcs[self.npcId])
-            self.npc.load(races, dialogue)
+        if len(self.npcId) > 0:
+            for npcid in self.npcId:
+                npc = NPC(npcs[npcid])
+                npc.load(races, dialogue)
+                self.npc.append(npc)
     
     def addEnemy(self, enemy):
         self.enemy.append(enemy)

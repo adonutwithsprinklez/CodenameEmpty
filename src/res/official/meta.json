@@ -62,7 +62,7 @@
         "armor_orcCaptainArmor"
     ],
     "dialogue": [
-        "dialogue_generic"
+        "dialogue_npc_generic"
     ],
     "enemies": [
         "enemy_bandit",

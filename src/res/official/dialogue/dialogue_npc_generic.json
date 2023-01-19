@@ -1,5 +1,10 @@
 {
     "lines":[
+        { "dialogue":"Hmm.", "criteria":[ ["isAction", "idle"] ] },
+        { "dialogue":"Tidings.", "criteria":[ ["isAction", "idle"] ] },
+        { "dialogue":"Afternoon.", "criteria":[ ["isAction", "idle"] ] },
+        { "dialogue":"The weather's been acting strange recently.", "criteria":[ ["isAction", "idle"] ] },
+        { "dialogue":"Mind yourself.", "criteria":[ ["isAction", "idle"], ["npcHasFlag", "tired"] ] },
         { "dialogue":"Welcome, $playerRace.", "criteria":[ ["isAction", "greeting"] ] },
         { "dialogue":"Howdy Human. Been to Oskiris recently?", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "human"], ["notDislike", "human"] ] },
         { "dialogue":"Been a little while since the last time I've seen an Elf in these parts.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "elf"], ["notDislike", "elf"] ] },

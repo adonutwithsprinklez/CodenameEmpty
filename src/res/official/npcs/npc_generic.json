@@ -1,8 +1,12 @@
 {
     "name":{
-        "type":"choose",
+        "type":"choice",
         "choices":[
-            "NPC Guy"
+            "Human NPC",
+            "Elf NPC",
+            "Orc NPC",
+            "Dwarf NPC",
+            "Draktlien NPC"
         ]
     },
     "race":[
@@ -16,7 +20,7 @@
         "Just a generic NPC"
     ],
     "dialogue":[
-        "dialogue_generic"
+        "dialogue_npc_generic"
     ],
     "numItems":"1d6+6",
     "itemPool":[],

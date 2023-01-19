@@ -122,12 +122,10 @@ class Player(object):
             equip = -1
             self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
             self.disp.display("Inspecting:")
-            self.disp.display("\t%s - %s damage" %
-                              (self.inv[cmd-1].name, self.inv[cmd-1].damage), 0)
+            self.disp.display("\t%s - %s damage" % (self.inv[cmd-1].name, self.inv[cmd-1].damage), 0)
             self.disp.display("\t" + self.inv[cmd-1].desc, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("\t%s - %s damage" %
-                              (self.weapon.name, self.weapon.damage), 0)
+            self.disp.display("\t%s - %s damage" % (self.weapon.name, self.weapon.damage), 0)
             self.disp.display("\t" + self.weapon.desc, 0, 1)
             self.disp.display("1. Equip", 0)
             self.disp.display("2. Drop", 0)
@@ -173,10 +171,6 @@ class Player(object):
             armor = self.inv[cmd-1]
             if self.equipArmor(armor):
                 self.inv.pop(cmd-1)
-            '''
-            self.inv.append(self.armor)
-            self.armor = self.inv.pop(cmd-1)
-            '''
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
             self.inv[cmd-1].consumableEffect(self)
             self.inv.pop(cmd-1)
@@ -329,7 +323,8 @@ class Player(object):
                 # TODO Incorrect input notification
                 pass
         
-    def converseNPC(self, npc):
+    def converseNPC(self, npc, query):
+        '''
         query = {
             #"playerIsRace":self.race.getId(),
             "playerIsRace":"drakt",
@@ -337,6 +332,9 @@ class Player(object):
             "dislike":"drakt",
             "otherRandomFlag":"test"
         }
+        '''
+        if "isAction" not in query.keys():
+            query["isAction"] = "greeting"
         self.disp.clearScreen()
         self.disp.displayHeader("NPC Dialog")
         self.disp.display(f"{npc.getDialogueLine(query)}")

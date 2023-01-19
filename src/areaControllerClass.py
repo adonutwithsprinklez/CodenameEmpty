@@ -109,7 +109,7 @@ class AreaController(object):
         ''' Returns the current area event '''
         return self.currentArea.getEvent()
     
-    def getCurrentAreaNPC(self):
+    def getCurrentAreaNPCs(self):
         return self.currentArea.getNPC()
 
     def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):

@@ -30,7 +30,10 @@ class NPC(object):
 			checks = []
 			for criteria in line["criteria"]:
 				if criteria[0] in queryKeys:
-					checks.append(criteria[1] == query[criteria[0]])
+					truthValue = criteria[1] == query[criteria[0]] or criteria[1] in query[criteria[0]]
+					checks.append(truthValue)
+				else:
+					checks.append(False)
 			if "criteriaInverse" in line.keys():
 				for criteria in line["criteriaInverse"]:
 					if criteria[0] not in queryKeys:
