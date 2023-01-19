@@ -22,6 +22,7 @@ class Player(object):
         self.quit = False
         self.tags = []
         self.skills = []
+        self.dialogueFlags = []
         self.stats = {
             "strength":0,
             "vitality":0,
@@ -327,6 +328,20 @@ class Player(object):
             else:
                 # TODO Incorrect input notification
                 pass
+        
+    def converseNPC(self, npc):
+        query = {
+            #"playerIsRace":self.race.getId(),
+            "playerIsRace":"drakt",
+            "isAction":"greeting",
+            "dislike":"drakt",
+            "otherRandomFlag":"test"
+        }
+        self.disp.clearScreen()
+        self.disp.displayHeader("NPC Dialog")
+        self.disp.display(f"{npc.getDialogueLine(query)}")
+        self.disp.closeDisplay()
+        cmd = self.disp.get_input(True, True, True)
     
     def giveXP(self, xp):
         ''' Gives the player the passed amount of experience. '''

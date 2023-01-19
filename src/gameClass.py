@@ -99,27 +99,27 @@ class Game(object):
                 # it's waaay too cluttered.
                 for w in self.packs[pack]["weapons"]:
                     self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
-                    self.disp.dprint("\t\tLoaded asset %s" % w)
+                    self.disp.dprint("\t\tLoaded Weapon %s" % w)
                 for a in self.packs[pack]["armor"]:
                     self.armor[a] = loadJson("%s%s/armor/%s.json" % (folder, pack, a))
-                    self.disp.dprint("\t\tLoaded asset %s" % a)
+                    self.disp.dprint("\t\tLoaded Armor %s" % a)
                 for m in self.packs[pack]["misc"]:
                     self.misc[m] = loadJson("%s%s/misc/%s.json" % (folder, pack, m))
-                    self.disp.dprint("\t\tLoaded asset %s" % m)
+                    self.disp.dprint("\t\tLoaded Misc %s" % m)
                 for a in self.packs[pack]["areas"]:
                     self.areas[a] = loadJson("%s%s/areas/%s.json" % (folder, pack, a))
                     if "injectArea" in self.areas[a].keys():
                         for aKey in self.areas[a]["injectArea"].keys():
                             injectData = [a] + self.areas[a]["injectArea"][aKey]
                             self.areas[aKey]["areas"].append(injectData)
-                    self.disp.dprint("\t\tLoaded asset %s" % a)
+                    self.disp.dprint("\t\tLoaded Area %s" % a)
                 for r in self.packs[pack]["races"]:
                     raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
                     self.races[raceData["id"]] = raceData
-                    self.disp.dprint("\t\tLoaded asset %s" % r)
+                    self.disp.dprint("\t\tLoaded Race %s" % r)
                 for n in self.packs[pack]["npcs"]:
                     self.npcs[n] = loadJson("%s%s/npcs/%s.json" % (folder, pack, n))
-                    self.disp.dprint("\t\tLoaded asset %s" % n)
+                    self.disp.dprint("\t\tLoaded NPC %s" % n)
                 for e in self.packs[pack]["enemies"]:
                     self.enemies[e] = loadJson("%s%s/enemies/%s.json" % (folder, pack, e))
                     if "injectArea" in self.enemies[e].keys():
@@ -131,10 +131,10 @@ class Game(object):
                                                                       self.enemies[e]["areaMinEnemyChance"])
                             if "areaEnemyPointsPerHostility" in self.enemies[e].keys():
                                 self.areas[injection[0]]["enemyPointsPerHostility"] = self.enemies[e]["areaEnemyPointsPerHostility"]
-                    self.disp.dprint("\t\tLoaded asset %s" % e)
+                    self.disp.dprint("\t\tLoaded Enemy %s" % e)
                 for q in self.packs[pack]["quests"]:
                     self.quests[q] = loadJson("%s%s/quests/%s.json" % (folder, pack, q))
-                    self.disp.dprint("\t\tLoaded asset %s" % q)
+                    self.disp.dprint("\t\tLoaded Quest %s" % q)
                 for e in self.packs[pack]["events"]:
                     self.events[e] = loadJson("%s%s/events/%s.json" % (folder, pack, e))
                     if "injectArea" in self.events[e].keys():
@@ -144,12 +144,20 @@ class Game(object):
                             if "injectAreaMinChance" in self.events[e].keys():
                                 self.areas[aKey]["eventChance"] = max(self.areas[aKey]["eventChance"],
                                                                       self.events[e]["injectAreaMinChance"])
-                    self.disp.dprint("\t\tLoaded asset %s" % e)
+                    self.disp.dprint("\t\tLoaded Event %s" % e)
                 for m in self.packs[pack]["modifiers"]:
                     mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
                     for mod in mods.keys():
                         self.modifiers[mod] = Modifier(mod, mods[mod])
-                    self.disp.dprint("\t\tLoaded asset %s" % m)
+                    self.disp.dprint("\t\tLoaded Modifier %s" % m)
+                for d in self.packs[pack]["dialogue"]:
+                    dialogueData = loadJson("%s%s/dialogue/%s.json" % (folder, pack, d))
+                    if "additionalDialogue" in dialogueData["flags"]:
+                        for line in dialogueData["additionalDialogue"]:
+                            self.dialogue[d]["lines"].append(line)
+                    else:
+                        self.dialogue[d] = dialogueData
+                    self.disp.dprint("\t\tLoaded Dialogue %s" % d)
                 print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -174,10 +182,10 @@ class Game(object):
     def loadStartingArea(self):
         if self.gameSettings["TUTORIALAREA"]:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
         else:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
 
     def loadPlayer(self):
 
@@ -223,6 +231,7 @@ class Game(object):
         self.npcs = {}
         self.enemies = {}
         self.modifiers = {}
+        self.dialogue = {}
 
         self.possibleQuests = []
         self.currentQuests = []
@@ -332,12 +341,8 @@ class Game(object):
             return None
 
         ##### Interacting with an NPC Code #####
-        '''
-        if self.currentArea.npc:
-            self.disp.clearScreen()
-            self.disp.displayHeader(self.currentArea.npc.name)
-            self.disp.display(self.currentArea.npc)
-        '''
+        if self.areaController.getCurrentAreaNPC():
+            self.player.converseNPC(self.areaController.getCurrentAreaNPC())
 
     def displayEventAction(self, message):
         self.disp.clearScreen()
@@ -534,7 +539,7 @@ class Game(object):
         if cmd > len(travelTypes):
             cmd -= len(travelTypes)
         self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
-                            self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+                            self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
         
         self.updateTravelInfoForQuests()
     

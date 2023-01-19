@@ -61,6 +61,9 @@
         "armor_orcArmor",
         "armor_orcCaptainArmor"
     ],
+    "dialogue": [
+        "dialogue_generic"
+    ],
     "enemies": [
         "enemy_bandit",
         "enemy_banditStrong",
@@ -106,7 +109,9 @@
         "forest_spirit",
         "weapon_modifiers"
     ],
-    "npcs": [],
+    "npcs": [
+        "npc_generic"
+    ],
     "quests": [
         "quest_beginnings"
     ],

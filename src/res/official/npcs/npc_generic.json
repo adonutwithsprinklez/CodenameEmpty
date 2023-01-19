@@ -1,0 +1,29 @@
+{
+    "name":{
+        "type":"choose",
+        "choices":[
+            "NPC Guy"
+        ]
+    },
+    "race":[
+        "human"
+    ],
+    "numProfessions":"1d2-1",
+    "professionPool":[
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_generic"
+    ],
+    "numItems":"1d6+6",
+    "itemPool":[],
+    "numFlags":"1d3",
+    "flagPool":[
+        "tired",
+        "short",
+        "busy"
+    ]
+}

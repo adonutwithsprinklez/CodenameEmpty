@@ -5,6 +5,7 @@ import math
 from dieClass import rollDice
 from enemyClass import Enemy
 from eventClass import Event
+from npcClass import NPC
 from textGeneration import generateString
 
 class Area(object):
@@ -19,6 +20,7 @@ class Area(object):
         self.enemy = []
         self.event = None
         self.npc = None
+        self.npcId = None
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
         self.revisitable = []
         self.isSafeToTravelTo = []
@@ -97,9 +99,8 @@ class Area(object):
         '''
 
         # NPC's not yet implemented
-        chance = random.randint(0,areaType["npcChance"])
-        if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
-            self.npc = random.choice(areaType["npcs"])
+        if random.randint(0,100) < areaType["npcChance"] and len(areaType["npcs"])>0:
+            self.npcId = random.choice(areaType["npcs"])
         
     def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
         areaChoices = areaType["events"][::]
@@ -118,7 +119,7 @@ class Area(object):
                 highRoll = newRoll
         return currentEvent[0]
 
-    def load(self,weapons,armor,misc,enemies,npcs,events,modifiers):
+    def load(self,weapons,armor,misc,enemies,races,npcs,events,modifiers, dialogue):
         # Loads in the enemies and events with any objects that they may need
         if self.enemy != []:
             e = []
@@ -128,6 +129,9 @@ class Area(object):
             self.enemy = e
         if self.event:
             self.event = Event(events[self.event], self.event)
+        if self.npcId:
+            self.npc = NPC(npcs[self.npcId])
+            self.npc.load(races, dialogue)
     
     def addEnemy(self, enemy):
         self.enemy.append(enemy)
@@ -157,6 +161,9 @@ class Area(object):
     
     def getEvent(self):
         return self.event
+    
+    def getNPC(self):
+        return self.npc
     
     def getRevisitable(self):
         return self.revisitable

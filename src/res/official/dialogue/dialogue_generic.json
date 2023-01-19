@@ -1,0 +1,14 @@
+{
+    "lines":[
+        { "dialogue":"Welcome, $playerRace.", "criteria":[ ["isAction", "greeting"] ] },
+        { "dialogue":"Howdy Human. Been to Oskiris recently?", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "human"], ["notDislike", "human"] ] },
+        { "dialogue":"Been a little while since the last time I've seen an Elf in these parts.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "elf"], ["notDislike", "elf"] ] },
+        { "dialogue":"Master Dwarf. Mines been treating you well I assume?", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "dwarf"], ["notDislike", "dwarf"] ] },
+        { "dialogue":"Welcome, Orc.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "orc"], ["notDislike", "orc"] ] },
+        { "dialogue":"Lizard, you're a bit further south than usual.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "drakt"] ], "criteriaInverse":[ ["dislike", "drakt"] ] },
+        { "dialogue":"Watch yourself Lizard.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "drakt"], ["dislike", "drakt"] ] },
+        { "dialogue":"Here's what I got.", "criteria":[ ["isAction", "shop"] ] },
+        { "dialogue":"Until next time then.", "criteria":[ ["isAction", "goodbye"] ] }
+    ],
+    "flags":[]
+}
