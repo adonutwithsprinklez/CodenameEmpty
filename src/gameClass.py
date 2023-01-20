@@ -503,31 +503,28 @@ class Game(object):
                     self.disp.closeDisplay()
                     npcDialogCheck = True
                 i = 1
-                self.disp.display("1. Travel")
+                self.disp.display("1. Travel", 1, 1)
                 for npc in npcList:
                     i+=1
                     npcProfessions = npc.getProfessions()
                     if len(npcProfessions) > 0:
                         npcProfessions = ", ".join(npcProfessions).upper()
-                        self.disp.display(f"{i}. [{npcProfessions}] - {npc.getName()}")
+                        self.disp.display(f"{i}. [{npcProfessions}] - {npc.getName()}", 0)
                     else:
-                        self.disp.display(f"{i}. {npc.getName()}")
+                        self.disp.display(f"{i}. {npc.getName()}",0)
                     pass
                 self.disp.display("0. Player Menu")
                 self.disp.closeDisplay()
                 cmd = self.disp.get_input(True)
-                if cmd == 1:
+                if 2 <= cmd <= 2+len(npcList):
+                    self.player.converseNPC(npcList[cmd-2], self.generateDialogueQuery())
+                elif cmd == 1:
                     if self.chooseNewArea(True):
                         return None
                 elif cmd == 0:
                     self.player.playerMenu(self.currentQuests, self.completedQuests)
                 if self.player.quit:
                     return None
-            '''
-            query = self.generateDialogueQuery()
-            # Add selections
-            self.player.converseNPC(self.areaController.getCurrentAreaNPCs()[0], query)
-            self.chooseNewArea(False)'''
         else:
             return self.chooseNewArea(False)
     

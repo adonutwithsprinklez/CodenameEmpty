@@ -3,6 +3,7 @@
         { "dialogue":"Hmm.", "criteria":[ ["isAction", "=", "idle"] ] },
         { "dialogue":"Tidings.", "criteria":[ ["isAction", "=", "idle"] ] },
         { "dialogue":"Afternoon.", "criteria":[ ["isAction", "=", "idle"] ] },
+        { "dialogue":"*Coughs*. Damn colds.", "criteria":[ ["isAction", "=", "idle"], ["npcFlags", "has", "sick"] ], "weight":3 },
         { "dialogue":"The weather's been acting strange recently.", "criteria":[ ["isAction", "=", "idle"] ] },
         { "dialogue":"Lizards this far south?", "criteria":[ ["isAction", "=", "idle"], ["playerRace", "=", "drakt"], ["npcRace", "!=", "drakt"] ] },
         { "dialogue":"Mind yourself.", "criteria":[ ["isAction", "=", "idle"], ["npcHasFlag", "=", "tired"] ] },
@@ -14,7 +15,12 @@
         { "dialogue":"Lizard, you're a bit further south than usual.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"] ] },
         { "dialogue":"Watch yourself Lizard.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"], ["npcIsRace", "!=", "drakt"] ] },
         { "dialogue":"Here's what I got.", "criteria":[ ["isAction", "=", "shop"] ] },
-        { "dialogue":"Until next time then.", "criteria":[ ["isAction", "=", "goodbye"] ] }
+        { "dialogue":"Feel free to browse my goods.", "criteria":[ ["isAction", "=", "shop"] ] },
+        { "dialogue":"You're welcome to look at what I've got, just don't waste my time.", "criteria":[ ["isAction", "=", "shop"], ["npcFlags", "has", "busy"] ], "weight":3 },
+        { "dialogue":"*Yawns*. Of course, feel free to browse.", "criteria":[ ["isAction", "=", "shop"], ["npcFlags", "has", "tired"] ], "weight":3 },
+        { "dialogue":"Until next time then.", "criteria":[ ["isAction", "=", "goodbye"] ] },
+        { "dialogue":"May the Five smile upon you.", "criteria":[ ["isAction", "=", "goodbye"], ["npcFlags", "has", "religious"] ], "weight":3 },
+        { "dialogue":"Safe travels.", "criteria":[ ["isAction", "=", "goodbye"] ] }
     ],
     "flags":[]
 }

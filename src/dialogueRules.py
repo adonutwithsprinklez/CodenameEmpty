@@ -11,15 +11,27 @@ def _evaluateGreaterThanRule(criteria, query):
 def _evaluateLessThanRule(criteria, query):
     return criteria < query
 
+def _evaluateGreaterThanEqualRule(criteria, query):
+    return criteria >= query
+
+def _evaluateLessThanEqualRule(criteria, query):
+    return criteria <= query
+
 def _evaluateHasRule(criteria, query):
     return criteria in query
+
+def _evaluateNotHasRule(criteria, query):
+    return not criteria in query
 
 TRUTHRULES = {
     "=":_evaluateEqualsRule,
     "!=":_evaluateNotEqualsRule,
     ">":_evaluateGreaterThanRule,
     "<":_evaluateLessThanRule,
-    "has":_evaluateHasRule
+    ">=":_evaluateGreaterThanEqualRule,
+    "<=":_evaluateLessThanEqualRule,
+    "has":_evaluateHasRule,
+    "nothas":_evaluateNotHasRule
 }
 
 def evaluateDialogueLine(criteriaList, query):
@@ -39,8 +51,15 @@ def evaluateDialogueLine(criteriaList, query):
     return all(truthTable)
 
 def getSatisfactoryDialogueLines(lines, query):
-    satisfactoryLines = []
+    satisfactoryLines = {
+        "lines":[],
+        "weights":[]
+    }
     for line in lines:
         if evaluateDialogueLine(line["criteria"], query):
-            satisfactoryLines.append(line)
+            satisfactoryLines["lines"].append(line)
+            if "weight" in line.keys():
+                satisfactoryLines["weights"].append(line["weight"])
+            else:
+                satisfactoryLines["weights"].append(1)
     return satisfactoryLines

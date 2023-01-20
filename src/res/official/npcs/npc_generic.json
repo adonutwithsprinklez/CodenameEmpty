@@ -27,7 +27,8 @@
     "numFlags":"1d3",
     "flagPool":[
         "tired",
-        "short",
-        "busy"
+        "busy",
+        "religious",
+        "sick"
     ]
 }

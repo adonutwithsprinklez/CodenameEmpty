@@ -306,7 +306,6 @@ class Player(object):
             self.disp.display("1. No, Don't Quit", 0)
             self.disp.closeDisplay()
             try:
-                # cmd = int(input())
                 cmd = self.disp.get_input(True)
             except:
                 cmd = -1
@@ -324,15 +323,29 @@ class Player(object):
                 pass
         
     def converseNPC(self, npc, query):
+        action = "greeting"
+        conversing = True
+        while conversing:
+            playerQuery = self.getPlayerQuery()
+            fullQuery = {**query, **playerQuery}
+            fullQuery["isAction"] = action
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"Conversing with {npc.getName()}")
+            self.disp.display(f"{npc.getDialogueLine(fullQuery)}")
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True, True, True)
+            conversing = False
+        
+        # End conversation
         playerQuery = self.getPlayerQuery()
         fullQuery = {**query, **playerQuery}
-        if "isAction" not in query.keys():
-            query["isAction"] = "greeting"
+        fullQuery["isAction"] = "goodbye"
+
         self.disp.clearScreen()
-        self.disp.displayHeader("NPC Dialog")
+        self.disp.displayHeader(f"Conversing with {npc.getName()}")
         self.disp.display(f"{npc.getDialogueLine(fullQuery)}")
         self.disp.closeDisplay()
-        cmd = self.disp.get_input(True, True, True)
+        self.disp.wait_for_enter()
     
     def getPlayerQuery(self):
         playerQuery = {

@@ -12,14 +12,14 @@ class NPC(object):
 		else:
 			self.name = "Unloaded"
 		self.race = random.choice(data["race"])
-		self.professions = random.choices(data["professionPool"][::], k=rollDice(data["numProfessions"]))
+		self.professions = random.sample(data["professionPool"][::], k=rollDice(data["numProfessions"]))
 		self.description = random.choice(data["description"])
 		self.dialogueIds = data["dialogue"][::]
 		self.dialogue = []
 		self.numItems = data["numItems"]
 		self.inventory = []
 		self.itemPool = data["itemPool"]
-		self.flags = random.choices(data["flagPool"], k=rollDice(data["numFlags"]))
+		self.flags = random.sample(data["flagPool"], k=rollDice(data["numFlags"]))
 		self.loaded = False
 	
 	def load(self, race, dialogue):
@@ -32,9 +32,13 @@ class NPC(object):
 	def getDialogueLine(self, query):
 		fullQuery = {**query, **self.getSelfQuery()}
 		possibleDialog = getSatisfactoryDialogueLines(self.dialogue, fullQuery)
+		print("\nFinal stuff:")
 		print(fullQuery)
 		print(possibleDialog)
-		return random.choice(possibleDialog)["dialogue"]
+		if len(possibleDialog["lines"]) > 0:
+			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]["dialogue"]
+		else:
+			return "ERR - No dialog line found"
 	
 	def getSelfQuery(self):
 		return {
