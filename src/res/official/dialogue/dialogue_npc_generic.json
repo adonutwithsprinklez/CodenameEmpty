@@ -1,19 +1,20 @@
 {
     "lines":[
-        { "dialogue":"Hmm.", "criteria":[ ["isAction", "idle"] ] },
-        { "dialogue":"Tidings.", "criteria":[ ["isAction", "idle"] ] },
-        { "dialogue":"Afternoon.", "criteria":[ ["isAction", "idle"] ] },
-        { "dialogue":"The weather's been acting strange recently.", "criteria":[ ["isAction", "idle"] ] },
-        { "dialogue":"Mind yourself.", "criteria":[ ["isAction", "idle"], ["npcHasFlag", "tired"] ] },
-        { "dialogue":"Welcome, $playerRace.", "criteria":[ ["isAction", "greeting"] ] },
-        { "dialogue":"Howdy Human. Been to Oskiris recently?", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "human"], ["notDislike", "human"] ] },
-        { "dialogue":"Been a little while since the last time I've seen an Elf in these parts.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "elf"], ["notDislike", "elf"] ] },
-        { "dialogue":"Master Dwarf. Mines been treating you well I assume?", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "dwarf"], ["notDislike", "dwarf"] ] },
-        { "dialogue":"Welcome, Orc.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "orc"], ["notDislike", "orc"] ] },
-        { "dialogue":"Lizard, you're a bit further south than usual.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "drakt"] ], "criteriaInverse":[ ["dislike", "drakt"] ] },
-        { "dialogue":"Watch yourself Lizard.", "criteria":[ ["isAction", "greeting"], ["playerIsRace", "drakt"], ["dislike", "drakt"] ] },
-        { "dialogue":"Here's what I got.", "criteria":[ ["isAction", "shop"] ] },
-        { "dialogue":"Until next time then.", "criteria":[ ["isAction", "goodbye"] ] }
+        { "dialogue":"Hmm.", "criteria":[ ["isAction", "=", "idle"] ] },
+        { "dialogue":"Tidings.", "criteria":[ ["isAction", "=", "idle"] ] },
+        { "dialogue":"Afternoon.", "criteria":[ ["isAction", "=", "idle"] ] },
+        { "dialogue":"The weather's been acting strange recently.", "criteria":[ ["isAction", "=", "idle"] ] },
+        { "dialogue":"Lizards this far south?", "criteria":[ ["isAction", "=", "idle"], ["playerRace", "=", "drakt"], ["npcRace", "!=", "drakt"] ] },
+        { "dialogue":"Mind yourself.", "criteria":[ ["isAction", "=", "idle"], ["npcHasFlag", "=", "tired"] ] },
+        { "dialogue":"Welcome, $playerRace.", "criteria":[ ["isAction", "=", "greeting"] ] },
+        { "dialogue":"Howdy Human. Been to Oskiris recently?", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "human"] ] },
+        { "dialogue":"Been a little while since the last time I've seen an Elf in these parts.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "elf"] ] },
+        { "dialogue":"Master Dwarf. Mines been treating you well I assume?", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "dwarf"] ] },
+        { "dialogue":"Welcome, Orc.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "orc"], ["npcIsRace", "!=", "orc"] ] },
+        { "dialogue":"Lizard, you're a bit further south than usual.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"] ] },
+        { "dialogue":"Watch yourself Lizard.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"], ["npcIsRace", "!=", "drakt"] ] },
+        { "dialogue":"Here's what I got.", "criteria":[ ["isAction", "=", "shop"] ] },
+        { "dialogue":"Until next time then.", "criteria":[ ["isAction", "=", "goodbye"] ] }
     ],
     "flags":[]
 }

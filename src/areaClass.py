@@ -24,6 +24,7 @@ class Area(object):
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
         self.revisitable = []
         self.isSafeToTravelTo = []
+        self.needToFight = False
 
         self.kwargs = kwargs
         
@@ -74,6 +75,7 @@ class Area(object):
                                 enemies.append(enemyid)
                 attempts += 1
             self.enemy = enemies
+            self.needToFight = True
 
         # Optional Area data tags
         datakeys = areaType.keys()
@@ -99,8 +101,9 @@ class Area(object):
         '''
 
         # NPC's not yet implemented
-        if random.randint(0,100) < areaType["npcChance"] and len(areaType["npcs"])>0:
-            self.npcId = random.choices(areaType["npcs"][::], k=len(areaType["npcs"]))
+        numNPCs = rollDice(areaType["npcChance"])
+        if numNPCs > 0 and len(areaType["npcs"])>0:
+            self.npcId = random.choices(areaType["npcs"][::], k=numNPCs)
         
     def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
         areaChoices = areaType["events"][::]
@@ -119,7 +122,7 @@ class Area(object):
                 highRoll = newRoll
         return currentEvent[0]
 
-    def load(self,weapons,armor,misc,enemies,races,npcs,events,modifiers, dialogue):
+    def load(self,weapons,armor,misc,enemies,races,npcs,events,modifiers,dialogue):
         # Loads in the enemies and events with any objects that they may need
         if self.enemy != []:
             e = []
@@ -130,13 +133,18 @@ class Area(object):
         if self.event:
             self.event = Event(events[self.event], self.event)
         if len(self.npcId) > 0:
+            print(self.npcId)
             for npcid in self.npcId:
-                npc = NPC(npcs[npcid])
+                npc = NPC(npcs[npcid], npcid)
                 npc.load(races, dialogue)
                 self.npc.append(npc)
     
     def addEnemy(self, enemy):
         self.enemy.append(enemy)
+        self.needToFight = True
+    
+    def foughtEnemies(self):
+        self.needToFight = False
         
     
     # GETTERS
@@ -172,6 +180,9 @@ class Area(object):
     
     def getIsSafeToTravelTo(self):
         return self.isSafeToTravelTo
+    
+    def getNeedToFight(self):
+        return self.needToFight
     
     def __str__(self):
         return "Area ID: " + self.getAreaId() + " | Title: " + self.getName()

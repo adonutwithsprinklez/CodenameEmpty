@@ -60,7 +60,7 @@
 		["enemy_wolf",3],
 		["enemy_greatWolf",7]
 	],
-	"npcChance":100,
+	"npcChance":"+1",
 	"npcs":[
 		"npc_generic"
 	],

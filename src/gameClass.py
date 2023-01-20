@@ -263,7 +263,7 @@ class Game(object):
         for desc in self.areaController.getCurrentAreaDesc().split("\n"):
             self.disp.display(desc)
         # Display enemies that are in the area (if there are any)
-        if self.areaController.getCurrentAreaHasEnemies():
+        if self.areaController.getCurrentAreaHasEnemies() and self.areaController.getCurrentAreaNeedToFight():
             self.disp.closeDisplay()
             enemyMessage = "You can see enemies in the distance:"
             if self.areaController.getCurrentAreaEnemyMessage() != None:
@@ -337,6 +337,7 @@ class Game(object):
             self.areaController.clearEvent()
 
         self.fightEnemies()
+        self.areaController.foughtCurrentAreaEnemies()
         if self.player.quit:
             return None
 
@@ -350,7 +351,7 @@ class Game(object):
 
     def fightEnemies(self):
         ##### Fighting Code #####
-        if self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]:
+        if self.areaController.getCurrentAreaNeedToFight() and self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]:
             self.disp.clearScreen()
             for areaEnemy in self.areaController.getCurrentAreaEnemies():
                 enemyhp = areaEnemy.getHealth()
@@ -493,8 +494,10 @@ class Game(object):
                 if not npcDialogCheck and random.randint(0,100) > 25:
                     # Random NPC idle dialog
                     query = self.generateDialogueQuery("idle")
+                    playerQuery = self.player.getPlayerQuery()
+                    fullQuery = {**query, **playerQuery}
                     npc = random.choice(npcList)
-                    npcdialog = npc.getDialogueLine(query)
+                    npcdialog = npc.getDialogueLine(fullQuery)
                     self.disp.display("You hear someone mutter something.")
                     self.disp.display(f"{npc.getName()} - \"{npcdialog}\"  ")
                     self.disp.closeDisplay()
@@ -530,6 +533,9 @@ class Game(object):
     
     def generateDialogueQuery(self, action = None):
         query = {
+            "inAreaId":self.areaController.getCurrentAreaId(),
+            "inAreaType":self.areaController.getCurrentAreaType()#,
+            #"inAreaMinHostility":
         }
         if action:
             query["isAction"] = action

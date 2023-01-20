@@ -25,6 +25,7 @@ class AreaController(object):
         ''' Generates the starting area for the game. '''
         self.generateArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
         self.currentArea.enemy = [] # Make sure no enemies spawn in the starting area
+        self.currentArea.foughtEnemies()
 
     def generateArea(self, areaType=None, weapons=None, armor=None, misc=None, enemies=None,
                      races=None, npcs=None, events=None, modifiers=None, dialogue=None):
@@ -58,6 +59,9 @@ class AreaController(object):
     def addEnemyToCurrentArea(self, enemy):
         ''' Adds the passed enemy to the list of enemies in the current area '''
         self.currentArea.addEnemy(enemy)
+    
+    def foughtCurrentAreaEnemies(self):
+        self.currentArea.foughtEnemies()
 
     # GETTERS
     # Getters for current Area Data
@@ -104,6 +108,9 @@ class AreaController(object):
             if event.eventType != "flavor" or not onlyNonFlavorTextEvents:
                 return True
         return False
+    
+    def getCurrentAreaNeedToFight(self):
+        return self.currentArea.getNeedToFight()
 
     def getCurrentAreaEvent(self):
         ''' Returns the current area event '''

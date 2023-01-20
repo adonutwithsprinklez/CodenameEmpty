@@ -1,9 +1,12 @@
 import random
 
+from dialogueRules import getSatisfactoryDialogueLines
 from dieClass import rollDice
+from raceClass import Race
 
 class NPC(object):
-	def __init__(self,data):
+	def __init__(self,data, npcId = "NO NPC ID PROVIDED"):
+		self.npcId = npcId
 		if data["name"]["type"] == "choice":
 			self.name = random.choice(data["name"]["choices"])
 		else:
@@ -17,41 +20,43 @@ class NPC(object):
 		self.inventory = []
 		self.itemPool = data["itemPool"]
 		self.flags = random.choices(data["flagPool"], k=rollDice(data["numFlags"]))
+		self.loaded = False
 	
 	def load(self, race, dialogue):
+		self.race = Race(race[self.race])
 		for dialogId in self.dialogueIds:
 			self.dialogue.extend(dialogue[dialogId]["lines"])
+		self.loaded = True
 	
 	# Dialog stuff
 	def getDialogueLine(self, query):
-		possibleDialog = []
-		queryKeys = query.keys()
-		for line in self.dialogue:
-			checks = []
-			for criteria in line["criteria"]:
-				if criteria[0] in queryKeys:
-					truthValue = criteria[1] == query[criteria[0]] or criteria[1] in query[criteria[0]]
-					checks.append(truthValue)
-				else:
-					checks.append(False)
-			if "criteriaInverse" in line.keys():
-				for criteria in line["criteriaInverse"]:
-					if criteria[0] not in queryKeys:
-						checks.append(True)
-					else:
-						checks.append(criteria[1] != query[criteria[0]])
-			if all(checks):
-				possibleDialog.append(line)
+		fullQuery = {**query, **self.getSelfQuery()}
+		possibleDialog = getSatisfactoryDialogueLines(self.dialogue, fullQuery)
+		print(fullQuery)
 		print(possibleDialog)
 		return random.choice(possibleDialog)["dialogue"]
+	
+	def getSelfQuery(self):
+		return {
+			"npcProfessions":self.getProfessions(),
+			"npcFlags":self.getFlags(),
+			"npcId":self.getId(),
+			"npcRace":self.getRaceName()
+		}
 
 	# Getters
+
+	def getId(self):
+		return self.npcId
 
 	def getName(self):
 		return self.name
 
-	def getRace(self):
+	def getRaceData(self):
 		return self.race
+	
+	def getRaceName(self):
+		return self.race.getId()
 
 	def getProfessions(self):
 		return self.professions

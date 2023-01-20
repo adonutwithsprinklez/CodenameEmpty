@@ -324,22 +324,27 @@ class Player(object):
                 pass
         
     def converseNPC(self, npc, query):
-        '''
-        query = {
-            #"playerIsRace":self.race.getId(),
-            "playerIsRace":"drakt",
-            "isAction":"greeting",
-            "dislike":"drakt",
-            "otherRandomFlag":"test"
-        }
-        '''
+        playerQuery = self.getPlayerQuery()
+        fullQuery = {**query, **playerQuery}
         if "isAction" not in query.keys():
             query["isAction"] = "greeting"
         self.disp.clearScreen()
         self.disp.displayHeader("NPC Dialog")
-        self.disp.display(f"{npc.getDialogueLine(query)}")
+        self.disp.display(f"{npc.getDialogueLine(fullQuery)}")
         self.disp.closeDisplay()
         cmd = self.disp.get_input(True, True, True)
+    
+    def getPlayerQuery(self):
+        playerQuery = {
+            "playerRace":self.race.getId(),
+            "playerGold":self.gold,
+            "playerLevel":self.level,
+            "playerHealth":self.hp,
+            "playerHealthPercentage":self.getHpPercentage(),
+            "playerPerks":self.perks,
+            "playerTags":self.tags
+        }
+        return playerQuery
     
     def giveXP(self, xp):
         ''' Gives the player the passed amount of experience. '''
@@ -421,6 +426,9 @@ class Player(object):
 
     def getHealth(self):
         return int(((1.0*self.hp)/self.getMaxHP())*68 + 0.5)
+    
+    def getHpPercentage(self):
+        return int(((1.0*self.hp)/self.getMaxHP())*100)
 
     def getWeaponDamage(self):
         if self.weapon:

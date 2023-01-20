@@ -65,7 +65,7 @@
 		["enemy_greatWolf",8],
 		["enemy_bear",11]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[
 	],
 	"minNewAreas":3,

@@ -41,7 +41,7 @@
 	"enemyMessage":[""],
 	"enemyPointsPerHostility":1,
 	"enemies":[],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[],
 	"minNewAreas":1,
 	"maxNewAreas":1,

@@ -59,7 +59,7 @@
 		["enemy_bandit",6],
 		["enemy_greatWolf",8]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[],
 	"minNewAreas":2,
 	"maxNewAreas":6,
