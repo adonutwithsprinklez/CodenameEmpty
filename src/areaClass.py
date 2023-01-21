@@ -87,23 +87,14 @@ class Area(object):
         if "safeToTravel" in datakeys:
             self.isSafeToTravelTo = areaType["safeToTravel"]
 
-        '''
-        chance = areaType["enemyChance"]
-        enemies = []
-        c = math.pow(15,(self.hostility-2.0)/10.0)
-        for enemy, echance in areaType["enemies"]:
-            enemies+=[enemy]*echance
-        for i in range(0,10):
-            if len(self.enemy)<self.hostility:
-                x = random.random()*chance
-                if x<c:
-                    self.enemy.append(random.choice(enemies))
-        '''
-
-        # NPC's not yet implemented
+        self.idleDialogChance = 0
         numNPCs = rollDice(areaType["npcChance"])
         if numNPCs > 0 and len(areaType["npcs"])>0:
             self.npcId = random.choices(areaType["npcs"][::], k=numNPCs)
+            if "idleDialogChance" in areaType.keys():
+                self.idleDialogChance = areaType["idleDialogChance"]
+            else:
+                self.idleDialogChance = 50
         
     def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
         areaChoices = areaType["events"][::]
@@ -136,7 +127,7 @@ class Area(object):
             print(self.npcId)
             for npcid in self.npcId:
                 npc = NPC(npcs[npcid], npcid)
-                npc.load(races, dialogue)
+                npc.load(races, dialogue, armor, misc, weapons, modifiers)
                 self.npc.append(npc)
     
     def addEnemy(self, enemy):
@@ -183,6 +174,9 @@ class Area(object):
     
     def getNeedToFight(self):
         return self.needToFight
+    
+    def getIdleDialogChance(self):
+        return self.idleDialogChance
     
     def __str__(self):
         return "Area ID: " + self.getAreaId() + " | Title: " + self.getName()

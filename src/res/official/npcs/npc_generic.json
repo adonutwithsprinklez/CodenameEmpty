@@ -2,11 +2,7 @@
     "name":{
         "type":"choice",
         "choices":[
-            "Human NPC",
-            "Elf NPC",
-            "Orc NPC",
-            "Dwarf NPC",
-            "Draktlien NPC"
+            "Human NPC"
         ]
     },
     "race":[
@@ -22,8 +18,24 @@
     "dialogue":[
         "dialogue_npc_generic"
     ],
-    "numItems":"1d6+6",
-    "itemPool":[],
+    "numItems":"1d3+5",
+    "itemPool":[
+        ["armor_starting_armor", 2],
+        ["armor_huntersGarmets", 2],
+        ["armor_hideArmor", 2],
+        ["armor_ironArmor", 1],
+        ["consumable_apple", 3],
+        ["consumable_potion_health", 5],
+        ["weapon_butcherknife", 1],
+        ["weapon_castironskillet", 1],
+        ["weapon_ironSword", 2],
+        ["weapon_shovel", 2],
+        ["weapon_club", 2],
+        ["weapon_steelSword", 1]
+    ],
+    "interestedInBuying":[
+
+    ],
     "numFlags":"1d3",
     "flagPool":[
         "tired",

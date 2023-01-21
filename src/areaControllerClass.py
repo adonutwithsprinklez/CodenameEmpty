@@ -118,6 +118,9 @@ class AreaController(object):
     
     def getCurrentAreaNPCs(self):
         return self.currentArea.getNPC()
+    
+    def getCurrentAreaIdleDialogChance(self):
+        return self.currentArea.getIdleDialogChance()
 
     def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
         ''' Generates a list of exits for the user to travel to next, based on the current area '''

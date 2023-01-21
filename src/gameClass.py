@@ -12,7 +12,7 @@ from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
 from enemyClass import Enemy
-from itemGeneration import generateWeapon, generateAmorSet
+from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
 from miscClass import Misc
 from modifierClass import Modifier
@@ -491,7 +491,7 @@ class Game(object):
             while True:
                 self.disp.clearScreen()
                 self.disp.displayHeader(f"{self.areaController.getCurrentAreaName()}")
-                if not npcDialogCheck and random.randint(0,100) > 25:
+                if not npcDialogCheck and random.randint(0,100) < self.areaController.getCurrentAreaIdleDialogChance():
                     # Random NPC idle dialog
                     query = self.generateDialogueQuery("idle")
                     playerQuery = self.player.getPlayerQuery()
@@ -675,13 +675,7 @@ class Game(object):
                 self.disp.dprint("Processed giveXP condition.")
             elif action[0] == "giveItem":
                 itemKey = action[1]
-                item = None
-                if itemKey in self.weapons.keys():
-                    item = generateWeapon(self.weapons[itemKey], self.modifiers)
-                elif itemKey in self.misc.keys():
-                    item = Misc(self.misc[itemKey], self.modifiers)
-                elif itemKey in self.armor.keys():
-                    item = Armor(self.armor[itemKey])
+                item = generateItem(itemKey, self.armor, self.misc, self.weapons, self.modifiers)
                 if item != None:
                     self.disp.display("You recieved {}.".format(item.name))
                     self.player.inv.append(item)

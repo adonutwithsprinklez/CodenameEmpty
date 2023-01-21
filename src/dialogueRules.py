@@ -6,10 +6,10 @@ def _evaluateNotEqualsRule(criteria, query):
     return criteria != query
 
 def _evaluateGreaterThanRule(criteria, query):
-    return criteria > query
+    return criteria < query
 
 def _evaluateLessThanRule(criteria, query):
-    return criteria < query
+    return criteria > query
 
 def _evaluateGreaterThanEqualRule(criteria, query):
     return criteria >= query

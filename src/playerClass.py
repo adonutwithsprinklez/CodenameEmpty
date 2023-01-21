@@ -4,6 +4,12 @@ import random
 from dieClass import rollDice
 
 
+NPC_CONVERSATION_EQUIVALENTS = {
+    "shopkeep":"Shop",
+    "merchant":"Shop"
+}
+
+
 class Player(object):
     def __init__(self):
         self.name = "Player"
@@ -325,16 +331,31 @@ class Player(object):
     def converseNPC(self, npc, query):
         action = "greeting"
         conversing = True
+        newDialogLine = True
         while conversing:
-            playerQuery = self.getPlayerQuery()
-            fullQuery = {**query, **playerQuery}
-            fullQuery["isAction"] = action
+            if newDialogLine:
+                playerQuery = self.getPlayerQuery()
+                fullQuery = {**query, **playerQuery}
+                fullQuery["isAction"] = action
+                dialogueLine = f"{npc.getDialogueLine(fullQuery)}"
+                newDialogLine = False
             self.disp.clearScreen()
             self.disp.displayHeader(f"Conversing with {npc.getName()}")
-            self.disp.display(f"{npc.getDialogueLine(fullQuery)}")
+            self.disp.display(dialogueLine, 1, 1)
+            self.disp.displayHeader("Conversation Choices")
+            self.disp.display("1. Small Talk")
+            i = 1
+            for profession in npc.getProfessions():
+                i += 1
+                self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
+            self.disp.display("0. Goodbye")
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True, True, True)
-            conversing = False
+            if cmd == 0:
+                conversing = False
+            elif cmd == 1:
+                action = "smalltalk"
+                newDialogLine = True
         
         # End conversation
         playerQuery = self.getPlayerQuery()
