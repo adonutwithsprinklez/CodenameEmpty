@@ -64,7 +64,11 @@ class Weapon(object):
 	def getAction(self):
 		return random.choice(self.actionText)
 	
-	def getName(self):
+	def getName(self, full=False, reverse=True):
+		if full:
+			if reverse:
+				return f"[WEAPON] {self.name}"
+			return f"{self.name} [WEAPON]"
 		return self.name
 
 	def __str__(self):

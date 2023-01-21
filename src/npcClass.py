@@ -35,8 +35,10 @@ class NPC(object):
 		self.race = Race(race[self.race])
 		for dialogId in self.dialogueIds:
 			self.dialogue.extend(dialogue[dialogId]["lines"])
-		for item in self.inventory:
-			self.generatedInventory.append(generateItem(item, armor, misc, weapons, modifiers))
+		if not self.inventoryGenerated:
+			for item in self.inventory:
+				self.generatedInventory.append(generateItem(item, armor, misc, weapons, modifiers))
+				self.inventoryGenerated = True
 		self.loaded = True
 	
 	# Dialog stuff
@@ -49,7 +51,7 @@ class NPC(object):
 		if len(possibleDialog["lines"]) > 0:
 			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]["dialogue"]
 		else:
-			return "ERR - No dialog line found"
+			return f"ERR - No dialog line found\n'isAction'={query['isAction']}"
 	
 	def getSelfQuery(self):
 		return {
@@ -58,7 +60,9 @@ class NPC(object):
 			"npcId":self.getId(),
 			"npcRace":self.getRaceName(),
 			"npcInventoryCount":self.getInventoryCount(),
-			"npcInventoryIds":self.getInventoryIds()
+			"npcInventoryIds":self.getInventoryIds(),
+			"npcInventoryItemTypes":self.getInventoryItemTypes(),
+			"npcInventoryItemTypeCount":self.getNumInventoryItemTypes()
 		}
 
 	# Getters
@@ -80,21 +84,34 @@ class NPC(object):
 	
 	def getInventoryCount(self):
 		if self.inventoryGenerated:
-			return len(self.generatedInventory)
+			return len(self.getGeneratedInventory())
 		else:
 			return len(self.inventory)
 	
 	def getInventoryIds(self):
 		if self.inventoryGenerated:
-			return list(set(self.generatedInventory))
+			return list(set(self.getInventory()))
 		else:
 			return list(set(self.inventory))
+	
+	def getInventoryItemTypes(self):
+		itemTypes = []
+		for item in self.getGeneratedInventory():
+			if item.t not in itemTypes:
+				itemTypes.append(item.t)
+		return itemTypes
+	
+	def getNumInventoryItemTypes(self):
+		return len(self.getInventoryItemTypes())
 
 	def getFlags(self):
 		return self.flags
 
 	def getInventory(self):
 		return self.inventory
+	
+	def getGeneratedInventory(self):
+		return self.generatedInventory
 	
 	def getDialogueIds(self):
 		return self.dialogueIds

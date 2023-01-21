@@ -6,7 +6,7 @@ ARMOR_TYPES_LIGHT = {
 	"head": ["Cap","Hood"],
 	"torso": ["Robe","Garmet"],
 	"arm":["Wrap"],
-	"leg":["Pant"],
+	"leg":["shoe"],
 	"tail":["Tailcover"]
 }
 
@@ -74,7 +74,11 @@ class Armor(object):
 		else:
 			self.nameSuffix = random.choice(ARMOR_TYPES[self.armorWeight][self.limb])
 	
-	def getName(self):
+	def getName(self, full=False, reverse = True):
+		if full:
+			if reverse:
+				return f"[{self.limb.upper()} ARMOR] {self.name} {self.nameSuffix}"
+			return f"{self.name} {self.nameSuffix} [{self.limb.upper()} ARMOR]"
 		return self.name + " " + self.nameSuffix
 	
 	def getDefenceRating(self):

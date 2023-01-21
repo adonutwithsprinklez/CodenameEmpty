@@ -8,7 +8,7 @@
     "race":[
         "human"
     ],
-    "numProfessions":"1d2-1",
+    "numProfessions":"1d1",
     "professionPool":[
         "shopkeep"
     ],
@@ -20,17 +20,17 @@
     ],
     "numItems":"1d3+5",
     "itemPool":[
-        ["armor_starting_armor", 2],
-        ["armor_huntersGarmets", 2],
-        ["armor_hideArmor", 2],
+        ["armor_starting_armor", 4],
+        ["armor_huntersGarmets", 4],
+        ["armor_hideArmor", 4],
         ["armor_ironArmor", 1],
-        ["consumable_apple", 3],
-        ["consumable_potion_health", 5],
-        ["weapon_butcherknife", 1],
-        ["weapon_castironskillet", 1],
-        ["weapon_ironSword", 2],
-        ["weapon_shovel", 2],
-        ["weapon_club", 2],
+        ["consumable_apple", 20],
+        ["consumable_potion_health", 40],
+        ["weapon_butcherknife", 3],
+        ["weapon_castironskillet", 3],
+        ["weapon_ironSword", 5],
+        ["weapon_shovel", 3],
+        ["weapon_club", 3],
         ["weapon_steelSword", 1]
     ],
     "interestedInBuying":[

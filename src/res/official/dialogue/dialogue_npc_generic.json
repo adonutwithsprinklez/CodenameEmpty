@@ -24,10 +24,12 @@
         { "dialogue":"Welcome, Orc.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "orc"], ["npcIsRace", "!=", "orc"] ] },
         { "dialogue":"Lizard, you're a bit further south than usual.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"] ] },
         { "dialogue":"Watch yourself Lizard.", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"], ["npcIsRace", "!=", "drakt"] ] },
+        { "dialogue":"Howdy Human. Been to Oskiris recently?", "criteria":[ ["isAction", "=", "greeting"], ["npcInventoryCount", "<=", 0] ] },
         { "dialogue":"Here's what I got.", "criteria":[ ["isAction", "=", "shop"] ] },
         { "dialogue":"Feel free to browse my goods.", "criteria":[ ["isAction", "=", "shop"] ] },
         { "dialogue":"You're welcome to look at what I've got, just don't waste my time.", "criteria":[ ["isAction", "=", "shop"], ["npcFlags", "has", "busy"] ], "weight":3 },
         { "dialogue":"*Yawns*. Of course, feel free to browse.", "criteria":[ ["isAction", "=", "shop"], ["npcFlags", "has", "tired"] ], "weight":3 },
+        { "dialogue":"Come again.", "criteria":[ ["isAction", "=", "finishShop"] ] },
         { "dialogue":"Until next time then.", "criteria":[ ["isAction", "=", "goodbye"] ] },
         { "dialogue":"May the Five smile upon you.", "criteria":[ ["isAction", "=", "goodbye"], ["npcFlags", "has", "religious"] ], "weight":3 },
         { "dialogue":"Safe travels.", "criteria":[ ["isAction", "=", "goodbye"] ] }
