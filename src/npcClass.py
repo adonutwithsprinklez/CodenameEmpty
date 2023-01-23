@@ -45,9 +45,6 @@ class NPC(object):
 	def getDialogueLine(self, query):
 		fullQuery = {**query, **self.getSelfQuery()}
 		possibleDialog = getSatisfactoryDialogueLines(self.dialogue, fullQuery)
-		print("\nFinal stuff:")
-		print(fullQuery)
-		print(possibleDialog)
 		if len(possibleDialog["lines"]) > 0:
 			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]["dialogue"]
 		else:
@@ -58,7 +55,7 @@ class NPC(object):
 			"npcProfessions":self.getProfessions(),
 			"npcFlags":self.getFlags(),
 			"npcId":self.getId(),
-			"npcRace":self.getRaceName(),
+			"npcRace":self.getRaceId(),
 			"npcInventoryCount":self.getInventoryCount(),
 			"npcInventoryIds":self.getInventoryIds(),
 			"npcInventoryItemTypes":self.getInventoryItemTypes(),
@@ -76,7 +73,7 @@ class NPC(object):
 	def getRaceData(self):
 		return self.race
 	
-	def getRaceName(self):
+	def getRaceId(self):
 		return self.race.getId()
 
 	def getProfessions(self):

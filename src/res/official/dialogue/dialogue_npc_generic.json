@@ -32,6 +32,7 @@
         { "dialogue":"Thank you for your business.", "criteria":[ ["isAction", "=", "buyItem"] ], "weight":1 },
         { "dialogue":"Thank you for your business.", "criteria":[ ["isAction", "=", "sellItem"] ], "weight":1 },
         { "dialogue":"You'll need more gold than that.", "criteria":[ ["isAction", "=", "buyItemFail"] ], "weight":1 },
+        { "dialogue":"Maybe something else will catch your eye.", "criteria":[ ["isAction", "=", "buyItemCancel"] ], "weight":1 },
         { "dialogue":"Come again.", "criteria":[ ["isAction", "=", "finishShop"] ] },
         { "dialogue":"Until next time then.", "criteria":[ ["isAction", "=", "goodbye"] ] },
         { "dialogue":"May the Five smile upon you.", "criteria":[ ["isAction", "=", "goodbye"], ["npcFlags", "has", "religious"] ], "weight":3 },

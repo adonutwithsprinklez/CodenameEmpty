@@ -90,7 +90,7 @@ class Area(object):
         self.idleDialogChance = 0
         numNPCs = rollDice(areaType["npcChance"])
         if numNPCs > 0 and len(areaType["npcs"])>0:
-            self.npcId = random.choices(areaType["npcs"][::], k=numNPCs)
+            self.npcId = random.sample(areaType["npcs"][::], k=numNPCs)
             if "idleDialogChance" in areaType.keys():
                 self.idleDialogChance = areaType["idleDialogChance"]
             else:

@@ -394,8 +394,10 @@ class Player(object):
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
                 self.disp.display(f"You ask to see {npc.getName()}'s goods.")
-            self.disp.display(f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\"")
-            self.disp.display(f"Gold: {self.gold}", 1, 1)
+            self.disp.display(f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\"", 1, 1)
+            self.disp.displayHeader("Your Info")
+            self.disp.display(f"Gold: {self.gold}")
+            self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
             self.disp.displayHeader(f"{npc.getName()}'s Inventory")
             self.disp.display("1. Sell", 1, 1)
             i = 1
@@ -404,7 +406,7 @@ class Player(object):
                 self.disp.display(f"{i}. {item.getName(True)}", 0)
             self.disp.display("0. Back")
             self.disp.closeDisplay()
-            cmd = self.disp.get_input(True, True)
+            cmd = self.disp.get_input(True)
             if cmd == 0:
                 shopping = False
             elif cmd == 1:
@@ -420,20 +422,19 @@ class Player(object):
                     else:
                         action = "buyItemFail"
                 else:
-                    action = "shop"
+                    action = "buyItemCancel"
         return query
     
     def sellMenu(self):
         # TODO Implement
         pass
 
-    def itemInspectMenu(self, item, cost):
+    def itemInspectMenu(self, item, worth):
         self.disp.clearScreen()
         self.disp.displayHeader(f"Purchasing {item.getName()}")
-        self.disp.display(f"Gold: {self.gold}")
-        self.disp.display(f"Cost: {cost}", 0)
-        self.disp.closeDisplay()
-        self.disp.wait_for_enter()
+        self.disp.display(f"ITEM: {item.getName(True, False)}")
+        self.disp.display(f"\t- {item.desc}", 0)
+        self.disp.display(f"Worth: {worth}", 1, 1)
         if item.t == "a":
             pass
         elif item.t == "w":
@@ -442,7 +443,17 @@ class Player(object):
             pass
         else:
             pass
-        return True
+        self.disp.displayHeader("Your Info")
+        self.disp.display(f"Gold: {self.gold}")
+        self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
+        self.disp.displayHeader(f"Options")
+        self.disp.display(f"1. Confirm")
+        self.disp.display(f"Anything else to cancel")
+        self.disp.closeDisplay()
+        cmd = self.disp.get_input(True, True, True)
+        if cmd == 1:
+            return True
+        return False
     
     def getPlayerQuery(self):
         playerQuery = {
