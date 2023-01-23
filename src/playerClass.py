@@ -144,7 +144,10 @@ class Player(object):
             self.disp.display("Currently equipped:")
             limbs = self.race.getLimbsOfLimbType(self.inv[cmd-1].limb, True)
             for limb in limbs:
-                self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
+                if limb.armor:
+                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
+                else:
+                    self.disp.display("\t%s - None" % (limb.name), 0)
             self.disp.display("1. Equip", 1)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
