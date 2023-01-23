@@ -20,18 +20,19 @@
     ],
     "numItems":"1d3+5",
     "itemPool":[
-        ["armor_starting_armor", 4],
-        ["armor_huntersGarmets", 4],
+        ["armor_starting_armor", 5],
+        ["armor_huntersGarmets", 5],
         ["armor_hideArmor", 4],
-        ["armor_ironArmor", 1],
-        ["consumable_apple", 20],
-        ["consumable_potion_health", 40],
-        ["weapon_butcherknife", 3],
+        ["armor_ironArmor", 2],
+        ["consumable_apple", 15],
+        ["consumable_potion_health", 30],
+        ["weapon_butcherknife", 5],
         ["weapon_castironskillet", 3],
         ["weapon_ironSword", 5],
         ["weapon_shovel", 3],
         ["weapon_club", 3],
-        ["weapon_steelSword", 1]
+        ["weapon_steelSword", 2],
+        ["armor_dragonSkin", 1]
     ],
     "interestedInBuying":[
 

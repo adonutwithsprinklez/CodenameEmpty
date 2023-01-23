@@ -113,5 +113,14 @@ class NPC(object):
 	def getGeneratedInventory(self):
 		return self.generatedInventory
 	
+	def getGeneratedInventoryItem(self, index):
+		return self.generatedInventory[index]
+
+	def getGeneratedInventoryItemValue(self, index):
+		return self.getGeneratedInventoryItem(index).worth
+	
+	def popItemFromGeneratedInventory(self, index):
+		return self.generatedInventory.pop(index)
+	
 	def getDialogueIds(self):
 		return self.dialogueIds

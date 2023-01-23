@@ -338,12 +338,12 @@ class Player(object):
                 playerQuery = self.getPlayerQuery()
                 fullQuery = {**query, **playerQuery}
                 fullQuery["isAction"] = action
-                dialogueLine = f"{npc.getDialogueLine(fullQuery)}"
+                dialogueLine = f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\""
                 newDialogLine = False
             self.disp.clearScreen()
             self.disp.displayHeader(f"Conversing with {npc.getName()}")
             if fullQuery["isAction"] == "greeting":
-                self.disp.display(f"You greet {npc.getName()}")
+                self.disp.display(f"You greet {npc.getName()}.")
             elif fullQuery["isAction"] == "finishShop":
                 self.disp.display(f"You stop looking at {npc.getName()}'s goods.")
             elif fullQuery["isAction"] == "smalltalk":
@@ -379,21 +379,23 @@ class Player(object):
 
         self.disp.clearScreen()
         self.disp.displayHeader(f"Conversing with {npc.getName()}")
-        self.disp.display(f"{npc.getDialogueLine(fullQuery)}")
+        self.disp.display(f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\"")
         self.disp.closeDisplay()
         self.disp.wait_for_enter()
     
     def shopMenu(self, npc, query):
         playerQuery = self.getPlayerQuery()
         fullQuery = {**query, **playerQuery}
-        fullQuery["isAction"] = "shop"
+        action = "shop"
         shopping = True
         while shopping:
+            fullQuery["isAction"] = action
             self.disp.clearScreen()
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
                 self.disp.display(f"You ask to see {npc.getName()}'s goods.")
-            self.disp.display(f"{npc.getDialogueLine(fullQuery)}", 1, 1)
+            self.disp.display(f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\"")
+            self.disp.display(f"Gold: {self.gold}", 1, 1)
             self.disp.displayHeader(f"{npc.getName()}'s Inventory")
             self.disp.display("1. Sell", 1, 1)
             i = 1
@@ -407,11 +409,40 @@ class Player(object):
                 shopping = False
             elif cmd == 1:
                 self.sellMenu()
+            elif 1 < cmd <= len(npc.getGeneratedInventory()) + 1:
+                cost = npc.getGeneratedInventoryItemValue(cmd - 2)
+                buy = self.itemInspectMenu(npc.getGeneratedInventoryItem(cmd - 2), cost)
+                if buy:
+                    if self.gold >= cost:
+                        self.gold -= cost
+                        self.inv.append(npc.popItemFromGeneratedInventory(cmd - 2))
+                        action = "buyItem"
+                    else:
+                        action = "buyItemFail"
+                else:
+                    action = "shop"
         return query
     
     def sellMenu(self):
         # TODO Implement
         pass
+
+    def itemInspectMenu(self, item, cost):
+        self.disp.clearScreen()
+        self.disp.displayHeader(f"Purchasing {item.getName()}")
+        self.disp.display(f"Gold: {self.gold}")
+        self.disp.display(f"Cost: {cost}", 0)
+        self.disp.closeDisplay()
+        self.disp.wait_for_enter()
+        if item.t == "a":
+            pass
+        elif item.t == "w":
+            pass
+        elif item.t == "consumable":
+            pass
+        else:
+            pass
+        return True
     
     def getPlayerQuery(self):
         playerQuery = {
