@@ -465,7 +465,7 @@ class Player(object):
             "playerLevel":self.level,
             "playerHealth":self.hp,
             "playerHealthPercentage":self.getHpPercentage(),
-            "playerPerks":self.perks,
+            "playerPerks":self.getPerks(),
             "playerTags":self.tags
         }
         return playerQuery
@@ -586,6 +586,12 @@ class Player(object):
         # for perk in self.getPerks():
         #     if stat in perk
         return baseStat + bonusStat
+    
+    def getPerks(self):
+        perks = self.perks[::]
+        perks.extend(self.getRace().getPerks())
+        perks = list(set(perks))
+        return perks
 
     def getMaxHP(self):
         baseHealth = self.getStat("vitality") * 10
@@ -618,6 +624,9 @@ class Player(object):
     
     def getStartingInventory(self):
         return self.race.getStartingInventory()
+    
+    def getRace(self):
+        return self.race
     
     def getName(self):
         return self.name

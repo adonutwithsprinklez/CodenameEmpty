@@ -24,7 +24,7 @@
     "npcs": [],
     "quests": [],
     "races": [
-        "mod_race_dog"
+        "race_dog"
     ],
     "weapons": [
         "mod_weapon_boarTusks"

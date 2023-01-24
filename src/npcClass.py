@@ -23,8 +23,10 @@ class NPC(object):
 		possibleWeights = []
 		for item in self.inventoryData:
 			possibleitems.append(item[0])
-			possibleWeights.append(item[1])	
-		self.inventory = random.choices(possibleitems, weights=possibleWeights, k=numItems)
+			possibleWeights.append(item[1])
+		self.inventory = []
+		if numItems > 0:
+			self.inventory = random.choices(possibleitems, weights=possibleWeights, k=numItems)
 		self.inventoryGenerated = False
 		self.generatedInventory = []
 		self.itemPool = data["itemPool"]

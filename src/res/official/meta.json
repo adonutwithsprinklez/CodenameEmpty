@@ -63,7 +63,8 @@
         "armor_orcCaptainArmor"
     ],
     "dialogue": [
-        "dialogue_npc_generic"
+        "dialogue_npc_generic",
+        "dialogue_npc_dog"
     ],
     "enemies": [
         "enemy_bandit",
@@ -111,7 +112,8 @@
         "weapon_modifiers"
     ],
     "npcs": [
-        "npc_generic"
+        "npc_generic",
+        "npc_dog"
     ],
     "quests": [
         "quest_beginnings"
@@ -121,7 +123,8 @@
         "race_elf",
         "race_orc",
         "race_dwarf",
-        "race_draktilien"
+        "race_draktilien",
+        "race_dog"
     ],
     "weapons": [
         "weapon_butcherknife",

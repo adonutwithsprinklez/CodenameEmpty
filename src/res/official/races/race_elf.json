@@ -7,6 +7,9 @@
         "physique":7,
         "intelligence":8
     },
+    "basePerks":[
+        "Animal Speech"
+    ],
     "shortDescription":"A race with low vitality and even lower strength, but very good physique and intelligence.",
     "longDescription":[],
     "baseSkills":[],

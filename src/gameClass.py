@@ -19,7 +19,6 @@ from modifierClass import Modifier
 from playerClass import Player
 from questClass import Quest
 from raceClass import Race
-from weaponClass import Weapon
 
 
 DEBUG = 0
