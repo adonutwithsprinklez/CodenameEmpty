@@ -1,7 +1,7 @@
 {
-    "name": "Official Additional Content Data Pack",
+    "name": "Data Pack Developer Tests",
     "author": "Sprinklez Media",
-    "desc": "This is the first official content add on for Codename: Empty. These additions are non-canon.",
+    "desc": "This mod is purely meant for feature testing. Enabling this data pack is not recommended",
     "packType": "addition",
     "version": 0.1,
     "gameDesc": [

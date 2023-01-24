@@ -9,7 +9,7 @@
         { "dialogue":"\"I saw a squirrel once! The squirrel ran off though. I wonder where the squirrel went.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
         { "dialogue":"\"Be careful person! There are scary things in the forest.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
         { "dialogue":"\"You smell like the forest. Have you been out there?\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
-        { "dialogue":"\"Person? Taking to me? Hi person!\"", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "has", "Animal Speech"] ] },
+        { "dialogue":"\"Person? Talking to me? Hi person!\"", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "has", "Animal Speech"] ] },
         { "dialogue":"\"Bye person!\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "has", "Animal Speech"] ] },
         { "dialogue":"\"Hey! What are you doing?\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"]] }
     ],
