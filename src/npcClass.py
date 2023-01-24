@@ -17,6 +17,7 @@ class NPC(object):
 		self.description = random.choice(data["description"])
 		self.dialogueIds = data["dialogue"][::]
 		self.dialogue = []
+		self.otherDialogueOptions = []
 		numItems = rollDice(data["numItems"])
 		self.inventoryData = data["itemPool"]
 		possibleitems = []
@@ -37,6 +38,9 @@ class NPC(object):
 		self.race = Race(race[self.race])
 		for dialogId in self.dialogueIds:
 			self.dialogue.extend(dialogue[dialogId]["lines"])
+			if "otherDialogueOptions" in dialogue[dialogId].keys():
+				for option in dialogue[dialogId]["otherDialogueOptions"]:
+					self.otherDialogueOptions.append(option)
 		if not self.inventoryGenerated:
 			for item in self.inventory:
 				self.generatedInventory.append(generateItem(item, armor, misc, weapons, modifiers))
@@ -123,3 +127,6 @@ class NPC(object):
 	
 	def getDialogueIds(self):
 		return self.dialogueIds
+	
+	def getOtherDialogueOptions(self):
+		return self.otherDialogueOptions

@@ -336,12 +336,13 @@ class Player(object):
         conversing = True
         newDialogLine = True
         npcProfessions = npc.getProfessions()
+        otherDialogueOptions = npc.getOtherDialogueOptions()
         while conversing:
             if newDialogLine:
                 playerQuery = self.getPlayerQuery()
                 fullQuery = {**query, **playerQuery}
                 fullQuery["isAction"] = action
-                dialogueLine = f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\""
+                dialogueLine = f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}"
                 newDialogLine = False
             self.disp.clearScreen()
             self.disp.displayHeader(f"Conversing with {npc.getName()}")
@@ -353,6 +354,12 @@ class Player(object):
                 self.disp.display(f"You attempt to strike up some small talk with {npc.getName()}.")
             elif fullQuery["isAction"] == "goodbye":
                 self.disp.display(f"You say farewell to {npc.getName()}.")
+            else:
+                actionId = fullQuery["isAction"]
+                for dialogueOption in otherDialogueOptions:
+                    if "isAction" in dialogueOption.keys() and actionId == dialogueOption["isAction"]:
+                        self.disp.display(f"{dialogueOption['playerDialogue']}")
+                        break
             self.disp.display(dialogueLine, 1, 1)
             self.disp.displayHeader("Conversation Choices")
             self.disp.display("1. Small Talk")
@@ -360,6 +367,9 @@ class Player(object):
             for profession in npcProfessions:
                 i += 1
                 self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
+            for additionalOption in otherDialogueOptions:
+                i += 1
+                self.disp.display(f"{i}. {additionalOption['option']}", 0)
             self.disp.display("0. Goodbye")
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True, True, True)
@@ -374,6 +384,9 @@ class Player(object):
                     query = self.shopMenu(npc, query)
                     action = "finishShop"
                     newDialogLine = True
+            elif 1 + len(npcProfessions) < cmd <= 1 + len(otherDialogueOptions) + len(npcProfessions):
+                action = otherDialogueOptions[cmd-2-len(npcProfessions)]["isAction"]
+                newDialogLine = True
         
         # End conversation
         playerQuery = self.getPlayerQuery()
@@ -382,7 +395,7 @@ class Player(object):
 
         self.disp.clearScreen()
         self.disp.displayHeader(f"Conversing with {npc.getName()}")
-        self.disp.display(f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\"")
+        self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}")
         self.disp.closeDisplay()
         self.disp.wait_for_enter()
     
@@ -397,7 +410,7 @@ class Player(object):
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
                 self.disp.display(f"You ask to see {npc.getName()}'s goods.")
-            self.disp.display(f"{npc.getName()} - \"{npc.getDialogueLine(fullQuery)}\"", 1, 1)
+            self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
             self.disp.displayHeader("Your Info")
             self.disp.display(f"Gold: {self.gold}")
             self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
