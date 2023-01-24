@@ -11,7 +11,9 @@ class Race(object):
             self.baseStats = data["baseStats"]
             self.baseSkills = data["baseSkills"]
             self.standing = data["standing"]
-            self.playable = data["playable"]
+            self.playable = False
+            if "playable" in data.keys():
+                self.playable = data["playable"]
             self.limbs = []
             if "basePerks" in data.keys():
                 self.basePerks = data["basePerks"]
