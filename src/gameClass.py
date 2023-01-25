@@ -731,22 +731,31 @@ class Game(object):
                 ready = True
             self.disp.clearScreen()
             self.disp.displayHeader("New Game")
-            self.disp.display("Name: %s" % playerName)
+            if len(playerName) > 0:
+                self.disp.display("Name: %s" % playerName)
+            else:
+                self.disp.display("Name: ?")
             if playerRace == "":
                 self.disp.display("Race: ")
             else:
                 r = Race(self.races[playerRace])
                 self.disp.display("Race: %s" % (r.getName()))
                 self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
-                self.disp.display("\t%s" %(r.getDescription()),0)
-                self.disp.closeDisplay()
+                self.disp.display("\t%s" %(r.getDescription()),0, 1)
+
+                self.disp.displayHeader("Character Stats")
                 self.disp.display("Stats:")
                 self.disp.display(f'\tStrength     - {r.getStat("strength")}', 0)
                 self.disp.display(f'\tVitality     - {r.getStat("vitality")}', 0)
                 self.disp.display(f'\tPhysique     - {r.getStat("physique")}', 0)
                 self.disp.display(f'\tIntelligence - {r.getStat("intelligence")}', 0)
+                if len(r.getPerks()) > 0:
+                    self.disp.display(f'Racial Perks:')
+                    for perk in r.getPerks():
+                        self.disp.display(f'\t{perk}', 0)
 
-            self.disp.closeDisplay()
+            self.disp.display("", 1)
+            self.disp.displayHeader("Options")
             self.disp.display("1. Change Name")
             self.disp.display("2. Change Race", 0)
             self.disp.display("3. [DISABLED] Change Stats", 0)
@@ -806,6 +815,10 @@ class Game(object):
             self.disp.displayHeader("Race Select")
             self.disp.display("Current Race: %s" % r.getName(False))
             self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
+            if len(r.getPerks()) > 0:
+                self.disp.display(f'Racial Perks:')
+                for perk in r.getPerks():
+                    self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
             self.disp.display("Choices:")
             x = 0
@@ -834,6 +847,10 @@ class Game(object):
         self.disp.display(f'\tVitality     - {race.getStat("vitality")}', 0)
         self.disp.display(f'\tPhysique     - {race.getStat("physique")}', 0)
         self.disp.display(f'\tIntelligence - {race.getStat("intelligence")}', 0)
+        if len(race.getPerks()) > 0:
+            self.disp.display(f'Racial Perks:')
+            for perk in race.getPerks():
+                self.disp.display(f'\t{perk}', 0)
         self.disp.display(f"Description:")
         self.disp.display(f"\t{race.getPlayerCreationDescription()}", 0)
         self.disp.display(f"\t{race.getPureRaceDescription()}", 0)

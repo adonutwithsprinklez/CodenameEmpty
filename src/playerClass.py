@@ -226,10 +226,13 @@ class Player(object):
             self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
             self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
             self.disp.display("Equipped Gear:", 1, 0)
-            self.disp.display("\t{}".format(
-                self.getEquipmentString()), 0)
+            self.disp.display("\t{}".format(self.getEquipmentString()), 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
+            if len(self.getRace().getPerks()) > 0:
+                self.disp.display(f'Racial Perks:')
+                for perk in self.getRace().getPerks():
+                    self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
