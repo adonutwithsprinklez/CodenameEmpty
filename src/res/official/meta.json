@@ -63,6 +63,7 @@
         "armor_orcCaptainArmor"
     ],
     "dialogue": [
+        "dialogue_fallback",
         "dialogue_npc_generic",
         "dialogue_npc_dog"
     ],

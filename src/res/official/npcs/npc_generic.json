@@ -16,6 +16,7 @@
         "Just a generic NPC"
     ],
     "dialogue":[
+        "dialogue_fallback",
         "dialogue_npc_generic"
     ],
     "numItems":"1d3+5",
