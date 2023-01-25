@@ -426,7 +426,11 @@ class Player(object):
             if cmd == 0:
                 shopping = False
             elif cmd == 1:
-                self.sellMenu()
+                if len(self.inv) > 0:
+                    self.sellMenu(npc, query)
+                    action = "finishSell"
+                else:
+                    action = "shopSellFail"
             elif 1 < cmd <= len(npc.getGeneratedInventory()) + 1:
                 cost = npc.getGeneratedInventoryItemValue(cmd - 2)
                 buy = self.itemInspectMenu(npc.getGeneratedInventoryItem(cmd - 2), cost)
@@ -441,9 +445,43 @@ class Player(object):
                     action = "buyItemCancel"
         return query
     
-    def sellMenu(self):
-        # TODO Implement
-        pass
+    def sellMenu(self, npc, query):
+        playerQuery = self.getPlayerQuery()
+        fullQuery = {**query, **playerQuery}
+        action = "shopSell"
+        shopping = True
+        while shopping:
+            fullQuery["isAction"] = action
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"{npc.getName()}'s Shop")
+            if fullQuery["isAction"] == "shop":
+                self.disp.display(f"You ask to see {npc.getName()}'s goods.")
+            self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
+            self.disp.displayHeader("Your Info")
+            self.disp.display(f"Gold: {self.gold}", 1, 1)
+            self.disp.displayHeader(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}")
+            i = 0
+            for item in self.inv:
+                i += 1
+                if i == 1:
+                    self.disp.display(f"{i}. {item.getName(True)}")
+                else:
+                    self.disp.display(f"{i}. {item.getName(True)}", 0)
+            self.disp.display("0. Back")
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True)
+            if cmd == 0:
+                shopping = False
+            elif 1 <= cmd <= len(self.inv):
+                sell = self.itemInspectMenu(self.inv[cmd-1], self.inv[cmd-1].worth)
+                if sell:
+                    action = "sellItem"
+                    item = self.inv.pop(cmd-1)
+                    self.gold += item.worth
+                    npc.addItemToInventory(item)
+                else:
+                    action = "sellItemCancel"
+
 
     def itemInspectMenu(self, item, worth):
         self.disp.clearScreen()

@@ -130,3 +130,6 @@ class NPC(object):
 	
 	def getOtherDialogueOptions(self):
 		return self.otherDialogueOptions
+	
+	def addItemToInventory(self, item):
+		self.generatedInventory.append(item)

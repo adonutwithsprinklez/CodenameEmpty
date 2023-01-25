@@ -9,6 +9,7 @@
         { "dialogue":"\"The weather's been acting strange recently.\"", "criteria":[ ["isAction", "=", "idle"] ] },
         { "dialogue":"\"Lizards this far south?\"", "criteria":[ ["isAction", "=", "idle"], ["playerRace", "=", "drakt"], ["npcRace", "!=", "drakt"] ] },
         { "dialogue":"\"Mind yourself.\"", "criteria":[ ["isAction", "=", "idle"], ["npcHasFlag", "=", "tired"] ] },
+
         { "dialogue":"\"I don't really have time for idle chatter traveller.\"", "criteria":[ ["isAction", "=", "smalltalk"] ] },
         { "dialogue":"\"I've got my own things to worry about.\"", "criteria":[ ["isAction", "=", "smalltalk"] ] },
         { "dialogue":"\"I'm not the type for pleasantries.\"", "criteria":[ ["isAction", "=", "smalltalk"] ] },
@@ -18,6 +19,7 @@
         { "dialogue":"\"Old shrines and holy places sit in the forest. Old and forgotten, except by those dangerous enough to inhabit them.\"", "criteria":[ ["isAction", "=", "smalltalk"] ], "weight":3 },
         { "dialogue":"\"Interested in any of my goods by any chance?\"", "criteria":[ ["isAction", "=", "smalltalk"], ["npcProfessions", "has", "shopkeep"] ], "weight":5 },
         { "dialogue":"\"I'm a trader myself. Looking to buy anything?\"", "criteria":[ ["isAction", "=", "smalltalk"], ["npcProfessions", "has", "shopkeep"] ], "weight":5 },
+
         { "dialogue":"\"Howdy Human. Been to Oskiris recently?\"", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "human"] ] },
         { "dialogue":"\"Been a little while since the last time I've seen an Elf in these parts.\"", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "elf"] ] },
         { "dialogue":"\"Master Dwarf. Mines been treating you well I assume?\"", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "dwarf"] ] },
@@ -25,14 +27,22 @@
         { "dialogue":"\"Lizard, you're a bit further south than usual.\"", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"] ] },
         { "dialogue":"\"Watch yourself Lizard.\"", "criteria":[ ["isAction", "=", "greeting"], ["playerRace", "=", "drakt"], ["npcIsRace", "!=", "drakt"] ] },
         { "dialogue":"\"Howdy Human. Been to Oskiris recently?\"", "criteria":[ ["isAction", "=", "greeting"], ["npcInventoryCount", "<=", 0] ] },
+
         { "dialogue":"\"Here's what I got.\"", "criteria":[ ["isAction", "=", "shop"] ] },
         { "dialogue":"\"Feel free to browse my goods.\"", "criteria":[ ["isAction", "=", "shop"] ] },
         { "dialogue":"\"You're welcome to look at what I've got, just don't waste my time.\"", "criteria":[ ["isAction", "=", "shop"], ["npcFlags", "has", "busy"] ], "weight":3 },
         { "dialogue":"*Yawns*. \"Of course, feel free to browse.\"", "criteria":[ ["isAction", "=", "shop"], ["npcFlags", "has", "tired"] ], "weight":3 },
+        { "dialogue":"\"Let me see what you've got.\"", "criteria":[ ["isAction", "=", "shopSell"] ] },
+        { "dialogue":"\"You've gotta have something in order to sell it.\"", "criteria":[ ["isAction", "=", "shopSellFail"] ] },
+
         { "dialogue":"\"Thank you for your business.\"", "criteria":[ ["isAction", "=", "buyItem"] ], "weight":1 },
-        { "dialogue":"\"Thank you for your business.\"", "criteria":[ ["isAction", "=", "sellItem"] ], "weight":1 },
         { "dialogue":"\"You'll need more gold than that.\"", "criteria":[ ["isAction", "=", "buyItemFail"] ], "weight":1 },
         { "dialogue":"\"Maybe something else will catch your eye.\"", "criteria":[ ["isAction", "=", "buyItemCancel"] ], "weight":1 },
+
+        { "dialogue":"\"Thank you for your business.\"", "criteria":[ ["isAction", "=", "sellItem"] ], "weight":1 },
+        { "dialogue":"\"Hmm. Suit yourself then.\"", "criteria":[ ["isAction", "=", "sellItemCancel"] ], "weight":1 },
+        { "dialogue":"\"Anything else I can get you?\"", "criteria":[ ["isAction", "=", "finishSell"] ], "weight":1 },
+
         { "dialogue":"\"Come again.\"", "criteria":[ ["isAction", "=", "finishShop"] ] },
         { "dialogue":"\"Until next time then.\"", "criteria":[ ["isAction", "=", "goodbye"] ] },
         { "dialogue":"\"May the Five smile upon you.\"", "criteria":[ ["isAction", "=", "goodbye"], ["npcFlags", "has", "religious"] ], "weight":3 },
