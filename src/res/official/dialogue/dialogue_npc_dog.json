@@ -5,13 +5,13 @@
         { "dialogue":"*Barks*", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "nothas", "Animal Speech"] ] },
         { "dialogue":"*Barks*", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "nothas", "Animal Speech"] ] },
         { "dialogue":"*Barks*", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "nothas", "Animal Speech"]] },
-        { "dialogue":"\"Person! Oh a person!\"", "criteria":[ ["isAction", "=", "idle"], ["playerPerks", "has", "Animal Speech"]] },
+        { "dialogue":"\"Person! Oh a person!\"", "criteria":[ ["isAction", "=", "idle"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
         { "dialogue":"\"I saw a squirrel once! The squirrel ran off though. I wonder where the squirrel went.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
-        { "dialogue":"\"Be careful person! There are scary things in the forest.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
+        { "dialogue":"\"Be careful person! There are scary things in the forest.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
         { "dialogue":"\"You smell like the forest. Have you been out there?\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
-        { "dialogue":"\"Person? Talking to me? Hi person!\"", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "has", "Animal Speech"] ] },
-        { "dialogue":"\"Bye person!\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "has", "Animal Speech"] ] },
-        { "dialogue":"\"Hey! What are you doing?\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"]] }
+        { "dialogue":"\"Person? Talking to me? Hi person!\"", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "has", "Animal Speech"] , ["playerRace", "!=", "knine"]] },
+        { "dialogue":"\"Bye person!\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
+        { "dialogue":"\"Hey! What are you doing?\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] }
     ],
     "otherDialogueOptions":[
         {"option":"Pet the dog","isAction":"pet","playerDialogue":"You pet the dog."}
