@@ -152,7 +152,7 @@ class Game(object):
                 for d in self.packs[pack]["dialogue"]:
                     dialogueData = loadJson("%s%s/dialogue/%s.json" % (folder, pack, d))
                     if "additionalDialogue" in dialogueData["flags"]:
-                        for line in dialogueData["additionalDialogue"]:
+                        for line in dialogueData["lines"]:
                             self.dialogue[d]["lines"].append(line)
                     else:
                         self.dialogue[d] = dialogueData
@@ -993,7 +993,7 @@ class Game(object):
         self.disp.display(f'Status: {enabled}')
         self.disp.display(f'Author: {packAuth}')
         self.disp.display(f'Info: {packDesc}')
-        self.disp.display(f'Type:{packType}')
+        self.disp.display(f'Type: {packType}')
 
         self.disp.closeDisplay()
         if pack["packType"] == "standalone" and enabled:
