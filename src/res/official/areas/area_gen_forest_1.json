@@ -60,12 +60,7 @@
 		["enemy_wolf",3],
 		["enemy_greatWolf",7]
 	],
-	"npcChance":"1d4-1",
-	"npcs":[
-		"npc_generic",
-		"npc_generic",
-		"npc_dog"
-	],
+	"npcChance":"0",
 	"minNewAreas":3,
 	"maxNewAreas":6,
 	"areas":[

@@ -350,13 +350,13 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader(f"Conversing with {npc.getName()}")
             if fullQuery["isAction"] == "greeting":
-                self.disp.display(f"You greet {npc.getName()}.")
+                self.disp.display(f"You greet {npc.prefix}{npc.getName()}.")
             elif fullQuery["isAction"] == "finishShop":
-                self.disp.display(f"You stop looking at {npc.getName()}'s goods.")
+                self.disp.display(f"You stop looking at {npc.prefix}{npc.getName()}'s goods.")
             elif fullQuery["isAction"] == "smalltalk":
-                self.disp.display(f"You attempt to strike up some small talk with {npc.getName()}.")
+                self.disp.display(f"You attempt to strike up some small talk with {npc.prefix}{npc.getName()}.")
             elif fullQuery["isAction"] == "goodbye":
-                self.disp.display(f"You say farewell to {npc.getName()}.")
+                self.disp.display(f"You say farewell to {npc.prefix}{npc.getName()}.")
             else:
                 actionId = fullQuery["isAction"]
                 for dialogueOption in otherDialogueOptions:
@@ -412,7 +412,7 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
-                self.disp.display(f"You ask to see {npc.getName()}'s goods.")
+                self.disp.display(f"You ask to see {npc.prefix}{npc.getName()}'s goods.")
             self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
             self.disp.displayHeader("Your Info")
             self.disp.display(f"Gold: {self.gold}")
@@ -458,7 +458,7 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
-                self.disp.display(f"You ask to see {npc.getName()}'s goods.")
+                self.disp.display(f"You ask to see {npc.prefix.capitalize()}{npc.getName()}'s goods.")
             self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
             self.disp.displayHeader("Your Info")
             self.disp.display(f"Gold: {self.gold}", 1, 1)

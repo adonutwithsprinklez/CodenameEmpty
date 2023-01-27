@@ -115,6 +115,8 @@
     ],
     "npcs": [
         "npc_generic",
+        "npc_generic_weaponSeller",
+        "npc_generic_armorSeller",
         "npc_dog"
     ],
     "quests": [

@@ -12,8 +12,16 @@ class NPC(object):
 			self.name = random.choice(data["name"]["choices"])
 		else:
 			self.name = "ERR - No NPC Name specified in NPC file"
+		if "prefix" in data.keys():
+			self.prefix = data["prefix"]
+		else:
+			self.prefix = ""
 		self.race = random.choice(data["race"])
-		self.professions = random.sample(data["professionPool"][::], k=rollDice(data["numProfessions"]))
+		professionCount = rollDice(data["numProfessions"])
+		if professionCount > 0:
+			self.professions = random.sample(data["professionPool"][::], k=professionCount)
+		else:
+			self.professions = []
 		self.description = random.choice(data["description"])
 		self.dialogueIds = data["dialogue"][::]
 		self.dialogue = []
