@@ -25,7 +25,9 @@
         "Inspired by Huw2k8's \"The Wastes\"",
         "This project has been in development for way too long",
         "The gods have forsaken us",
-        "This has \"drag 'n drop\" mod support!"
+        "This has \"drag 'n drop\" mod support!",
+        "Got dialogue?",
+        "Yes, you can pet the dog."
     ],
     "areas": [
         "area_abandoned_church",
@@ -60,6 +62,11 @@
         "armor_greatWolfHide",
         "armor_orcArmor",
         "armor_orcCaptainArmor"
+    ],
+    "dialogue": [
+        "dialogue_fallback",
+        "dialogue_npc_generic",
+        "dialogue_npc_dog"
     ],
     "enemies": [
         "enemy_bandit",
@@ -106,7 +113,12 @@
         "forest_spirit",
         "weapon_modifiers"
     ],
-    "npcs": [],
+    "npcs": [
+        "npc_generic",
+        "npc_generic_weaponSeller",
+        "npc_generic_armorSeller",
+        "npc_dog"
+    ],
     "quests": [
         "quest_beginnings"
     ],
@@ -115,7 +127,8 @@
         "race_elf",
         "race_orc",
         "race_dwarf",
-        "race_draktilien"
+        "race_draktilien",
+        "race_dog"
     ],
     "weapons": [
         "weapon_butcherknife",

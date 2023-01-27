@@ -27,7 +27,7 @@
 		["enemy_rodentOfUnusualSize", 2],
 		["enemy_cultist_basic", 4]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[
 	],
 	"minNewAreas":3,

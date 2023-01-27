@@ -4,6 +4,12 @@ import random
 from dieClass import rollDice
 
 
+NPC_CONVERSATION_EQUIVALENTS = {
+    "shopkeep":"Shop",
+    "merchant":"Shop"
+}
+
+
 class Player(object):
     def __init__(self):
         self.name = "Player"
@@ -22,6 +28,7 @@ class Player(object):
         self.quit = False
         self.tags = []
         self.skills = []
+        self.dialogueFlags = []
         self.stats = {
             "strength":0,
             "vitality":0,
@@ -121,12 +128,10 @@ class Player(object):
             equip = -1
             self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
             self.disp.display("Inspecting:")
-            self.disp.display("\t%s - %s damage" %
-                              (self.inv[cmd-1].name, self.inv[cmd-1].damage), 0)
+            self.disp.display("\t%s - %s damage" % (self.inv[cmd-1].name, self.inv[cmd-1].damage), 0)
             self.disp.display("\t" + self.inv[cmd-1].desc, 0)
             self.disp.display("Currently equipped:")
-            self.disp.display("\t%s - %s damage" %
-                              (self.weapon.name, self.weapon.damage), 0)
+            self.disp.display("\t%s - %s damage" % (self.weapon.name, self.weapon.damage), 0)
             self.disp.display("\t" + self.weapon.desc, 0, 1)
             self.disp.display("1. Equip", 0)
             self.disp.display("2. Drop", 0)
@@ -139,7 +144,10 @@ class Player(object):
             self.disp.display("Currently equipped:")
             limbs = self.race.getLimbsOfLimbType(self.inv[cmd-1].limb, True)
             for limb in limbs:
-                self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
+                if limb.armor:
+                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
+                else:
+                    self.disp.display("\t%s - None" % (limb.name), 0)
             self.disp.display("1. Equip", 1)
             self.disp.display("2. Drop", 0)
             self.disp.display("Anything else to continue", 0)
@@ -172,10 +180,6 @@ class Player(object):
             armor = self.inv[cmd-1]
             if self.equipArmor(armor):
                 self.inv.pop(cmd-1)
-            '''
-            self.inv.append(self.armor)
-            self.armor = self.inv.pop(cmd-1)
-            '''
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
             self.inv[cmd-1].consumableEffect(self)
             self.inv.pop(cmd-1)
@@ -222,10 +226,13 @@ class Player(object):
             self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
             self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
             self.disp.display("Equipped Gear:", 1, 0)
-            self.disp.display("\t{}".format(
-                self.getEquipmentString()), 0)
+            self.disp.display("\t{}".format(self.getEquipmentString()), 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
+            if len(self.getRace().getPerks()) > 0:
+                self.disp.display(f'Racial Perks:')
+                for perk in self.getRace().getPerks():
+                    self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
             self.disp.display("0. Exit")
             self.disp.closeDisplay()
@@ -311,7 +318,6 @@ class Player(object):
             self.disp.display("1. No, Don't Quit", 0)
             self.disp.closeDisplay()
             try:
-                # cmd = int(input())
                 cmd = self.disp.get_input(True)
             except:
                 cmd = -1
@@ -327,6 +333,196 @@ class Player(object):
             else:
                 # TODO Incorrect input notification
                 pass
+        
+    def converseNPC(self, npc, query):
+        action = "greeting"
+        conversing = True
+        newDialogLine = True
+        npcProfessions = npc.getProfessions()
+        otherDialogueOptions = npc.getOtherDialogueOptions()
+        while conversing:
+            if newDialogLine:
+                playerQuery = self.getPlayerQuery()
+                fullQuery = {**query, **playerQuery}
+                fullQuery["isAction"] = action
+                dialogueLine = f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}"
+                newDialogLine = False
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"Conversing with {npc.getName()}")
+            if fullQuery["isAction"] == "greeting":
+                self.disp.display(f"You greet {npc.prefix}{npc.getName()}.")
+            elif fullQuery["isAction"] == "finishShop":
+                self.disp.display(f"You stop looking at {npc.prefix}{npc.getName()}'s goods.")
+            elif fullQuery["isAction"] == "smalltalk":
+                self.disp.display(f"You attempt to strike up some small talk with {npc.prefix}{npc.getName()}.")
+            elif fullQuery["isAction"] == "goodbye":
+                self.disp.display(f"You say farewell to {npc.prefix}{npc.getName()}.")
+            else:
+                actionId = fullQuery["isAction"]
+                for dialogueOption in otherDialogueOptions:
+                    if "isAction" in dialogueOption.keys() and actionId == dialogueOption["isAction"]:
+                        self.disp.display(f"{dialogueOption['playerDialogue']}")
+                        break
+            self.disp.display(dialogueLine, 1, 1)
+            self.disp.displayHeader("Conversation Choices")
+            self.disp.display("1. Small Talk")
+            i = 1
+            for profession in npcProfessions:
+                i += 1
+                self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
+            for additionalOption in otherDialogueOptions:
+                i += 1
+                self.disp.display(f"{i}. {additionalOption['option']}", 0)
+            self.disp.display("0. Goodbye")
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True, True, True)
+            if cmd == 0:
+                conversing = False
+            elif cmd == 1:
+                action = "smalltalk"
+                newDialogLine = True
+            elif 1 < cmd <= len(npcProfessions) + 1:
+                conversationOption = NPC_CONVERSATION_EQUIVALENTS[npcProfessions[cmd-2]].lower()
+                if conversationOption == "shop":
+                    query = self.shopMenu(npc, query)
+                    action = "finishShop"
+                    newDialogLine = True
+            elif 1 + len(npcProfessions) < cmd <= 1 + len(otherDialogueOptions) + len(npcProfessions):
+                action = otherDialogueOptions[cmd-2-len(npcProfessions)]["isAction"]
+                newDialogLine = True
+        
+        # End conversation
+        playerQuery = self.getPlayerQuery()
+        fullQuery = {**query, **playerQuery}
+        fullQuery["isAction"] = "goodbye"
+
+        self.disp.clearScreen()
+        self.disp.displayHeader(f"Conversing with {npc.getName()}")
+        self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}")
+        self.disp.closeDisplay()
+        self.disp.wait_for_enter()
+    
+    def shopMenu(self, npc, query):
+        playerQuery = self.getPlayerQuery()
+        fullQuery = {**query, **playerQuery}
+        action = "shop"
+        shopping = True
+        while shopping:
+            fullQuery["isAction"] = action
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"{npc.getName()}'s Shop")
+            if fullQuery["isAction"] == "shop":
+                self.disp.display(f"You ask to see {npc.prefix}{npc.getName()}'s goods.")
+            self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
+            self.disp.displayHeader("Your Info")
+            self.disp.display(f"Gold: {self.gold}")
+            self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
+            self.disp.displayHeader(f"{npc.getName()}'s Inventory")
+            self.disp.display("1. Sell", 1, 1)
+            i = 1
+            for item in npc.getGeneratedInventory():
+                i+=1
+                self.disp.display(f"{i}. {item.getName(True)}", 0)
+            self.disp.display("0. Back")
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True)
+            if cmd == 0:
+                shopping = False
+            elif cmd == 1:
+                if len(self.inv) > 0:
+                    self.sellMenu(npc, query)
+                    action = "finishSell"
+                else:
+                    action = "shopSellFail"
+            elif 1 < cmd <= len(npc.getGeneratedInventory()) + 1:
+                cost = npc.getGeneratedInventoryItemValue(cmd - 2)
+                buy = self.itemInspectMenu(npc.getGeneratedInventoryItem(cmd - 2), cost)
+                if buy:
+                    if self.gold >= cost:
+                        self.gold -= cost
+                        self.inv.append(npc.popItemFromGeneratedInventory(cmd - 2))
+                        action = "buyItem"
+                    else:
+                        action = "buyItemFail"
+                else:
+                    action = "buyItemCancel"
+        return query
+    
+    def sellMenu(self, npc, query):
+        playerQuery = self.getPlayerQuery()
+        fullQuery = {**query, **playerQuery}
+        action = "shopSell"
+        shopping = True
+        while shopping:
+            fullQuery["isAction"] = action
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"{npc.getName()}'s Shop")
+            if fullQuery["isAction"] == "shop":
+                self.disp.display(f"You ask to see {npc.prefix.capitalize()}{npc.getName()}'s goods.")
+            self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
+            self.disp.displayHeader("Your Info")
+            self.disp.display(f"Gold: {self.gold}", 1, 1)
+            self.disp.displayHeader(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}")
+            i = 0
+            for item in self.inv:
+                i += 1
+                if i == 1:
+                    self.disp.display(f"{i}. {item.getName(True)}")
+                else:
+                    self.disp.display(f"{i}. {item.getName(True)}", 0)
+            self.disp.display("0. Back")
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True)
+            if cmd == 0:
+                shopping = False
+            elif 1 <= cmd <= len(self.inv):
+                sell = self.itemInspectMenu(self.inv[cmd-1], self.inv[cmd-1].worth)
+                if sell:
+                    action = "sellItem"
+                    item = self.inv.pop(cmd-1)
+                    self.gold += item.worth
+                    npc.addItemToInventory(item)
+                else:
+                    action = "sellItemCancel"
+
+
+    def itemInspectMenu(self, item, worth):
+        self.disp.clearScreen()
+        self.disp.displayHeader(f"Purchasing {item.getName()}")
+        self.disp.display(f"ITEM: {item.getName(True, False)}")
+        self.disp.display(f"\t- {item.desc}", 0)
+        self.disp.display(f"Worth: {worth}", 1, 1)
+        if item.t == "a":
+            pass
+        elif item.t == "w":
+            pass
+        elif item.t == "consumable":
+            pass
+        else:
+            pass
+        self.disp.displayHeader("Your Info")
+        self.disp.display(f"Gold: {self.gold}")
+        self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
+        self.disp.displayHeader(f"Options")
+        self.disp.display(f"1. Confirm")
+        self.disp.display(f"Anything else to cancel")
+        self.disp.closeDisplay()
+        cmd = self.disp.get_input(True, True, True)
+        if cmd == 1:
+            return True
+        return False
+    
+    def getPlayerQuery(self):
+        playerQuery = {
+            "playerRace":self.race.getId(),
+            "playerGold":self.gold,
+            "playerLevel":self.level,
+            "playerHealth":self.hp,
+            "playerHealthPercentage":self.getHpPercentage(),
+            "playerPerks":self.getPerks(),
+            "playerTags":self.tags
+        }
+        return playerQuery
     
     def giveXP(self, xp):
         ''' Gives the player the passed amount of experience. '''
@@ -408,6 +604,9 @@ class Player(object):
 
     def getHealth(self):
         return int(((1.0*self.hp)/self.getMaxHP())*68 + 0.5)
+    
+    def getHpPercentage(self):
+        return int(((1.0*self.hp)/self.getMaxHP())*100)
 
     def getWeaponDamage(self):
         if self.weapon:
@@ -441,6 +640,12 @@ class Player(object):
         # for perk in self.getPerks():
         #     if stat in perk
         return baseStat + bonusStat
+    
+    def getPerks(self):
+        perks = self.perks[::]
+        perks.extend(self.getRace().getPerks())
+        perks = list(set(perks))
+        return perks
 
     def getMaxHP(self):
         baseHealth = self.getStat("vitality") * 10
@@ -473,6 +678,9 @@ class Player(object):
     
     def getStartingInventory(self):
         return self.race.getStartingInventory()
+    
+    def getRace(self):
+        return self.race
     
     def getName(self):
         return self.name

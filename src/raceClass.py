@@ -11,7 +11,9 @@ class Race(object):
             self.baseStats = data["baseStats"]
             self.baseSkills = data["baseSkills"]
             self.standing = data["standing"]
-            self.playable = data["playable"]
+            self.playable = False
+            if "playable" in data.keys():
+                self.playable = data["playable"]
             self.limbs = []
             if "basePerks" in data.keys():
                 self.basePerks = data["basePerks"]
@@ -40,6 +42,11 @@ class Race(object):
                 self.startingInventory = data["startingInventory"]
             else:
                 self.startingInventory = []
+            if "basePerks" in data.keys():
+                self.basePerks = data["basePerks"]
+            else:
+                self.basePerks = []
+
         else:
             self.id = ""
             self.name = ""
@@ -54,6 +61,7 @@ class Race(object):
             self.startingWeapon = []
             self.startingArmor = []
             self.startingInventory = []
+            self.basePerks = []
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -204,6 +212,9 @@ class Race(object):
     
     def getStartingInventory(self):
         return self.startingInventory
+    
+    def getPerks(self):
+        return self.basePerks
     
     def __str__(self):
         return f"{self.getId()} - {self.getName(False)}"

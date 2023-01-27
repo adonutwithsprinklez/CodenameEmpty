@@ -12,14 +12,13 @@ from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
 from enemyClass import Enemy
-from itemGeneration import generateWeapon, generateAmorSet
+from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
 from miscClass import Misc
 from modifierClass import Modifier
 from playerClass import Player
 from questClass import Quest
 from raceClass import Race
-from weaponClass import Weapon
 
 
 DEBUG = 0
@@ -99,27 +98,27 @@ class Game(object):
                 # it's waaay too cluttered.
                 for w in self.packs[pack]["weapons"]:
                     self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
-                    self.disp.dprint("\t\tLoaded asset %s" % w)
+                    self.disp.dprint("\t\tLoaded Weapon %s" % w)
                 for a in self.packs[pack]["armor"]:
                     self.armor[a] = loadJson("%s%s/armor/%s.json" % (folder, pack, a))
-                    self.disp.dprint("\t\tLoaded asset %s" % a)
+                    self.disp.dprint("\t\tLoaded Armor %s" % a)
                 for m in self.packs[pack]["misc"]:
                     self.misc[m] = loadJson("%s%s/misc/%s.json" % (folder, pack, m))
-                    self.disp.dprint("\t\tLoaded asset %s" % m)
+                    self.disp.dprint("\t\tLoaded Misc %s" % m)
                 for a in self.packs[pack]["areas"]:
                     self.areas[a] = loadJson("%s%s/areas/%s.json" % (folder, pack, a))
                     if "injectArea" in self.areas[a].keys():
                         for aKey in self.areas[a]["injectArea"].keys():
                             injectData = [a] + self.areas[a]["injectArea"][aKey]
                             self.areas[aKey]["areas"].append(injectData)
-                    self.disp.dprint("\t\tLoaded asset %s" % a)
+                    self.disp.dprint("\t\tLoaded Area %s" % a)
                 for r in self.packs[pack]["races"]:
                     raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
                     self.races[raceData["id"]] = raceData
-                    self.disp.dprint("\t\tLoaded asset %s" % r)
+                    self.disp.dprint("\t\tLoaded Race %s" % r)
                 for n in self.packs[pack]["npcs"]:
                     self.npcs[n] = loadJson("%s%s/npcs/%s.json" % (folder, pack, n))
-                    self.disp.dprint("\t\tLoaded asset %s" % n)
+                    self.disp.dprint("\t\tLoaded NPC %s" % n)
                 for e in self.packs[pack]["enemies"]:
                     self.enemies[e] = loadJson("%s%s/enemies/%s.json" % (folder, pack, e))
                     if "injectArea" in self.enemies[e].keys():
@@ -131,10 +130,10 @@ class Game(object):
                                                                       self.enemies[e]["areaMinEnemyChance"])
                             if "areaEnemyPointsPerHostility" in self.enemies[e].keys():
                                 self.areas[injection[0]]["enemyPointsPerHostility"] = self.enemies[e]["areaEnemyPointsPerHostility"]
-                    self.disp.dprint("\t\tLoaded asset %s" % e)
+                    self.disp.dprint("\t\tLoaded Enemy %s" % e)
                 for q in self.packs[pack]["quests"]:
                     self.quests[q] = loadJson("%s%s/quests/%s.json" % (folder, pack, q))
-                    self.disp.dprint("\t\tLoaded asset %s" % q)
+                    self.disp.dprint("\t\tLoaded Quest %s" % q)
                 for e in self.packs[pack]["events"]:
                     self.events[e] = loadJson("%s%s/events/%s.json" % (folder, pack, e))
                     if "injectArea" in self.events[e].keys():
@@ -144,12 +143,20 @@ class Game(object):
                             if "injectAreaMinChance" in self.events[e].keys():
                                 self.areas[aKey]["eventChance"] = max(self.areas[aKey]["eventChance"],
                                                                       self.events[e]["injectAreaMinChance"])
-                    self.disp.dprint("\t\tLoaded asset %s" % e)
+                    self.disp.dprint("\t\tLoaded Event %s" % e)
                 for m in self.packs[pack]["modifiers"]:
                     mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
                     for mod in mods.keys():
                         self.modifiers[mod] = Modifier(mod, mods[mod])
-                    self.disp.dprint("\t\tLoaded asset %s" % m)
+                    self.disp.dprint("\t\tLoaded Modifier %s" % m)
+                for d in self.packs[pack]["dialogue"]:
+                    dialogueData = loadJson("%s%s/dialogue/%s.json" % (folder, pack, d))
+                    if "additionalDialogue" in dialogueData["flags"]:
+                        for line in dialogueData["lines"]:
+                            self.dialogue[d]["lines"].append(line)
+                    else:
+                        self.dialogue[d] = dialogueData
+                    self.disp.dprint("\t\tLoaded Dialogue %s" % d)
                 print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -174,10 +181,10 @@ class Game(object):
     def loadStartingArea(self):
         if self.gameSettings["TUTORIALAREA"]:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
         else:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
 
     def loadPlayer(self):
 
@@ -223,6 +230,7 @@ class Game(object):
         self.npcs = {}
         self.enemies = {}
         self.modifiers = {}
+        self.dialogue = {}
 
         self.possibleQuests = []
         self.currentQuests = []
@@ -254,7 +262,7 @@ class Game(object):
         for desc in self.areaController.getCurrentAreaDesc().split("\n"):
             self.disp.display(desc)
         # Display enemies that are in the area (if there are any)
-        if self.areaController.getCurrentAreaHasEnemies():
+        if self.areaController.getCurrentAreaHasEnemies() and self.areaController.getCurrentAreaNeedToFight():
             self.disp.closeDisplay()
             enemyMessage = "You can see enemies in the distance:"
             if self.areaController.getCurrentAreaEnemyMessage() != None:
@@ -328,16 +336,9 @@ class Game(object):
             self.areaController.clearEvent()
 
         self.fightEnemies()
+        self.areaController.foughtCurrentAreaEnemies()
         if self.player.quit:
             return None
-
-        ##### Interacting with an NPC Code #####
-        '''
-        if self.currentArea.npc:
-            self.disp.clearScreen()
-            self.disp.displayHeader(self.currentArea.npc.name)
-            self.disp.display(self.currentArea.npc)
-        '''
 
     def displayEventAction(self, message):
         self.disp.clearScreen()
@@ -349,7 +350,7 @@ class Game(object):
 
     def fightEnemies(self):
         ##### Fighting Code #####
-        if self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]:
+        if self.areaController.getCurrentAreaNeedToFight() and self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]:
             self.disp.clearScreen()
             for areaEnemy in self.areaController.getCurrentAreaEnemies():
                 enemyhp = areaEnemy.getHealth()
@@ -480,9 +481,65 @@ class Game(object):
                 # UPDATE QUEST INFO
                 self.updateQuestInfo()
                 self.workOnBacklog()
+    
+    def areaHub(self):
+        ''' Acts as the area hub if there are NPCs'''
+        npcList = self.areaController.getCurrentAreaNPCs()
+        if len(npcList) > 0:
+            npcDialogCheck = False
+            while True:
+                self.disp.clearScreen()
+                self.disp.displayHeader(f"{self.areaController.getCurrentAreaName()}")
+                if not npcDialogCheck and random.randint(0,100) < self.areaController.getCurrentAreaIdleDialogChance():
+                    # Random NPC idle dialog
+                    query = self.generateDialogueQuery("idle")
+                    playerQuery = self.player.getPlayerQuery()
+                    fullQuery = {**query, **playerQuery}
+                    npc = random.choice(npcList)
+                    npcdialog = npc.getDialogueLine(fullQuery)
+                    self.disp.display("You hear someone mutter something.")
+                    self.disp.display(f"{npc.getName()} - {npcdialog}  ")
+                    self.disp.closeDisplay()
+                    npcDialogCheck = True
+                i = 1
+                self.disp.display("1. Travel", 1, 1)
+                for npc in npcList:
+                    i+=1
+                    npcProfessions = npc.getProfessions()
+                    if len(npcProfessions) > 0:
+                        npcProfessions = ", ".join(npcProfessions).upper()
+                        self.disp.display(f"{i}. [{npcProfessions}] - {npc.getName()}", 0)
+                    else:
+                        self.disp.display(f"{i}. {npc.getName()}",0)
+                    pass
+                self.disp.display("0. Player Menu")
+                self.disp.closeDisplay()
+                cmd = self.disp.get_input(True)
+                if 2 <= cmd <= 2+len(npcList):
+                    self.player.converseNPC(npcList[cmd-2], self.generateDialogueQuery())
+                elif cmd == 1:
+                    if self.chooseNewArea(True):
+                        return None
+                elif cmd == 0:
+                    self.player.playerMenu(self.currentQuests, self.completedQuests)
+                if self.player.quit:
+                    return None
+        else:
+            return self.chooseNewArea(False)
+    
+    def generateDialogueQuery(self, action = None):
+        query = {
+            "inAreaId":self.areaController.getCurrentAreaId(),
+            "inAreaType":self.areaController.getCurrentAreaType()#,
+            #"inAreaMinHostility":
+        }
+        if action:
+            query["isAction"] = action
+        return query
 
-    def chooseNewArea(self):
-        '''This lets the player choose a new area to travel to.'''
+    def chooseNewArea(self, canCancel=True):
+        '''This lets the player choose a new area to travel to.
+           Returns True if travel occured, otherwise False'''
         # Create various area choices:
         choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
@@ -491,9 +548,9 @@ class Game(object):
         travelTypes = self.areaController.getTravelableTypes()
 
         # Allow the player to choose from those places:
-        while not len(travelTypes) < cmd < len(choices) + 1:
+        while not len(travelTypes) < cmd < len(choices) + len(travelTypes) + 1:
             self.disp.clearScreen()
-            self.disp.displayHeader("Where to next?")
+            self.disp.displayHeader("Travel")
             self.disp.display("", 1, 0)
             x = 0
             if len(travelTypes) > 0:
@@ -505,7 +562,10 @@ class Game(object):
                 x += 1
                 self.disp.display("%d. %-37s %12s   Hostility - %2d" %
                                   (x, area.name, area.aType, area.hostility), 0)
-            self.disp.display("0. Player Menu")
+            if canCancel:
+                self.disp.display("0. Back")
+            else:
+                self.disp.display("0. Player Menu")
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)
@@ -524,19 +584,24 @@ class Game(object):
             # Load the new area
             if 0 < cmd <= len(travelTypes):
                 if self.chooseLoadedArea(travelTypes[cmd-1]):
-                    return None
+                    return True
             elif cmd == 0:
-                self.player.playerMenu(self.currentQuests, self.completedQuests)
-                if self.player.quit:
-                    # TODO Exit the game completely
-                    return None
+                if canCancel:
+                    return False
+                else:
+                    self.player.playerMenu(self.currentQuests, self.completedQuests)
+                    if self.player.quit:
+                        # TODO Exit the game completely
+                        return False
 
         if cmd > len(travelTypes):
             cmd -= len(travelTypes)
         self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
-                            self.misc, self.enemies, self.npcs, self.events, self.modifiers)
+                            self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
         
         self.updateTravelInfoForQuests()
+
+        return True
     
     def chooseLoadedArea(self, loadedKey):
         ''' Displays a list of areas that match the loadedKey and are not the current area '''
@@ -609,13 +674,7 @@ class Game(object):
                 self.disp.dprint("Processed giveXP condition.")
             elif action[0] == "giveItem":
                 itemKey = action[1]
-                item = None
-                if itemKey in self.weapons.keys():
-                    item = generateWeapon(self.weapons[itemKey], self.modifiers)
-                elif itemKey in self.misc.keys():
-                    item = Misc(self.misc[itemKey], self.modifiers)
-                elif itemKey in self.armor.keys():
-                    item = Armor(self.armor[itemKey])
+                item = generateItem(itemKey, self.armor, self.misc, self.weapons, self.modifiers)
                 if item != None:
                     self.disp.display("You recieved {}.".format(item.name))
                     self.player.inv.append(item)
@@ -672,22 +731,31 @@ class Game(object):
                 ready = True
             self.disp.clearScreen()
             self.disp.displayHeader("New Game")
-            self.disp.display("Name: %s" % playerName)
+            if len(playerName) > 0:
+                self.disp.display("Name: %s" % playerName)
+            else:
+                self.disp.display("Name: ?")
             if playerRace == "":
                 self.disp.display("Race: ")
             else:
                 r = Race(self.races[playerRace])
                 self.disp.display("Race: %s" % (r.getName()))
                 self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
-                self.disp.display("\t%s" %(r.getDescription()),0)
-                self.disp.closeDisplay()
+                self.disp.display("\t%s" %(r.getDescription()),0, 1)
+
+                self.disp.displayHeader("Character Stats")
                 self.disp.display("Stats:")
                 self.disp.display(f'\tStrength     - {r.getStat("strength")}', 0)
                 self.disp.display(f'\tVitality     - {r.getStat("vitality")}', 0)
                 self.disp.display(f'\tPhysique     - {r.getStat("physique")}', 0)
                 self.disp.display(f'\tIntelligence - {r.getStat("intelligence")}', 0)
+                if len(r.getPerks()) > 0:
+                    self.disp.display(f'Racial Perks:')
+                    for perk in r.getPerks():
+                        self.disp.display(f'\t{perk}', 0)
 
-            self.disp.closeDisplay()
+            self.disp.display("", 1)
+            self.disp.displayHeader("Options")
             self.disp.display("1. Change Name")
             self.disp.display("2. Change Race", 0)
             self.disp.display("3. [DISABLED] Change Stats", 0)
@@ -747,6 +815,10 @@ class Game(object):
             self.disp.displayHeader("Race Select")
             self.disp.display("Current Race: %s" % r.getName(False))
             self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
+            if len(r.getPerks()) > 0:
+                self.disp.display(f'Racial Perks:')
+                for perk in r.getPerks():
+                    self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
             self.disp.display("Choices:")
             x = 0
@@ -775,6 +847,10 @@ class Game(object):
         self.disp.display(f'\tVitality     - {race.getStat("vitality")}', 0)
         self.disp.display(f'\tPhysique     - {race.getStat("physique")}', 0)
         self.disp.display(f'\tIntelligence - {race.getStat("intelligence")}', 0)
+        if len(race.getPerks()) > 0:
+            self.disp.display(f'Racial Perks:')
+            for perk in race.getPerks():
+                self.disp.display(f'\t{perk}', 0)
         self.disp.display(f"Description:")
         self.disp.display(f"\t{race.getPlayerCreationDescription()}", 0)
         self.disp.display(f"\t{race.getPureRaceDescription()}", 0)
@@ -917,7 +993,7 @@ class Game(object):
         self.disp.display(f'Status: {enabled}')
         self.disp.display(f'Author: {packAuth}')
         self.disp.display(f'Info: {packDesc}')
-        self.disp.display(f'Type:{packType}')
+        self.disp.display(f'Type: {packType}')
 
         self.disp.closeDisplay()
         if pack["packType"] == "standalone" and enabled:

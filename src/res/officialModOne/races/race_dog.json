@@ -7,6 +7,9 @@
         "physique":12,
         "intelligence":2
     },
+    "basePerks":[
+        "Animal Speech"
+    ],
     "shortDescription":"A typical four-legged Canine.",
     "longDescription":[],
     "baseSkills":[],

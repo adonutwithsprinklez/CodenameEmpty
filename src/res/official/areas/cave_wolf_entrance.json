@@ -92,7 +92,7 @@
         ["enemy_wolf", 4],
         ["enemy_greatWolf", 7]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[],
 	"minNewAreas":2,
 	"maxNewAreas":3,

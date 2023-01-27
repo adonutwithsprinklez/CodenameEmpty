@@ -16,7 +16,7 @@
 	"enemies":[
         ["enemy_wolf", 2]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[],
     "injectArea":{
         "area_forest_trail_crossroad": ["1d6", ["required"]]

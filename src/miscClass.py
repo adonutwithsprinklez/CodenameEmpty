@@ -63,5 +63,9 @@ class Misc(object):
 		player.disp.closeDisplay()
 		player.disp.wait_for_enter()
 	
-	def getName(self):
+	def getName(self, full=False, reverse=True):
+		if full:
+			if reverse:
+				return f"[{self.t.upper()}] {self.name}"
+			return f"{self.name} [{self.t.upper()}]"
 		return self.name

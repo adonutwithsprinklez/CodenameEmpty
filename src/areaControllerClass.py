@@ -7,7 +7,7 @@ class AreaController(object):
     ''' This class generates and stores all needed data for the world. Whenever
         a new area needs generated or reloaded this class will handle it. '''
     def __init__(self, areaData=None, startingAreaID=None, weapons=None,
-    armor=None, misc=None, enemies=None, npcs=None, events=None, modifiers=None, DEBUG = 0):
+    armor=None, misc=None, enemies=None, races=None, npcs=None, events=None, modifiers=None, dialogue=None, DEBUG = 0):
         self.currentArea = None
 
         self.savedAreas = {
@@ -18,30 +18,31 @@ class AreaController(object):
 
         self.areaData = areaData
 
-        self.initializeStartingArea(startingAreaID, weapons, armor, misc, enemies, npcs, events, modifiers)
+        self.initializeStartingArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
 
     def initializeStartingArea(self, startingAreaID=None, weapons=None, armor=None, misc=None,
-                               enemies=None, npcs=None, events=None, modifiers=None):
+                               enemies=None, races=None, npcs=None, events=None, modifiers=None, dialogue=None):
         ''' Generates the starting area for the game. '''
-        self.generateArea(startingAreaID, weapons, armor, misc, enemies, npcs, events, modifiers)
+        self.generateArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
         self.currentArea.enemy = [] # Make sure no enemies spawn in the starting area
+        self.currentArea.foughtEnemies()
 
     def generateArea(self, areaType=None, weapons=None, armor=None, misc=None, enemies=None,
-                     npcs=None, events=None, modifiers=None):
+                     races=None, npcs=None, events=None, modifiers=None, dialogue=None):
         ''' Generates an area of the specified type then sets it as the current area '''
         self.setAndLoadCurrentArea(Area(self.areaData[areaType], [], [], areaType), weapons, armor, misc,
-                                        enemies, npcs, events, modifiers)
+                                        enemies, races, npcs, events, modifiers, dialogue)
     
-    def loadCurrentArea(self, weapons=None, armor=None, misc=None, enemies=None, npcs=None,
-                        events=None, modifiers=None):
+    def loadCurrentArea(self, weapons=None, armor=None, misc=None, enemies=None, races=None, npcs=None,
+                        events=None, modifiers=None, dialogue = None):
         ''' Calls the current area's "load" function '''
-        self.currentArea.load(weapons, armor, misc, enemies, npcs, events, modifiers)
+        self.currentArea.load(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
     
-    def setAndLoadCurrentArea(self, area, weapons=None, armor=None, misc=None, enemies=None,
-                              npcs=None, events=None, modifiers=None):
+    def setAndLoadCurrentArea(self, area, weapons=None, armor=None, misc=None, enemies=None, races=None, 
+                              npcs=None, events=None, modifiers=None, dialogue=None):
         ''' Sets the current area and loads it in a single call'''
         self.setCurrentArea(area)
-        self.loadCurrentArea(weapons, armor, misc, enemies, npcs, events, modifiers)
+        self.loadCurrentArea(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
         for category in self.currentArea.revisitable:
             if self.currentArea not in self.savedAreas[category]:
                 self.savedAreas[category].append(self.getCurrentArea())
@@ -58,6 +59,9 @@ class AreaController(object):
     def addEnemyToCurrentArea(self, enemy):
         ''' Adds the passed enemy to the list of enemies in the current area '''
         self.currentArea.addEnemy(enemy)
+    
+    def foughtCurrentAreaEnemies(self):
+        self.currentArea.foughtEnemies()
 
     # GETTERS
     # Getters for current Area Data
@@ -104,10 +108,19 @@ class AreaController(object):
             if event.eventType != "flavor" or not onlyNonFlavorTextEvents:
                 return True
         return False
+    
+    def getCurrentAreaNeedToFight(self):
+        return self.currentArea.getNeedToFight()
 
     def getCurrentAreaEvent(self):
         ''' Returns the current area event '''
         return self.currentArea.getEvent()
+    
+    def getCurrentAreaNPCs(self):
+        return self.currentArea.getNPC()
+    
+    def getCurrentAreaIdleDialogChance(self):
+        return self.currentArea.getIdleDialogChance()
 
     def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
         ''' Generates a list of exits for the user to travel to next, based on the current area '''

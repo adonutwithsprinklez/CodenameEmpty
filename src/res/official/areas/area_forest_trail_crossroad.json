@@ -29,7 +29,7 @@
 	"eventChance":0,
 	"events":[
 	],
-	"enemyChance":50,
+	"enemyChance":100,
 	"enemyPointsPerHostility":4,
 	"enemies":[
         ["enemy_wolf", 4],
@@ -37,8 +37,13 @@
 		["enemy_greatWolf", 6],
 		["enemy_rodentOfUnusualSize", 1]
 	],
-	"npcChance":0,
-	"npcs":[],
+	"npcChance":"1d3-1",
+	"npcs":[
+		"npc_generic",
+        "npc_generic_weaponSeller",
+        "npc_generic_armorSeller",
+		"npc_dog"
+	],
 	"minNewAreas":3,
 	"maxNewAreas":5,
 	"areas":[

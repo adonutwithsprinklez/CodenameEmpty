@@ -34,7 +34,7 @@ def startGame(game):
 		game.reactCurrentArea()
 		if game.player.quit:
 			return None
-		game.chooseNewArea()
+		game.areaHub()
 		if game.player.quit:
 			# Removes the player object from the game object once done
 			game.player = None

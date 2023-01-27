@@ -1,0 +1,29 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Dog"
+        ]
+    },
+    "prefix":"the ",
+    "race":[
+        "knine"
+    ],
+    "numProfessions":"0",
+    "professionPool":[
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_npc_dog"
+    ],
+    "numItems":"0",
+    "itemPool":[
+    ],
+    "interestedInBuying":[
+    ],
+    "numFlags":"0",
+    "flagPool":[
+    ]
+}

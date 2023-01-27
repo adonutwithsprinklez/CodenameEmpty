@@ -72,7 +72,7 @@
 		["enemy_rodentOfUnusualSize", 2],
 		["enemy_wolf", 5]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[
 	],
 	"minNewAreas":3,
