@@ -1,0 +1,10 @@
+{
+    "lines":[
+        { "dialogue":"\"Dog! Oh hey another dog!!\"", "criteria":[ ["isAction", "=", "idle"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "=", "knine"] ] },
+        { "dialogue":"\"Be careful! There are scary things in the forest.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "=", "knine"] ] },
+        { "dialogue":"\"Friend? Talking to me? Hi friend!\"", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "has", "Animal Speech"] , ["playerRace", "=", "knine"]] },
+        { "dialogue":"\"Bye friend!\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "=", "knine"] ] },
+        { "dialogue":"\"Hey! What are you doing? Stop that!\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "=", "knine"] ] }
+    ],
+    "flags":["additionalDialogue"]
+}
