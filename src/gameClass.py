@@ -498,7 +498,7 @@ class Game(object):
                     npc = random.choice(npcList)
                     npcdialog = npc.getDialogueLine(fullQuery)
                     self.disp.display("You hear someone mutter something.")
-                    self.disp.display(f"{npc.getName()} - \"{npcdialog}\"  ")
+                    self.disp.display(f"{npc.getName()} - {npcdialog}  ")
                     self.disp.closeDisplay()
                     npcDialogCheck = True
                 i = 1
