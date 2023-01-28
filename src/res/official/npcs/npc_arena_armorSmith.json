@@ -1,0 +1,32 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Arena Armor Smith"
+        ]
+    },
+    "race":[
+        "human"
+    ],
+    "numProfessions":"+1",
+    "professionPool":[
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_npc_arena_armorSmith"
+    ],
+    "numItems":"1d5+5",
+    "itemPool":[
+        ["armor_starting_armor", 3],
+        ["armor_huntersGarmets", 10],
+        ["armor_hideArmor", 8],
+        ["armor_ironArmor", 5],
+        ["armor_dragonSkin", 1]
+    ],
+    "interestedInBuying":[],
+    "numFlags":"0",
+    "flagPool":[]
+}

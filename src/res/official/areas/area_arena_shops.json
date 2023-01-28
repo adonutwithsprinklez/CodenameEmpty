@@ -1,0 +1,35 @@
+{
+    "name":[
+        "Arena Shops"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "RANDOM DESC ADDITION HERE"
+        ]
+    },
+	"desc":[
+        "DESC GOES HERE. $descRandom."
+	],
+	"aType":"Underground",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"+2",
+	"npcs":[
+		"dialogue_npc_arena_armorSmith",
+        "dialogue_npc_arena_weaponSmith"
+    ],
+	"minNewAreas":3,
+	"maxNewAreas":3,
+	"areas":[
+        ["area_arena_foyer", "1d6", ["required", "limited"]],
+        ["area_arena_pit", "1d6", ["required", "limited"]],
+        ["area_arena_exit", "1d6", ["required", "limited"]]
+	]
+}

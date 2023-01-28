@@ -27,7 +27,8 @@
         "The gods have forsaken us",
         "This has \"drag 'n drop\" mod support!",
         "Got dialogue?",
-        "Yes, you can pet the dog."
+        "Yes, you can pet the dog.",
+        "Dare to step into the arena?"
     ],
     "areas": [
         "area_abandoned_church",
@@ -45,7 +46,13 @@
         "cave_wolf_room_2a",
         "cave_wolf_room_3",
         "area_village_gate_east",
-        "area_village_gate_west"
+        "area_village_gate_west",
+
+        "area_arena_entrance",
+        "area_arena_foyer",
+        "area_arena_shops",
+        "area_arena_pit",
+        "area_arena_exit"
     ],
     "armor": [
         "armor_starting_armor",
@@ -61,12 +68,19 @@
         "armor_ironArmor",
         "armor_greatWolfHide",
         "armor_orcArmor",
-        "armor_orcCaptainArmor"
+        "armor_orcCaptainArmor",
+
+        "armor_werewolfHide"
     ],
     "dialogue": [
         "dialogue_fallback",
         "dialogue_npc_generic",
-        "dialogue_npc_dog"
+        "dialogue_npc_dog",
+
+        "dialogue_npc_arena_guard",
+        "dialogue_npc_arena_fightMaster",
+        "dialogue_npc_arena_armorSmith",
+        "dialogue_npc_arena_weaponSmith"
     ],
     "enemies": [
         "enemy_bandit",
@@ -78,7 +92,14 @@
         "enemy_orcCaptain",
         "enemy_robbedQuestEnemy",
         "enemy_rodentOfUnusualSize",
-        "enemy_wolf"
+        "enemy_wolf",
+
+        "enemy_arena_initiate",
+        "enemy_arena_fighter1",
+        "enemy_arena_fighter2",
+        "enemy_arena_fighter3",
+        "enemy_arena_fighter_random",
+        "enemy_arena_werewolf"
     ],
     "events": [
         "intro_event_1",
@@ -93,7 +114,11 @@
         "event_cave_wolf_1",
         "event_cave_found_item_1",
         "event_shrine_ambush",
-        "event_tower_forest"
+        "event_tower_forest",
+
+        "event_arena_entrance",
+        "event_arena_pit",
+        "event_arena_exit"
     ],
     "misc": [
         "consumable_apple",
@@ -117,10 +142,17 @@
         "npc_generic",
         "npc_generic_weaponSeller",
         "npc_generic_armorSeller",
-        "npc_dog"
+        "npc_dog",
+        
+        "npc_arena_guard",
+        "npc_arena_fightMaster",
+        "npc_arena_armorSmith",
+        "npc_arena_weaponSmith"
     ],
     "quests": [
-        "quest_beginnings"
+        "quest_beginnings",
+
+        "quest_arena_reparations"
     ],
     "races": [
         "race_human",
@@ -144,12 +176,14 @@
         "weapon_starter_sword",
         "weapon_steelSword",
         "weapon_treeBranch",
-        "weapon_wolfClaws"
+        "weapon_wolfClaws",
+
+        "weapon_werewolfClaws"
     ],
     "tutorialArea":[
         "area_start_1"
     ],
     "startingArea": [
-        "area_gen_forest_1"
+        "area_village_gate_east"
     ]
 }

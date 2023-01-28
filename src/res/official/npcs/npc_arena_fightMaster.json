@@ -1,0 +1,24 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Arena Fight Master"
+        ]
+    },
+    "race":[
+        "human"
+    ],
+    "numProfessions":"0",
+    "professionPool":[],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_npc_arena_fightMaster"
+    ],
+    "numItems":"0",
+    "itemPool":[],
+    "interestedInBuying":[],
+    "numFlags":"0",
+    "flagPool":[]
+}

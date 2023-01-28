@@ -47,10 +47,12 @@
         "npc_generic_armorSeller",
 		"npc_dog"
     ],
-	"minNewAreas":2,
-	"maxNewAreas":4,
+	"minNewAreas":3,
+	"maxNewAreas":5,
 	"areas":[
-        ["area_gen_forest_3", "2d6"]
+        ["area_gen_forest_1", "1d8"],
+        ["area_gen_forest_3", "2d6", ["required"]],
+        ["area_arena_entrance", "1d6", ["required", "limited"]]
 	],
     "safeToTravel":[
         "important",

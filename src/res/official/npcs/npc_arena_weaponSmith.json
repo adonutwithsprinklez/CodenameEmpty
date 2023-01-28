@@ -1,0 +1,31 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Arena Weapon Smith"
+        ]
+    },
+    "race":[
+        "human"
+    ],
+    "numProfessions":"+1",
+    "professionPool":[
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_npc_arena_weaponSmith"
+    ],
+    "numItems":"1d4+4",
+    "itemPool":[
+        ["weapon_butcherknife", 3],
+        ["weapon_ironSword", 10],
+        ["weapon_club", 8],
+        ["weapon_steelSword", 5]
+    ],
+    "interestedInBuying":[],
+    "numFlags":"0",
+    "flagPool":[]
+}
