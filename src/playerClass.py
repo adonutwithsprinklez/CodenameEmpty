@@ -1,6 +1,3 @@
-import random
-
-
 from dieClass import rollDice
 
 
@@ -28,6 +25,7 @@ class Player(object):
         self.quit = False
         self.tags = []
         self.skills = []
+        self.flags = []
         self.dialogueFlags = []
         self.stats = {
             "strength":0,
@@ -341,11 +339,21 @@ class Player(object):
         npcProfessions = npc.getProfessions()
         otherDialogueOptions = npc.getOtherDialogueOptions()
         while conversing:
+            print(self.flags)
             if newDialogLine:
                 playerQuery = self.getPlayerQuery()
                 fullQuery = {**query, **playerQuery}
                 fullQuery["isAction"] = action
-                dialogueLine = f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}"
+                npdDialogueLine = npc.getDialogueLine(fullQuery)
+                if "addPlayerFlags" in npdDialogueLine.keys():
+                    for flag in npdDialogueLine["addPlayerFlags"]:
+                        if flag not in self.flags:
+                            self.flags.append(flag)
+                if "removePlayerFlags" in npdDialogueLine.keys():
+                    for flag in npdDialogueLine["removePlayerFlags"]:
+                        if flag in self.flags:
+                            self.flags.remove(flag)
+                dialogueLine = f"{npc.getName()} - {npdDialogueLine['dialogue']}"
                 newDialogLine = False
             self.disp.clearScreen()
             self.disp.displayHeader(f"Conversing with {npc.getName()}")
@@ -398,7 +406,16 @@ class Player(object):
 
         self.disp.clearScreen()
         self.disp.displayHeader(f"Conversing with {npc.getName()}")
-        self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}")
+        npdDialogueLine = npc.getDialogueLine(fullQuery)
+        self.disp.display(f"{npc.getName()} - {npdDialogueLine['dialogue']}")
+        if "addPlayerFlags" in npdDialogueLine.keys():
+            for flag in npdDialogueLine["addPlayerFlags"]:
+                if flag not in self.flags:
+                    self.flags.append(flag)
+        if "removePlayerFlags" in npdDialogueLine.keys():
+            for flag in npdDialogueLine["removePlayerFlags"]:
+                if flag in self.flags:
+                    self.flags.remove(flag)
         self.disp.closeDisplay()
         self.disp.wait_for_enter()
     
@@ -413,7 +430,16 @@ class Player(object):
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
                 self.disp.display(f"You ask to see {npc.prefix}{npc.getName()}'s goods.")
-            self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
+            npdDialogueLine = npc.getDialogueLine(fullQuery)
+            self.disp.display(f"{npc.getName()} - {npdDialogueLine['dialogue']}", 1, 1)
+            if "addPlayerFlags" in npdDialogueLine.keys():
+                for flag in npdDialogueLine["addPlayerFlags"]:
+                    if flag not in self.flags:
+                        self.flags.append(flag)
+            if "removePlayerFlags" in npdDialogueLine.keys():
+                for flag in npdDialogueLine["removePlayerFlags"]:
+                    if flag in self.flags:
+                        self.flags.remove(flag)
             self.disp.displayHeader("Your Info")
             self.disp.display(f"Gold: {self.gold}")
             self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
@@ -459,7 +485,16 @@ class Player(object):
             self.disp.displayHeader(f"{npc.getName()}'s Shop")
             if fullQuery["isAction"] == "shop":
                 self.disp.display(f"You ask to see {npc.prefix.capitalize()}{npc.getName()}'s goods.")
-            self.disp.display(f"{npc.getName()} - {npc.getDialogueLine(fullQuery)}", 1, 1)
+            npdDialogueLine = npc.getDialogueLine(fullQuery)
+            self.disp.display(f"{npc.getName()} - {npdDialogueLine['dialogue']}", 1, 1)
+            if "addPlayerFlags" in npdDialogueLine.keys():
+                for flag in npdDialogueLine["addPlayerFlags"]:
+                    if flag not in self.flags:
+                        self.flags.append(flag)
+            if "removePlayerFlags" in npdDialogueLine.keys():
+                for flag in npdDialogueLine["removePlayerFlags"]:
+                    if flag in self.flags:
+                        self.flags.remove(flag)
             self.disp.displayHeader("Your Info")
             self.disp.display(f"Gold: {self.gold}", 1, 1)
             self.disp.displayHeader(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}")
@@ -520,7 +555,8 @@ class Player(object):
             "playerHealth":self.hp,
             "playerHealthPercentage":self.getHpPercentage(),
             "playerPerks":self.getPerks(),
-            "playerTags":self.tags
+            "playerDialogueFlags":self.dialogueFlags,
+            "playerFlags":self.flags
         }
         return playerQuery
     

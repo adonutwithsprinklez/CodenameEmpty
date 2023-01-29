@@ -62,6 +62,12 @@ class AreaController(object):
     
     def foughtCurrentAreaEnemies(self):
         self.currentArea.foughtEnemies()
+    
+    def addExitToArea(self, area):
+        data = [area, "+1", ["required", "limited"]]
+        self.currentArea.newAreaTypes.append(data)
+        self.currentArea.newArea += 1
+        print(self.currentArea.newAreaTypes)
 
     # GETTERS
     # Getters for current Area Data

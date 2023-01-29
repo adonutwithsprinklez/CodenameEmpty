@@ -325,6 +325,11 @@ class Game(object):
                                 for enemyid in action[1]:
                                     self.areaController.addEnemyToCurrentArea(Enemy(
                                         self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
+                            elif action[0] == "addArea":
+                                self.areaController.addExitToArea(action[1])
+                            elif action[0] == "addFlag":
+                                if action[1] not in self.player.flags:
+                                    self.player.flags.append(action[1])
                             elif action[0] == "finish":
                                 event.finish()
                 else:
@@ -498,8 +503,16 @@ class Game(object):
                     npc = random.choice(npcList)
                     npcdialog = npc.getDialogueLine(fullQuery)
                     self.disp.display("You hear someone mutter something.")
-                    self.disp.display(f"{npc.getName()} - {npcdialog}  ")
+                    self.disp.display(f"{npc.getName()} - {npcdialog['dialogue']}  ")
                     self.disp.closeDisplay()
+                    if "addPlayerFlags" in npcdialog.keys():
+                        for flag in npcdialog["addPlayerFlags"]:
+                            if flag not in self.player.flags:
+                                self.player.flags.append(flag)
+                    if "removePlayerFlags" in npcdialog.keys():
+                        for flag in npcdialog["removePlayerFlags"]:
+                            if flag in self.flags:
+                                self.flags.remove(flag)
                     npcDialogCheck = True
                 i = 1
                 self.disp.display("1. Travel", 1, 1)

@@ -60,9 +60,9 @@ class NPC(object):
 		fullQuery = {**query, **self.getSelfQuery()}
 		possibleDialog = getSatisfactoryDialogueLines(self.dialogue, fullQuery)
 		if len(possibleDialog["lines"]) > 0:
-			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]["dialogue"]
+			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]
 		else:
-			return f"ERR - No dialog line found\n'isAction'={query['isAction']}"
+			return {"dialogue":f"ERR - No dialog line found\n'isAction'={query['isAction']}"}
 	
 	def getSelfQuery(self):
 		return {

@@ -2,15 +2,202 @@
     "id":"arenaEntrance",
     "type":"check",
     "name":[
-        "Noises Nearby"
+        "Mysterious Entrance"
     ],
     "start":[
         "#startingPoint"
     ],
     "#startingPoint":{
         "msg":[
-            "You hear a rustling in the trees to the right of you."
+            "You follow the unkept trail around the wall, eventually coming to a small clearing. A heavy looking wooden door that leads down into the ground sits here."
         ],
-        "actions":[]
+        "actions":[
+            {
+                "action":"Enter the Arena",
+                "requirements":[
+                    ["have","flag","arenaAccepted"]
+                ],
+                "eventDo":[
+                    ["say","You knock on the Arena's door. You see a light flicker behind the door for a moment before it opens up. A guard stands at the entrance to the doorway, gesturing for you to enter."],
+                    ["addArea","area_arena_foyer"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Knock on the door",
+                "requirements":[
+                    ["have","flag","arenaHated"]
+                ],
+                "eventDo":[
+                    ["say","You knock on the door several times, but there is no response from within. After waiting a while you take it as a sign that you are not, and never will be, welcome."],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Knock on the Door",
+                "requirements":[
+                    ["nothave","flag","arenaAccepted"],
+                    ["nothave","flag","arenaDenied"],
+                    ["nothave","flag","arenaHated"]
+                ],
+                "eventDo":[
+                    ["say","You knock on the door, waiting to see if there is any response"],
+                    ["say","Eventually the door opens, revealing a heavily armed guard that steps out into the clearing with you."],
+                    ["goto", ["#firsttime"]]
+                ]
+            },
+            {
+                "action":"Knock on the Door",
+                "requirements":[
+                    ["have","flag","arenaDenied"]
+                ],
+                "eventDo":[
+                    ["say","You hear movement from behind the door."],
+                    ["goto","#denied"]
+                ]
+            },
+            {
+                "action":"Leave",
+                "eventDo":[
+                    ["say","You turn away from the door. You have other things you need to do."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#firsttime":{
+        "msg":[
+            "The guard looks you up and down.\n\"I don't know you.\""
+        ],
+        "actions":[
+            {
+                "action":"Ask for entrance to the Arena",
+                "requirements":[
+                    ["have","flag","knowsAboutArena"]
+                ],
+                "eventDo":[
+                    ["say","You ask the guard for entrance to the arena."],
+                    ["goto", ["#firstTimeEntrance"]]
+                ]
+            },
+            {
+                "action":"Ask what this place is",
+                "requirements":[
+                    ["nothave","flag","knowsAboutArena"]
+                ],
+                "eventDo":[
+                    ["say","You ask the guard what this place is."],
+                    ["goto", ["#thisisthearena"]]
+                ]
+            },
+            {
+                "action":"Leave",
+                "eventDo":[
+                    ["say","You turn away from the door, and hear the guard close it as you walk away. You have other things you need to do."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#denied":{
+        "msg":[
+            "A voice booms from behind the door, \"Sod off.\""
+        ],
+        "actions":[
+            {
+                "action":"Ask for entrance",
+                "eventDo":[
+                    ["say","."],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Demand for entrance",
+                "eventDo":[
+                    ["say","You bang on the door once again, demanding entrance."],
+                    ["goto",["#guardgreeting"]]
+                ]
+            },
+            {
+                "action":"Leave",
+                "eventDo":[
+                    ["say","You turn away from the door, and hear the guard close it as you walk away. You have other things you need to do."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#thisisthearena":{
+        "msg":[
+            "The guard eyes you suspiciously.\n\"You know what? You look like you might make a good fit.\""
+        ],
+        "actions":[
+            {
+                "action":"Ask what he means",
+                "eventDo":[
+                    ["say","\"You good with a sword?\" the guard asks, \"Or any fighting of any kind?\""],
+                    ["say","Before you have a chance to respond he continues, \"Of course you are. Just look at you.\""],
+                    ["goto", ["#firstTimeEntrance"]]
+                ]
+            },
+            {
+                "action":"Leave",
+                "eventDo":[
+                    ["say","You tell the guard nevermind, and turn around. You hear the door close behind you as you head your way. You have other things you need to do anyway."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#firstTimeEntrance":{
+        "msg":[
+            "The guard nods his head, \"If you're interested in making some good coin, or die trying, this is the place for you.\""
+        ],
+        "actions":[
+            {
+                "action":"Accept the invitation",
+                "eventDo":[
+                    ["say","The guard laughs, \"That's what we like to hear. Head right in and talk to the fight master to start your career.\""],
+                    ["addFlag", "arenaAccepted"],
+                    ["addArea","area_arena_foyer"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Turn down the invitation",
+                "eventDo":[
+                    ["say","You tell the guard nevermind, and turn around. You hear the door close behind you as you head your way. You have other things you need to do anyway."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#guardgreeting":{
+        "msg":[
+            "A guard opens the door, and stares at you.\n\"You'd best get going before I force you to leave,\" he says."
+        ],
+        "actions":[
+            {
+                "action":"Fight him",
+                "eventDo":[
+                    ["say","."],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Ask if there's any way you could make amends",
+                "eventDo":[
+                    ["say","."],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Leave",
+                "eventDo":[
+                    ["say","."],
+                    ["finish"]
+                ]
+            }
+        ]
     }
 }
