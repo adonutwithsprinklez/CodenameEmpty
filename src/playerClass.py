@@ -339,7 +339,6 @@ class Player(object):
         npcProfessions = npc.getProfessions()
         otherDialogueOptions = npc.getOtherDialogueOptions()
         while conversing:
-            print(self.flags)
             if newDialogLine:
                 playerQuery = self.getPlayerQuery()
                 fullQuery = {**query, **playerQuery}
@@ -376,8 +375,9 @@ class Player(object):
             self.disp.display("1. Small Talk")
             i = 1
             for profession in npcProfessions:
-                i += 1
-                self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
+                if profession in NPC_CONVERSATION_EQUIVALENTS.keys():
+                    i += 1
+                    self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
             for additionalOption in otherDialogueOptions:
                 i += 1
                 self.disp.display(f"{i}. {additionalOption['option']}", 0)

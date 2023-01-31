@@ -5,11 +5,14 @@
             "Arena Fight Master"
         ]
     },
+    "prefix":"the ",
     "race":[
         "human"
     ],
-    "numProfessions":"0",
-    "professionPool":[],
+    "numProfessions":"+1",
+    "professionPool":[
+        "Fight Master"
+    ],
     "description":[
         "Just a generic NPC"
     ],

@@ -22,8 +22,8 @@
 	"enemies":[],
 	"npcChance":"+2",
 	"npcs":[
-		"dialogue_npc_arena_armorSmith",
-        "dialogue_npc_arena_weaponSmith"
+		"npc_arena_armorSmith",
+        "npc_arena_weaponSmith"
     ],
 	"minNewAreas":3,
 	"maxNewAreas":3,
