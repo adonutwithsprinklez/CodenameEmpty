@@ -104,6 +104,9 @@ class Event(object):
             return True
         print("Item id '{}' not found".format(itemId))
         return False
+    
+    def setName(self, name):
+        self.name = name
 
 class Tag(object):
     def __init__(self, data):

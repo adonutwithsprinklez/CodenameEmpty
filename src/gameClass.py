@@ -330,6 +330,8 @@ class Game(object):
                             elif action[0] == "addFlag":
                                 if action[1] not in self.player.flags:
                                     self.player.flags.append(action[1])
+                            elif action[0] == "setName":
+                                event.setName(action[1])
                             elif action[0] == "finish":
                                 event.finish()
                 else:
