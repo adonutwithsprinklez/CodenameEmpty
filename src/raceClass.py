@@ -1,6 +1,7 @@
 
 import copy
 
+from universalFunctions import getDataValue
 
 class Race(object):
     def __init__(self, data=None):
@@ -15,37 +16,16 @@ class Race(object):
             if "playable" in data.keys():
                 self.playable = data["playable"]
             self.limbs = []
-            if "basePerks" in data.keys():
-                self.basePerks = data["basePerks"]
-            else:
-                self.basePerks = []
+            self.basePerks = getDataValue("basePerks", data, [])
             for limb in data["limbs"]:
                 newLimb = copy.copy(Limb(limb, self.id))
                 self.limbs.append(newLimb)
-            if "shortDescription" in data.keys():
-                self.shortDescription = data["shortDescription"]
-            else:
-                self.shortDescription = ""
-            if "playerCreationDescription" in data.keys():
-                self.playerCreationDescription = data["playerCreationDescription"]
-            else:
-                self.playerCreationDescription = ""
-            if "startingWeapon" in data.keys():
-                self.startingWeapon = data["startingWeapon"]
-            else:
-                self.startingWeapon = []
-            if "startingArmor" in data.keys():
-                self.startingArmor =  data["startingArmor"]
-            else:
-                self.startingArmor = []
-            if "startingInventory" in data.keys():
-                self.startingInventory = data["startingInventory"]
-            else:
-                self.startingInventory = []
-            if "basePerks" in data.keys():
-                self.basePerks = data["basePerks"]
-            else:
-                self.basePerks = []
+            self.shortDescription = getDataValue("shortDescription", data, "")
+            self.playerCreationDescription = getDataValue("playerCreationDescription", data, "")
+            self.startingWeapon = getDataValue("startingWeapon", data, [])
+            self.startingArmor = getDataValue("startingArmor", data, [])
+            self.startingInventory = getDataValue("startingInventory", data, [])
+            self.basePerks = getDataValue("basePerks", data, [])
 
         else:
             self.id = ""
