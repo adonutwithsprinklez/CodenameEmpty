@@ -1,7 +1,7 @@
 {
     "lines":[
         { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
-        { "dialogue":"\"We have fights setup, .\"", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
+        { "dialogue":"\"We have fights setup and ready to go. First come first serve.\"", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
         
         { "dialogue":"\"Can I help you with something?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
         { "dialogue":"\"What can I help you with?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
@@ -17,7 +17,10 @@
         { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightMed"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
         { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightHard"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
         { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightDuel"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
-        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightMed"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightHard"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightDuel"] ], "weight":5},
 
         { "dialogue":"\"You're already signed up for this fight. How about you finish it first.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":1},
         { "dialogue":"\"Sure. I'll be sure to sign you up. After you finish your other fight.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "has", "arenaFightMed"] ], "weight":1},

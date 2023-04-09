@@ -374,9 +374,11 @@ class Player(object):
             self.disp.displayHeader("Conversation Choices")
             self.disp.display("1. Small Talk")
             i = 1
+            npcProfessionCount = 0
             for profession in npcProfessions:
                 if profession in NPC_CONVERSATION_EQUIVALENTS.keys():
                     i += 1
+                    npcProfessionCount += 1
                     self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
             for additionalOption in otherDialogueOptions:
                 i += 1
@@ -389,14 +391,15 @@ class Player(object):
             elif cmd == 1:
                 action = "smalltalk"
                 newDialogLine = True
-            elif 1 < cmd <= len(npcProfessions) + 1:
-                conversationOption = NPC_CONVERSATION_EQUIVALENTS[npcProfessions[cmd-2]].lower()
-                if conversationOption == "shop":
-                    query = self.shopMenu(npc, query)
-                    action = "finishShop"
-                    newDialogLine = True
-            elif 1 + len(npcProfessions) < cmd <= 1 + len(otherDialogueOptions) + len(npcProfessions):
-                action = otherDialogueOptions[cmd-2-len(npcProfessions)]["isAction"]
+            elif 1 < cmd <= npcProfessionCount + 1:
+                if npcProfessions[cmd-2] in NPC_CONVERSATION_EQUIVALENTS.keys():
+                    conversationOption = NPC_CONVERSATION_EQUIVALENTS[npcProfessions[cmd-2]].lower()
+                    if conversationOption == "shop":
+                        query = self.shopMenu(npc, query)
+                        action = "finishShop"
+                        newDialogLine = True
+            elif 1 + npcProfessionCount < cmd <= 1 + len(otherDialogueOptions) + npcProfessionCount:
+                action = otherDialogueOptions[cmd-2-npcProfessionCount]["isAction"]
                 newDialogLine = True
         
         # End conversation
@@ -553,11 +556,15 @@ class Player(object):
             "playerGold":self.gold,
             "playerLevel":self.level,
             "playerHealth":self.hp,
+            "playerMaxHealth":self.getMaxHP(),
             "playerHealthPercentage":self.getHpPercentage(),
+            "playerXP":self.xp,
+            "playerXPNeededForLevelUp":self.getXpNeededForLevelUp(),
             "playerPerks":self.getPerks(),
             "playerDialogueFlags":self.dialogueFlags,
             "playerFlags":self.flags
         }
+        print(playerQuery)
         return playerQuery
     
     def giveXP(self, xp):
@@ -698,6 +705,7 @@ class Player(object):
     def getBodyDescription(self):
         ''' Returns a description of the player's race. ''' 
         # TODO return a real class object
+
         return self.race.getDescription()
     
     def getXpNeededForLevelUp(self):
@@ -722,4 +730,6 @@ class Player(object):
         return self.name
     
     def setName(self, name):
+        # Make sure first letter is capitalized before setting name
+        name = name.capitalize()
         self.name = name

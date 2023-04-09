@@ -135,8 +135,9 @@
             {
                 "action":"Ask what he means",
                 "eventDo":[
-                    ["say","\"You good with a sword?\" the guard asks, \"Or any fighting of any kind?\""],
+                    ["say","\"This be the Arena. A place to test your skill and be rewarded for it.\"\n\"You good fighting?\""],
                     ["say","Before you have a chance to respond he continues, \"Of course you are. Just look at you.\""],
+                    ["addFlag", "knowsAboutArena"],
                     ["goto", ["#firstTimeEntrance"]]
                 ]
             },
@@ -166,7 +167,7 @@
             {
                 "action":"Turn down the invitation",
                 "eventDo":[
-                    ["say","You tell the guard nevermind, and turn around. You hear the door close behind you as you head your way. You have other things you need to do anyway."],
+                    ["say","You tell the guard you changed your mind, and turn around. You hear the door close behind you as you head your way. You have other things you need to do anyway."],
                     ["finish"]
                 ]
             }

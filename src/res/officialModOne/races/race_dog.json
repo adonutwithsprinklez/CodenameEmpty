@@ -21,9 +21,7 @@
     },
     "playable":true,
     "playerCreationDescription":"Dogs are found all across the mainland and are typically they are seen as loyal companions. They are known for their agility. Warning: HAS NO HANDS, so weapons won't be equippable. (Added in the Official Additional Content Data Pack)",
-    "startingArmor":[
-        ["armor_starting_armor", ["torso"]]
-    ],
+    "startingArmor":[],
     "startingWeapon": [],
     "startingInventory": [],
     "limbs":[

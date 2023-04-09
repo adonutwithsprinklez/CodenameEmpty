@@ -1,4 +1,7 @@
 
+import random
+
+
 def _evaluateEqualsRule(criteria, query):
     return criteria == query
 
@@ -63,3 +66,15 @@ def getSatisfactoryDialogueLines(lines, query):
             else:
                 satisfactoryLines["weights"].append(1)
     return satisfactoryLines
+
+def getRandomSatisfatoryDialogueLine(lines, query, weighted=True):
+    satisfactoryLines = getSatisfactoryDialogueLines(lines, query)
+    if len(satisfactoryLines["lines"]) > 0:
+        getRandomLine(satisfactoryLines["lines"], satisfactoryLines["weights"])
+    else:
+        return {"dialogue":"ERR - No dialog line found"}
+
+def getRandomLine(lines, weights=[]):
+        if len(weights)>0:
+            return random.choices(lines, weights=weights, k=1)[0]
+        return random.choice(lines)
