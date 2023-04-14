@@ -10,6 +10,7 @@ class Screen(object):
         self.delay = delay
         self.printdelay = pdelay
         self.currentLines = []
+        self.lineWidth = 80 # Legacy
 
     def clearScreen(self):
         '''Clears the screen of all text.'''
@@ -23,30 +24,16 @@ class Screen(object):
         if br == 1:
             if self.delay:
                 time.sleep(self.printdelay)
-            newline = "|{}|".format(" "*78)
-            if self.debugging:
-                print(newline)
-            self.currentLines.append(newline)
+            self.currentLines.append("")
         pCount = 0
         for paragraph in msg.split("\n"):
             if pCount >= 1:
-                newline = "|%s|" % (" "*78)
-                self.currentLines.append(newline)
-            for line in textwrap.wrap(paragraph, 72):
-                if self.delay:
-                    time.sleep(self.printdelay)
-                newline = "|   {:75}|".format(line)
-                if self.debugging:
-                    print(newline)
-                self.currentLines.append("|   {:75}|".format(line))
-                # print "|   %-75s|" % (line)
+                self.currentLines.append("")
+            self.currentLines.append(f"<p>{paragraph}<p>")
             pCount += 1
         if br2 == 1:
             time.sleep(self.printdelay)
-            newline = "|%s|" % (" "*78)
-            if self.debugging:
-                print(newline)
-            self.currentLines.append(newline)
+            self.currentLines.append("")
 
 
     def displayHeader(self, msg="", br1=0, br2=0):
@@ -54,44 +41,33 @@ class Screen(object):
         if br2 == 1:
             if self.delay:
                 time.sleep(self.printdelay)
-            newline = "|%s|" % (" "*78)
-            if self.debugging:
-                print(newline)
-            self.currentLines.append(newline)
-        title = "+----[ %s ]" % (msg)
+            self.currentLines.append("")
+        title = msg
         if self.delay:
             time.sleep(self.printdelay)
-        newline = "%s%s+" % (title, "-"*(79-len(title)))
-        if self.debugging:
-            print(newline)
-        self.currentLines.append(newline)
+        self.currentLines.append(f"<h1>{title}<h1>")
         if br1 == 1:
             if self.delay:
                 time.sleep(self.printdelay)
-            newline = "|%s|" % (" "*78)
-            if self.debugging:
-                print(newline)
-            self.currentLines.append("|%s|" % (" "*78))
+            self.currentLines.append("")
 
     def closeDisplay(self):
         '''This ends the current display window.'''
         if self.delay:
             time.sleep(self.printdelay)
-        newline = "|%s|" % (" "*78)
-        if self.debugging:
-            print(newline)
-        self.currentLines.append(newline)
+        self.currentLines.append("")
         if self.delay:
             time.sleep(self.printdelay)
-        newline = "+%s+" % ("-"*78)
-        if self.debugging:
-            print(newline)
-        self.currentLines.append(newline)
+        self.currentLines.append(f"<h3><h3>")
 
 
     def dprint(self,msg):
         '''DEBUG printing. Only prints the message if the debug variable is true.'''
         print(msg)
 
+
     def get_current_lines(self):
         return self.currentLines
+    
+    def set_line_length(self, linelength):
+        self.lineWidth = linelength

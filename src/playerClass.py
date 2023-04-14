@@ -312,8 +312,8 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader("Quit Confirmation")
             self.disp.display("Are you sure you wish to quit?")
-            self.disp.display("0. Yes, Quit")
-            self.disp.display("1. No, Don't Quit", 0)
+            self.disp.display("<red>0. Yes, Quit<red>")
+            self.disp.display("<green>1. No, Don't Quit<green>", 0)
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)

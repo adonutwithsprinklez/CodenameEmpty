@@ -505,7 +505,7 @@ class Game(object):
                     npc = random.choice(npcList)
                     npcdialog = npc.getDialogueLine(fullQuery)
                     self.disp.display("You hear someone mutter something.")
-                    self.disp.display(f"{npc.getName()} - {npcdialog['dialogue']}  ")
+                    self.disp.display(f"<green>{npc.getName()}<green> - <i>{npcdialog['dialogue']}<i>")
                     self.disp.closeDisplay()
                     if "addPlayerFlags" in npcdialog.keys():
                         for flag in npcdialog["addPlayerFlags"]:
@@ -828,18 +828,18 @@ class Game(object):
         while True:
             self.disp.clearScreen()
             self.disp.displayHeader("Race Select")
-            self.disp.display("Current Race: %s" % r.getName(False))
+            self.disp.display("<h2>Current Race: %s<h2>" % r.getName(False))
             self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
             if len(r.getPerks()) > 0:
                 self.disp.display(f'Racial Perks:')
                 for perk in r.getPerks():
                     self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
-            self.disp.display("Choices:")
+            self.disp.display("<h3>Choices:<h3>")
             x = 0
             for race in races:
                 x += 1
-                self.disp.display(f"\t{x}. {race.getName(False)} - {race.getShortDescription()}")
+                self.disp.display(f"\t<b>{x}. {race.getName(False)}<b> - <i>{race.getShortDescription()}<i>")
             self.disp.closeDisplay()
             self.disp.display("0. to Cancel")
             self.disp.closeDisplay()
@@ -885,21 +885,22 @@ class Game(object):
 
         logo = random.choice(self.logos)
         firstLine = logo[0]
-        self.disp.display(firstLine)
+        self.disp.display(f"<cyan>{firstLine}<cyan>")
         for line in logo[1:]:
-            self.disp.display(line, 0)
+            self.disp.display(f"<cyan>{line}<cyan>", 0)
         
-        self.disp.display(f'Version: {self.settings["VERSION"]}')
-        self.disp.display(random.choice(self.descs))
+        self.disp.display(f'<s>Version: {self.settings["VERSION"]}<s>')
+        desc = random.choice(self.descs)
+        self.disp.display(f"<h2>{desc}<h2>")
         self.disp.closeDisplay()
 
-        self.disp.display("1. New Game")
+        self.disp.display("<green>1. New Game<green>")
         # TODO: Check for save files and display below option if there are any
         if False:
             self.disp.display("2. Load Game", 0)
         self.disp.display("3. Settings")
         self.disp.display("4. Data Packs", 0)
-        self.disp.display("0. Exit")
+        self.disp.display("<red>0. Exit<red>")
         self.disp.closeDisplay()
 
     def openOptionsWindow(self):
@@ -935,12 +936,12 @@ class Game(object):
         listOfOptions = self.settings["GAMESETTINGS"][startOptions:endOptions]
         firstOption = listOfOptions.pop(0)
         enabled = "ENABLED" if firstOption[2] else "DISABLED"
-        self.disp.display(f'1. {firstOption[1]:<50} {enabled:>18}')
+        self.disp.display(f'1. {firstOption[1]:<50} <b>{enabled:>18}<b>')
         i = 1
         for option in listOfOptions:
             i += 1
             enabled = "ENABLED" if option[2] else "DISABLED"
-            self.disp.display(f'{i}. {option[1]:<50} {enabled:>18}', 0)
+            self.disp.display(f'{i}. {option[1]:<50} <b>{enabled:>18}<b>', 0)
         self.disp.closeDisplay()
         self.disp.display( "Input option # to toggle. Settings take effect on screen exit.")
         pagebreak = 1
@@ -1042,8 +1043,8 @@ class Game(object):
             packType = pack["packType"]
             packAuth = pack["author"]
 
-            self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
-            self.disp.display(f'\tPack Type: {packType.upper()} | Author: {packAuth}', 0)
+            self.disp.display(f'{i}. {packName:<50} <b>{enabled:>18}<b>')
+            self.disp.display(f'\tPack Type: <i>{packType.upper()}<i> | Author: <i>{packAuth}<i>', 0)
         self.disp.closeDisplay()
         pagebreak = 1
         if page < numPages:
