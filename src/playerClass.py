@@ -55,12 +55,12 @@ class Player(object):
                     self.disp.display("\t%s - Nothing" % (limb.name),0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
-            self.disp.display("1. View Inventory")
-            self.disp.display("2. View Quests", 0)
-            self.disp.display("3. View Player Details", 0)
-            self.disp.display("4. View Skill Levels", 0)
-            self.disp.display("9. Quit Game")
-            self.disp.display("0. Exit", 0)
+            self.disp.displayAction("1. View Inventory", 1)
+            self.disp.displayAction("2. View Quests", 2, 0)
+            self.disp.displayAction("3. View Player Details", 3, 0)
+            self.disp.displayAction("4. View Skill Levels", 4, 0)
+            self.disp.displayAction("9. Quit Game", 9)
+            self.disp.displayAction("0. Exit", 0, 0)
             self.disp.closeDisplay()
             try:
                 # cmd = int(input())
@@ -99,8 +99,8 @@ class Player(object):
                 x = 0
                 for item in self.inv:
                     x += 1
-                    self.disp.display("     %d. %s" % (x, item.getName()), 0)
-            self.disp.display("0. Exit")
+                    self.disp.displayAction("     %d. %s" % (x, item.getName()), x, 0)
+            self.disp.displayAction("0. Exit", 0)
             self.disp.closeDisplay()
             try:
                 # cmd = int(input())
@@ -131,9 +131,9 @@ class Player(object):
             self.disp.display("Currently equipped:")
             self.disp.display("\t%s - %s damage" % (self.weapon.name, self.weapon.damage), 0)
             self.disp.display("\t" + self.weapon.desc, 0, 1)
-            self.disp.display("1. Equip", 0)
-            self.disp.display("2. Drop", 0)
-            self.disp.display("Anything else to continue", 0)
+            self.disp.displayAction("1. Equip", 1, 0)
+            self.disp.displayAction("2. Drop", 2, 0)
+            self.disp.displayAction("0. Back", 0, 0)
         elif self.inv[cmd-1].t == "a":
             self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].getName()))
             self.disp.display("Inspecting: %s - %s defence" % (self.inv[cmd-1].name, self.inv[cmd-1].defence))
@@ -146,22 +146,22 @@ class Player(object):
                     self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.armor.getName(), limb.armor.getDefenceRating()), 0)
                 else:
                     self.disp.display("\t%s - None" % (limb.name), 0)
-            self.disp.display("1. Equip", 1)
-            self.disp.display("2. Drop", 0)
-            self.disp.display("Anything else to continue", 0)
+            self.disp.displayAction("1. Equip", 1, 1)
+            self.disp.displayAction("2. Drop", 2, 0)
+            self.disp.displayAction("0. Back", 0, 0)
         elif self.inv[cmd-1].t == "consumable":
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1, 1)
-            self.disp.display("1. {}".format(self.inv[cmd-1].consumeText), 0)
-            self.disp.display("2. Drop", 0)
-            self.disp.display("Anything else to continue", 0)
+            self.disp.displayAction("1. {}".format(self.inv[cmd-1].consumeText), 1, 0)
+            self.disp.displayAction("2. Drop", 2, 0)
+            self.disp.displayAction("0. Back", 0, 0)
         else:
             self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth)
-            self.disp.display("2. Drop")
-            self.disp.display("Anything else to continue", 0)
+            self.disp.displayAction("2. Drop", 2)
+            self.disp.displayAction("0. Back", 0)
 
         self.disp.closeDisplay()
         try:
@@ -197,8 +197,8 @@ class Player(object):
         limbNum = 0
         for limb in limbs:
             limbNum += 1
-            self.disp.display("\t%s. %s: %s(%s defence)" %(limbNum, limb.name, limb.armor, limb.armor.getDefenceRating()),0,0)
-        self.disp.display("Anything else to cancel", 1)
+            self.disp.displayAction("\t%s. %s: %s(%s defence)" %(limbNum, limb.name, limb.armor, limb.armor.getDefenceRating()), limbNum, 0,0)
+        self.disp.displayAction("0. Back", 0, 1)
         self.disp.closeDisplay()
         try:
             # equip = int(input())
@@ -232,7 +232,7 @@ class Player(object):
                 for perk in self.getRace().getPerks():
                     self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
-            self.disp.display("0. Exit")
+            self.disp.displayAction("0. Exit", 0)
             self.disp.closeDisplay()
             try:
                 # cmd = int(input())
@@ -253,9 +253,8 @@ class Player(object):
             self.disp.display("Player Skills:")
 
             # TODO finish displaying all player skill levels
-            
-            self.disp.closeDisplay()
-            self.disp.display("0. Exit")
+
+            self.disp.displayAction("0. Exit", 0)
             self.disp.closeDisplay()
             try:
                 # cmd = int(input())
@@ -295,7 +294,7 @@ class Player(object):
                 for quest in questList:
                     self.disp.display("[X] - {}".format(quest.title))
                     self.disp.display("\t{}".format(quest.desc), 0)
-            self.disp.display("0. Exit")
+            self.disp.displayAction("0. Exit", 0)
             self.disp.closeDisplay()
             try:
                 # cmd = int(input())
@@ -312,8 +311,8 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader("Quit Confirmation")
             self.disp.display("Are you sure you wish to quit?")
-            self.disp.display("<red>0. Yes, Quit<red>")
-            self.disp.display("<green>1. No, Don't Quit<green>", 0)
+            self.disp.displayAction("<red>0. Yes, Quit<red>", 0)
+            self.disp.displayAction("<green>1. No, Don't Quit<green>", 1, 0)
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)
@@ -372,18 +371,18 @@ class Player(object):
                         break
             self.disp.display(dialogueLine, 1, 1)
             self.disp.displayHeader("Conversation Choices")
-            self.disp.display("1. Small Talk")
+            self.disp.displayAction("1. Small Talk", 1)
             i = 1
             npcProfessionCount = 0
             for profession in npcProfessions:
                 if profession in NPC_CONVERSATION_EQUIVALENTS.keys():
                     i += 1
                     npcProfessionCount += 1
-                    self.disp.display(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", 0)
+                    self.disp.displayAction(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", i, 0)
             for additionalOption in otherDialogueOptions:
                 i += 1
-                self.disp.display(f"{i}. {additionalOption['option']}", 0)
-            self.disp.display("0. Goodbye")
+                self.disp.displayAction(f"{i}. {additionalOption['option']}", i, 0)
+            self.disp.displayAction("0. Goodbye", 0)
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True, True, True)
             if cmd == 0:
@@ -447,12 +446,15 @@ class Player(object):
             self.disp.display(f"Gold: {self.gold}")
             self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
             self.disp.displayHeader(f"{npc.getName()}'s Inventory")
-            self.disp.display("1. Sell", 1, 1)
             i = 1
             for item in npc.getGeneratedInventory():
                 i+=1
-                self.disp.display(f"{i}. {item.getName(True)}", 0)
-            self.disp.display("0. Back")
+                if i == 2:
+                    self.disp.displayAction(f"{i}. {item.getName(True)}", i, 1)
+                else:
+                    self.disp.displayAction(f"{i}. {item.getName(True)}", i, 0)
+            self.disp.displayAction("1. Sell", 1, 1)
+            self.disp.displayAction("0. Back", 0, 0)
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True)
             if cmd == 0:
@@ -505,10 +507,10 @@ class Player(object):
             for item in self.inv:
                 i += 1
                 if i == 1:
-                    self.disp.display(f"{i}. {item.getName(True)}")
+                    self.disp.displayAction(f"{i}. {item.getName(True)}", i)
                 else:
-                    self.disp.display(f"{i}. {item.getName(True)}", 0)
-            self.disp.display("0. Back")
+                    self.disp.displayAction(f"{i}. {item.getName(True)}", i, 0)
+            self.disp.displayAction("0. Back", 0)
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True)
             if cmd == 0:
@@ -542,8 +544,8 @@ class Player(object):
         self.disp.display(f"Gold: {self.gold}")
         self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
         self.disp.displayHeader(f"Options")
-        self.disp.display(f"1. Confirm")
-        self.disp.display(f"Anything else to cancel")
+        self.disp.displayAction(f"1. Confirm", 1)
+        self.disp.displayAction(f"0. Back", 1)
         self.disp.closeDisplay()
         cmd = self.disp.get_input(True, True, True)
         if cmd == 1:
