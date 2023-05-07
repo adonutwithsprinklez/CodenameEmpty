@@ -105,6 +105,10 @@ class ApplicationWindow(tk.Frame):
         for formattedLine in lines:
             self.output_box.insert(END, "{}".format(formattedLine[0]), (formattedLine[1]))
         self.output_box.insert(END, "\n")
+        # Reset focus to input line
+        self.input_line.focus_set()
+        self.input_line.focus()
+        self.input_line.focus_set()
     
     def formatLine(self, line, tags, tagsApplied = []):
         ''' Formats a line with the proper tags '''
@@ -245,6 +249,7 @@ class ApplicationWindow(tk.Frame):
                         return int(input_string)
                     except:
                         return -1
+        # Return the input string
         return input_string
     
     def _get_auto_input(self, event, cmd):
