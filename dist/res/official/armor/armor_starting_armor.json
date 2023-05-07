@@ -1,7 +1,7 @@
 {
 	"name":[
-		"Ruined Cloak",
-		"Torn Cloak"
+		"Ruined Cloth",
+		"Torn Cloth"
 	],
 	"desc":[
 		"The cloak will protect you only if a blow lands on an undamaged portion of it.",
@@ -9,5 +9,13 @@
 	],
 	"defence":"1d2-1",
 	"worthMin":5,
-	"worthMax":15
+	"worthMax":15,
+	"weight":"light",
+	"size":[1,5],
+	"limb":{
+		"torso": ["Cloak"],
+		"arm":["Gloves"],
+		"leg":["Boot"],
+		"head":["Hood"]
+	}
 }

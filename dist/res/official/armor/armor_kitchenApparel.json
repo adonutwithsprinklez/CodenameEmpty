@@ -1,0 +1,20 @@
+{
+	"name":[
+		"Kitchen",
+		"Cooking",
+		"Chef's"
+	],
+	"desc":[
+		"Not particularly safe or useful."
+	],
+	"defence":"1d2",
+	"worthMin":10,
+	"worthMax":20,
+	"weight":"light",
+	"size":[1,4],
+	"limb":{
+		"head": ["Cap","Hat"],
+		"torso": ["Robe","Garmet"],
+		"leg":["Shoes"]
+	}
+}

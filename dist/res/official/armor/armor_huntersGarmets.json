@@ -1,0 +1,23 @@
+{
+	"name":[
+		"Hunter's",
+		"Hunter's",
+		"Hunter's"
+	],
+	"desc":[
+		"A basic set of clothes with reenforced sections to improve protection against wild beasts.",
+		"A set of hunter's garments, reenforced in some sections to protect against wild beasts."
+	],
+	"defence":"1d3",
+	"worthMin":25,
+	"worthMax":40,
+	"weight":"light",
+	"size":[1,5],
+	"limb":{
+		"head": ["Cap","Hood","Hat"],
+		"torso": ["Clothes","Garmet"],
+		"arm":["Handwrap","Glove"],
+		"leg":["Shoe","Boot"],
+		"tail":["Tailcovering"]
+	}
+}

@@ -4,30 +4,32 @@
         "$adjs $color $names",
         "$names of Unusual Size"
     ],
-    "adjs":{
-        "type":"choose",
-        "choices":[
-            "Giant",
-            "Large",
-            "Massive"
-        ]
-    },
-    "color":{
-        "type":"choose",
-        "choices":[
-            "Black",
-            "Gray",
-            "White",
-            "Albino"
-        ]
-    },
-    "names":{
-        "type":"choose",
-        "choices":[
-            "Rat",
-            "Rodent",
-            "Mouse"
-        ]
+    "variables":{
+        "adjs":{
+            "type":"choose",
+            "choices":[
+                "Giant",
+                "Large",
+                "Massive"
+            ]
+        },
+        "color":{
+            "type":"choose",
+            "choices":[
+                "Black",
+                "Gray",
+                "White",
+                "Albino"
+            ]
+        },
+        "names":{
+            "type":"choose",
+            "choices":[
+                "Rat",
+                "Rodent",
+                "Mouse"
+            ]
+        }
     },
 	"eID":"rat",
 	"desc":[

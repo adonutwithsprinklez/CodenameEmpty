@@ -3,27 +3,29 @@
 		"$color Furred Bear",
         "$color2 Bear"
 	],
-    "color":{
-        "type":"choose",
-        "choices":[
-            "Black",
-            "Onyx",
-            "Pitch-Black",
-            "Charcoal",
-            "Dark Gray",
-            "Slate",
-            "Darkly"
-        ]
-    },
-    "color2":{
-        "type":"choose",
-        "choices":[
-            "Black",
-            "Dark Gray",
-            "Jet-Black",
-            "Pitch-Black"
-        ]
-    },
+	"variables":{
+		"color":{
+			"type":"choose",
+			"choices":[
+				"Black",
+				"Onyx",
+				"Pitch-Black",
+				"Charcoal",
+				"Dark Gray",
+				"Slate",
+				"Darkly"
+			]
+		},
+		"color2":{
+			"type":"choose",
+			"choices":[
+				"Black",
+				"Dark Gray",
+				"Jet-Black",
+				"Pitch-Black"
+			]
+		}
+	},
 	"eID":"blackBear",
 	"desc":[
 		"The bear eyes you intently. Its fur glinting in the light.",

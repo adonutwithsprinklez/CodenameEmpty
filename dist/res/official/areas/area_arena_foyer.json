@@ -1,0 +1,34 @@
+{
+    "name":[
+        "The Arena"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "RANDOM DESC ADDITION HERE"
+        ]
+    },
+	"desc":[
+        "DESC GOES HERE. $descRandom."
+	],
+	"aType":"Underground",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"+1",
+	"npcs":[
+		"npc_arena_fightMaster"
+    ],
+	"minNewAreas":3,
+	"maxNewAreas":3,
+	"areas":[
+        ["area_arena_shops", "1d6", ["required", "limited"]],
+        ["area_arena_pit", "1d6", ["required", "limited"]],
+        ["area_arena_exit", "1d6", ["required", "limited"]]
+	]
+}

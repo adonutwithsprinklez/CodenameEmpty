@@ -29,7 +29,7 @@
         "$descWall\nYou overhear the two gate guards discussing $guardDiscussion.",
         "$descWall"
 	],
-	"aType":"Village Wall",
+	"aType":"Village",
 	"hostilityMin":0,
 	"hostilityMax":0,
 	"eventChance":0,
@@ -39,11 +39,19 @@
 	"enemyMessage":[""],
 	"enemyPointsPerHostility":1,
 	"enemies":[],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[],
 	"minNewAreas":2,
 	"maxNewAreas":4,
 	"areas":[
         ["area_gen_forest_3", "2d6"]
-	]
+	],
+    "safeToTravel":[
+        "important",
+        "local"
+    ],
+    "revisitable":[
+        "important",
+        "local"
+    ]
 }

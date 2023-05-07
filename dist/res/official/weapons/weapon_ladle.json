@@ -1,0 +1,24 @@
+{
+    "name": [
+        "Ladle",
+        "Soup Ladle"
+    ],
+    "damage": "1d2-1",
+    "desc": [
+        "A large soup ladle, obviously never meant to be used as a weapon."
+    ],
+    "actionText": [
+        "The ladle is clumsily swung through the air."
+    ],
+    "modifierCount": "+1",
+    "modifiers": [
+        [
+            "wep_polished",
+            "1d6"
+        ]
+    ],
+    "modifierChance": 50,
+    "worthMin": 5,
+    "worthMax": 10,
+    "requiredHands": 1
+}

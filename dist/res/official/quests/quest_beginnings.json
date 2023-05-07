@@ -12,7 +12,7 @@
     ],
     "nextStep":{
         "requirements":[
-            ["inAreaType", "Village Wall"]
+            ["inAreaType", "Village"]
         ],
         "do":[
             ["say", "Well, this quest isn't ready..."],

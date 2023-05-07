@@ -1,0 +1,39 @@
+{
+	"name":[
+        "$adjs Ruins Interior"
+	],
+	"adjs":{
+		"type":"choose",
+		"choices":[
+			"Old",
+            "Abandoned",
+            "Overgrown"
+		]
+	},
+	"desc":[
+		""
+	],
+	"aType":"Ruins",
+	"hostilityMin":5,
+	"hostilityMax":5,
+	"eventChance":50,
+	"events":[
+		["event_tower_forest", "1d6"]
+	],
+	"hostilityAffectsEnemyChance":true,
+	"enemyChance":50,
+	"enemyPointsPerHostility":2,
+	"enemies":[
+		["enemy_rodentOfUnusualSize", 2],
+		["enemy_cultist_basic", 4]
+	],
+	"npcChance":"0",
+	"npcs":[
+	],
+	"minNewAreas":3,
+	"maxNewAreas":6,
+	"areas":[
+		["area_gen_forest_1","2d5", ["required"]],
+		["area_gen_forest_2","2d5"]
+	]
+}

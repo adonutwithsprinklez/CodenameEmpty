@@ -1,0 +1,19 @@
+{
+	"name":[
+		"Ceremonial"
+	],
+	"desc":[
+		"Garments covered with intricate designs. They were definitely used during a ceremony of some kind."
+	],
+	"defence":"1d2",
+	"worthMin":50,
+	"worthMax":55,
+	"weight":"light",
+	"size":[2,4],
+	"limb":{
+		"head": ["Hood"],
+		"torso": ["Robe","Garmet","Clothes"],
+		"arm":["Hand Wrap"],
+		"leg":["Shoe"]
+	}
+}

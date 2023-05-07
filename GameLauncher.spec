@@ -1,4 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import shutil
 
 block_cipher = None
 
@@ -31,3 +33,10 @@ exe = EXE(pyz,
           upx_exclude=[],
           runtime_tmpdir=None,
           console=False )
+
+
+path = 'dist/res/'
+if os.path.exists(path):
+    shutil.rmtree(path)           # Removes all the subdirectories!
+
+shutil.copytree('src/res/', path)

@@ -1,0 +1,23 @@
+{
+    "title":"Reparations",
+    "desc":"After initially turning the Arena down, I have to make reparations in order to be accepted.",
+    "qID":"Beginnings",
+    "devComments":"Questline if the player turns down the arena initially",
+    "spawnConditions":[
+        ["inAreaId", "123123123123"]
+    ],
+    "spawnChance":11,
+    "do":[
+        ["say", "I should stick to trails until I find a village or town. I need to find someone who could help me figure this out."]
+    ],
+    "nextStep":{
+        "requirements":[
+            ["inAreaType", "Village"]
+        ],
+        "do":[
+            ["say", "Well, this quest isn't ready..."],
+            ["setDesc", "I did not prepare the rest of this quest yet... sorry."],
+            ["questComplete",true]
+        ]
+    }
+}

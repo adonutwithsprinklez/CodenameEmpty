@@ -1,0 +1,34 @@
+{
+    "name": "Data Pack Developer Tests",
+    "author": "Sprinklez Media",
+    "desc": "This mod is purely meant for feature testing. Enabling this data pack is not recommended",
+    "packType": "addition",
+    "version": 0.1,
+    "gameDesc": [
+        "What is this, a mod for ants?"
+    ],
+    "areas": [
+        "area_start_1",
+        "mod_area_mysteriousPlace"
+    ],
+    "armor": [],
+    "dialogue": [
+        "dialogue_npc_dog"
+    ],
+    "enemies": [
+        "mod_enemy_giantBoar"
+    ],
+    "events": [
+        "mod_event_caveWolfMisc"
+    ],
+    "misc": [],
+    "modifiers": [],
+    "npcs": [],
+    "quests": [],
+    "races": [
+        "race_dog"
+    ],
+    "weapons": [
+        "mod_weapon_boarTusks"
+    ]
+}

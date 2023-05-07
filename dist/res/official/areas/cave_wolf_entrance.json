@@ -75,7 +75,7 @@
 		"Two large boulders lean against each other, forming a sort of entrance into the dark depths into the wall of rock.\n$randomDetail",
 		"You see blood splatters all around the entrance to the cave. Small bones are littered about the area. You imagine what lies beyond.\n$randomDetail"
 	],
-	"aType":"Cave",
+	"aType":"Forest",
 	"hostilityMin":4,
 	"hostilityMax":6,
 	"eventChance":0,
@@ -92,7 +92,7 @@
         ["enemy_wolf", 4],
         ["enemy_greatWolf", 7]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[],
 	"minNewAreas":2,
 	"maxNewAreas":3,
@@ -100,5 +100,8 @@
 		["cave_wolf_room_1a", "1d1", ["required", "limited"]],
 		["area_gen_forest_3","1d5", ["required"]],
 		["area_gen_forest_4","1d5"]
-	]
+	],
+    "revisitable":[
+        "local"
+    ]
 }

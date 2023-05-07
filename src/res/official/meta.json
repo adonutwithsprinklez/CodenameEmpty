@@ -28,7 +28,8 @@
         "This has \"drag 'n drop\" mod support!",
         "Got dialogue?",
         "Yes, you can pet the dog.",
-        "Dare to step into the arena?"
+        "Dare to step into the arena?",
+        "You can click your actions!"
     ],
     "areas": [
         "area_abandoned_church",

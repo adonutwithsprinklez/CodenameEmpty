@@ -57,12 +57,14 @@ def openDataPacks(game, settingsFile):
 	saveJson(settingsFile, game.settings)
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
-def startApplication():
+def startApplication(PATH=None):
 	global GAME_VERSION, MIN_SAVE_VERSION, MIN_SAVE_VERSION
 	global RES_FOLDER, SETTINGS, SETTINGS_FILE
 
 	# Loads some resource stuff
 	RES_FOLDER = "res/"
+	if PATH:
+		RES_FOLDER = PATH + "/res/"
 	SETTINGS_FILE = RES_FOLDER + "settings.json"
 	SETTINGS = loadJson(SETTINGS_FILE)
 

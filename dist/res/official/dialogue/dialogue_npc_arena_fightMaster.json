@@ -1,0 +1,76 @@
+{
+    "lines":[
+        { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
+        { "dialogue":"\"We have fights setup and ready to go. First come first serve.\"", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
+        
+        { "dialogue":"\"Can I help you with something?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
+        { "dialogue":"\"What can I help you with?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
+        
+        { "dialogue":"\"You planning on fighting, or are you just going to continue wasting my time?\"","criteria":[ ["isAction", "=", "smalltalk"] ], "weight": 1 },
+        { "dialogue":"\"I've got several fights lined up. I could probably fit you in if you'd like.\"", "criteria":[ ["isAction", "=", "smalltalk"] ], "weight": 1 },
+        { "dialogue":"\"Listen, I've got work to do. Either sign up for a fight, or go bother someone else.\"", "criteria":[ ["isAction", "=", "smalltalk"] ], "weight": 1 },
+
+        { "dialogue":"\"It's an arena,\" he says confused, \"You sign up for a fight, you enter the pit, and either come out richer or come out dead.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"] ], "addPlayerFlags":["knowsArenaRules"], "weight":1},
+        { "dialogue":"\"Are you joking? I've already explained it to you. You sign up for a fight, you enter the pit, and either get gold or get buried. What's there not to get?\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"] ], "weight":1},
+        { "dialogue":"\"Aren't you already signed up for a fight? Did you sign up for a fight without knowing how it works?\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "knowsArenaRules"] ], "weight":5},
+        { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightEasy"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
+        { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightMed"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
+        { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightHard"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
+        { "dialogue":"\"I have you signed up for a fight... How do you not know how this- You know what? I don't care. You sign up for a fight, you enter the pit, and then either walk out as a champion or get pulled out as a corpse.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "nothas", "knowsArenaRules"], ["playerFlags", "has", "arenaFightDuel"] ], "addPlayerFlags":["knowsArenaRules"],  "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightMed"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightHard"] ], "weight":5},
+        { "dialogue":"\"I know I've explained the rules to you before. How do you not understand it already? You're literally signed up for a fight.\"", "criteria":[ ["isAction", "=", "askAboutArena"], ["playerFlags", "has", "knowsArenaRules"], ["playerFlags", "has", "arenaFightDuel"] ], "weight":5},
+
+        { "dialogue":"\"You're already signed up for this fight. How about you finish it first.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":1},
+        { "dialogue":"\"Sure. I'll be sure to sign you up. After you finish your other fight.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "has", "arenaFightMed"] ], "weight":1},
+        { "dialogue":"\"You're already signed up for a fight. Finish that one first and then we'll revisit.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "has", "arenaFightHard"] ], "weight":1},
+        { "dialogue":"\"You get smacked in the head one too many times in the arena? You're already signed up for a fight.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "has", "arenaFightDuel"] ], "weight":1},
+        { "dialogue":"\"Alright. I'll put you down for a quick one round fight. Enter the pit when you're ready.\"", "criteria":[ ["isAction", "=", "getFightEasy"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "addPlayerFlags":["arenaFightEasy"], "weight":1},
+
+        { "dialogue":"\"You get smacked in the head one too many times in the arena? You're already signed up for a fight.\"", "criteria":[ ["isAction", "=", "getFightMedium"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":1},
+        { "dialogue":"\"You're already signed up for this fight. How about you finish it first.\"", "criteria":[ ["isAction", "=", "getFightMedium"], ["playerFlags", "has", "arenaFightMed"] ], "weight":1},
+        { "dialogue":"\"Sure. I'll be sure to sign you up. After you finish your other fight.\"", "criteria":[ ["isAction", "=", "getFightMedium"], ["playerFlags", "has", "arenaFightHard"] ], "weight":1},
+        { "dialogue":"\"You're already signed up for a fight. Finish that one first and then we'll revisit.\"", "criteria":[ ["isAction", "=", "getFightMedium"], ["playerFlags", "has", "arenaFightDuel"] ], "weight":1},
+        { "dialogue":"\"Alright. I'll Set up a fight for you. Two rounds. Enter the pit when you're ready.\"", "criteria":[ ["isAction", "=", "getFightMedium"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "addPlayerFlags":["arenaFightMed"], "weight":1},
+
+        { "dialogue":"\"You're already signed up for a fight. Finish that one first and then we'll revisit.\"", "criteria":[ ["isAction", "=", "getFightHard"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":1},
+        { "dialogue":"\"You get smacked in the head one too many times in the arena? You're already signed up for a fight.\"", "criteria":[ ["isAction", "=", "getFightHard"], ["playerFlags", "has", "arenaFightMed"] ], "weight":1},
+        { "dialogue":"\"You're already signed up for this fight. How about you finish it first.\"", "criteria":[ ["isAction", "=", "getFightHard"], ["playerFlags", "has", "arenaFightHard"] ], "weight":1},
+        { "dialogue":"\"Sure. I'll be sure to sign you up. After you finish your other fight.\"", "criteria":[ ["isAction", "=", "getFightHard"], ["playerFlags", "has", "arenaFightDuel"] ], "weight":1},
+        { "dialogue":"\"Alright. I'll put you down for full match. Three rounds. Enter the pit when you're ready.\"", "criteria":[ ["isAction", "=", "getFightHard"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "addPlayerFlags":["arenaFightHard"], "weight":1},
+
+        { "dialogue":"\"Sure. I'll be sure to sign you up. After you finish your other fight.\"", "criteria":[ ["isAction", "=", "getFightDuel"], ["playerFlags", "has", "arenaFightEasy"] ], "weight":1},
+        { "dialogue":"\"You're already signed up for a fight. Finish that one first and then we'll revisit.\"", "criteria":[ ["isAction", "=", "getFightDuel"], ["playerFlags", "has", "arenaFightMed"] ], "weight":1},
+        { "dialogue":"\"You get smacked in the head one too many times in the arena? You're already signed up for a fight.\"", "criteria":[ ["isAction", "=", "getFightDuel"], ["playerFlags", "has", "arenaFightHard"] ], "weight":1},
+        { "dialogue":"\"You're already signed up for this fight. How about you finish it first.\"", "criteria":[ ["isAction", "=", "getFightDuel"], ["playerFlags", "has", "arenaFightDuel"] ], "weight":1},
+        { "dialogue":"\"Ready for a one on one fight then? I got one that should interest you. Step into the pit when you're ready.\"", "criteria":[ ["isAction", "=", "getFightDuel"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "addPlayerFlags":["arenaFightDuel"], "weight":1},
+
+        { "dialogue":"\"Very well. Next time don't sign up for a fight if you're just planning to cancel. \"", "criteria":[ ["isAction", "=", "cancelFight"], ["playerFlags", "has", "arenaFightEasy"] ], "removePlayerFlags":["arenaFightEasy"], "weight":1},
+        { "dialogue":"\"I'd appreciate it if you only accept fights that you actually plan on completing.\"", "criteria":[ ["isAction", "=", "cancelFight"], ["playerFlags", "has", "arenaFightMed"] ], "removePlayerFlags":["arenaFightMed"], "weight":1},
+        { "dialogue":"\"I'll remove your name from the list. In the future, only accept fights you won't cancel.\"", "criteria":[ ["isAction", "=", "cancelFight"], ["playerFlags", "has", "arenaFightHard"] ], "removePlayerFlags":["arenaFightHard"], "weight":1},
+        { "dialogue":"\"I'll tell your opponent you're having second thoughts about the fight.\"", "criteria":[ ["isAction", "=", "cancelFight"], ["playerFlags", "has", "arenaFightDuel"] ], "removePlayerFlags":["arenaFightDuel"], "weight":1},
+        { "dialogue":"\"What do you mean cancel your current fight? I don't have you listed for any fights.\"", "criteria":[ ["isAction", "=", "cancelFight"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "weight":1},
+
+        { "dialogue":"\"Come back when you're done with that fight.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightEasy"] ], "weight": 5 },
+        { "dialogue":"\"If you come back in one piece I'll put you down for another fight.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightEasy"] ], "weight": 5 },
+        { "dialogue":"\"Be sure to come back if you can survive the fight. I have an endless supply of 'em.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightEasy"] ], "weight": 5 },
+        { "dialogue":"\"Come back when you're done with that fight.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightMed"] ], "weight": 5 },
+        { "dialogue":"\"If you come back in one piece I'll put you down for another fight.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightMed"] ], "weight": 5 },
+        { "dialogue":"\"Be sure to come back if you can survive the fight. I have an endless supply of 'em.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightMed"] ], "weight": 5 },
+        { "dialogue":"\"BCome back when you're done with that fight.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightHard"] ], "weight": 5 },
+        { "dialogue":"\"If you come back in one piece I'll put you down for another fight.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightHard"] ], "weight": 5 },
+        { "dialogue":"\"Be sure to come back if you can survive the fight. I have an endless supply of 'em.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightHard"] ], "weight": 5 },
+        { "dialogue":"\"May luck be on your side.\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerFlags", "has", "arenaFightDuel"] ], "weight": 5 },
+        { "dialogue":"\"Alright. I'll be seeing ya. Possibly.\"", "criteria":[ ["isAction", "=", "goodbye"] ], "weight": 1 }
+    ],
+    "otherDialogueOptions":[
+        {"option":"Ask about how the arena works","isAction":"askAboutArena","playerDialogue":"You ask about how the arena works."},
+        {"option":"Request a simple fight","isAction":"getFightEasy","playerDialogue":"You request a fight."},
+        {"option":"Request an intermediate fight","isAction":"getFightMedium","playerDialogue":"You request a fight."},
+        {"option":"Request a hard fight","isAction":"getFightHard","playerDialogue":"You request a fight."},
+        {"option":"Request a duel","isAction":"getFightDuel","playerDialogue":"You request a fight."},
+        {"option":"Cancel your current fight","isAction":"cancelFight","playerDialogue":"You ask the fight manager to cancel your current fight."}
+    ],
+    "flags":[]
+}

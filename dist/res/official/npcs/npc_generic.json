@@ -1,0 +1,48 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Human NPC"
+        ]
+    },
+    "race":[
+        "human"
+    ],
+    "numProfessions":"1d3-2",
+    "professionPool":[
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_fallback",
+        "dialogue_npc_generic"
+    ],
+    "numItems":"1d3+5",
+    "itemPool":[
+        ["armor_starting_armor", 5],
+        ["armor_huntersGarmets", 5],
+        ["armor_hideArmor", 4],
+        ["armor_ironArmor", 2],
+        ["consumable_apple", 15],
+        ["consumable_potion_health", 30],
+        ["weapon_butcherknife", 5],
+        ["weapon_castironskillet", 3],
+        ["weapon_ironSword", 5],
+        ["weapon_shovel", 3],
+        ["weapon_club", 3],
+        ["weapon_steelSword", 2],
+        ["armor_dragonSkin", 1]
+    ],
+    "interestedInBuying":[
+
+    ],
+    "numFlags":"1d3",
+    "flagPool":[
+        "tired",
+        "busy",
+        "religious",
+        "sick"
+    ]
+}

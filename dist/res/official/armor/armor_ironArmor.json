@@ -1,7 +1,7 @@
 {
 	"name":[
-		"Iron Armor",
-		"Scratched Iron Armor"
+		"Iron",
+		"Scratched Iron"
 	],
 	"desc":[
 		"The iron is scratched from previous wear.",
@@ -9,5 +9,14 @@
 	],
 	"worthMin":45,
 	"worthMax":55,
-	"defence":"1d3"
+	"defence":"1d4",
+	"weight":"medium",
+	"size":[2,4],
+	"limb":{
+		"head": ["Helmet", "Helm"],
+		"torso": ["Armor", "Plate Armor"],
+		"arm":["Gauntlet", "Glove"],
+		"leg":["Boot", "Legguard"],
+		"tail":["Tailguard"]
+	}
 }

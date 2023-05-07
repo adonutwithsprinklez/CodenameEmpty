@@ -6,25 +6,18 @@
     "names":{
         "type":"choose",
         "choices":[
-            "Elder",
             "God",
-            "King",
-            "Queen",
             "Dragon",
-            "Bear",
             "Ruffian",
-            "Troublemaker",
-            "Huntsman"
+            "Troublemaker"
         ]
     },
     "forest":{
         "type":"choose",
         "choices":[
             "Forest",
-            "Thicket",
             "Wilds",
-            "Wilderness",
-            "Woodland"
+            "Wilderness"
         ]
     },
     "adjs":{
@@ -72,7 +65,7 @@
 		["enemy_greatWolf",8],
 		["enemy_bear",11]
 	],
-	"npcChance":0,
+	"npcChance":"0",
 	"npcs":[
 	],
 	"minNewAreas":3,

@@ -7,6 +7,8 @@
         "physique":6,
         "intelligence":3
     },
+    "shortDescription":"An unintelligent race that has good strength.",
+    "longDescription":[],
     "baseSkills":[],
     "standing":{
         "elf":-4,
@@ -15,6 +17,16 @@
         "dwarf":3
     },
     "playable":true,
+    "playerCreationDescription":"Draktiliens are the newest race to enter the mainland. Thought to be descendents of dragons, their natural verocity and lack of intelligence has made the other races wary of their existence.",
+    "startingArmor":[
+        ["armor_starting_armor", ["torso", "arm", "arm", "leg", "leg"]]
+    ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ],
     "limbs":[
         {
             "type":"head",
@@ -82,11 +94,9 @@
             "hitChance":"1d3",
             "maxHealth":50,
             "attacks":[
-                ["Sweep", "$user sweeps at the target with its tail.", "1d5"]
+                ["Sweep", "$user sweeps at the target with its tail.", "1d5-1"]
             ],
-            "flags":[
-                "specialArmor"
-            ]
+            "flags":[]
         }
     ]
 }
