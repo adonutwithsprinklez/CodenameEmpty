@@ -13,6 +13,12 @@
     "shortDescription":"A race with low vitality and even lower strength, but very good physique and intelligence.",
     "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Silvyn",
+        "Falael",
+        "Elandorr",
+        "Vaeril"
+    ],
     "standing":{
         "human":6,
         "drakt":-5,

@@ -1,5 +1,6 @@
 
 import copy
+import random
 
 from universalFunctions import getDataValue
 
@@ -26,6 +27,7 @@ class Race(object):
             self.startingArmor = getDataValue("startingArmor", data, [])
             self.startingInventory = getDataValue("startingInventory", data, [])
             self.basePerks = getDataValue("basePerks", data, [])
+            self.names = getDataValue("names", data, [])
 
         else:
             self.id = ""
@@ -42,6 +44,7 @@ class Race(object):
             self.startingArmor = []
             self.startingInventory = []
             self.basePerks = []
+            self.names = []
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -195,6 +198,9 @@ class Race(object):
     
     def getPerks(self):
         return self.basePerks
+    
+    def getRandomName(self):
+        return random.choice(self.names)
     
     def __str__(self):
         return f"{self.getId()} - {self.getName(False)}"

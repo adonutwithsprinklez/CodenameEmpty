@@ -13,6 +13,12 @@
     "shortDescription":"A typical four-legged Canine.",
     "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Rex",
+        "Fido",
+        "Spot",
+        "Rover"
+    ],
     "standing":{
         "elf":-4,
         "human":-5,

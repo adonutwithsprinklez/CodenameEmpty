@@ -36,6 +36,6 @@
 	"minNewAreas":1,
 	"maxNewAreas":1,
 	"areas":[
-		["area_start_2","1d1", ["required", "limited"]]
+		["tutorial/area_start_2","1d1", ["required", "limited"]]
 	]
 }

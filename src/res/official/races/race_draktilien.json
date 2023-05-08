@@ -10,6 +10,12 @@
     "shortDescription":"An unintelligent race that has good strength.",
     "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Drex",
+        "Bhliet",
+        "Klax",
+        "Doumnir"
+    ],
     "standing":{
         "elf":-4,
         "human":-5,

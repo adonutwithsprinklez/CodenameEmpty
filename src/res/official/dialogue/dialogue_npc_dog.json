@@ -5,6 +5,14 @@
         { "dialogue":"*Barks*", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "nothas", "Animal Speech"] ] },
         { "dialogue":"*Barks*", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "nothas", "Animal Speech"] ] },
         { "dialogue":"*Barks*", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "nothas", "Animal Speech"]] },
+        { "dialogue":"*Yips*", "criteria":[ ["isAction", "=", "idle"], ["playerPerks", "nothas", "Animal Speech"]] },
+        { "dialogue":"*Yips*", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "nothas", "Animal Speech"] ] },
+        { "dialogue":"*Yips*", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "nothas", "Animal Speech"] ] },
+        { "dialogue":"*Yips*", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "nothas", "Animal Speech"] ] },
+        { "dialogue":"*Howls*", "criteria":[ ["isAction", "=", "idle"], ["playerPerks", "nothas", "Animal Speech"]] },
+        { "dialogue":"*Howls*", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "nothas", "Animal Speech"] ] },
+        { "dialogue":"*Howls*", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "nothas", "Animal Speech"] ] },
+        { "dialogue":"*Howls*", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "nothas", "Animal Speech"] ] },
         { "dialogue":"\"Person! Oh a person!\"", "criteria":[ ["isAction", "=", "idle"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
         { "dialogue":"\"I saw a squirrel once! The squirrel ran off though. I wonder where the squirrel went.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
         { "dialogue":"\"Be careful person! There are scary things in the forest.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
@@ -14,7 +22,7 @@
         { "dialogue":"\"Hey! What are you doing?\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] }
     ],
     "otherDialogueOptions":[
-        {"option":"Pet the dog","isAction":"pet","playerDialogue":"You pet the dog."}
+        {"option":"Pet the dog","isAction":"pet","playerDialogue":"You attempt to pet the dog."}
     ],
     "flags":[]
 }

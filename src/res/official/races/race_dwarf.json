@@ -16,6 +16,12 @@
         "orc":0,
         "human":5
     },
+    "names":[
+        "Throstith",
+        "Dhurthum",
+        "Elbic",
+        "Ardreck"
+    ],
     "playable":true,
     "playerCreationDescription":"Dwarves area a hearty and well varied race. Their expansion into the mountains always required jobs of various specialties, leading most races to need their help for one reason or another.",
     "startingArmor":[

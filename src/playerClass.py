@@ -38,27 +38,28 @@ class Player(object):
         cmd = -1
         while cmd != 0 and not self.quit:
             self.disp.clearScreen()
-            self.disp.displayHeader("{} Info ( {} )".format(self.name, self.race.name))
-            self.disp.display("Quick Stats:")
+            self.disp.displayHeader(f"Player Info: <cyan>{self.name}<cyan>")
+            self.disp.display("<h2>Quick Stats:<h2>")
             for stat in self.getUserInfo():
                 self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
-            self.disp.display("Wielding:")
+            self.disp.display("<h2>Wielding:<h2>")
             if self.weapon != None:
-                self.disp.display("\t%s (%s damage)" % (self.weapon.name, self.weapon.damage),0)
+                self.disp.display("\t<i>%s<i> (%s damage)" % (self.weapon.name, self.weapon.damage),0)
             else:
                 self.disp.display("\tYou are not currently wielding a weapon",0)
-            self.disp.display("Wearing:")
+            self.disp.display("<h2>Wearing:<h2>")
             for limb in self.race.getLimbsEquippableLimbs():
                 if limb.getArmor():
-                    self.disp.display("\t%s - %s (%s defence)" % (limb.name, limb.getArmor(), limb.armor.getDefenceRating()),0)
+                    self.disp.display("\t%s - <i>%s<i> (%s defence)" % (limb.name, limb.getArmor(), limb.armor.getDefenceRating()),0)
                 else:
                     self.disp.display("\t%s - Nothing" % (limb.name),0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
-            self.disp.displayAction("1. View Inventory", 1)
-            self.disp.displayAction("2. View Quests", 2, 0)
-            self.disp.displayAction("3. View Player Details", 3, 0)
-            self.disp.displayAction("4. View Skill Levels", 4, 0)
+            self.disp.displayAction("1. View Inventory", 1, 0)
+            self.disp.displayAction("2. [<red>DISABLED<red>] View Equipment", 2, 0)
+            self.disp.displayAction("3. View Quests", 3, 0)
+            self.disp.displayAction("4. View Player Details", 4, 0)
+            self.disp.displayAction("5. View Skill Levels", 5, 0)
             self.disp.displayAction("9. Quit Game", 9)
             self.disp.displayAction("0. Exit", 0, 0)
             self.disp.closeDisplay()
@@ -71,11 +72,11 @@ class Player(object):
                 pass
             elif cmd == 1:
                 self.viewInventory()
-            elif cmd == 2:
-                self.viewQuests(currentQuests, completedQuests)
             elif cmd == 3:
-                self.viewPlayerDetails()
+                self.viewQuests(currentQuests, completedQuests)
             elif cmd == 4:
+                self.viewPlayerDetails()
+            elif cmd == 5:
                 self.viewPlayerLevels()
             elif cmd == 9:
                 self.confirmQuit()
@@ -92,10 +93,8 @@ class Player(object):
         while cmd != 0:
             self.disp.clearScreen()
             self.disp.displayHeader("Inventory")
-            self.disp.display("Contents %d / %d" %
-                              (len(self.inv), self.getMaxInventorySlots()), 1)
+            self.disp.display("Contents %d / %d" % (len(self.inv), self.getMaxInventorySlots()), 1, 1)
             if len(self.inv) > 0:
-                self.disp.display("")
                 x = 0
                 for item in self.inv:
                     x += 1
@@ -311,8 +310,8 @@ class Player(object):
             self.disp.clearScreen()
             self.disp.displayHeader("Quit Confirmation")
             self.disp.display("Are you sure you wish to quit?")
+            self.disp.displayAction("<green>1. No, Don't Quit<green>", 1)
             self.disp.displayAction("<red>0. Yes, Quit<red>", 0)
-            self.disp.displayAction("<green>1. No, Don't Quit<green>", 1, 0)
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)
@@ -654,11 +653,17 @@ class Player(object):
         return int(((1.0*self.hp)/self.getMaxHP())*100)
 
     def getWeaponDamage(self):
+        totalDamage = 0
         if self.weapon:
-            return self.weapon.getAttack()
+            totalDamage += self.getStat("strength")
+            totalDamage += self.weapon.getAttack()
         else:
-            # TODO: Get racial stuff
-            return 0
+            unarmedMultiplier = 1
+            if "Unarmed Fighter" in self.getPerks():
+                unarmedMultiplier += 1
+            totalDamage += unarmedMultiplier * self.getStat("strength")
+        return totalDamage
+        
 
     def getWeaponAction(self):
         if self.weapon:
@@ -691,6 +696,9 @@ class Player(object):
         perks.extend(self.getRace().getPerks())
         perks = list(set(perks))
         return perks
+    
+    def getHp(self):
+        return self.hp
 
     def getMaxHP(self):
         baseHealth = self.getStat("vitality") * 10

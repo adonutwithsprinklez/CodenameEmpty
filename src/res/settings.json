@@ -140,8 +140,8 @@
         ],
         [
             "TUTORIALAREA",
-            "Play through Tutorial Area",
-            true
+            "Disable Tutorial Area",
+            false
         ],
         [
             "DEBUGDISPLAY",

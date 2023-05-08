@@ -50,8 +50,8 @@
 	"door":{
 		"type":"choose",
 		"choices":[
-			"An ornately carved wooden door stands open in the side of the building.",
-			"You can see the building's rotted oak door, half fallen apart."
+			"An ornately carved wooden door stands open in the side of the building",
+			"You can see the building's rotted oak door, half fallen apart"
 		]
 	},
 	"desc":[
