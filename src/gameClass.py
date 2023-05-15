@@ -78,6 +78,7 @@ class Game(object):
         packs = self.dataPackSettings["packsToLoad"]
         self.starter = self.dataPackSettings["start"]
         print("\nLoading assets...")
+        loadTimeStart = time.time()
 
         for pack in packs:
             if pack[1]:
@@ -175,6 +176,10 @@ class Game(object):
                 if self.events[event]["globalEvent"]:
                     self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
+        
+        loadTimeEnd = time.time()
+        print(f"Finished loading assets in {loadTimeEnd - loadTimeStart} seconds.")
+        
         self.loadStartingArea()
         self.loaded = True
 
@@ -817,11 +822,12 @@ class Game(object):
             self.disp.displayHeader("Name Select")
             self.disp.display("Current Name: <cyan>%s<cyan>" % currentName)
             self.disp.display("Enter your desired name")
-            self.disp.displayAction("1. Random Name", 1)
+            if currentRace != "":
+                self.disp.displayAction("1. Random Name", 1)
             self.disp.displayAction("<red>0. Back<red>", 0)
             self.disp.closeDisplay()
             name = self.disp.get_input(acceptNothing=True)
-            if name == "1":
+            if name == "1" and currentRace != "":
                 currentName = Race(self.races[currentRace]).getRandomName()
             elif name == "0" or name == "" or name == None:
                 return currentName
