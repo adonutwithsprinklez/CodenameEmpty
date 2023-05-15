@@ -36,7 +36,9 @@
             "name":"Head",
             "hitChance":"2d8",
             "maxHealth":25,
-            "attacks":[],
+            "attacks":[
+                ["Bite", "You bite the target.", "1d5"]
+            ],
             "flags":["vital"]
         },
         {

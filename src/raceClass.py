@@ -158,6 +158,13 @@ class Race(object):
                 hurtLimbs.append(limb)
         return hurtLimbs
     
+    def getAllLimbAttacks(self):
+        limbAttacks = []
+        for limb in self.getLimbObjects():
+            for attack in limb.getAttacks():
+                limbAttacks.append([limb.name] + attack)
+        return limbAttacks
+    
     def getStat(self, stat):
         ''' Returns the race's base stat '''
         if stat in self.baseStats.keys():
@@ -241,3 +248,6 @@ class Limb(object):
         elif not self.armorable:
             return "Unequippable"
         return None
+    
+    def getAttacks(self):
+        return self.attacks

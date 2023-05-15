@@ -1,11 +1,11 @@
 {
   "VERSION": 0.1,
-  "DEBUG": false,
+  "DEBUG": true,
   "DELAY": 0.01,
   "EVENTDELAY": 2,
   "DISPLAYSETTINGS": {
-    "WIDTH": 800,
-    "HEIGHT": 600,
+    "WIDTH": 1280,
+    "HEIGHT": 800,
     "RESIZABLE": true,
     "FONTSIZE": 12,
     "THEME": {
@@ -122,6 +122,11 @@
   },
   "GAMESETTINGS": [
     [
+      "FULLSCREEN",
+      "Fullscreen Display Mode",
+      false
+    ],
+    [
       "DELAYENABLED",
       "[BROKEN] Display Effects",
       false
@@ -161,7 +166,7 @@
       ],
       [
         "officialModOne",
-        false
+        true
       ]
     ],
     "start": "official"

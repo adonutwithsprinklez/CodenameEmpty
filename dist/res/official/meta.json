@@ -34,8 +34,8 @@
     "areas": [
         "area_abandoned_church",
         "area_abandoned_church_interior",
-        "area_start_1",
-        "area_start_2",
+        "tutorial/area_start_1",
+        "tutorial/area_start_2",
         "area_gen_forest_1",
         "area_gen_forest_2",
         "area_gen_forest_3",
@@ -183,7 +183,7 @@
         "weapon_werewolfClaws"
     ],
     "tutorialArea":[
-        "area_start_1"
+        "tutorial/area_start_1"
     ],
     "startingArea": [
         "area_village_gate_east"

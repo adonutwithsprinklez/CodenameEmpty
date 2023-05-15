@@ -56,7 +56,7 @@
             "hitChance":"1d6",
             "maxHealth":50,
             "attacks":[
-                ["Punch", "$user punches the target.", "1d3"]
+                ["Scratch", "$user punches the target.", "1d3+1"]
             ],
             "flags":[
                 "equippable"
@@ -68,7 +68,7 @@
             "hitChance":"1d6",
             "maxHealth":50,
             "attacks":[
-                ["Punch", "$user punches the target.", "1d3"]
+                ["Scratch", "$user punches the target.", "1d3+1"]
             ],
             "flags":[
                 "equippable"
@@ -100,7 +100,7 @@
             "hitChance":"1d3",
             "maxHealth":50,
             "attacks":[
-                ["Sweep", "$user sweeps at the target with its tail.", "1d5-1"]
+                ["Sweep", "$user sweeps at the target with its tail.", "1d5"]
             ],
             "flags":[]
         }

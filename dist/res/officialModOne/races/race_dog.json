@@ -13,6 +13,12 @@
     "shortDescription":"A typical four-legged Canine.",
     "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Rex",
+        "Fido",
+        "Spot",
+        "Rover"
+    ],
     "standing":{
         "elf":-4,
         "human":-5,
@@ -30,7 +36,9 @@
             "name":"Head",
             "hitChance":"2d8",
             "maxHealth":25,
-            "attacks":[],
+            "attacks":[
+                ["Bite", "You bite the target.", "1d5"]
+            ],
             "flags":["vital"]
         },
         {

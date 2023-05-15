@@ -1,171 +1,174 @@
 {
-    "VERSION": 0.1,
-    "MIN_DATA_PACK_VER": 0.1,
-    "MIN_SAVE_VER": 0.1,
-    "DEBUG": true,
-    "DELAY": 0.01,
-    "EVENTDELAY": 2,
-    "DISPLAYSETTINGS": {
-        "WIDTH": 800,
-        "HEIGHT": 600,
-        "RESIZABLE": true,
-        "FONTSIZE": 12,
-        "THEME": {
-            "WINDOWBGCOLOR": "#2d3436",
-            "INPUTBGCOLOR": "#636e72",
-            "DEFAULTTEXTCOLOR": "#dfe6e9",
-            "STYLE": {
-                "regular": {
-                    "tag": "p",
-                    "font": "Courier 14"
-                },
-                "bold": {
-                    "tag": "b",
-                    "font": "Courier 14 bold"
-                },
-                "italic": {
-                    "tag": "i",
-                    "font": "Courier 14 italic"
-                },
-                "underline": {
-                    "tag": "u",
-                    "font": "Courier 14 underline"
-                },
-                "action": {
-                    "tag": "a",
-                    "font": "Courier 14 italic"
-                },
-                "header1": {
-                    "tag": "h1",
-                    "font": "Courier 20 underline"
-                },
-                "header2": {
-                    "tag": "h2",
-                    "font": "Courier 18 bold"
-                },
-                "header3": {
-                    "tag": "h3",
-                    "font": "Courier 16 bold"
-                },
-                "smaller": {
-                    "tag": "s",
-                    "font": "Courier 12 italic"
-                }
-            },
-            "FOREGROUND": {
-                "black": {
-                    "tag": "black",
-                    "foreground": "#26242f"
-                },
-                "red": {
-                    "tag": "red",
-                    "foreground": "#d63031"
-                },
-                "green": {
-                    "tag": "green",
-                    "foreground": "#00b894"
-                },
-                "yellow": {
-                    "tag": "yellow",
-                    "foreground": "#fdcb6e"
-                },
-                "blue": {
-                    "tag": "blue",
-                    "foreground": "#0984e3"
-                },
-                "magenta": {
-                    "tag": "magenta",
-                    "foreground": "#e84393"
-                },
-                "cyan": {
-                    "tag": "cyan",
-                    "foreground": "#00cec9"
-                },
-                "white": {
-                    "tag": "white",
-                    "foreground": "#f8f8f2"
-                }
-            },
-            "BACKGROUND": {
-                "on_black": {
-                    "tag": "on_black",
-                    "background": "#26242f"
-                },
-                "on_red": {
-                    "tag": "on_red",
-                    "background": "#d63031"
-                },
-                "on_green": {
-                    "tag": "on_green",
-                    "background": "#00b894"
-                },
-                "on_yellow": {
-                    "tag": "on_yellow",
-                    "background": "#fdcb6e"
-                },
-                "on_blue": {
-                    "tag": "on_blue",
-                    "background": "#0984e3"
-                },
-                "on_magenta": {
-                    "tag": "on_magenta",
-                    "background": "#e84393"
-                },
-                "on_cyan": {
-                    "tag": "on_cyan",
-                    "background": "#00cec9"
-                },
-                "on_white": {
-                    "tag": "on_white",
-                    "background": "#f8f8f2"
-                }
-            }
+  "VERSION": 0.1,
+  "DEBUG": true,
+  "DELAY": 0.01,
+  "EVENTDELAY": 2,
+  "DISPLAYSETTINGS": {
+    "WIDTH": 800,
+    "HEIGHT": 600,
+    "RESIZABLE": true,
+    "FONTSIZE": 12,
+    "THEME": {
+      "WINDOWBGCOLOR": "#2d3436",
+      "INPUTBGCOLOR": "#636e72",
+      "DEFAULTTEXTCOLOR": "#dfe6e9",
+      "STYLE": {
+        "regular": {
+          "tag": "p",
+          "font": "Courier 14"
+        },
+        "bold": {
+          "tag": "b",
+          "font": "Courier 14 bold"
+        },
+        "italic": {
+          "tag": "i",
+          "font": "Courier 14 italic"
+        },
+        "underline": {
+          "tag": "u",
+          "font": "Courier 14 underline"
+        },
+        "action": {
+          "tag": "a",
+          "font": "Courier 14 italic"
+        },
+        "header1": {
+          "tag": "h1",
+          "font": "Courier 20 underline"
+        },
+        "header2": {
+          "tag": "h2",
+          "font": "Courier 18 bold"
+        },
+        "header3": {
+          "tag": "h3",
+          "font": "Courier 16 bold"
+        },
+        "smaller": {
+          "tag": "s",
+          "font": "Courier 12 italic"
         }
-    },
-    "GAMESETTINGS": [
-        [
-            "DELAYENABLED",
-            "[BROKEN] Display Effects",
-            false
-        ],
-        [
-            "EVENTDELAYENABLED",
-            "[BROKEN] Delay After Random Event",
-            false
-        ],
-        [
-            "DISABLEFLAVOREVENTS",
-            "Disable Flavor Text Events",
-            false
-        ],
-        [
-            "TUTORIALAREA",
-            "Play through Tutorial Area",
-            true
-        ],
-        [
-            "DEBUGDISPLAY",
-            "Developer Display (Used for debugging)",
-            false
-        ],
-        [
-            "DISABLEENEMIES",
-            "Disable Enemy Encounters (Used for debugging)",
-            false
-        ]
-    ],
-    "DATAPACKSETTINGS": {
-        "folder": "res/",
-        "packsToLoad": [
-            [
-                "official",
-                true
-            ],
-            [
-                "officialModOne",
-                false
-            ]
-        ],
-        "start": "official"
+      },
+      "FOREGROUND": {
+        "black": {
+          "tag": "black",
+          "foreground": "#26242f"
+        },
+        "red": {
+          "tag": "red",
+          "foreground": "#d63031"
+        },
+        "green": {
+          "tag": "green",
+          "foreground": "#00b894"
+        },
+        "yellow": {
+          "tag": "yellow",
+          "foreground": "#fdcb6e"
+        },
+        "blue": {
+          "tag": "blue",
+          "foreground": "#0984e3"
+        },
+        "magenta": {
+          "tag": "magenta",
+          "foreground": "#e84393"
+        },
+        "cyan": {
+          "tag": "cyan",
+          "foreground": "#00cec9"
+        },
+        "white": {
+          "tag": "white",
+          "foreground": "#f8f8f2"
+        }
+      },
+      "BACKGROUND": {
+        "on_black": {
+          "tag": "on_black",
+          "background": "#26242f"
+        },
+        "on_red": {
+          "tag": "on_red",
+          "background": "#d63031"
+        },
+        "on_green": {
+          "tag": "on_green",
+          "background": "#00b894"
+        },
+        "on_yellow": {
+          "tag": "on_yellow",
+          "background": "#fdcb6e"
+        },
+        "on_blue": {
+          "tag": "on_blue",
+          "background": "#0984e3"
+        },
+        "on_magenta": {
+          "tag": "on_magenta",
+          "background": "#e84393"
+        },
+        "on_cyan": {
+          "tag": "on_cyan",
+          "background": "#00cec9"
+        },
+        "on_white": {
+          "tag": "on_white",
+          "background": "#f8f8f2"
+        }
+      }
     }
+  },
+  "GAMESETTINGS": [
+    [
+      "FULLSCREEN",
+      "Fullscreen Display Mode",
+      false
+    ],
+    [
+      "DELAYENABLED",
+      "[BROKEN] Display Effects",
+      false
+    ],
+    [
+      "EVENTDELAYENABLED",
+      "[BROKEN] Delay After Random Event",
+      false
+    ],
+    [
+      "DISABLEFLAVOREVENTS",
+      "Disable Flavor Text Events",
+      false
+    ],
+    [
+      "TUTORIALAREA",
+      "Disable Tutorial Area",
+      false
+    ],
+    [
+      "DEBUGDISPLAY",
+      "Developer Display (Used for debugging)",
+      false
+    ],
+    [
+      "DISABLEENEMIES",
+      "Disable Enemy Encounters (Used for debugging)",
+      false
+    ]
+  ],
+  "DATAPACKSETTINGS": {
+    "folder": "res/",
+    "packsToLoad": [
+      [
+        "official",
+        true
+      ],
+      [
+        "officialModOne",
+        true
+      ]
+    ],
+    "start": "official"
+  }
 }

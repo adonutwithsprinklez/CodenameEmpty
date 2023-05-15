@@ -60,6 +60,9 @@ class Weapon(object):
 	def getAttack(self):
 		attack = rollDice(self.damage)
 		return attack
+	
+	def getAttackInfo(self):
+		return ["Weapon", self.name, random.choice(self.actionText), self.damage]
 
 	def getAction(self):
 		return random.choice(self.actionText)

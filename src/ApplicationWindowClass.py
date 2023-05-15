@@ -21,6 +21,8 @@ class ApplicationWindow(tk.Frame):
         self.window_is_open = False
         self.fontSize = 12
         self.links = []
+
+        self.fullscreen = False
     
     def initiate_window(self, windowTitle, displaySettings = {}, pdelay=0, delay=True, debugdisplay=False):
         # Reset local settings
@@ -46,6 +48,7 @@ class ApplicationWindow(tk.Frame):
         self.master.rowconfigure(0, weight=1)
         self.create_widgets()
         self.window_is_open = True
+        self.master.attributes("-fullscreen", self.fullscreen)
     
     def set_settings(self, displaySettings, pdelay=0, delay=True, debugdisplay=False):
         # Reset local settings
@@ -276,3 +279,8 @@ class ApplicationWindow(tk.Frame):
         
     def get_settings(self):
         return self.settings
+    
+    def set_fullscreen(self, fullscreen):
+        if self.window_is_open:
+            self.master.attributes("-fullscreen", fullscreen)
+        self.fullscreen = fullscreen

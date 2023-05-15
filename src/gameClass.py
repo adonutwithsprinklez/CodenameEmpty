@@ -247,6 +247,7 @@ class Game(object):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
             self.gameSettings[setting[0]] = setting[2]
+        self.disp.set_fullscreen(self.gameSettings["FULLSCREEN"])
 
     def loadDataPackSettings(self):
         self.dataPackSettings = {}
@@ -387,7 +388,9 @@ class Game(object):
 
                     cmd = -1
                     self.disp.clearScreen()
-                    while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
+                    playerAttackOptions = self.player.getAttackOptions()
+                    # TODO: Refactor this whole loop
+                    while not ((int(cmd) <= len(playerAttackOptions)+1 and int(cmd) >= 0) or (cmd == "HEALME" and DEBUG)):
                         self.disp.displayHeader("Enemy Encountered - <red>%s<red>" % (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
                                           (areaEnemy.getDesc(), areaEnemy.getDanger()), 1, 1)
@@ -400,13 +403,19 @@ class Game(object):
                         self.disp.display("Weapon: <i>%s<i>" % (str(areaEnemy.weapon)), 0, 1)
 
                         self.disp.displayHeader("Actions")
-                        self.disp.displayAction("1. Use your weapon (%s)" % str(self.player.weapon), 1)
-                        self.disp.displayAction("2. Attempt to escape", 2, 0)
+                        i = 1
+                        for option in playerAttackOptions:
+                            self.disp.displayAction(f"{i}. {option[0]} - {option[1]}", i, i==1)
+                            i += 1
+                        if len(playerAttackOptions) == 0:
+                            self.disp.display("Something happened and you can't attack." +
+                                              "Probably contact the dev because this should never happen.", 1)
+                        self.disp.displayAction(f"{i}. Attempt to escape", i, 1)
                         self.disp.displayAction("0. Player Menu", 0)
                         self.disp.closeDisplay()
                         try:
                             # cmd = int(input())
-                            cmd = self.disp.get_input(True)
+                            cmd = self.disp.get_input(False)
                             if not self.disp.window_is_open:
                                 self.player.quit = True
                                 return None
@@ -414,25 +423,25 @@ class Game(object):
                         except ValueError:
                             self.disp.clearScreen()
                             cmd = -1
-                        if cmd == 0:
+                        if cmd == "0":
                             self.player.playerMenu(
                                 self.currentQuests, self.completedQuests)
                             if self.player.quit:
                                 # TODO Exit the game completely
                                 return None
-                        elif cmd in (9, 90) and DEBUG:
+                        elif cmd == "HEALME" and DEBUG:
                             self.disp.dprint("Healing player fully.")
                             self.player.hp = self.player.getMaxHP()
-                        elif cmd not in (1, 2, 0):
+                        elif int(cmd) not in list(range(i+1)):
                             self.disp.displayHeader("Error")
                             self.disp.display("That was not a valid response.", 1, 1)
 
-                    if cmd == 1 or cmd == 90:
+                    if int(cmd) in list(range(i)) or cmd == "HEALME":
                         self.disp.clearScreen()
-                        damage = self.player.getWeaponDamage()
+                        damage = self.player.getWeaponDamage(int(cmd)-1)
                         if DEBUG and cmd == 90:
                             damage *= 10
-                        msg = self.player.getWeaponAction()
+                        msg = self.player.getWeaponAction(int(cmd)-1)
                         damage -= int(areaEnemy.getArmorDefence())
                         if damage < 0:
                             damage = 0
@@ -452,7 +461,7 @@ class Game(object):
                         self.disp.closeDisplay()
                         # input("\nEnter to continue.")
                         self.disp.wait_for_enter()
-                    elif cmd == 2:
+                    elif cmd == str(i):
                         self.disp.clearScreen()
                         escape = False
                         if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < 1 + areaEnemy.getArmorDefence():

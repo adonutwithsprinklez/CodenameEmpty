@@ -27,8 +27,8 @@
     ],
     "itemChance": 20,
     "itemDrops": [
-        "weapon_cultist_dagger","You find a dagger on the cultist's body",
-        "weapon_cultist_sword","You find a sword on the cultist's body"
+        ["weapon_cultist_dagger","You find a dagger on the cultist's body"],
+        ["weapon_cultist_sword","You find a sword on the cultist's body"]
     ],
     "variables": {
         "adjs": {

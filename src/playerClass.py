@@ -651,26 +651,35 @@ class Player(object):
     
     def getHpPercentage(self):
         return int(((1.0*self.hp)/self.getMaxHP())*100)
-
-    def getWeaponDamage(self):
-        totalDamage = 0
+    
+    def getAttackOptions(self):
+        attackOptions = []
         if self.weapon:
+            attackOptions.append(self.weapon.getAttackInfo())
+        for option in self.race.getAllLimbAttacks():
+            attackOptions.append(option)
+        return attackOptions
+
+    def getWeaponDamage(self, i=0):
+        totalDamage = 0
+        actions = self.getAttackOptions()
+        if self.weapon and i == 0:
             totalDamage += self.getStat("strength")
             totalDamage += self.weapon.getAttack()
         else:
             unarmedMultiplier = 1
+            totalDamage = rollDice(actions[i][3])
             if "Unarmed Fighter" in self.getPerks():
                 unarmedMultiplier += 1
             totalDamage += unarmedMultiplier * self.getStat("strength")
         return totalDamage
-        
 
-    def getWeaponAction(self):
-        if self.weapon:
+    def getWeaponAction(self, i = 0):
+        if self.weapon and i == 0:
             return self.weapon.getAction()
         else:
             # TODO: Get racial stuff
-            return ""
+            return self.getAttackOptions()[i][2]
 
     def getArmorDefence(self):
         armorTotal = 0

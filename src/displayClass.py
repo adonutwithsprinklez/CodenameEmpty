@@ -21,7 +21,7 @@ class Screen(object):
     def display(self, msg="", br=1, br2=0):
         '''Displays the info specified in the msg parameter. br1 = a line break
         before the message, and br2 = a line break after the message.'''
-        if br == 1:
+        if br == 1 or br == True:
             if self.delay:
                 time.sleep(self.printdelay)
             self.currentLines.append("")
@@ -31,7 +31,7 @@ class Screen(object):
                 self.currentLines.append("")
             self.currentLines.append(f"<p>{paragraph}<p>")
             pCount += 1
-        if br2 == 1:
+        if br2 == 1 or br2 == True:
             time.sleep(self.printdelay)
             self.currentLines.append("")
 
