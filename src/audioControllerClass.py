@@ -1,0 +1,114 @@
+
+
+import simpleaudio as sa
+
+class AudioController(object):
+    def __init__(self):
+        self.audioLayers = {}
+        self.bufferedAudio = {}
+        self.mute = False
+    
+    def bufferAudio(self, name, path):
+        self.bufferedAudio[name] = sa.WaveObject.from_wave_file(path)
+    
+    def addLayer(self, name):
+        self.audioLayers[name] = AudioLayer(name)
+    
+    def playAudio(self, layer, audioBuffer, queue=True, repeat=False):
+        if not self.mute:
+            self.audioLayers[layer].play(audioBuffer, queue, repeat)
+    
+    def playBufferedAudio(self, layer, name, queue=True, repeat=False):
+        if not self.mute:
+            self.playAudio(layer, self.bufferedAudio[name], queue, repeat)
+    
+    def setMute(self, mute):
+        self.mute = mute
+    
+    def updateAll(self, forceStop=False):
+        for layer in self.audioLayers.keys():
+            self.audioLayers[layer].update(forceStop or self.mute, forceStop or self.mute)
+
+class AudioLayer(object):
+    def __init__(self, name):
+        self.name = name
+        self.currentAudio = None
+        self.currentAudioObject = None
+        self.audioQueue = []
+        self.repeat = False
+    
+    def update(self, stop=False, clearQueue=False):
+        if stop:
+            self.stop(clearQueue)
+        if self.currentAudio == None or not self.currentAudio.is_playing():
+            self.currentAudio = self.getNextAudio()
+    
+    def stop(self, clearQueue=True):
+        if self.currentAudio != None:
+            self.currentAudio.stop()
+            self.currentAudio = None
+            self.currentAudioObject = None
+        if clearQueue:
+            self.audioQueue = []
+    
+    def getNextAudio(self):
+        if self.repeat:
+            return self.currentAudioObject.play()
+        if len(self.audioQueue) > 0:
+            return self.audioQueue.pop(0).play()
+        else:
+            return None
+    
+    def play(self, audioBuffer, queue=True, repeat=False):
+        if queue:
+            self.audioQueue.append(audioBuffer)
+        else:
+            self.stop(True)
+            self.audioQueue = [audioBuffer]
+            self.currentAudioObject = audioBuffer
+            self.repeat = repeat
+        self.update(False, not queue)
+
+
+'''
+
+
+if __name__ == "__main__":
+    RES = "res/official/audio/"
+
+    FILES = {
+        "click1":"click4.wav",
+        "click2":"click5.wav",
+        "other":"death.wav",
+        "end":"round_end.wav"
+    }
+
+    import time
+
+    loadedData = {}
+    for key in FILES.keys():
+        loadedData[key] = sa.WaveObject.from_wave_file(RES + FILES[key])
+    audioController = AudioController()
+    audioController.addLayer("click")
+    audioController.addLayer("LongSound")
+    for i in range(10):
+        audioController.play("click", loadedData["click1"])
+        audioController.play("click", loadedData["click2"])
+    for i in range(20):
+        audioController.updateAll()
+        print(i)
+        time.sleep(0.01)
+    audioController.play("LongSound", loadedData["other"], False, True)
+    for i in range(5):
+        audioController.play("click", loadedData["click1"])
+        audioController.play("click", loadedData["click2"])
+    for i in range(100):
+        audioController.updateAll()
+        print(i)
+        time.sleep(0.01)
+    audioController.play("LongSound", loadedData["end"], False, False)
+    for i in range(200):
+        audioController.updateAll()
+        print(i)
+        time.sleep(0.01)
+'''

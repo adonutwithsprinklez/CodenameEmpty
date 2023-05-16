@@ -127,6 +127,11 @@
       false
     ],
     [
+      "MUTEAUDIO",
+      "Mute Audio",
+      false
+    ],
+    [
       "DELAYENABLED",
       "[BROKEN] Display Effects",
       false
@@ -166,9 +171,18 @@
       ],
       [
         "officialModOne",
-        true
+        false
       ]
     ],
     "start": "official"
+  },
+  "DEFAULTRESOURCES": {
+    "dir": "engine/",
+    "audio": {
+      "dir": "audio/",
+      "files": {
+        "click": "click5.wav"
+      }
+    }
   }
 }

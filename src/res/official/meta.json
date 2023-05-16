@@ -31,11 +31,12 @@
         "Dare to step into the arena?",
         "You can click your actions!"
     ],
+    "audio":[],
     "areas": [
-        "area_abandoned_church",
-        "area_abandoned_church_interior",
         "tutorial/area_start_1",
         "tutorial/area_start_2",
+        "area_abandoned_church",
+        "area_abandoned_church_interior",
         "area_gen_forest_1",
         "area_gen_forest_2",
         "area_gen_forest_3",
@@ -49,11 +50,11 @@
         "area_village_gate_east",
         "area_village_gate_west",
 
-        "area_arena_entrance",
-        "area_arena_foyer",
-        "area_arena_shops",
-        "area_arena_pit",
-        "area_arena_exit"
+        "arena/area_entrance",
+        "arena/area_foyer",
+        "arena/area_shops",
+        "arena/area_pit",
+        "arena/area_exit"
     ],
     "armor": [
         "armor_starting_armor",

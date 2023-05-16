@@ -71,9 +71,10 @@ def startApplication(PATH=None):
 	# Check for datapacks in the resource folder
 	dataPackFolders = []
 	for item in os.listdir(RES_FOLDER):
-		possibleDirectory = os.path.join(RES_FOLDER, item)
-		if os.path.isdir(possibleDirectory):
-			dataPackFolders.append(item)
+		if item != "engine":
+			possibleDirectory = os.path.join(RES_FOLDER, item)
+			if os.path.isdir(possibleDirectory):
+				dataPackFolders.append(item)
 	# Remove from the settings file any datapacks that no longer exist in the res folder
 	dps = SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][::]
 	for pack in SETTINGS["DATAPACKSETTINGS"]["packsToLoad"]:

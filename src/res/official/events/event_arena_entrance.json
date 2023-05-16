@@ -19,7 +19,7 @@
                 ],
                 "eventDo":[
                     ["say","You knock on the Arena's door. You see a light flicker behind the door for a moment before it opens up. A guard stands at the entrance to the doorway, gesturing for you to enter."],
-                    ["addArea","area_arena_foyer"],
+                    ["addArea","arena/area_foyer"],
                     ["finish"]
                 ]
             },
@@ -160,7 +160,7 @@
                 "eventDo":[
                     ["say","The guard laughs, \"That's what we like to hear. Head right in and talk to the fight master to start your career.\""],
                     ["addFlag", "arenaAccepted"],
-                    ["addArea","area_arena_foyer"],
+                    ["addArea","arena/area_foyer"],
                     ["finish"]
                 ]
             },

@@ -544,7 +544,7 @@ class Player(object):
         self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
         self.disp.displayHeader(f"Options")
         self.disp.displayAction(f"1. Confirm", 1)
-        self.disp.displayAction(f"0. Back", 1)
+        self.disp.displayAction(f"0. Back", 0)
         self.disp.closeDisplay()
         cmd = self.disp.get_input(True, True, True)
         if cmd == 1:

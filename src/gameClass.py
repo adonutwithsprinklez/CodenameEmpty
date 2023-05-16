@@ -8,6 +8,7 @@ import os
 # Local module imports
 
 from ApplicationWindowClass import ApplicationWindow
+from audioControllerClass import AudioController
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
@@ -34,6 +35,7 @@ class Game(object):
         self.player = None
 
         self.disp = ApplicationWindow()
+        self.audioController = None
 
         self.loaded = False
         self.settings = {}
@@ -65,6 +67,8 @@ class Game(object):
         DEBUG = self.settings["DEBUG"]
         DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
+        
+        self.audioController = AudioController()
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
@@ -73,7 +77,17 @@ class Game(object):
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+        self.disp.initiate_audio(self.audioController)
+        self.audioController.setMute(self.gameSettings["MUTEAUDIO"])
 
+        # Load some engine specific resources
+        DEFAULTRESOURCES = self.settings["DEFAULTRESOURCES"]
+        enginedir = folder + DEFAULTRESOURCES["dir"]
+        audiodir = enginedir + DEFAULTRESOURCES["audio"]["dir"]
+        for audio in DEFAULTRESOURCES["audio"]["files"].keys():
+            self.audioController.bufferAudio(audio, audiodir + DEFAULTRESOURCES["audio"]["files"][audio])
+
+        # Load the datapacks/assets
         self.loadDataPackSettings()
         packs = self.dataPackSettings["packsToLoad"]
         self.starter = self.dataPackSettings["start"]
@@ -158,6 +172,9 @@ class Game(object):
                     else:
                         self.dialogue[d] = dialogueData
                     self.disp.dprint("\t\tLoaded Dialogue %s" % d)
+                for a in self.packs[pack]["audio"]:
+                    self.audioController.bufferAudio(a, "%s%s/audio/%s.wav" % (folder, pack, a))
+                    self.disp.dprint("\t\tLoaded Audio %s" % a)
                 print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as

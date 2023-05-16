@@ -28,8 +28,8 @@
 	"minNewAreas":3,
 	"maxNewAreas":3,
 	"areas":[
-        ["area_arena_foyer", "1d6", ["required", "limited"]],
-        ["area_arena_pit", "1d6", ["required", "limited"]],
-        ["area_arena_exit", "1d6", ["required", "limited"]]
+        ["arena/area_foyer", "1d6", ["required", "limited"]],
+        ["arena/area_pit", "1d6", ["required", "limited"]],
+        ["arena/area_exit", "1d6", ["required", "limited"]]
 	]
 }

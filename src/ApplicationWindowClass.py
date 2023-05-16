@@ -22,6 +22,9 @@ class ApplicationWindow(tk.Frame):
         self.fontSize = 12
         self.links = []
 
+        self.audioController = None
+        self.audioControllerInitalized = False
+
         self.fullscreen = False
     
     def initiate_window(self, windowTitle, displaySettings = {}, pdelay=0, delay=True, debugdisplay=False):
@@ -49,6 +52,11 @@ class ApplicationWindow(tk.Frame):
         self.create_widgets()
         self.window_is_open = True
         self.master.attributes("-fullscreen", self.fullscreen)
+
+    def initiate_audio(self, audioController):
+        self.audioController = audioController
+        self.audioController.addLayer("UI")
+        self.audioControllerInitalized = True
     
     def set_settings(self, displaySettings, pdelay=0, delay=True, debugdisplay=False):
         # Reset local settings
@@ -212,6 +220,8 @@ class ApplicationWindow(tk.Frame):
     def _get_enter_pressed(self):
         if self._enter_pressed:
             self._enter_pressed = False
+            #if self.audioControllerInitalized:
+            self.audioController.playBufferedAudio("UI", "click", False, False)
             return True
         return False
     
@@ -238,7 +248,7 @@ class ApplicationWindow(tk.Frame):
         input_string = None
         while input_string == None:
             while not self._get_enter_pressed() and self.window_is_open:
-                self.update()
+                self.call_update()
             if not self.window_is_open:
                 return -1
             input_string = self.input_line.get()
@@ -264,7 +274,7 @@ class ApplicationWindow(tk.Frame):
         self.displayAction("<i>Anything to continue...<i>", 0)
         self.closeDisplay()
         while not self._get_enter_pressed() and self.window_is_open:
-            self.update()
+            self.call_update()
         if not self.window_is_open:
             return -1
     
@@ -276,6 +286,11 @@ class ApplicationWindow(tk.Frame):
             self.settings["FONTSIZE"] = self.fontSize
             self.output_box.config(font=("Courier", self.fontSize))
     '''
+
+    def call_update(self):
+        self.update()
+        if self.audioControllerInitalized:
+            self.audioController.updateAll()
         
     def get_settings(self):
         return self.settings

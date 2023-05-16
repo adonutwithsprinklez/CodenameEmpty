@@ -26,6 +26,6 @@
 	"minNewAreas":1,
 	"maxNewAreas":1,
 	"areas":[
-        ["area_arena_foyer", "1d6", ["required", "limited"]]
+        ["arena/area_foyer", "1d6", ["required", "limited"]]
 	]
 }
