@@ -22,8 +22,15 @@ class AudioController(object):
         if not self.mute:
             self.playAudio(layer, self.bufferedAudio[name], queue, repeat)
     
-    def setMute(self, mute):
+    def setMuteAll(self, mute):
         self.mute = mute
+    
+    def setMuteLayer(self, layer, mute):
+        self.audioLayers[layer].setMute(mute)
+    
+    def stopAll(self):
+        for layer in self.audioLayers.keys():
+            self.audioLayers[layer].stop(True)
     
     def updateAll(self, forceStop=False):
         for layer in self.audioLayers.keys():
@@ -36,9 +43,13 @@ class AudioLayer(object):
         self.currentAudioObject = None
         self.audioQueue = []
         self.repeat = False
+        self.mute = False
+    
+    def setMute(self, mute):
+        self.mute = mute
     
     def update(self, stop=False, clearQueue=False):
-        if stop:
+        if stop or self.mute:
             self.stop(clearQueue)
         if self.currentAudio == None or not self.currentAudio.is_playing():
             self.currentAudio = self.getNextAudio()
@@ -52,21 +63,22 @@ class AudioLayer(object):
             self.audioQueue = []
     
     def getNextAudio(self):
-        if self.repeat:
+        if self.repeat and self.currentAudioObject != None:
             return self.currentAudioObject.play()
         if len(self.audioQueue) > 0:
             return self.audioQueue.pop(0).play()
-        else:
-            return None
+        return None
     
     def play(self, audioBuffer, queue=True, repeat=False):
-        if queue:
-            self.audioQueue.append(audioBuffer)
-        else:
-            self.stop(True)
-            self.audioQueue = [audioBuffer]
-            self.currentAudioObject = audioBuffer
-            self.repeat = repeat
+        if not self.mute:
+            if not repeat or (repeat and self.currentAudioObject != audioBuffer):
+                if queue:
+                    self.audioQueue.append(audioBuffer)
+                else:
+                    self.stop(True)
+                    self.audioQueue = [audioBuffer]
+                    self.currentAudioObject = audioBuffer
+                    self.repeat = repeat
         self.update(False, not queue)
 
 

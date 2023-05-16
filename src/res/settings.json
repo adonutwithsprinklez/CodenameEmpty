@@ -4,8 +4,8 @@
   "DELAY": 0.01,
   "EVENTDELAY": 2,
   "DISPLAYSETTINGS": {
-    "WIDTH": 1280,
-    "HEIGHT": 800,
+    "WIDTH": 800,
+    "HEIGHT": 600,
     "RESIZABLE": true,
     "FONTSIZE": 12,
     "THEME": {
@@ -127,8 +127,13 @@
       false
     ],
     [
+      "MUTEBGMUSIC",
+      "Mute Background Music",
+      true
+    ],
+    [
       "MUTEAUDIO",
-      "Mute Audio",
+      "Mute All Audio",
       false
     ],
     [
@@ -152,13 +157,13 @@
       false
     ],
     [
-      "DEBUGDISPLAY",
-      "Developer Display (Used for debugging)",
+      "DISABLEENEMIES",
+      "Disable all enemy encounters (Used for debugging)",
       false
     ],
     [
-      "DISABLEENEMIES",
-      "Disable Enemy Encounters (Used for debugging)",
+      "DEBUGDISPLAY",
+      "Developer Display (Used for debugging)",
       false
     ]
   ],

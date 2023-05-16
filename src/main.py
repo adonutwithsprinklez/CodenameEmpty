@@ -55,6 +55,8 @@ def openDataPacks(game, settingsFile):
 	global RES_FOLDER, SETTINGS
 	game.openDataPacks()
 	saveJson(settingsFile, game.settings)
+	# TODO: Implement check to see if datapacks changed, and set game.initialLoad's 
+	# third argument to True if they did
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
 def startApplication(PATH=None):
@@ -113,7 +115,7 @@ def startApplication(PATH=None):
 
 	# Inital game / menu loading
 	game = Game()
-	game.initialLoad(RES_FOLDER, SETTINGS)
+	game.initialLoad(RES_FOLDER, SETTINGS, True)
 
 	appRunning = True
 	while appRunning and game.disp.window_is_open:

@@ -29,9 +29,13 @@
         "Got dialogue?",
         "Yes, you can pet the dog.",
         "Dare to step into the arena?",
-        "You can click your actions!"
+        "You can click your actions!",
+        "You can also use the keyboard!",
+        "Let there be sound"
     ],
-    "audio":[],
+    "audio":[
+        ["mainmenumusic", "Loop_The_Old_Tower_Inn"]
+    ],
     "areas": [
         "tutorial/area_start_1",
         "tutorial/area_start_2",

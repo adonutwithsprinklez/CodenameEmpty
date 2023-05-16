@@ -53,7 +53,7 @@ class Game(object):
 
         self.displayIsInitialized = False
 
-    def initialLoad(self, folder="res/", settingsdata={}):
+    def initialLoad(self, folder="res/", settingsdata={}, resetAudioController=False):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
@@ -68,7 +68,9 @@ class Game(object):
         DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
         
-        self.audioController = AudioController()
+        if resetAudioController:
+            self.audioController = AudioController()
+            self.audioController.addLayer("bgMusic")
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
@@ -77,15 +79,19 @@ class Game(object):
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
-        self.disp.initiate_audio(self.audioController)
-        self.audioController.setMute(self.gameSettings["MUTEAUDIO"])
+        
+        if resetAudioController:
+            self.disp.initiate_audio(self.audioController)
+        self.audioController.setMuteLayer("bgMusic", self.gameSettings["MUTEBGMUSIC"])
+        self.audioController.setMuteAll(self.gameSettings["MUTEAUDIO"])
 
         # Load some engine specific resources
-        DEFAULTRESOURCES = self.settings["DEFAULTRESOURCES"]
-        enginedir = folder + DEFAULTRESOURCES["dir"]
-        audiodir = enginedir + DEFAULTRESOURCES["audio"]["dir"]
-        for audio in DEFAULTRESOURCES["audio"]["files"].keys():
-            self.audioController.bufferAudio(audio, audiodir + DEFAULTRESOURCES["audio"]["files"][audio])
+        if resetAudioController:
+            DEFAULTRESOURCES = self.settings["DEFAULTRESOURCES"]
+            enginedir = folder + DEFAULTRESOURCES["dir"]
+            audiodir = enginedir + DEFAULTRESOURCES["audio"]["dir"]
+            for audio in DEFAULTRESOURCES["audio"]["files"].keys():
+                self.audioController.bufferAudio(audio, audiodir + DEFAULTRESOURCES["audio"]["files"][audio])
 
         # Load the datapacks/assets
         self.loadDataPackSettings()
@@ -172,9 +178,10 @@ class Game(object):
                     else:
                         self.dialogue[d] = dialogueData
                     self.disp.dprint("\t\tLoaded Dialogue %s" % d)
-                for a in self.packs[pack]["audio"]:
-                    self.audioController.bufferAudio(a, "%s%s/audio/%s.wav" % (folder, pack, a))
-                    self.disp.dprint("\t\tLoaded Audio %s" % a)
+                if resetAudioController:
+                    for a in self.packs[pack]["audio"]:
+                        self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
+                        self.disp.dprint("\t\tLoaded Audio %s" % a)
                 print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -259,6 +266,11 @@ class Game(object):
         self.completedQuests = []
         self.backlog = []
         self.importantQuestInfo = []
+
+        '''
+        if self.audioController != None:
+            self.audioController.stopAll()
+        '''
 
     def loadGameSettings(self):
         self.gameSettings = {}
@@ -924,8 +936,8 @@ class Game(object):
 
     def displayMainMenu(self):
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
-
-        self.disp.clearScreen()
+        self.audioController.playBufferedAudio("bgMusic", "mainmenumusic", False, True)
+        self.disp.clearScreen() 
         self.disp.displayHeader("Main Menu")
 
         logo = random.choice(self.logos)
