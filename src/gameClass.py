@@ -38,6 +38,7 @@ class Game(object):
         self.audioController = None
 
         self.loaded = False
+        self.launchArgs = []
         self.settings = {}
         self.gameSettings = {}
         self.dataPackSettings = {}
@@ -57,8 +58,8 @@ class Game(object):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
-        if args == None:
-            args = []
+        if args != None:
+            self.launchArgs = args
         
         self.cleanDataPackInfo()
 
@@ -83,7 +84,7 @@ class Game(object):
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
-        if "fullscreen" in args:
+        if "fullscreen" in self.launchArgs:
             self.disp.set_fullscreen(True)
 
         if resetAudioController:
@@ -282,7 +283,8 @@ class Game(object):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
             self.gameSettings[setting[0]] = setting[2]
-        self.disp.set_fullscreen(self.gameSettings["FULLSCREEN"])
+        if not "fullscreen" in self.launchArgs:
+            self.disp.set_fullscreen(self.gameSettings["FULLSCREEN"])
 
     def loadDataPackSettings(self):
         self.dataPackSettings = {}

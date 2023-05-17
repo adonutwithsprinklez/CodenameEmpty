@@ -297,6 +297,6 @@ class ApplicationWindow(tk.Frame):
         return self.settings
     
     def set_fullscreen(self, fullscreen):
-        if self.window_is_open:
+        if self.window_is_open and self.fullscreen != fullscreen:
             self.master.attributes("-fullscreen", fullscreen)
-        self.fullscreen = fullscreen
+            self.fullscreen = fullscreen
