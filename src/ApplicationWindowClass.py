@@ -277,6 +277,7 @@ class ApplicationWindow(tk.Frame):
             self.call_update()
         if not self.window_is_open:
             return -1
+        self.input_line.delete(0,END)
     
     '''
     def update_font_size(self):

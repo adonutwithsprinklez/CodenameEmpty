@@ -17,6 +17,9 @@
 			"Peaceful"
 		]
 	},
+	"transitionSound":[
+		"forestTransition"
+	],
 	"desc":[
         "You hear birds chirping somewhere in the distance. Opening your eyes, you are greated to a calm $aName."
 	],

@@ -170,6 +170,9 @@ class AreaController(object):
             usedAreas.append(newArea[0])
             choices.append(generatedArea)
         return choices
+    
+    def getCurrentAreaTransitionSound(self):
+        return self.currentArea.getTransitionSound()
 
     # Other Getters
     def getTravelableTypes(self):

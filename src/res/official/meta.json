@@ -34,7 +34,8 @@
         "Let there be sound"
     ],
     "audio":[
-        ["mainmenumusic", "Loop_The_Old_Tower_Inn"]
+        ["mainmenumusic", "Loop_The_Old_Tower_Inn"],
+        ["forestTransition", "leaves-14478"]
     ],
     "areas": [
         "tutorial/area_start_1",

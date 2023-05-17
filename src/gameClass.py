@@ -53,10 +53,13 @@ class Game(object):
 
         self.displayIsInitialized = False
 
-    def initialLoad(self, folder="res/", settingsdata={}, resetAudioController=False):
+    def initialLoad(self, folder="res/", settingsdata={}, resetAudioController=False, args=None):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
+        if args == None:
+            args = []
+        
         self.cleanDataPackInfo()
 
         global DELAY, DEBUG, EVENTDELAY
@@ -71,6 +74,7 @@ class Game(object):
         if resetAudioController:
             self.audioController = AudioController()
             self.audioController.addLayer("bgMusic")
+            self.audioController.addLayer("transition")
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
@@ -79,7 +83,9 @@ class Game(object):
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
-        
+        if "fullscreen" in args:
+            self.disp.set_fullscreen(True)
+
         if resetAudioController:
             self.disp.initiate_audio(self.audioController)
         self.audioController.setMuteLayer("bgMusic", self.gameSettings["MUTEBGMUSIC"])
@@ -181,7 +187,7 @@ class Game(object):
                 if resetAudioController:
                     for a in self.packs[pack]["audio"]:
                         self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
-                        self.disp.dprint("\t\tLoaded Audio %s" % a)
+                        self.disp.dprint("\t\tLoaded Audio %s" % a[0])
                 print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -290,6 +296,9 @@ class Game(object):
 
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
+        transition = self.areaController.getCurrentAreaTransitionSound()
+        if transition != None:
+            self.audioController.playBufferedAudio("transition", transition, False, False)
         self.disp.clearScreen()
         hostility = self.areaController.getCurrentAreaHostility()
         if hostility <= 0:

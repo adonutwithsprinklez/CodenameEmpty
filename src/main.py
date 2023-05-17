@@ -9,6 +9,7 @@ If the game's resources are zipped then the game will fail to launch.
 
 import os
 import shutil
+import sys
 
 from gameClass import Game
 from jsonDecoder import loadJson, saveJson
@@ -59,7 +60,7 @@ def openDataPacks(game, settingsFile):
 	# third argument to True if they did
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
-def startApplication(PATH=None):
+def startApplication(PATH=None, args=None):
 	global GAME_VERSION, MIN_SAVE_VERSION, MIN_SAVE_VERSION
 	global RES_FOLDER, SETTINGS, SETTINGS_FILE
 
@@ -115,7 +116,7 @@ def startApplication(PATH=None):
 
 	# Inital game / menu loading
 	game = Game()
-	game.initialLoad(RES_FOLDER, SETTINGS, True)
+	game.initialLoad(RES_FOLDER, SETTINGS, True, args)
 
 	appRunning = True
 	while appRunning and game.disp.window_is_open:
@@ -159,4 +160,6 @@ def startApplication(PATH=None):
 
 # This code runs with main.py is opened
 if __name__ == "__main__":
-	startApplication()
+	if len(sys.argv)>1:
+		args = sys.argv[1:]
+	startApplication(None, args)

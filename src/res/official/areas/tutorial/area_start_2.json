@@ -18,6 +18,9 @@
             "Barely Treaded"
 		]
 	},
+	"transitionSound":[
+		"forestTransition"
+	],
 	"descriptorLowercase":{
 		"type":"choose",
 		"choices":[

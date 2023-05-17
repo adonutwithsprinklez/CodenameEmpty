@@ -9,8 +9,10 @@ import os, sys
 
 from main import startApplication
 
+if __name__ == "__main__":
+    if len(sys.argv)>1:
+        print(sys.argv[1:])
 
+    PATH = os.path.dirname(sys.executable)
 
-PATH = os.path.dirname(sys.executable)
-
-startApplication(PATH)
+    startApplication(PATH)

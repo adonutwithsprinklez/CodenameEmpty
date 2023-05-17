@@ -86,6 +86,10 @@ class Area(object):
             self.revisitable = areaType["revisitable"]
         if "safeToTravel" in datakeys:
             self.isSafeToTravelTo = areaType["safeToTravel"]
+        if "transitionSound" in datakeys:
+            self.transitionSound = areaType["transitionSound"]
+        else:
+            self.transitionSound = None
 
         self.idleDialogChance = 0
         numNPCs = rollDice(areaType["npcChance"])
@@ -177,6 +181,11 @@ class Area(object):
     
     def getIdleDialogChance(self):
         return self.idleDialogChance
+    
+    def getTransitionSound(self):
+        if self.transitionSound != None:
+            return random.choice(self.transitionSound)
+        return None
     
     def __str__(self):
         return "Area ID: " + self.getAreaId() + " | Title: " + self.getName()

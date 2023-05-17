@@ -34,6 +34,9 @@
 			"Old"
 		]
 	},
+	"transitionSound":[
+		"forestTransition"
+	],
     "desc":[
         "Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
         "It is almost impossible to see past the trees.\nYou continue to push on.",
