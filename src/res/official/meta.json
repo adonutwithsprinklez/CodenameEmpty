@@ -40,6 +40,11 @@
     "areas": [
         "tutorial/area_start_1",
         "tutorial/area_start_2",
+        "cave_wolf/entrance",
+        "cave_wolf/room_1a",
+        "cave_wolf/room_1b",
+        "cave_wolf/room_2a",
+        "cave_wolf/room_3",
         "area_abandoned_church",
         "area_abandoned_church_interior",
         "area_gen_forest_1",
@@ -47,11 +52,6 @@
         "area_gen_forest_3",
         "area_gen_forest_4",
         "area_forest_trail_crossroad",
-        "cave_wolf_entrance",
-        "cave_wolf_room_1a",
-        "cave_wolf_room_1b",
-        "cave_wolf_room_2a",
-        "cave_wolf_room_3",
         "area_village_gate_east",
         "area_village_gate_west",
 

@@ -75,6 +75,6 @@
 	"maxNewAreas":5,
 	"areas":[
         ["area_gen_forest_3", "1d8", ["required"]],
-        ["cave_wolf_entrance", "1d8"]
+        ["cave_wolf/entrance", "1d8"]
 	]
 }

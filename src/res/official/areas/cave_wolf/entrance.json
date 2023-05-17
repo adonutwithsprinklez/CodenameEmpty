@@ -97,7 +97,7 @@
 	"minNewAreas":2,
 	"maxNewAreas":3,
 	"areas":[
-		["cave_wolf_room_1a", "1d1", ["required", "limited"]],
+		["cave_wolf/room_1a", "1d1", ["required", "limited"]],
 		["area_gen_forest_3","1d5", ["required"]],
 		["area_gen_forest_4","1d5"]
 	],

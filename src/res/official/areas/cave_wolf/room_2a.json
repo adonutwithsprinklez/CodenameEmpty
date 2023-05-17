@@ -23,6 +23,7 @@
             "Dark",
             "Small",
             "Large",
+            "Roomy",
             "Tight",
             "Drafty",
             "Slim",
@@ -45,23 +46,20 @@
             "sparkling"
 		]
 	},
-	"randomDetail":{
-		"type":"choose",
-		"choices":[
-			"All you can hear is the snapping of small bones under your feet as you walk.",
-			"It is impossible to count the number of dead creatures that have made this place their final resting place.",
-			"The growls from deeper within the cave grow louder as you continue on."
-		]
-	},
 	"desc":[
-		"You enter the cave and pause for a moment, allowing your eyes to get used to the darkness within the cave.\n$randomDetail",
-		"The stench of rotting flesh causes you to nearly wretch within the darkness.\n$randomDetail"
+		"Based on the echoes of your movement, you estimate you are halfway through the cave system.",
+		"You can hear water dripping somewhere deeper inside the cave.",
+		"This seems to be the deepest portion of the cave. The everpresent darkness surrounds you at every turn.",
+		"The cave begins to slope and turn about randomly. Anyone could get easily lost within the dark corridors.",
+		"There is no more light this deep within the cave. All is darkness. You have only your other senses to help you."
 	],
 	"aType":"Cave",
-	"hostilityMin":4,
-	"hostilityMax":6,
-	"eventChance":0,
+	"hostilityMin":5,
+	"hostilityMax":7,
+	"eventChance":100,
 	"events":[
+		["event_cave_wolf_1", "1d6"],
+		["event_cave_found_item_1", "1d6"]
 	],
 	"enemyChance":75,
 	"enemyMessage":[
@@ -70,18 +68,17 @@
 		"A growl alerts you to several enemies within the $nameDescLowercase cavern.",
 		"The $nameDescLowercase passage appears to be full of enemies."
 	],
-	"enemyPointsPerHostility":2,
+	"enemyPointsPerHostility":3,
 	"enemies":[
         ["enemy_wolf", 2],
         ["enemy_greatWolf", 5]
 	],
 	"npcChance":"0",
 	"npcs":[],
-	"minNewAreas":2,
-	"maxNewAreas":4,
+	"minNewAreas":1,
+	"maxNewAreas":3,
 	"areas":[
-        ["cave_wolf_room_2a", "1d6", ["required", "limited"]],
-        ["cave_wolf_room_1a", "1d6", ["limited"]],
-        ["cave_wolf_room_1b", "1d6"]
+        ["cave_wolf/room_3", "1d6", ["required", "limited"]],
+        ["cave_wolf/room_2a", "1d6", ["limited"]]
 	]
 }

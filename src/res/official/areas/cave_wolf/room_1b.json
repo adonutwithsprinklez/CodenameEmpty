@@ -80,7 +80,7 @@
 	"minNewAreas":2,
 	"maxNewAreas":3,
 	"areas":[
-        ["cave_wolf_room_2a", "1d6", ["limited"]],
-        ["cave_wolf_room_1a", "1d6"]
+        ["cave_wolf/room_2a", "1d6", ["limited"]],
+        ["cave_wolf/room_1a", "1d6"]
 	]
 }
