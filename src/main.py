@@ -160,6 +160,7 @@ def startApplication(PATH=None, args=None):
 
 # This code runs with main.py is opened
 if __name__ == "__main__":
+	args = None
 	if len(sys.argv)>1:
 		args = sys.argv[1:]
 	startApplication(None, args)
