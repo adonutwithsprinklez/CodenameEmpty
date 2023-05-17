@@ -39,7 +39,6 @@
 	"events":[
 	],
 	"enemyChance":0,
-	"enemyMessage":[""],
 	"enemyPointsPerHostility":1,
 	"enemies":[],
 	"npcChance":"1d3+2",

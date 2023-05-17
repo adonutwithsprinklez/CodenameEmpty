@@ -53,6 +53,16 @@ def evaluateDialogueLine(criteriaList, query):
         )
     return all(truthTable)
 
+def getAllPossibleSpeachOptions(speachLines, query):
+    possibleSpeachOptions = []
+    for line in speachLines:
+        if "criteria" in line.keys():
+            if evaluateDialogueLine(line["criteria"], query):
+                possibleSpeachOptions.append(line)
+        else:
+            possibleSpeachOptions.append(line)
+    return possibleSpeachOptions
+
 def getSatisfactoryDialogueLines(lines, query):
     satisfactoryLines = {
         "lines":[],

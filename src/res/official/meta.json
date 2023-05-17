@@ -38,6 +38,12 @@
         ["forestTransition", "leaves-14478"]
     ],
     "areas": [
+        "arena/area_entrance",
+        "arena/area_foyer",
+        "arena/area_shops",
+        "arena/area_pit",
+        "arena/area_exit",
+        
         "tutorial/area_start_1",
         "tutorial/area_start_2",
         "cave_wolf/entrance",
@@ -53,13 +59,7 @@
         "area_gen_forest_4",
         "area_forest_trail_crossroad",
         "area_village_gate_east",
-        "area_village_gate_west",
-
-        "arena/area_entrance",
-        "arena/area_foyer",
-        "arena/area_shops",
-        "arena/area_pit",
-        "arena/area_exit"
+        "area_village_gate_west"
     ],
     "armor": [
         "armor_starting_armor",
@@ -85,6 +85,7 @@
         "dialogue_npc_dog",
 
         "dialogue_npc_arena_fightMaster",
+        "dialogue_npc_arena_pit_guard",
         
         "dialogue_npc_arena_guard",
         "dialogue_npc_arena_armorSmith",
@@ -124,9 +125,9 @@
         "event_shrine_ambush",
         "event_tower_forest",
 
-        "event_arena_entrance",
-        "event_arena_pit",
-        "event_arena_exit"
+        "arena/entrance",
+        "arena/pit",
+        "arena/exit"
     ],
     "misc": [
         "consumable_apple",
@@ -153,6 +154,7 @@
         "npc_dog",
         
         "npc_arena_guard",
+        "npc_arena_pit_guard",
         "npc_arena_fightMaster",
         "npc_arena_armorSmith",
         "npc_arena_weaponSmith"

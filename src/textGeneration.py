@@ -3,7 +3,10 @@ import random
 import re
 
 def generateString(data=None, tag="name"):
-    nameString = random.choice(data[tag])
+    if type(data[tag]) == list:
+        nameString = random.choice(data[tag])
+    else:
+        nameString = data[tag]
     result = re.findall("\\B\\$\\w+", nameString)
     for command in result:
         addition = command[1:] # removes the $ from the command

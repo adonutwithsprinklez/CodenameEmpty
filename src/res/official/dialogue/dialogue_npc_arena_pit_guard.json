@@ -1,0 +1,30 @@
+{
+    "lines":[
+        { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
+        { "dialogue":"\"What?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
+        { "dialogue":"\"Get lost. I'm on duty.\"","criteria":[ ["isAction", "=", "smalltalk"] ], "weight": 1 },
+        { "dialogue":"\"You're wasting time talking to me. Go sign up for a fight if you need something to do\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "weight":2},
+        
+        { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightEasy"]], "weight":3},
+
+        { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":3},
+        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in the warm-up fight.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in the warm-up fight.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in the warm-up fight.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+
+        { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":3},
+        { "dialogue":"\"I hope you know what type of fight you're getting yourself into. They've brought in Wyverns for the fools crazy enough to fight them.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
+        { "dialogue":"\"You ready to fight a Werewolf? Becuase there's always a chance that the Pit will throw one at you.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
+        { "dialogue":"\"The last guy that signed up for a longer fight like you was able to fight off two bears, just for the last one to get a lucky hit in.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
+
+        { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightDuel"]], "weight":3},
+        { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "goodbye"] ], "weight": 1 }
+    ],
+    "otherDialogueOptions":[
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightEasy"]]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightMed"]]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightHard"]]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightDuel"]]}
+    ],
+    "flags":[]
+}

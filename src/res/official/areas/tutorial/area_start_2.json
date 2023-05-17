@@ -41,7 +41,6 @@
         ["intro_event_2", "1d6"]
 	],
 	"enemyChance":0,
-	"enemyMessage":[""],
 	"enemyPointsPerHostility":1,
 	"enemies":[],
 	"npcChance":"0",

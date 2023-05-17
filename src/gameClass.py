@@ -404,7 +404,11 @@ class Game(object):
     def displayEventAction(self, message):
         self.disp.clearScreen()
         self.disp.displayHeader(self.areaController.getCurrentAreaEvent().name)
-        self.disp.display(message)
+        if type(message) == list:
+            for line in message:
+                self.disp.display(line)
+        else:
+            self.disp.display(message)
         self.disp.closeDisplay()
         self.disp.wait_for_enter()
 

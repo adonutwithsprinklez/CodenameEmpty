@@ -335,7 +335,6 @@ class Player(object):
         conversing = True
         newDialogLine = True
         npcProfessions = npc.getProfessions()
-        otherDialogueOptions = npc.getOtherDialogueOptions()
         while conversing:
             if newDialogLine:
                 playerQuery = self.getPlayerQuery()
@@ -351,6 +350,10 @@ class Player(object):
                         if flag in self.flags:
                             self.flags.remove(flag)
                 dialogueLine = f"{npc.getName()} - {npdDialogueLine['dialogue']}"
+                playerQuery = self.getPlayerQuery()
+                fullQuery = {**query, **playerQuery}
+                fullQuery["isAction"] = action
+                otherDialogueOptions = npc.getOtherDialogueOptions(fullQuery)
                 newDialogLine = False
             self.disp.clearScreen()
             self.disp.displayHeader(f"Conversing with {npc.getName()}")

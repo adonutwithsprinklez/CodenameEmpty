@@ -66,11 +66,14 @@
     ],
     "otherDialogueOptions":[
         {"option":"Ask about how the arena works","isAction":"askAboutArena","playerDialogue":"You ask about how the arena works."},
-        {"option":"Request a simple fight","isAction":"getFightEasy","playerDialogue":"You request a fight."},
-        {"option":"Request an intermediate fight","isAction":"getFightMedium","playerDialogue":"You request a fight."},
-        {"option":"Request a hard fight","isAction":"getFightHard","playerDialogue":"You request a fight."},
-        {"option":"Request a duel","isAction":"getFightDuel","playerDialogue":"You request a fight."},
-        {"option":"Cancel your current fight","isAction":"cancelFight","playerDialogue":"You ask the fight manager to cancel your current fight."}
+        {"option":"Request a simple fight","isAction":"getFightEasy","playerDialogue":"You request a fight.","criteria":[["playerFlags","nothas","arenaFightEasy"],["playerFlags","nothas","arenaFightMed"],["playerFlags","nothas","arenaFightHard"],["playerFlags","nothas","arenaFightDuel"]]},
+        {"option":"Request an intermediate fight","isAction":"getFightMedium","playerDialogue":"You request a fight.","criteria":[["playerFlags","nothas","arenaFightEasy"],["playerFlags","nothas","arenaFightMed"],["playerFlags","nothas","arenaFightHard"],["playerFlags","nothas","arenaFightDuel"]]},
+        {"option":"Request a hard fight","isAction":"getFightHard","playerDialogue":"You request a fight.","criteria":[["playerFlags","nothas","arenaFightEasy"],["playerFlags","nothas","arenaFightMed"],["playerFlags","nothas","arenaFightHard"],["playerFlags","nothas","arenaFightDuel"]]},
+        {"option":"Request a duel","isAction":"getFightDuel","playerDialogue":"You request a fight.","criteria":[["playerFlags","nothas","arenaFightEasy"],["playerFlags","nothas","arenaFightMed"],["playerFlags","nothas","arenaFightHard"],["playerFlags","nothas","arenaFightDuel"]]},
+        {"option":"Cancel your current fight","isAction":"cancelFight","playerDialogue":"You ask the fight manager to cancel your current fight.","criteria":[["playerFlags","has","arenaFightEasy"]]},
+        {"option":"Cancel your current fight","isAction":"cancelFight","playerDialogue":"You ask the fight manager to cancel your current fight.","criteria":[["playerFlags","has","arenaFightMed"]]},
+        {"option":"Cancel your current fight","isAction":"cancelFight","playerDialogue":"You ask the fight manager to cancel your current fight.","criteria":[["playerFlags","has","arenaFightHard"]]},
+        {"option":"Cancel your current fight","isAction":"cancelFight","playerDialogue":"You ask the fight manager to cancel your current fight.","criteria":[["playerFlags","has","arenaFightDuel"]]}
     ],
     "flags":[]
 }

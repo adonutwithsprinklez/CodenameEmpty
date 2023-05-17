@@ -41,8 +41,11 @@
                     ["nothave","flag","arenaHated"]
                 ],
                 "eventDo":[
-                    ["say","You knock on the door, waiting to see if there is any response"],
-                    ["say","Eventually the door opens, revealing a heavily armed guard that steps out into the clearing with you."],
+                    ["say", [
+                            "You knock on the door, waiting to see if there is any response.",
+                            "Eventually the door opens, revealing a heavily armed guard that steps out into the clearing with you."
+                        ]
+                    ],
                     ["goto", ["#firsttime"]]
                 ]
             },
@@ -67,7 +70,7 @@
     },
     "#firsttime":{
         "msg":[
-            "The guard looks you up and down.\n\"I don't know you.\""
+            "The guard looks you up and down.\n\"<i>I don't know you.<i>\""
         ],
         "actions":[
             {
@@ -101,7 +104,7 @@
     },
     "#denied":{
         "msg":[
-            "A voice booms from behind the door, \"Sod off.\""
+            "A voice booms from behind the door, \"<i>Sod off.<i>\""
         ],
         "actions":[
             {
@@ -129,14 +132,17 @@
     },
     "#thisisthearena":{
         "msg":[
-            "The guard eyes you suspiciously.\n\"You know what? You look like you might make a good fit.\""
+            "The guard eyes you suspiciously.\n\"<i>You know what? You look like you might make a good fit.<i>\""
         ],
         "actions":[
             {
                 "action":"Ask what he means",
                 "eventDo":[
-                    ["say","\"This be the Arena. A place to test your skill and be rewarded for it.\"\n\"You good fighting?\""],
-                    ["say","Before you have a chance to respond he continues, \"Of course you are. Just look at you.\""],
+                    ["say",[
+                            "\"<i>This be the Arena. A place to test your skill and be rewarded for it,<i>\" the guard says, \"<i>You good at fighting?<i>\"",
+                            "Before you have a chance to respond he continues, \"<i>Of course you are. Just look at you.<i>\""
+                        ]
+                    ],
                     ["addFlag", "knowsAboutArena"],
                     ["goto", ["#firstTimeEntrance"]]
                 ]
@@ -152,13 +158,13 @@
     },
     "#firstTimeEntrance":{
         "msg":[
-            "The guard nods his head, \"If you're interested in making some good coin, or die trying, this is the place for you.\""
+            "The guard nods his head, \"<i>If you're interested in making some good coin, or die trying, this is the place for you.<i>\""
         ],
         "actions":[
             {
                 "action":"Accept the invitation",
                 "eventDo":[
-                    ["say","The guard laughs, \"That's what we like to hear. Head right in and talk to the fight master to start your career.\""],
+                    ["say","The guard laughs, \"<i>That's what we like to hear. Head right in and talk to the fight master to start your career.<i>\""],
                     ["addFlag", "arenaAccepted"],
                     ["addArea","arena/area_foyer"],
                     ["finish"]
@@ -175,7 +181,7 @@
     },
     "#guardgreeting":{
         "msg":[
-            "A guard opens the door, and stares at you.\n\"You'd best get going before I force you to leave,\" he says."
+            "A guard opens the door, and stares at you.\n\"<i>You'd best get going before I force you to leave,<i>\" he says."
         ],
         "actions":[
             {

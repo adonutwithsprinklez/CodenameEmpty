@@ -1,6 +1,6 @@
 import random
 
-from dialogueRules import getSatisfactoryDialogueLines
+from dialogueRules import getSatisfactoryDialogueLines, getAllPossibleSpeachOptions
 from dieClass import rollDice
 from itemGeneration import generateItem
 from raceClass import Race
@@ -136,8 +136,9 @@ class NPC(object):
 	def getDialogueIds(self):
 		return self.dialogueIds
 	
-	def getOtherDialogueOptions(self):
-		return self.otherDialogueOptions
+	def getOtherDialogueOptions(self, query):
+		otherDialogueOptions = getAllPossibleSpeachOptions(self.otherDialogueOptions, query)
+		return otherDialogueOptions
 	
 	def addItemToInventory(self, item):
 		self.generatedInventory.append(item)

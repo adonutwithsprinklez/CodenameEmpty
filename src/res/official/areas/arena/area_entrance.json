@@ -16,7 +16,7 @@
 	"hostilityMax":0,
 	"eventChance":100,
 	"events":[
-        ["event_arena_entrance","+1"]
+        ["arena/entrance","+1"]
 	],
 	"enemyChance":0,
 	"enemyPointsPerHostility":1,
