@@ -173,6 +173,9 @@ class AreaController(object):
     
     def getCurrentAreaTransitionSound(self):
         return self.currentArea.getTransitionSound()
+    
+    def getCurrentAreaRandomizeExits(self):
+        return self.currentArea.getRandomizeExits()
 
     # Other Getters
     def getTravelableTypes(self):
