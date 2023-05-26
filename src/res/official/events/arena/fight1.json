@@ -1,0 +1,69 @@
+{
+    "id":"arenaPit",
+    "type":"check",
+    "name":[
+        "Entering the Pit"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["goto", ["#guardconvo"]]
+                ]
+            }
+        ]
+    },
+    "#wolves":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["goto", ["#guardconvo"]]
+                ]
+            }
+        ]
+    },
+    "#boars":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["goto", ["#guardconvo"]]
+                ]
+            }
+        ]
+    },
+    "#bear":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["goto", ["#guardconvo"]]
+                ]
+            }
+        ]
+    }
+}

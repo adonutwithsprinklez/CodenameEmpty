@@ -35,15 +35,17 @@
     ],
     "audio":[
         ["mainmenumusic", "Loop_The_Old_Tower_Inn"],
-        ["forestTransition", "leaves-14478"]
+        ["forestTransition", "leaves-14478"],
+        ["gateOpening","gate-heavy-openclose-wav-103288"]
     ],
     "areas": [
         "arena/area_entrance",
         "arena/area_foyer",
         "arena/area_shops",
         "arena/area_pit",
+        "arena/area_pit_ring",
         "arena/area_exit",
-        
+
         "tutorial/area_start_1",
         "tutorial/area_start_2",
         "cave_wolf/entrance",
@@ -126,8 +128,9 @@
         "event_tower_forest",
 
         "arena/entrance",
-        "arena/pit",
-        "arena/exit"
+        "arena/exit",
+        "arena/fight1",
+        "arena/pit"
     ],
     "misc": [
         "consumable_apple",

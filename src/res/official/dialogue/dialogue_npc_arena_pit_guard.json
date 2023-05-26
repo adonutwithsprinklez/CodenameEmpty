@@ -1,30 +1,55 @@
 {
     "lines":[
         { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
-        { "dialogue":"\"What?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
-        { "dialogue":"\"Get lost. I'm on duty.\"","criteria":[ ["isAction", "=", "smalltalk"] ], "weight": 1 },
-        { "dialogue":"\"You're wasting time talking to me. Go sign up for a fight if you need something to do\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"] ], "weight":2},
+        { "dialogue":"\"Looking for any advice before your next fight?\"", "criteria":[["isAction", "=", "idle"],["playerFlags", "has", "arenapitguardadvice"]], "weight": 3 },
+        { "dialogue":"\"Ready for your next fight?\"", "criteria":[["isAction", "=", "idle"],["playerFlags", "has", "arenapitguardadvice"]], "weight": 3 },
+        { "dialogue":"\"What?\"", "criteria":[ ["isAction", "=", "greeting"],["playerFlags", "nothas", "arenapitguardadvice"]], "weight": 1 },
+        { "dialogue":"\"Yeah?\"", "criteria":[ ["isAction", "=", "greeting"]], "weight": 1 },
+        { "dialogue":"\"Get lost. I'm on duty.\"","criteria":[["isAction", "=", "smalltalk"],["playerFlags", "nothas", "arenapitguardadvice"],["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"]], "weight": 1 },
+        { "dialogue":"\"You're wasting time talking to me. Go sign up for a fight if you need something to do\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "nothas", "arenaFightEasy"], ["playerFlags", "nothas", "arenaFightMed"], ["playerFlags", "nothas", "arenaFightHard"], ["playerFlags", "nothas", "arenaFightDuel"]], "weight":2},
         
         { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightEasy"]], "weight":3},
+        { "dialogue":"\"Even single round fights like yours can end up deadly. Make sure you're ready, and don't let your guard down.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightEasy"]], "weight":5},
+        { "dialogue":"\"Taking an easy fight I see.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightEasy"]], "weight":5},
+        { "dialogue":"\"Someone has to take the easy fights. I guess that's you this time.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightEasy"]], "weight":5},
 
         { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":3},
-        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in the warm-up fight.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
-        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in the warm-up fight.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
-        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in the warm-up fight.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
-
+        { "dialogue":"\"First round is usually a nice and easy warmup for the tougher second round.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+        { "dialogue":"\"You ready for your two round fight?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+        { "dialogue":"\"It was probably smart of you to not take the three round fight. The third round has very often been many fighter's last.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+        
         { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":3},
         { "dialogue":"\"I hope you know what type of fight you're getting yourself into. They've brought in Wyverns for the fools crazy enough to fight them.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
         { "dialogue":"\"You ready to fight a Werewolf? Becuase there's always a chance that the Pit will throw one at you.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
         { "dialogue":"\"The last guy that signed up for a longer fight like you was able to fight off two bears, just for the last one to get a lucky hit in.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
 
         { "dialogue":"\"Don't you have a fight to get to?\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightDuel"]], "weight":3},
+        { "dialogue":"\"Are you ready for your duel? The crowd seems to be pretty excited.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightDuel"]], "weight":5},
+        { "dialogue":"\"I wonder who you'll be fighting this time. The last fight was quite entertaining.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightDuel"]], "weight":5},
+        { "dialogue":"\"Be sure to make the fight fun. Wouldn't want the crowd to get bored.\"","criteria":[["isAction", "=", "smalltalk"], ["playerFlags", "has", "arenaFightDuel"]], "weight":5},
+
+        { "dialogue":"\"Sure, I guess I got some advice I can throw your way. After all, we need some living fighters for me to keep getting paid.\"","criteria":[["isAction", "=", "askForAdvice"]], "addPlayerFlags":["arenapitguardadvice"], "weight":1},
+
+        { "dialogue":"\"Stay light on your feet and don't get cocky. That's how we lost one fighter. He was torn apart by a boar in his first fight.\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightDuel"]], "weight":3},
+        { "dialogue":"\"There's not much I can really give advice on... You've got a quick one round fight to hype up the crowd for more serious ones.\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightEasy"]], "weight":5},
+        { "dialogue":"\"Be smart, and remember that there's a second round you'll have to contend with.\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightMed"]], "weight":5},
+        { "dialogue":"\"Don't go all out right at the beginning. Remember, there are three rounds, with no breaks to refill your gear inbetween. If you use up all of your tools right at the start, the rest of the rounds will be that much tougher.\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightHard"]], "weight":5},
+        { "dialogue":"\"Honestly, with the duels, the only advice I can give is to hit harder than your opponent. The longer the fight, the less predictable they become.\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightDuel"]], "weight":5},
+        { "dialogue":"\"Haven't I given you enough advice already?\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightEasy"], ["adviceGiven",">=",5]], "weight":15},
+        { "dialogue":"\"Haven't I given you enough advice already?\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightMed"], ["adviceGiven",">=",5]], "weight":15},
+        { "dialogue":"\"Haven't I given you enough advice already?\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightHard"], ["adviceGiven",">=",5]], "weight":15},
+        { "dialogue":"\"Haven't I given you enough advice already?\"","criteria":[["isAction", "=", "askForTip"], ["playerFlags", "has", "arenaFightDuel"], ["adviceGiven",">=",5]], "weight":15},
         { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "goodbye"] ], "weight": 1 }
     ],
     "otherDialogueOptions":[
-        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightEasy"]]},
-        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightMed"]]},
-        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightHard"]]},
-        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightDuel"]]}
+        {"option":"Ask him if he has any advice for fighters entering the arena","isAction":"askForAdvice","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightEasy"],["playerFlags","nothas","arenapitguardadvice"]]},
+        {"option":"Ask him if he has any advice for fighters entering the arena","isAction":"askForAdvice","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightMed"],["playerFlags","nothas","arenapitguardadvice"]]},
+        {"option":"Ask him if he has any advice for fighters entering the arena","isAction":"askForAdvice","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightHard"],["playerFlags","nothas","arenapitguardadvice"]]},
+        {"option":"Ask him if he has any advice for fighters entering the arena","isAction":"askForAdvice","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightDuel"],["playerFlags","nothas","arenapitguardadvice"]]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightEasy"],["playerFlags","has","arenapitguardadvice"]],"npcFlagActions":[{"flag":"adviceGiven","modifier":"+","value":1,"defaultValueIfNone":0}]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightMed"],["playerFlags","has","arenapitguardadvice"]],"npcFlagActions":[{"flag":"adviceGiven","modifier":"+","value":1,"defaultValueIfNone":0}]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightHard"],["playerFlags","has","arenapitguardadvice"]],"npcFlagActions":[{"flag":"adviceGiven","modifier":"+","value":1,"defaultValueIfNone":0}]},
+        {"option":"Ask for tips for your next fight","isAction":"askForTip","playerDialogue":"You ask the guard for any tips he might have.","criteria":[["playerFlags","has","arenaFightDuel"],["playerFlags","has","arenapitguardadvice"]],"npcFlagActions":[{"flag":"adviceGiven","modifier":"+","value":1,"defaultValueIfNone":0}]}
     ],
     "flags":[]
 }
