@@ -3,10 +3,11 @@
 import simpleaudio as sa
 
 class AudioController(object):
-    def __init__(self):
+    def __init__(self, raiseExceptions=True):
         self.audioLayers = {}
         self.bufferedAudio = {}
         self.mute = False
+        self.raiseExceptions = raiseExceptions
     
     def bufferAudio(self, name, path):
         self.bufferedAudio[name] = sa.WaveObject.from_wave_file(path)
@@ -19,7 +20,13 @@ class AudioController(object):
             self.audioLayers[layer].play(audioBuffer, queue, repeat)
     
     def playBufferedAudio(self, layer, name, queue=True, repeat=False):
-        if not self.mute:
+        # Check if audio is buffered
+        if not name in self.bufferedAudio.keys():
+            if self.raiseExceptions:
+                raise Exception(f"Audio {name} not buffered")
+            else:
+                print("ERR - Audio {name} is not buffered.")
+        elif not self.mute:
             self.playAudio(layer, self.bufferedAudio[name], queue, repeat)
     
     def setMuteAll(self, mute):
