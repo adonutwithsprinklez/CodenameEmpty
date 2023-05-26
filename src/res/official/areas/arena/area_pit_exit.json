@@ -1,0 +1,33 @@
+{
+    "name":[
+        "The Pit - Exit"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "THIS IS THE PIT"
+        ]
+    },
+	"desc":[
+        "DESC GOES HERE. $descRandom."
+	],
+	"aType":"Arena",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":100,
+	"events":[
+        ["arena/pit_exit", "+1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"+1",
+	"npcs":[
+		"npc_arena_pit_guard"
+	],
+	"minNewAreas":1,
+	"maxNewAreas":1,
+	"areas":[
+        ["arena/area_foyer", "+1", ["required", "limited"]]
+	]
+}

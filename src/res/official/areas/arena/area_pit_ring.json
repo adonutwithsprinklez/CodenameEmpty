@@ -20,7 +20,7 @@
 		"gateOpening"
 	],
 	"desc":[
-        "The door begins opening before you. The loud sound of chains and metal filling the air for a moment before being replaced by the sounds of a crowd chearing.\n$descRandom."
+        "The door begins opening before you. The loud sound of chains and metal filling the air for a moment before being replaced by the sounds of a crowd chearing.\n$descRandom"
 	],
 	"aType":"Arena",
 	"hostilityMin":0,

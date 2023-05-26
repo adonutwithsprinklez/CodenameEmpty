@@ -171,11 +171,11 @@ class AreaController(object):
             choices.append(generatedArea)
         return choices
     
-    def getCurrentAreaTransitionSound(self):
-        return self.currentArea.getTransitionSound()
-    
     def getCurrentAreaRandomizeExits(self):
         return self.currentArea.getRandomizeExits()
+    
+    def getCurrentAreaTransitionSound(self):
+        return self.currentArea.getTransitionSound()
 
     # Other Getters
     def getTravelableTypes(self):

@@ -26,7 +26,7 @@
                     ["have","flag","knowsArenaRules"]
                 ],
                 "eventDo":[
-                    ["say","You pause for a moment before turning around to leave.\nYou never learned the rules for a fight, and you are not sure that want to get into one now."],
+                    ["say","You pause for a moment before turning around to leave. You are not sure that want to get into a fight right at this moment."],
                     ["addArea", "arena/area_foyer"],
                     ["finish"]
                 ]
@@ -59,7 +59,7 @@
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
                     ["say",[
                             "The guard nods and gestures for you to continue.",
-                            "<i>May you come out richer than you enter.<i>"
+                            "\"<i>May you come out richer than you enter.<i>\""
                         ]
                     ],
                     ["addArea", "arena/area_pit_ring"],
@@ -75,7 +75,7 @@
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
                     ["say",[
                             "The guard nods and gestures for you to continue.",
-                            "<i>May you come out richer than you enter.<i>"
+                            "\"<i>May you come out richer than you enter.<i>\""
                         ]
                     ],
                     ["addArea", "arena/area_pit_ring"],
@@ -91,7 +91,7 @@
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
                     ["say",[
                             "The guard nods and gestures for you to continue.",
-                            "<i>May you come out richer than you enter.<i>"
+                            "\"<i>May you come out richer than you enter.<i>\""
                         ]
                     ],
                     ["addArea", "arena/area_pit_ring"],
@@ -107,7 +107,7 @@
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
                     ["say",[
                             "The guard nods and gestures for you to continue.",
-                            "<i>May you come out richer than you enter.<i>"
+                            "\"<i>May you come out richer than you enter.<i>\""
                         ]
                     ],
                     ["addArea", "arena/area_pit_ring"],

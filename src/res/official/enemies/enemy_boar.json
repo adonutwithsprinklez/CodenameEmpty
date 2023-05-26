@@ -1,7 +1,7 @@
 {
 	"name":[
-		"Great $color Furred Boar",
-        "Great $color2 Boar"
+		"$color Furred Boar",
+        "$color2 Boar"
 	],
 	"variables":{
 		"color":{
@@ -26,33 +26,28 @@
 			]
 		}
 	},
-	"eID":"giantBoar",
-    "injectArea":[
-        ["area_forest_trail_crossroad", 2]
-    ],
+	"eID":"boar",
     "areaMinEnemyChance":100,
     "areaEnemyPointsPerHostility":2,
 	"desc":[
 		"The boar eyes you intently. Its tusks glinting in the light.",
-		"The scars across the boar's body lets any of its enemies know that its not new to fighting.",
-        "The boar weilds two mighty tusks, quite obviously able to deal some major damage."
+        "The boar weilds two mighty tusks, easily able to rip through flesh."
 	],
 	"deathMsg":[
 		"gives one last roar before succumbing to its wounds.",
 		"groans before collapsing on the ground."
 	],
-	"hp":"3d4+8",
-	"damage":"1d3+2",
-	"modCount":"1d3",
+	"hp":"2d4+4",
+	"damage":"1d3",
+	"modCount":"1d2",
 	"modifier":[
-		["None",2],
-		["strong",2],
-		["veryStrong",2],
-        ["weak",1],
-        ["sick",1]
+		["None",5],
+		["strong",3],
+        ["weak",2],
+        ["sick",2]
 	],
 	"weapon":[
-		"mod_weapon_boarTusks"
+		"weapon_boarTusks"
 	],
 	"armor":[
 		"armor_greatWolfHide"

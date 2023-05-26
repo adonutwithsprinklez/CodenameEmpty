@@ -1,5 +1,5 @@
 {
-    "id":"arenaPit",
+    "id":"fight1",
     "type":"check",
     "name":[
         "Entering the Pit"
@@ -9,49 +9,116 @@
     ],
     "#startingPoint":{
         "msg":[
-            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side."
+            "You walk forward, entering the Pit. The chears of the crowd going wild."
+        ],
+        "actions":[
+            {
+                "action":"Ready yourself for the fight",
+                "requirements":[
+                    ["have","flag","arenaFightEasy"]
+                ],
+                "eventDo":[
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","area_pit_exit"],
+                    ["goto", ["#wolves","#boars","#bear"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the first round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightMed"]
+                ],
+                "eventDo":[
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","area_pit_exit"],
+                    ["goto", ["#wolves","#boars","#bear"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the first round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightHard"]
+                ],
+                "eventDo":[
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","area_pit_exit"],
+                    ["goto", ["#wolves","#boars","#bear"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the duel",
+                "requirements":[
+                    ["have","flag","arenaFightDuel"]
+                ],
+                "eventDo":[
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","area_pit_exit"],
+                    ["goto", ["#duelFightSetup"]]
+                ]
+            }
+        ]
+    },
+    "#duelFightSetup":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
         ],
         "actions":[
             {
                 "action":"Approach the entrance to the pit",
                 "eventDo":[
                     ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
-                    ["goto", ["#guardconvo"]]
+                    ["goto", ["#duel"]]
                 ]
             }
         ]
     },
     "#wolves":{
         "msg":[
-            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
-            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+            "As the gate begins to open, you can hear the snarling of wolves."
         ],
         "actions":[
             {
-                "action":"Approach the entrance to the pit",
+                "action":"Stand you ground",
                 "eventDo":[
                     ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
-                    ["goto", ["#guardconvo"]]
+                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
+                    ["finish"]
                 ]
             }
         ]
     },
     "#boars":{
         "msg":[
-            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
-            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+            "As the gate begins to open, you can hear the snarling of wolves."
         ],
         "actions":[
             {
-                "action":"Approach the entrance to the pit",
+                "action":"Stand you ground",
                 "eventDo":[
                     ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
-                    ["goto", ["#guardconvo"]]
+                    ["spawnEnemy", ["enemy_boar", "enemy_boar", "enemy_boar", "enemy_boar"]],
+                    ["finish"]
                 ]
             }
         ]
     },
     "#bear":{
+        "msg":[
+            "As the gate begins to open, you can hear the deep gutteral sounds of a large beast. You immediately recognize it as the noise of a bear."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["spawnEnemy",["enemy_bear"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#duel":{
         "msg":[
             "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
             "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
@@ -61,7 +128,7 @@
                 "action":"Approach the entrance to the pit",
                 "eventDo":[
                     ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
-                    ["goto", ["#guardconvo"]]
+                    ["finish"]
                 ]
             }
         ]
