@@ -10,7 +10,7 @@
     "#startingPoint":{
         "msg":[
             "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
-            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+            "You move towards the entrance to the pit, a large metal door. You can hear a crowd chearing on the other side."
         ],
         "actions":[
             {
@@ -62,7 +62,7 @@
                             "<i>May you come out richer than you enter.<i>"
                         ]
                     ],
-                    ["addArea", "arena/area_pit_easy"],
+                    ["addArea", "arena/area_pit_ring"],
                     ["finish"]
                 ]
             },
@@ -78,7 +78,7 @@
                             "<i>May you come out richer than you enter.<i>"
                         ]
                     ],
-                    ["addArea", "arena/area_pit_medium1"],
+                    ["addArea", "arena/area_pit_ring"],
                     ["finish"]
                 ]
             },
@@ -94,7 +94,7 @@
                             "<i>May you come out richer than you enter.<i>"
                         ]
                     ],
-                    ["addArea", "arena/area_pit_hard1"],
+                    ["addArea", "arena/area_pit_ring"],
                     ["finish"]
                 ]
             },
@@ -110,7 +110,7 @@
                             "<i>May you come out richer than you enter.<i>"
                         ]
                     ],
-                    ["addArea", "arena/area_pit_duel"],
+                    ["addArea", "arena/area_pit_ring"],
                     ["finish"]
                 ]
             },

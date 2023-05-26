@@ -1,6 +1,6 @@
 {
     "name":[
-        "Arena Pit"
+        "The Pit - Entrance"
 	],
     "descRandom":{
         "type":"choose",
@@ -11,7 +11,7 @@
 	"desc":[
         "DESC GOES HERE. $descRandom."
 	],
-	"aType":"Underground",
+	"aType":"Arena",
 	"hostilityMin":0,
 	"hostilityMax":0,
 	"eventChance":100,

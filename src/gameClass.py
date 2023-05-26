@@ -624,7 +624,8 @@ class Game(object):
         # Create various area choices:
         choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
-        random.shuffle(choices)
+        if self.areaController.getCurrentAreaRandomizeExits():
+            random.shuffle(choices)
         cmd = -1
         travelTypes = self.areaController.getTravelableTypes()
 

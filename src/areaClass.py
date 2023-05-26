@@ -7,6 +7,7 @@ from enemyClass import Enemy
 from eventClass import Event
 from npcClass import NPC
 from textGeneration import generateString
+from universalFunctions import getDataValue
 
 class Area(object):
     def __init__(self,areaType,nonrepeatableevents=[],globalEvents=[],areaId="",**kwargs):
@@ -25,6 +26,7 @@ class Area(object):
         self.revisitable = []
         self.isSafeToTravelTo = []
         self.needToFight = False
+        self.randomizeExits = getDataValue("randomizeAreaOrder", areaType, True)
 
         self.kwargs = kwargs
         
@@ -181,6 +183,9 @@ class Area(object):
     
     def getIdleDialogChance(self):
         return self.idleDialogChance
+    
+    def getRandomizeExits(self):
+        return self.randomizeExits
     
     def getTransitionSound(self):
         if self.transitionSound != None:

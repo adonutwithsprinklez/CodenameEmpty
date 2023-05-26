@@ -401,6 +401,9 @@ class Player(object):
                         newDialogLine = True
             elif 1 + npcProfessionCount < cmd <= 1 + len(otherDialogueOptions) + npcProfessionCount:
                 action = otherDialogueOptions[cmd-2-npcProfessionCount]["isAction"]
+                if "npcFlagActions" in otherDialogueOptions[cmd-2-npcProfessionCount].keys():
+                    for flagAction in otherDialogueOptions[cmd-2-npcProfessionCount]["npcFlagActions"]:
+                        npc.modifyDialogueFlag(flagAction)
                 newDialogLine = True
         
         # End conversation
@@ -561,14 +564,13 @@ class Player(object):
             "playerLevel":self.level,
             "playerHealth":self.hp,
             "playerMaxHealth":self.getMaxHP(),
-            "playerHealthPercentage":self.getHpPercentage(),
+            "playerHealthPercent":self.getHpPercentage(),
             "playerXP":self.xp,
             "playerXPNeededForLevelUp":self.getXpNeededForLevelUp(),
             "playerPerks":self.getPerks(),
             "playerDialogueFlags":self.dialogueFlags,
             "playerFlags":self.flags
         }
-        print(playerQuery)
         return playerQuery
     
     def giveXP(self, xp):

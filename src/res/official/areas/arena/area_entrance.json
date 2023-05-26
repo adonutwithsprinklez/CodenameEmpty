@@ -25,6 +25,7 @@
 	"npcs":[],
 	"minNewAreas":1,
 	"maxNewAreas":1,
+	"randomizeAreaOrder":false,
 	"areas":[
         ["area_village_gate_east", "1d6", ["required", "limited"]]
 	]
