@@ -20,6 +20,11 @@ class AudioController(object):
             self.audioLayers[layer].play(audioBuffer, queue, repeat)
     
     def playBufferedAudio(self, layer, name, queue=True, repeat=False):
+        
+        # Disabled due to SimpleAudio not being thread safe
+        # Will re-enable when I find a better audio library
+        return None
+
         # Check if audio is buffered
         if not name in self.bufferedAudio.keys():
             if self.raiseExceptions:
