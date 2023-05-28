@@ -261,6 +261,7 @@ class ApplicationWindow(tk.Frame):
                     try:
                         return int(input_string)
                     except:
+                        print("ERR - Unable to convert input to int")
                         return -1
         # Return the input string
         return input_string
@@ -291,7 +292,10 @@ class ApplicationWindow(tk.Frame):
     def call_update(self):
         self.update()
         if self.audioControllerInitalized:
-            self.audioController.updateAll()
+            # Disabled due to SimpleAudio not being thread safe
+            # Will re-enable when I find a better audio library
+            # self.audioController.updateAll()
+            pass
         
     def get_settings(self):
         return self.settings

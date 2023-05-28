@@ -23,9 +23,10 @@ class Area(object):
         self.npc = []
         self.npcId = []
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
-        self.revisitable = []
-        self.isSafeToTravelTo = []
-        self.needToFight = False
+        self.enemyMessage = getDataValue("enemyMessage", areaType, None)
+        self.revisitable = getDataValue("revisitable", areaType, [])
+        self.isSafeToTravelTo = getDataValue("safeToTravel", areaType, [])
+        self.transitionSound = getDataValue("transitionSound", areaType, None)
         self.randomizeExits = getDataValue("randomizeAreaOrder", areaType, True)
 
         self.kwargs = kwargs
@@ -34,6 +35,7 @@ class Area(object):
             self.event = self.chooseAnEvent(areaType, nonrepeatableevents, globalEvents)
         
         # Enemy Generation/Spawning
+        self.needToFight = False
         chance = areaType["enemyChance"]
         try:
             hostilityAffectsEnemyChance = areaType["hostilityAffectsEnemyChance"]
@@ -79,20 +81,6 @@ class Area(object):
             self.enemy = enemies
             self.needToFight = True
 
-        # Optional Area data tags
-        datakeys = areaType.keys()
-        self.enemyMessage = None
-        if "enemyMessage" in datakeys and len(areaType["enemyMessage"]):
-            self.enemyMessage = generateString(areaType, "enemyMessage")
-        if "revisitable" in datakeys:
-            self.revisitable = areaType["revisitable"]
-        if "safeToTravel" in datakeys:
-            self.isSafeToTravelTo = areaType["safeToTravel"]
-        if "transitionSound" in datakeys:
-            self.transitionSound = areaType["transitionSound"]
-        else:
-            self.transitionSound = None
-
         self.idleDialogChance = 0
         numNPCs = rollDice(areaType["npcChance"])
         if numNPCs > 0 and len(areaType["npcs"])>0:
@@ -103,7 +91,7 @@ class Area(object):
                 self.idleDialogChance = 50
         
     def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
-        areaChoices = areaType["events"][::]
+        areaChoices = copy.copy(areaType["events"])
         for event in globalevents:
             areaChoices.append(event)
         # Remove any non-repeatable events that have already occured

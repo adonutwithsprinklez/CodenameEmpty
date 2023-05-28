@@ -19,7 +19,7 @@
                 ],
                 "eventDo":[
                     ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
-                    ["addArea","area_pit_exit"],
+                    ["addArea","arena/area_pit_exit"],
                     ["goto", ["#wolves","#boars","#bear"]]
                 ]
             },
@@ -30,7 +30,7 @@
                 ],
                 "eventDo":[
                     ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
-                    ["addArea","area_pit_exit"],
+                    ["addArea","arena/area_pit_exit"],
                     ["goto", ["#wolves","#boars","#bear"]]
                 ]
             },
@@ -41,7 +41,7 @@
                 ],
                 "eventDo":[
                     ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
-                    ["addArea","area_pit_exit"],
+                    ["addArea","arena/area_pit_exit"],
                     ["goto", ["#wolves","#boars","#bear"]]
                 ]
             },
@@ -52,7 +52,7 @@
                 ],
                 "eventDo":[
                     ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
-                    ["addArea","area_pit_exit"],
+                    ["addArea","arena/area_pit_exit"],
                     ["goto", ["#duelFightSetup"]]
                 ]
             }

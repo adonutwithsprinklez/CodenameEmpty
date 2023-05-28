@@ -179,6 +179,7 @@
         "race_dog"
     ],
     "weapons": [
+        "weapon_boarTusks",
         "weapon_butcherknife",
         "weapon_castironskillet",
         "weapon_club",

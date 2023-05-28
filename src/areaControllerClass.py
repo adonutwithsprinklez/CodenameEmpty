@@ -1,4 +1,6 @@
 
+import copy
+
 from areaClass import Area
 from dieClass import rollDice
 
@@ -16,8 +18,12 @@ class AreaController(object):
             "conditional":[]
         }
 
+        self.areasAddedByEvents = []
+
         self.areaData = areaData
 
+        self.generatedExits = False
+        self.currentExits = []
         self.initializeStartingArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
 
     def initializeStartingArea(self, startingAreaID=None, weapons=None, armor=None, misc=None,
@@ -37,6 +43,9 @@ class AreaController(object):
                         events=None, modifiers=None, dialogue = None):
         ''' Calls the current area's "load" function '''
         self.currentArea.load(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
+        self.generatedExits = False
+        self.currentExits = []
+        self.areasAddedByEvents = []
     
     def setAndLoadCurrentArea(self, area, weapons=None, armor=None, misc=None, enemies=None, races=None, 
                               npcs=None, events=None, modifiers=None, dialogue=None):
@@ -67,7 +76,10 @@ class AreaController(object):
         data = [area, "+1", ["required", "limited"]]
         self.currentArea.newAreaTypes.append(data)
         self.currentArea.newArea += 1
-        print(self.currentArea.newAreaTypes)
+    
+    def addExitToAreaFromEvent(self, area):
+        data = [area, "+1", ["required", "limited"]]
+        self.areasAddedByEvents.append(data)
 
     # GETTERS
     # Getters for current Area Data
@@ -129,8 +141,14 @@ class AreaController(object):
         return self.currentArea.getIdleDialogChance()
 
     def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
+        ''' If self.generatedExits is False, generates a list of exits for the user to travel to next, based on the current area '''
+        if not self.generatedExits:
+            self.currentExits = self.generateCurrentAreaExits(repeatableEvents, globalRandomEvents)
+            self.generatedExits = True
+        return self.currentExits
+    
+    def generateCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
         ''' Generates a list of exits for the user to travel to next, based on the current area '''
-        print("")
         choices = []
         # This is to guarantee that no "limited" areas are used more than once
         usedAreas = []
@@ -149,11 +167,12 @@ class AreaController(object):
         # TODO
 
         # Actually generate areas:
-        for i in range(1, self.currentArea.newArea + 1):
+        numAreas = self.currentArea.newArea + len(self.areasAddedByEvents) + 1
+        for i in range(1, numAreas):
             if len(required) > 0:
                 newArea = required.pop(0)
             else:
-                areatypes = self.currentArea.newAreaTypes[::]
+                areatypes = copy.copy(self.currentArea.newAreaTypes) + self.areasAddedByEvents
                 highroll = 0
                 for aType in areatypes:
                     newroll = rollDice(aType[1])

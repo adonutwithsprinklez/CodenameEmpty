@@ -380,7 +380,7 @@ class Game(object):
                                     self.areaController.addEnemyToCurrentArea(Enemy(
                                         self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                             elif action[0] == "addArea":
-                                self.areaController.addExitToArea(action[1])
+                                self.areaController.addExitToAreaFromEvent(action[1])
                             elif action[0] == "addFlag":
                                 if action[1] not in self.player.flags:
                                     self.player.flags.append(action[1])
