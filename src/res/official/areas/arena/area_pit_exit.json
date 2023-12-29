@@ -5,11 +5,12 @@
     "descRandom":{
         "type":"choose",
         "choices":[
-            "THIS IS THE PIT"
+            "The dimly lit exit leads you into a long round hallway that seems to take you back around to the main room of the Arena.",
+			"As you exit the pit, you walk through a snaking hallway that leads you back to the Arena's entrance."
         ]
     },
 	"desc":[
-        "DESC GOES HERE. $descRandom."
+        "You step out of the pit having won.\n$descRandom"
 	],
 	"aType":"Arena",
 	"hostilityMin":0,

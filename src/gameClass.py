@@ -384,6 +384,9 @@ class Game(object):
                             elif action[0] == "addFlag":
                                 if action[1] not in self.player.flags:
                                     self.player.flags.append(action[1])
+                            elif action[0] == "removeFlag":
+                                if action[1] in self.player.flags:
+                                    self.player.flags.remove(action[1])
                             elif action[0] == "setName":
                                 event.setName(action[1])
                             elif action[0] == "finish":
@@ -557,6 +560,8 @@ class Game(object):
     
     def areaHub(self):
         ''' Acts as the area hub if there are NPCs'''
+        for flag in self.player.flags:
+            self.disp.dprint(flag)
         npcList = self.areaController.getCurrentAreaNPCs()
         if len(npcList) > 0:
             npcDialogCheck = False

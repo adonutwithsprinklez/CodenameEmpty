@@ -134,7 +134,7 @@
     [
       "MUTEAUDIO",
       "Mute All Audio",
-      false
+      true
     ],
     [
       "DELAYENABLED",
@@ -176,7 +176,7 @@
       ],
       [
         "officialModOne",
-        false
+        true
       ]
     ],
     "start": "official"

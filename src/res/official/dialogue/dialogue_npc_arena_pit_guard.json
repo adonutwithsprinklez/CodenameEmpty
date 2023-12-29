@@ -1,6 +1,9 @@
 {
     "lines":[
         { "dialogue":"*Grunts*", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
+        { "dialogue":"\"Looking a little worse for wear there.\"", "criteria":[ ["isAction", "=", "idle"], ["playerHealthPercent", "<", 75] ], "weight": 5 },
+        { "dialogue":"\"You look pretty banged up.\"", "criteria":[ ["isAction", "=", "idle"], ["playerHealthPercent", "<", 50] ], "weight": 8 },
+        { "dialogue":"\"Geez, you need to find yourself a doctor.\"", "criteria":[ ["isAction", "=", "idle"], ["playerHealthPercent", "<", 25] ], "weight": 20 },
         { "dialogue":"\"Looking for any advice before your next fight?\"", "criteria":[["isAction", "=", "idle"],["playerFlags", "has", "arenapitguardadvice"]], "weight": 3 },
         { "dialogue":"\"Ready for your next fight?\"", "criteria":[["isAction", "=", "idle"],["playerFlags", "has", "arenapitguardadvice"]], "weight": 3 },
         { "dialogue":"\"What?\"", "criteria":[ ["isAction", "=", "greeting"],["playerFlags", "nothas", "arenapitguardadvice"]], "weight": 1 },

@@ -2,7 +2,7 @@
 
 *Written 23.5.24*
 
-This document goes over how dialogue files, and dialogue lines are lines are structured, along with all of the optional options that can be used.
+This document goes over how dialogue files, and how dialogue lines are structured, along with all of the optional options that can be used.
 
 # Intro
 

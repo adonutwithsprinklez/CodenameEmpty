@@ -413,16 +413,35 @@ class Player(object):
 
         self.disp.clearScreen()
         self.disp.displayHeader(f"Conversing with {npc.getName()}")
-        npdDialogueLine = npc.getDialogueLine(fullQuery)
-        self.disp.display(f"{npc.getName()} - {npdDialogueLine['dialogue']}")
-        if "addPlayerFlags" in npdDialogueLine.keys():
-            for flag in npdDialogueLine["addPlayerFlags"]:
+        npcDialogueLine = npc.getDialogueLine(fullQuery)
+        self.disp.display(f"{npc.getName()} - {npcDialogueLine['dialogue']}")
+        if "addPlayerFlags" in npcDialogueLine.keys():
+            for flag in npcDialogueLine["addPlayerFlags"]:
                 if flag not in self.flags:
                     self.flags.append(flag)
-        if "removePlayerFlags" in npdDialogueLine.keys():
-            for flag in npdDialogueLine["removePlayerFlags"]:
+        if "removePlayerFlags" in npcDialogueLine.keys():
+            for flag in npcDialogueLine["removePlayerFlags"]:
                 if flag in self.flags:
                     self.flags.remove(flag)
+        if "givePlayerItems" in npcDialogueLine.keys():
+            print(npcDialogueLine["givePlayerItems"])
+            for item in npcDialogueLine["givePlayerItems"]:
+                if item[0] == "gold":
+                    gold = rollDice(item[1])
+                    self.gold -= gold
+                    self.disp.display(f"You recieve {gold} gold.")
+                else:
+                    #TODO: generate item and give to player
+                    pass
+        if "takePlayerItems" in npcDialogueLine.keys():
+            for item in npcDialogueLine["takePlayerItems"]:
+                if item[0] == "gold":
+                    gold = rollDice(item[1])
+                    self.gold -= gold
+                    self.disp.display(f"You lose {gold} gold.")
+                else:
+                    #TODO: take item from player
+                    pass
         self.disp.closeDisplay()
         self.disp.wait_for_enter()
     
