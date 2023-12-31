@@ -92,6 +92,7 @@
         
         "dialogue_npc_arena_guard",
         "dialogue_npc_arena_armorSmith",
+        "dialogue_npc_arena_healer",
         "dialogue_npc_arena_weaponSmith"
     ],
     "enemies": [
@@ -163,6 +164,7 @@
         "npc_arena_pit_guard",
         "npc_arena_fightMaster",
         "npc_arena_armorSmith",
+        "npc_arena_healer",
         "npc_arena_weaponSmith"
     ],
     "quests": [

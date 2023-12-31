@@ -20,9 +20,10 @@
 	"enemyChance":0,
 	"enemyPointsPerHostility":1,
 	"enemies":[],
-	"npcChance":"+2",
+	"npcChance":"+3",
 	"npcs":[
 		"npc_arena_armorSmith",
+		"npc_arena_healer",
         "npc_arena_weaponSmith"
     ],
 	"minNewAreas":3,
