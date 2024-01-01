@@ -243,6 +243,48 @@ If all of these requirements are met, then the line of dialogue will be said, an
 
 Finally, both the "addPlayerFlags" and "removePlayerFlags" tags can take a list of flags to add or remove. This can be useful if you want to add or remove multiple flags at once.
 
+# The Add and Remove Player Item Tags
+
+The tags "addPlayerItem" and "removePlayerItem" are used to add or remove items from the player's inventory when a line of dialogue is said. This can be useful for a variety of reasons, such as giving the player a reward for completing a quest, or taking away an item in order to pay for something.
+
+An example of a line of dialogue that adds an item to the player's inventory is below:
+
+    {
+        "dialogue":"\"Here is a reward for your help.\"",
+        "criteria":[
+            ["isAction", "=", "smalltalk"]
+        ],
+        "addPlayerItem": {"id":"gold", "amount":"+1d50+50"}
+    }
+
+Notice that the amount is a dice roll, so in order to give a static amount of gold, the amount would need to be changed to something like "+100".
+
+The same can be done to remove an item from the player's inventory. An example of this is below:
+
+    {
+        "dialogue":"\"That will be 100 gold.\"",
+        "criteria":[
+            ["isAction", "=", "smalltalk"]
+        ],
+        "removePlayerItem": {"id":"gold", "amount":"+100"}
+    }
+
+When removing an item from the player's inventory, it is usually wise to add a criteria flag for the player to have the item in the first place. This can be done like so:
+
+    {
+        "dialogue":"\"Thank you for the 100 gold.\"",
+        "criteria":[
+            ["isAction", "=", "smalltalk"],
+            ["playerGold", ">", "100"]
+        ],
+        "removePlayerItem": {"id":"gold", "amount":"+100"}
+    }
+
+
+## !!!Important Note!!!
+
+The only items that can be given or received are gold at the moment, but functionality for other items will be added in the future.
+
 # An Example Dialogue File
 
     {
