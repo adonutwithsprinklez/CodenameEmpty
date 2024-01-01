@@ -466,22 +466,23 @@ class Game(object):
                             if not self.disp.window_is_open:
                                 self.player.quit = True
                                 return None
-                            self.disp.clearScreen()
                         except ValueError:
-                            self.disp.clearScreen()
                             cmd = -1
+                        self.disp.clearScreen()
                         if cmd == "0":
                             self.player.playerMenu(
                                 self.currentQuests, self.completedQuests)
                             if self.player.quit:
                                 # TODO Exit the game completely
                                 return None
-                        elif cmd == "HEALME" and DEBUG:
-                            self.disp.dprint("Healing player fully.")
-                            self.player.hp = self.player.getMaxHP()
                         elif int(cmd) not in list(range(i+1)):
                             self.disp.displayHeader("Error")
                             self.disp.display("That was not a valid response.", 1, 1)
+                        elif DEBUG:
+                            # Refactored to allow for more debug commands
+                            if cmd == "HEALME":
+                                self.disp.dprint("Healing player fully.")
+                                self.player.hp = self.player.getMaxHP()
 
                     if int(cmd) in list(range(i)) or cmd == "HEALME":
                         self.disp.clearScreen()

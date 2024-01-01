@@ -443,15 +443,15 @@ class Player(object):
                             # TODO: generate item and give to player
                             pass
 
-                    if "takePlayerItems" in npcDialogueLine.keys():
-                        for item in npcDialogueLine["takePlayerItems"]:
-                            if item[0] == "gold":
-                                gold = rollDice(item[1])
-                                self.gold -= gold
-                                itemsTaken.append(f"{gold} gold")
-                            else:
-                                # TODO: take item from player
-                                pass
+                if "takePlayerItems" in npcDialogueLine.keys():
+                    for item in npcDialogueLine["takePlayerItems"]:
+                        if item[0] == "gold":
+                            gold = rollDice(item[1])
+                            self.gold -= gold
+                            itemsTaken.append(f"{gold} gold")
+                        else:
+                            # TODO: take item from player
+                            pass
 
                 dialogueLine = f"{npc.getName()} - {npcDialogueLine['dialogue']}"
                 playerQuery = self.getPlayerQuery()
@@ -463,12 +463,6 @@ class Player(object):
                 self.disp.clearScreen()
                 self.disp.displayHeader(f"Conversing with {npc.getName()}")
 
-                for item in itemsGiven:
-                    self.disp.display(f"<green>You receive {item}<green>")
-
-                for item in itemsTaken:
-                    self.disp.display(f"<red>You lose {item}<red>")
-
                 if fullQuery["isAction"] == "greeting":
                     self.disp.display(f"You greet {npc.prefix}{npc.getName()}.")
                 elif fullQuery["isAction"] == "finishShop":
@@ -477,12 +471,36 @@ class Player(object):
                     self.disp.display(f"You attempt to strike up some small talk with {npc.prefix}{npc.getName()}.")
                 elif fullQuery["isAction"] == "goodbye":
                     self.disp.display(f"You say farewell to {npc.prefix}{npc.getName()}.")
+                elif fullQuery["isAction"] == "healFull":
+                    healCostPerHp:float = 0.5
+                    missingHp:int = self.getMaxHP() - self.getHp()
+                    fullHealCost:int = round(healCostPerHp * missingHp)
+                    self.gold -= fullHealCost
+                    self.giveHP(missingHp)
+                    itemsTaken.append(f"{fullHealCost} gold")
+                elif fullQuery["isAction"] == "healPart":
+                    healCostPerHp:float = 0.5
+                    missingHp:int = self.getMaxHP() - self.getHp()
+                    fullHealCost:int = round(healCostPerHp * missingHp)
+                    partHealCost:int = round(fullHealCost * 0.5)
+                    self.gold -= partHealCost
+                    self.giveHP(round(0.5+(missingHp/2)))
+                    itemsTaken.append(f"{partHealCost} gold")
                 else:
                     actionId = fullQuery["isAction"]
                     for dialogueOption in otherDialogueOptions:
                         if "isAction" in dialogueOption.keys() and actionId == dialogueOption["isAction"]:
                             self.disp.display(f"{dialogueOption['playerDialogue']}")
                             break
+                
+                i:int = 0
+                for item in itemsGiven:
+                    self.disp.display(f"<green>You receive {item}<green>", i<=0)
+                    i+=1
+                i=0
+                for item in itemsTaken:
+                    self.disp.display(f"<red>You lose {item}<red>", i<=0)
+                    i+=1
 
                 self.disp.display(dialogueLine, 1, 1)
                 self.disp.displayHeader("Conversation Choices")
@@ -503,7 +521,7 @@ class Player(object):
 
                 self.disp.displayAction("0. Goodbye", 0)
                 self.disp.closeDisplay()
-                cmd = self.disp.get_input(True, True, True)
+                cmd = self.disp.get_input(True, True, False)
 
                 if cmd == 0:
                     conversing = False
@@ -520,12 +538,59 @@ class Player(object):
                         if conversationOption == "heal":
                             action = self.healMenu(npc, query)
                             newDialogLine = True
-            elif 1 + npcProfessionCount < cmd <= 1 + len(otherDialogueOptions) + npcProfessionCount:
-                action = otherDialogueOptions[cmd-2-npcProfessionCount]["isAction"]
-                if "npcFlagActions" in otherDialogueOptions[cmd-2-npcProfessionCount].keys():
-                    for flagAction in otherDialogueOptions[cmd-2-npcProfessionCount]["npcFlagActions"]:
-                        npc.modifyDialogueFlag(flagAction)
-                newDialogLine = True
+                elif 1 + npcProfessionCount < cmd <= 1 + len(otherDialogueOptions) + npcProfessionCount:
+                    action = otherDialogueOptions[cmd-2-npcProfessionCount]["isAction"]
+                    if "npcFlagActions" in otherDialogueOptions[cmd-2-npcProfessionCount].keys():
+                        for flagAction in otherDialogueOptions[cmd-2-npcProfessionCount]["npcFlagActions"]:
+                            npc.modifyDialogueFlag(flagAction)
+                    newDialogLine = True
+            else:
+                # No new dialogue line, so just display dialogue again
+                self.disp.clearScreen()
+                self.disp.displayHeader(f"Conversing with {npc.getName()}")
+                self.disp.display(dialogueLine, 1, 1)
+                self.disp.displayHeader("Conversation Choices")
+                self.disp.displayAction("1. Small Talk", 1)
+
+                i = 1
+                npcProfessionCount = 0
+                
+                for profession in npcProfessions:
+                    if profession in NPC_CONVERSATION_EQUIVALENTS.keys():
+                        i += 1
+                        npcProfessionCount += 1
+                        self.disp.displayAction(f"{i}. {NPC_CONVERSATION_EQUIVALENTS[profession]}", i, 0)
+
+                for additionalOption in otherDialogueOptions:
+                    i += 1
+                    self.disp.displayAction(f"{i}. {additionalOption['option']}", i, 0)
+
+                self.disp.displayAction("0. Goodbye", 0)
+                self.disp.closeDisplay()
+                cmd = self.disp.get_input(True, True, False)
+
+                if cmd == 0:
+                    conversing = False
+                elif cmd == 1:
+                    action = "smalltalk"
+                    newDialogLine = True
+                elif 1 < cmd <= npcProfessionCount + 1:
+                    if npcProfessions[cmd-2] in NPC_CONVERSATION_EQUIVALENTS.keys():
+                        conversationOption = NPC_CONVERSATION_EQUIVALENTS[npcProfessions[cmd-2]].lower()
+                        if conversationOption == "shop":
+                            query = self.shopMenu(npc, query)
+                            action = "finishShop"
+                            newDialogLine = True
+                        if conversationOption == "heal":
+                            action = self.healMenu(npc, query)
+                            newDialogLine = True
+                elif 1 + npcProfessionCount < cmd <= 1 + len(otherDialogueOptions) + npcProfessionCount:
+                    action = otherDialogueOptions[cmd-2-npcProfessionCount]["isAction"]
+                    if "npcFlagActions" in otherDialogueOptions[cmd-2-npcProfessionCount].keys():
+                        for flagAction in otherDialogueOptions[cmd-2-npcProfessionCount]["npcFlagActions"]:
+                            npc.modifyDialogueFlag(flagAction)
+                    newDialogLine = True
+                    
 
         # End conversation
         playerQuery = self.getPlayerQuery()
@@ -704,7 +769,10 @@ class Player(object):
             query (str): The query or request from the player.
 
         Returns:
-
+            str: The action performed by the player. Possible values are:
+                - "healFull": If the player chooses to heal to full health.
+                - "healPart": If the player chooses to heal to half health.
+                - "healCancel": If the player chooses to cancel the healing process.
         """
         self.disp.clearScreen()
         self.disp.displayHeader(f"Healing with {npc.getName()}")
@@ -712,28 +780,28 @@ class Player(object):
         # Display available healing options
         self.disp.displayHeader("Your Info")
         self.disp.display(f"Gold: {self.gold}")
-        self.disp.display(f"Inventory: {len(self.inv)} / {self.getMaxInventorySlots()}", 0, 1)
-        #TODO fix the math behind how much healing costs
-        self.disp.displayAction(f"1. Heal full health ({self.getMaxHP()//2} gold)", 1)
-        self.disp.displayAction(f"2. Heal half health ({self.getMaxHP()//4} gold)", 2, 0)
+        self.disp.display(f"Health: {self.getHp()} / {self.getMaxHP()}", 0, 1)
+
+        healCostPerHp:float = 0.5
+        missingHp:int = self.getMaxHP() - self.getHp()
+        fullHealCost:int = round(0.5+(healCostPerHp * missingHp))
+        partHealCost:int = round(0.5+(fullHealCost * 0.5))
+
+        self.disp.displayAction(f"1. Heal full health ({fullHealCost} gold)", 1)
+        self.disp.displayAction(f"2. Heal half health ({partHealCost} gold)", 2, 0)
         # self.disp.displayAction(f"[<red>DISABLED<red>]3. Heal specific body part", 3)
         self.disp.displayAction("0. Back", 0)
         self.disp.closeDisplay()
         cmd = self.disp.get_input(True, True, True)
-        if cmd == 1:
-            # Perform full healing
-            self.giveHP(self.getMaxHP())
+        if cmd == 1 and self.gold >= fullHealCost:
             return "healFull"
-        elif cmd == 2:
-            # Perform partial healing
-            self.giveHP(self.getMaxHP() // 2)
+        elif cmd == 1 and self.gold < fullHealCost:
+            return "healFail"
+        elif cmd == 2 and self.gold >= partHealCost:
             return "healPart"
-        elif cmd == 3:
-            # Perform healing for specific body part
-            # Implement your logic here
-            return "healPart"
+        elif cmd == 2 and self.gold < partHealCost:
+            return "healFail"
         elif cmd == 0:
-            # Go back
             return "healCancel"
 
     def itemInspectMenu(self, item, worth):
