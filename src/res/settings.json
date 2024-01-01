@@ -176,7 +176,7 @@
       ],
       [
         "officialModOne",
-        true
+        false
       ]
     ],
     "start": "official"

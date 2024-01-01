@@ -17,7 +17,7 @@
 
         { "dialogue":"\"There you go. Don't go hurting yourself again.\"", "criteria":[ ["isAction", "=", "healFull"] ], "weight":1 },
         { "dialogue":"\"Fixed you up the best I can.\"", "criteria":[ ["isAction", "=", "healPart"] ], "weight":1 },
-        { "dialogue":"\"Do I look like someone who does their job for free?\"", "criteria":[ ["isAction", "=", "healFail"] ], "weight":1 },
+        { "dialogue":"\"Do I look like someone who does their job for free? Come back when you can pay me.\"", "criteria":[ ["isAction", "=", "healFail"] ], "weight":1 },
         { "dialogue":"\"Feel free to come back when you're not going to waste my time.\"", "criteria":[ ["isAction", "=", "healCancel"] ], "weight":1 },
         
         { "dialogue":"\"Come again.\"", "criteria":[ ["isAction", "=", "finishShop"] ], "weight":1 },
