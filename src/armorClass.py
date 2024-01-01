@@ -83,6 +83,10 @@ class Armor(object):
 	
 	def getDefenceRating(self):
 		return self.defence
+	
+	def getValue(self):
+		#TODO: Add modifiers and defense rating to worth
+		return self.worth
 
 	def __str__(self):
 		return self.getName()

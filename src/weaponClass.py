@@ -73,6 +73,10 @@ class Weapon(object):
 				return f"[WEAPON] {self.name}"
 			return f"{self.name} [WEAPON]"
 		return self.name
+	
+	def getValue(self):
+		#TODO: Add modifiers to worth
+		return self.worth
 
 	def __str__(self):
 		return self.getName()

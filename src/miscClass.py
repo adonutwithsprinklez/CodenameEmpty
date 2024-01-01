@@ -69,3 +69,7 @@ class Misc(object):
 				return f"[{self.t.upper()}] {self.name}"
 			return f"{self.name} [{self.t.upper()}]"
 		return self.name
+	
+	def getValue(self):
+		#TODO: Add modifiers to worth
+		return self.worth
