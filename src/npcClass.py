@@ -5,8 +5,10 @@ from dieClass import rollDice
 from itemGeneration import generateItem
 from raceClass import Race
 
+SELLERRATE = 1.1
+
 class NPC(object):
-	def __init__(self,data, npcId = "NO NPC ID PROVIDED"):
+	def __init__(self, data, npcId = "NO NPC ID PROVIDED"):
 		self.npcId = npcId
 		self.npcPersonalId = f"{self.npcId}-{random.randint(0,999999)}"
 		if data["name"]["type"] == "choice":
@@ -141,8 +143,16 @@ class NPC(object):
 	def getGeneratedInventoryItem(self, index):
 		return self.generatedInventory[index]
 
-	def getGeneratedInventoryItemValue(self, index):
-		return self.getGeneratedInventoryItem(index).worth
+	def getGeneratedInventoryItemValue(self, index, selling=False):
+		item = self.getGeneratedInventoryItem(index)
+		return self.getItemValue(item, selling)
+	
+	def getItemValue(self, item, selling=False):
+		if selling:
+			value = round(1.0 * item.worth / SELLERRATE)
+		else:
+			value = round((0.5 + item.worth) * SELLERRATE)
+		return value
 	
 	def popItemFromGeneratedInventory(self, index):
 		return self.generatedInventory.pop(index)

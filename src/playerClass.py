@@ -1,5 +1,5 @@
 
-from armorClass import Armor
+from armorClass import Armor, getArmorSize
 from ApplicationWindowClass import ApplicationWindow
 from dieClass import rollDice
 from raceClass import Race
@@ -675,9 +675,9 @@ class Player(object):
             for item in npc.getGeneratedInventory():
                 i+=1
                 if i == 2:
-                    self.disp.displayAction(f"{i}. {item.getName(True)}", i, 1)
+                    self.disp.displayAction(f"{i}. [{npc.getItemValue(item, False)} gold] {item.getName(True)}", i, 1)
                 else:
-                    self.disp.displayAction(f"{i}. {item.getName(True)}", i, 0)
+                    self.disp.displayAction(f"{i}. [{npc.getItemValue(item, False)} gold] {item.getName(True)}", i, 0)
             self.disp.displayAction("1. Sell", 1, 1)
             self.disp.displayAction("0. Back", 0, 0)
             self.disp.closeDisplay()
@@ -691,8 +691,8 @@ class Player(object):
                 else:
                     action = "shopSellFail"
             elif 1 < cmd <= len(npc.getGeneratedInventory()) + 1:
-                cost = npc.getGeneratedInventoryItemValue(cmd - 2)
-                buy = self.itemInspectMenu(npc.getGeneratedInventoryItem(cmd - 2), cost)
+                cost = npc.getGeneratedInventoryItemValue(cmd - 2, False)
+                buy = self.itemInspectMenu(npc, npc.getGeneratedInventoryItem(cmd - 2), False)
                 if buy:
                     if self.gold >= cost:
                         self.gold -= cost
@@ -742,20 +742,20 @@ class Player(object):
             for item in self.inv:
                 i += 1
                 if i == 1:
-                    self.disp.displayAction(f"{i}. {item.getName(True)}", i)
+                    self.disp.displayAction(f"{i}. [{npc.getItemValue(item, True)} gold] {item.getName(True)}", i)
                 else:
-                    self.disp.displayAction(f"{i}. {item.getName(True)}", i, 0)
+                    self.disp.displayAction(f"{i}. [{npc.getItemValue(item, True)} gold] {item.getName(True)}", i, 0)
             self.disp.displayAction("0. Back", 0)
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True)
             if cmd == 0:
                 shopping = False
             elif 1 <= cmd <= len(self.inv):
-                sell = self.itemInspectMenu(self.inv[cmd-1], self.inv[cmd-1].worth)
+                sell = self.itemInspectMenu(npc, self.inv[cmd-1], True)
                 if sell:
                     action = "sellItem"
                     item = self.inv.pop(cmd-1)
-                    self.gold += item.worth
+                    self.gold += npc.getItemValue(item, True)
                     npc.addItemToInventory(item)
                 else:
                     action = "sellItemCancel"
@@ -804,7 +804,7 @@ class Player(object):
         elif cmd == 0:
             return "healCancel"
 
-    def itemInspectMenu(self, item, worth):
+    def itemInspectMenu(self, npc, item, selling=False):
         """
         Displays the item inspection menu and allows the player to purchase the item.
 
@@ -819,11 +819,13 @@ class Player(object):
         self.disp.displayHeader(f"Purchasing {item.getName()}")
         self.disp.display(f"ITEM: {item.getName(True, False)}")
         self.disp.display(f"\t- {item.desc}", 0)
-        self.disp.display(f"Worth: {worth}", 1, 1)
+        self.disp.display(f"Worth: {npc.getItemValue(item, selling)}", 1, 1)
+        #TODO: Display item stats depending on item type
         if item.t == "a":
-            pass
+            self.disp.display(f"Defence: {item.defence}", 0)
+            self.disp.display(f"Size Fits: {getArmorSize(item.sizeMin)}-{getArmorSize(item.sizeMax)}", 0, 1)
         elif item.t == "w":
-            pass
+            self.disp.display(f"Damage: {item.damage}", 0, 1)
         elif item.t == "consumable":
             pass
         else:
@@ -845,18 +847,7 @@ class Player(object):
         Returns a dictionary containing various attributes of the player.
 
         Returns:
-            dict: A dictionary containing the following player attributes:
-                - playerRace: The ID of the player's race.
-                - playerGold: The amount of gold the player has.
-                - playerLevel: The player's level.
-                - playerHealth: The player's current health.
-                - playerMaxHealth: The player's maximum health.
-                - playerHealthPercent: The player's health percentage.
-                - playerXP: The player's experience points.
-                - playerXPNeededForLevelUp: The amount of experience points needed for the player to level up.
-                - playerPerks: The player's perks.
-                - playerDialogueFlags: The player's dialogue flags.
-                - playerFlags: The player's flags.
+            dict: A dictionary containing the numerous player attributes.
         """
         playerQuery = {
             "playerRace": self.race.getId(),
