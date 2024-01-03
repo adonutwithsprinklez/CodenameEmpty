@@ -149,6 +149,8 @@ class Area(object):
         return self.enemy
     
     def getEnemyMessage(self):
+        if (type(self.enemyMessage) is list):
+            return random.choice(self.enemyMessage)
         return self.enemyMessage
         
     def getHostility(self):
