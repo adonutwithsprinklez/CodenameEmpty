@@ -1,25 +1,31 @@
 {
 	"name":[
-		"Arena Werewolf"
+		"Werewolf"
 	],
 	"eID":"e_arena_fighter",
 	"desc":[
-		"The wolf growls from a distance."
+		"The Werewolf growls from a distance. Its blood red eyes full of rage.",
+		"The terrifying creature eyes you madly."
 	],
 	"deathMsg":[
 		"howls in defeat before dying."
 	],
-	"hp":"2d3+5",
-	"damage":"0",
-	"modCount":"0",
+	"hp":"3d5+20",
+	"damage":"2d3+1",
+	"modCount":"1d2+1",
 	"modifier":[
-		["None",1]
+		["wolfRabid",2],
+		["wolfStrong",2],
+		["largeBody",1],
+		["strong",1],
+		["veryStrong",1],
+		["sick",2]
 	],
 	"weapon":[
-		"weapon_wolfClaws"
+		"weapon_werewolfClaws"
 	],
 	"armor":[
-		"armor_wolfHide"
+		"armor_werewolfHide"
 	],
 	"itemChance":0,
 	"itemDrops":[
