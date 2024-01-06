@@ -5,11 +5,16 @@
     "descRandom":{
         "type":"choose",
         "choices":[
-            "RANDOM DESC ADDITION HERE"
+            "This area is quite busy with others going between the stalls, both buying and selling.",
+			"Many people are shuffling between the venfors. It looks like the arena's healer is particularly busy at the moment.",
+			"Moving between the numerous people is tough due to the cramped space and sheer business of it all.",
+			"The noise of the room reverberates through the shops."
         ]
     },
 	"desc":[
-        "DESC GOES HERE. $descRandom."
+        "This room is quite large. Stalls of various vendors are setup along the walls.\n$descRandom",
+		"Along both walls of the rooms stand the stalls of the Arena's vendors.\n$descRandom",
+		"You eye the stalls of the room, trying to figure out which, if any, would be worth a visit.\n$descRandom"
 	],
 	"aType":"Arena",
 	"hostilityMin":0,
@@ -28,6 +33,7 @@
     ],
 	"minNewAreas":3,
 	"maxNewAreas":3,
+	"randomizeAreaOrder":false,
 	"areas":[
         ["arena/area_foyer", "1d6", ["required", "limited"]],
         ["arena/area_pit", "1d6", ["required", "limited"]],

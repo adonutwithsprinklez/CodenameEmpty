@@ -21,7 +21,6 @@
         "Entirely open source on GitHub",
         "The void stares back",
         "Now with a tiny bit of story!",
-        "Now with some dev tools!",
         "Inspired by Huw2k8's \"The Wastes\"",
         "This project has been in development for way too long",
         "The gods have forsaken us",
@@ -30,8 +29,7 @@
         "Yes, you can pet the dog.",
         "Dare to step into the arena?",
         "You can click your actions!",
-        "You can also use the keyboard!",
-        "Let there be sound"
+        "You can also use the keyboard!"
     ],
     "audio":[
         ["mainmenumusic", "Loop_The_Old_Tower_Inn"],
@@ -203,6 +201,6 @@
         "tutorial/area_start_1"
     ],
     "startingArea": [
-        "arena/area_foyer"
+        "area_village_gate_east"
     ]
 }

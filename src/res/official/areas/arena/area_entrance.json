@@ -5,11 +5,15 @@
     "descRandom":{
         "type":"choose",
         "choices":[
-            "RANDOM DESC ADDITION HERE"
+            "The trail is overgrown and unkempt, but it's still easy to follow as long as you pay attention.",
+			"The trail is poorly maintained, and does not even appear to be an official path.",
+			"It seems like the trail is used by the locals, but it's not an official path."
         ]
     },
 	"desc":[
-        "DESC GOES HERE. $descRandom."
+        "You push through some overgrowth and begin following an unkempt trail. $descRandom",
+		"You follow a poorly maintained trail. $descRandom",
+		"Behind the overgrowth, you find a rough trail leading further along the wall of the village. $descRandom"
 	],
 	"aType":"Underground",
 	"hostilityMin":0,

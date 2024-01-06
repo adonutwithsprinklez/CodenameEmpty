@@ -10,7 +10,8 @@
         ]
     },
 	"desc":[
-        "You step out of the pit having won.\n$descRandom"
+        "You step out of the pit having won.\n$descRandom",
+		"Having bested the pit, you step out.\n$descRandom"
 	],
 	"aType":"Arena",
 	"hostilityMin":0,

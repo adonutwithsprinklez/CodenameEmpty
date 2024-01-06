@@ -2,14 +2,32 @@
     "name":[
         "The Arena"
 	],
-    "descRandom":{
+    "descRandom_1":{
         "type":"choose",
         "choices":[
-            "RANDOM DESC ADDITION HERE"
+            "At the center of the room is a single counter with a man frantically trying to keep up with the demands of the crowd.",
+			"There is a counter at the center of the room, where a single man is quickly shuffling through papers while announcing upcoming fights."
         ]
     },
+    "descRandom_2":{
+        "type":"choose",
+        "choices":[
+            "A group of people are gathered around a table, discussing the upcoming fights.",
+			"A man in one corner is shouting about how he could take on anyone in the arena.",
+			"Next to the counter at the center of the room sits one of a man covered in mud, sipping a drink."
+        ]
+    },
+	"room_desc":{
+		"type":"choose",
+		"choices":[
+			"large room with a high ceiling. The walls are lined with doors that seem to lead to other massive rooms.",
+			"a massive central room. Doors lead off to other sections of the underground facility."
+		]
+	},
 	"desc":[
-        "DESC GOES HERE. $descRandom."
+        "You enter the doorway which leads to a $room_desc\n$descRandom_1 $descRandom_2",
+		"As you enter the doorway, you see a $room_desc\n$descRandom_1 $descRandom_2",
+		"You enter the $room_desc\n$descRandom_1 $descRandom_2"
 	],
 	"aType":"Arena",
 	"hostilityMin":0,
@@ -28,8 +46,8 @@
 	"maxNewAreas":3,
 	"randomizeAreaOrder":false,
 	"areas":[
-        ["arena/area_pit", "1d6", ["required", "limited"]],
         ["arena/area_shops", "1d6", ["required", "limited"]],
+        ["arena/area_pit", "1d6", ["required", "limited"]],
         ["arena/area_exit", "1d6", ["required", "limited"]]
 	]
 }
