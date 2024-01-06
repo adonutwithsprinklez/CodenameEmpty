@@ -75,11 +75,10 @@
 	"npcChance":"0",
 	"npcs":[
 	],
-	"minNewAreas":3,
-	"maxNewAreas":6,
+	"minNewAreas":2,
+	"maxNewAreas":5,
 	"areas":[
 		["area_gen_forest_1","2d5", ["required"]],
-		["area_abandoned_church_interior", "1d6", ["required", "limited"]],
 		["area_gen_forest_2","2d5"]
 	]
 }

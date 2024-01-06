@@ -1,7 +1,7 @@
 {
 	"name":[
-		"$color Furred Boar",
-        "$color2 Boar"
+		"Great $color Furred Boar",
+        "Great $color2 Boar"
 	],
 	"variables":{
 		"color":{
@@ -45,11 +45,10 @@
 	"damage":"1d3+2",
 	"modCount":"1d3",
 	"modifier":[
-		["None",3],
+		["None",2],
 		["strong",2],
 		["veryStrong",2],
-		["strong",2],
-        ["weak",2],
+        ["weak",1],
         ["sick",1]
 	],
 	"weapon":[

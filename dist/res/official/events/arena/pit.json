@@ -1,0 +1,170 @@
+{
+    "id":"arenaPit",
+    "type":"check",
+    "name":[
+        "Entering the Pit"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large metal door. You can hear a crowd chearing on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["goto", ["#guardconvo"]]
+                ]
+            },
+            {
+                "action":"Turn around and leave",
+                "requirements":[
+                    ["have","flag","knowsArenaRules"]
+                ],
+                "eventDo":[
+                    ["say","You pause for a moment before turning around to leave. You are not sure that want to get into a fight right at this moment."],
+                    ["addArea", "arena/area_foyer"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Turn around and leave",
+                "requirements":[
+                    ["nothave","flag","knowsArenaRules"]
+                ],
+                "eventDo":[
+                    ["say","You pause for a moment before turning around to leave.\nYou should probably ask someone about this place before just entering something called \"The Pit\""],
+                    ["addArea", "arena/area_foyer"],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#guardconvo":{
+        "msg":[
+            "The guard looks you up and down before speaking, \"<i>Are you signed up for a fight?<i>\"",
+            "\"<i>Fighters only,<i>\" the guard says, \"<i>You ain't getting in unless you're signed up for a fight.<i>\""
+        ],
+        "actions":[
+            {
+                "action":"Tell him you're already signed up for a fight",
+                "requirements":[
+                    ["have","flag","arenaFightEasy"]
+                ],
+                "eventDo":[
+                    ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
+                    ["say",[
+                            "The guard nods and gestures for you to continue.",
+                            "\"<i>May you come out alive and richer than you enter.<i>\""
+                        ]
+                    ],
+                    ["addArea", "arena/area_pit_ring"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Tell him you're already signed up for a fight",
+                "requirements":[
+                    ["have","flag","arenaFightMed"]
+                ],
+                "eventDo":[
+                    ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
+                    ["say",[
+                            "The guard nods and gestures for you to continue.",
+                            "\"<i>May you come out alive and richer than you enter.<i>\""
+                        ]
+                    ],
+                    ["addArea", "arena/area_pit_ring"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Tell him you're already signed up for a fight",
+                "requirements":[
+                    ["have","flag","arenaFightHard"]
+                ],
+                "eventDo":[
+                    ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
+                    ["say",[
+                            "The guard nods and gestures for you to continue.",
+                            "\"<i>May you come out alive and richer than you enter.<i>\""
+                        ]
+                    ],
+                    ["addArea", "arena/area_pit_ring"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Tell him you're already signed up for a duel",
+                "requirements":[
+                    ["have","flag","arenaFightDuel"]
+                ],
+                "eventDo":[
+                    ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
+                    ["say",[
+                            "The guard nods and gestures for you to continue.",
+                            "\"<i>May you come out alive and richer than you enter.<i>\""
+                        ]
+                    ],
+                    ["addArea", "arena/area_pit_ring"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Attempt to convince him to let you in",
+                "requirements":[
+                    ["nothave","flag","arenaFightEasy"],
+                    ["nothave","flag","knowsArenaRules"],
+                    ["nothave","flag","knowsArenaRules"],
+                    ["nothave","flag","arenaFightMed"],
+                    ["nothave","flag","arenaFightHard"],
+                    ["nothave","flag","arenaFightDuel"]
+                ],
+                "eventDo":[
+                    ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
+                    ["say",[
+                            "The guard shakes his head, \"<i>I dunno how stupid you think I am, but I know for a fact you aren't signed up for a fight.<i>\"",
+                            "\"<i>Now get out of here before I throw you out.<i>\""
+                        ]
+                    ],
+                    ["say","You turn around and walk back towards the main room."],
+                    ["addFlag","triedToConvinceGuard"],
+                    ["addArea", "arena/area_foyer"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Ask him how to sign up for a fight",
+                "requirements":[
+                    ["nothave","flag","knowsArenaRules"]
+                ],
+                "eventDo":[
+                    ["say",[
+                            "You ask the guard how to sign up for a fight.",
+                            "He squints at you for a moment, possibly considering if explaining the rules to you is worth the effort.",
+                            "The guard eventually decides it is not, and instead says, \"<i>Go talk to the Fight Master. He'll sort you out. I don't have time to explain this stuff to you.<i>\""
+                        ]
+                    ],
+                    ["say", "You turn around and walk back towards the main room."],
+                    ["addArea", "arena/area_foyer"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Leave",
+                "eventDo":[
+                    ["say",[
+                            "You nod towards the guard and turn around to head back towards the main room."
+                        ]
+                    ],
+                    ["addArea", "arena/area_foyer"],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

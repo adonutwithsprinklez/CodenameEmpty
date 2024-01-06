@@ -1,0 +1,41 @@
+{
+    "name":[
+        "The Pit"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "You walk forward into the dirt ring, the large flat field perfect for fighting.",
+			"You walk into the new room. The fine dirt sticking to your feet as you do so."
+        ]
+    },
+    "descWalls":{
+        "type":"choose",
+        "choices":[
+            "You understand why it is called the Pit: the walls are made of stone, and the room is sunken into the ground. The only ways out are the door you came in and the gate on the other side of the room.",
+			"The crowd sits above the wall of stone surrounding you. They have a perfect view of the fight about to take place within the Pit"
+        ]
+    },
+	"transitionSound":[
+		"gateOpening"
+	],
+	"desc":[
+        "The door begins opening before you. The loud sound of chains and metal filling the air for a moment before being replaced by the sounds of a crowd chearing.\n$descRandom"
+	],
+	"aType":"Arena",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":100,
+	"events":[
+		["arena/fight1","+1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"0",
+	"npcs":[
+    ],
+	"minNewAreas":0,
+	"maxNewAreas":0,
+	"areas":[]
+}

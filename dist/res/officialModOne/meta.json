@@ -7,6 +7,7 @@
     "gameDesc": [
         "What is this, a mod for ants?"
     ],
+    "audio":[],
     "areas": [
         "area_start_1",
         "mod_area_mysteriousPlace"

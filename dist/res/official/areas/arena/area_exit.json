@@ -1,0 +1,37 @@
+{
+	"name":[
+		"Arena Exit"
+	],
+	"descRandom":{
+		"type":"choose",
+		"choices":[
+			"You hear the door to the Arena shut and lock behind you, ensuring no one can randomly enter.",
+			"The heavy wooden door into the Arena shuts behind you with a click.",
+			"The guard pulls the door closed behind you. From behind the heavy wooden door you hear a distinct click of locks securing it shut."
+		]
+	},
+	"desc":[
+		"You go through the doorway headed towards where you first entered the arena. $descRandom",
+		"As you exit the arena, you feel a sense of calm wash over you. $descRandom",
+		"The exit leads you back to the outside world, away from the chaos and excitement of the arena. $descRandom",
+		"Leaving the arena behind, you can't help but wonder what challenges await you next.$descRandom"
+	],
+	"aType":"Arena",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":0,
+	"events":[
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"+1",
+	"npcs":[
+		"npc_arena_guard"
+    ],
+	"minNewAreas":1,
+	"maxNewAreas":1,
+	"areas":[
+        ["area_village_gate_east", "1d6", ["required", "limited"]]
+	]
+}

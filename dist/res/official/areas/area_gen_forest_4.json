@@ -38,6 +38,9 @@
             "Old"
         ]
     },
+	"transitionSound":[
+		"forestTransition"
+	],
     "desc":[
         "Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
         "It is almost impossible to see past the trees.\nYou continue to push on.",
@@ -72,6 +75,6 @@
 	"maxNewAreas":5,
 	"areas":[
         ["area_gen_forest_3", "1d8", ["required"]],
-        ["cave_wolf_entrance", "1d8"]
+        ["cave_wolf/entrance", "1d8"]
 	]
 }
