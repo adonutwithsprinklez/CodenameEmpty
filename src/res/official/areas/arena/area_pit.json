@@ -5,11 +5,15 @@
     "descRandom":{
         "type":"choose",
         "choices":[
-            "THIS IS THE PIT"
-        ]
+			"Before you stands the large metal gate leading into the Pit. It looks almost slightly bent inwards from those that had been unwilling to fight within.",
+			"The gate to the Pit is made of heavy iron, with intricate patterns etched into its surface. It exudes an aura of danger and excitement.",
+			"The gate, the only thing between you and the Pit itself, is reinforced with thick chains, a testament to the fierce battles that take place inside."
+		]
     },
 	"desc":[
-        "DESC GOES HERE. $descRandom."
+        "You stand in the entranceway to the Pit. $descRandom",
+		"The area just before the pit is quiet except for the crowd cheering within. $descRandom",
+		"The air is thick with anticipation as you approach the entrance to the Pit. $descRandom"
 	],
 	"aType":"Arena",
 	"hostilityMin":0,
