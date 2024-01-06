@@ -62,3 +62,14 @@ class Misc(object):
 		
 		player.disp.closeDisplay()
 		player.disp.wait_for_enter()
+	
+	def getName(self, full=False, reverse=True):
+		if full:
+			if reverse:
+				return f"[{self.t.upper()}] {self.name}"
+			return f"{self.name} [{self.t.upper()}]"
+		return self.name
+	
+	def getValue(self):
+		#TODO: Add modifiers to worth
+		return self.worth

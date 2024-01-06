@@ -66,7 +66,18 @@ class Event(object):
                 if requirement[1] == "gold":
                     if player.gold < requirement[2]:
                         meetsRequiements = False
-            if requirement[0] == "hasMinimumStat":
+                elif requirement[1] == "flag":
+                    if not requirement[2] in player.flags:
+                        meetsRequiements = False
+            elif requirement[0] == "nothave":
+                # Used to see if player does not have the corresponding item/gold/xp/lvl/etc.
+                if requirement[1] == "gold":
+                    if player.gold >= requirement[2]:
+                        meetsRequiements = False
+                elif requirement[1] == "flag":
+                    if requirement[2] in player.flags:
+                        meetsRequiements = False
+            elif requirement[0] == "hasMinimumStat":
                 # used to make sure the player meets the minimum stat requirement
                 if player.getStat(requirement[1]) < requirement[2]:
                     meetsRequiements = False
@@ -93,6 +104,9 @@ class Event(object):
             return True
         print("Item id '{}' not found".format(itemId))
         return False
+    
+    def setName(self, name):
+        self.name = name
 
 class Tag(object):
     def __init__(self, data):

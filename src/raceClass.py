@@ -1,6 +1,8 @@
 
 import copy
+import random
 
+from universalFunctions import getDataValue
 
 class Race(object):
     def __init__(self, data=None):
@@ -11,15 +13,22 @@ class Race(object):
             self.baseStats = data["baseStats"]
             self.baseSkills = data["baseSkills"]
             self.standing = data["standing"]
-            self.playable = data["playable"]
+            self.playable = False
+            if "playable" in data.keys():
+                self.playable = data["playable"]
             self.limbs = []
-            if "basePerks" in data.keys():
-                self.basePerks = data["basePerks"]
-            else:
-                self.basePerks = []
+            self.basePerks = getDataValue("basePerks", data, [])
             for limb in data["limbs"]:
                 newLimb = copy.copy(Limb(limb, self.id))
                 self.limbs.append(newLimb)
+            self.shortDescription = getDataValue("shortDescription", data, "")
+            self.playerCreationDescription = getDataValue("playerCreationDescription", data, "")
+            self.startingWeapon = getDataValue("startingWeapon", data, [])
+            self.startingArmor = getDataValue("startingArmor", data, [])
+            self.startingInventory = getDataValue("startingInventory", data, [])
+            self.basePerks = getDataValue("basePerks", data, [])
+            self.names = getDataValue("names", data, [])
+
         else:
             self.id = ""
             self.name = ""
@@ -29,6 +38,13 @@ class Race(object):
             self.standing = {}
             self.playable = False
             self.limbs = []
+            self.shortDescription = ""
+            self.playerCreationDescription = ""
+            self.startingWeapon = []
+            self.startingArmor = []
+            self.startingInventory = []
+            self.basePerks = []
+            self.names = []
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -68,10 +84,28 @@ class Race(object):
                 returnable[limb.race] = {}
                 returnable[limb.race][limb.type] = 1
         return returnable
+    
+    def getLimbsOfLimbType(self, limbType, equippableOnly=False):
+        limbs = []
+        for limb in self.limbs:
+            if limb.type == limbType:
+                if not equippableOnly or limb.armorable:
+                    limbs.append(limb)
+        return limbs
+    
+    def getLimbsEquippableLimbs(self):
+        limbs = []
+        for limb in self.limbs:
+            if limb.armorable:
+                limbs.append(limb)
+        return limbs
+    
+    def getIsPureRace(self):
+        return len(self.getLimbCounts().keys()) == 1
 
     def getDescription(self):
         ''' Generates a description of the race's appearance. '''
-        if len(self.getLimbCounts().keys()) == 1:
+        if self.getIsPureRace():
             return self.getPureRaceDescription()
         else:
             return self.getMixedRaceDescription()
@@ -124,6 +158,13 @@ class Race(object):
                 hurtLimbs.append(limb)
         return hurtLimbs
     
+    def getAllLimbAttacks(self):
+        limbAttacks = []
+        for limb in self.getLimbObjects():
+            for attack in limb.getAttacks():
+                limbAttacks.append([limb.name] + attack)
+        return limbAttacks
+    
     def getStat(self, stat):
         ''' Returns the race's base stat '''
         if stat in self.baseStats.keys():
@@ -137,6 +178,39 @@ class Race(object):
             return self.baseSkills[skill]
         else:
             return 0
+        
+    def getName(self, includePureRace = True):
+        name = self.name
+        if includePureRace and self.getIsPureRace():
+            name = "Pure Blooded %s" % name
+        return name
+    
+    def getId(self):
+        return self.id
+
+    def getShortDescription(self):
+        return self.shortDescription
+    
+    def getPlayerCreationDescription(self):
+        return self.playerCreationDescription
+    
+    def getStartingWeapons(self):
+        return self.startingWeapon
+    
+    def getStartingArmor(self):
+        return self.startingArmor
+    
+    def getStartingInventory(self):
+        return self.startingInventory
+    
+    def getPerks(self):
+        return self.basePerks
+    
+    def getRandomName(self):
+        return random.choice(self.names)
+    
+    def __str__(self):
+        return f"{self.getId()} - {self.getName(False)}"
 
 
 class Limb(object):
@@ -163,3 +237,17 @@ class Limb(object):
             self.attacks = []
             self.flags = []
             self.race = None
+        self.armor = None
+        self.armorable = True
+        if "armorable" in data.keys():
+            self.armorable = data["armorable"]
+        
+    def getArmor(self):
+        if self.armor:
+            return self.armor
+        elif not self.armorable:
+            return "Unequippable"
+        return None
+    
+    def getAttacks(self):
+        return self.attacks

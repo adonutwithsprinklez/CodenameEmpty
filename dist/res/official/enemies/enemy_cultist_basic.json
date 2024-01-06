@@ -1,0 +1,43 @@
+{
+    "name": [
+        "$adjs Cultist"
+    ],
+    "eID": "cultistBasic",
+    "desc": [
+        ""
+    ],
+    "deathMsg": [
+        ""
+    ],
+    "hp": "2d8+8",
+    "damage": "1d3+3",
+    "weapon": [
+        "weapon_cultist_dagger",
+        "weapon_cultist_sword"
+    ],
+    "armor": [
+        "armor_cultistRobes"
+    ],
+    "xp": 10,
+    "modCount": "1d3-1",
+    "modifier": [
+        ["cult_enemy_weak", 5],
+        ["largeBody", 3],
+        ["dying", 3]
+    ],
+    "itemChance": 20,
+    "itemDrops": [
+        ["weapon_cultist_dagger","You find a dagger on the cultist's body"],
+        ["weapon_cultist_sword","You find a sword on the cultist's body"]
+    ],
+    "variables": {
+        "adjs": {
+            "type": "choose",
+            "choices": [
+                "Disheveled",
+                "Bearded",
+                "Hooded"
+            ]
+        }
+    }
+}

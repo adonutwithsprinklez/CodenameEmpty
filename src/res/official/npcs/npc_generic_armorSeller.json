@@ -1,0 +1,41 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Armor Dealer"
+        ]
+    },
+    "prefix":"the ",
+    "race":[
+        "human"
+    ],
+    "numProfessions":"+1",
+    "professionPool":[
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_fallback",
+        "dialogue_npc_generic"
+    ],
+    "numItems":"1d5+5",
+    "itemPool":[
+        ["armor_starting_armor", 7],
+        ["armor_huntersGarmets", 10],
+        ["armor_hideArmor", 7],
+        ["armor_ironArmor", 5],
+        ["armor_dragonSkin", 2]
+    ],
+    "interestedInBuying":[
+
+    ],
+    "numFlags":"1d3",
+    "flagPool":[
+        "tired",
+        "busy",
+        "religious",
+        "sick"
+    ]
+}

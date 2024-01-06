@@ -1,0 +1,27 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Arena Pit Guard",
+            "Arena Guard",
+            "Pit Guard"
+        ]
+    },
+    "race":[
+        "human",
+        "orc"
+    ],
+    "numProfessions":"0",
+    "professionPool":[],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_npc_arena_pit_guard"
+    ],
+    "numItems":"0",
+    "itemPool":[],
+    "interestedInBuying":[],
+    "numFlags":"0",
+    "flagPool":[]
+}

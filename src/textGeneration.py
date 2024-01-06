@@ -3,11 +3,27 @@ import random
 import re
 
 def generateString(data=None, tag="name"):
-    nameString = random.choice(data[tag])
+    if type(data[tag]) == list:
+        nameString = random.choice(data[tag])
+    else:
+        nameString = data[tag]
     result = re.findall("\\B\\$\\w+", nameString)
     for command in result:
         addition = command[1:] # removes the $ from the command
         replacementData = data[addition] # Get the command data that will be used to generate the replacement text
+        if replacementData["type"] == "markov":
+            replacement = _makeMarkovChain(replacementData)
+        elif replacementData["type"] == "choose":
+            replacement = random.choice(replacementData["choices"])
+        nameString = nameString.replace(command, replacement)
+    return nameString
+
+def generateStringWithVariables(data=None, tag="name"):
+    nameString = random.choice(data[tag])
+    result = re.findall("\\B\\$\\w+", nameString)
+    for command in result:
+        addition = command[1:] # removes the $ from the command
+        replacementData = data["variables"][addition] # Get the command data that will be used to generate the replacement text
         if replacementData["type"] == "markov":
             replacement = _makeMarkovChain(replacementData)
         elif replacementData["type"] == "choose":

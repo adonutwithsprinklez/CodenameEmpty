@@ -1,0 +1,35 @@
+{
+    "name":[
+        "The Pit - Exit"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "The dimly lit exit leads you into a long round hallway that seems to take you back around to the main room of the Arena.",
+			"As you exit the pit, you walk through a snaking hallway that leads you back to the Arena's entrance."
+        ]
+    },
+	"desc":[
+        "You step out of the pit having won.\n$descRandom",
+		"Having bested the pit, you step out.\n$descRandom"
+	],
+	"aType":"Arena",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":100,
+	"events":[
+        ["arena/pit_exit", "+1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"+1",
+	"npcs":[
+		"npc_arena_pit_guard"
+	],
+	"minNewAreas":1,
+	"maxNewAreas":1,
+	"areas":[
+        ["arena/area_foyer", "+1", ["required", "limited"]]
+	]
+}

@@ -1,0 +1,36 @@
+{
+    "name":[
+        "Strange Passageway"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "The trail is overgrown and unkempt, but it's still easy to follow as long as you pay attention.",
+			"The trail is poorly maintained, and does not even appear to be an official path.",
+			"It seems like the trail is used by the locals, but it's not an official path."
+        ]
+    },
+	"desc":[
+        "You push through some overgrowth and begin following an unkempt trail. $descRandom",
+		"You follow a poorly maintained trail. $descRandom",
+		"Behind the overgrowth, you find a rough trail leading further along the wall of the village. $descRandom"
+	],
+	"aType":"Underground",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":100,
+	"events":[
+        ["arena/entrance","+1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"0",
+	"npcs":[],
+	"minNewAreas":1,
+	"maxNewAreas":1,
+	"randomizeAreaOrder":false,
+	"areas":[
+        ["area_village_gate_east", "1d6", ["required", "limited"]]
+	]
+}

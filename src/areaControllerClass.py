@@ -1,69 +1,219 @@
 
+import copy
+
 from areaClass import Area
+from dieClass import rollDice
 
 
 class AreaController(object):
     ''' This class generates and stores all needed data for the world. Whenever
         a new area needs generated or reloaded this class will handle it. '''
-    def __init__(self, areaData=None, startingAreaID=None, currentXY=(0, 0),
-                 weapons=None, armor=None, misc=None, enemies=None, npcs=None, events=None, modifiers=None,
-                 DEBUG = 0):
-        self.areaMap = {}
-        self.x = currentXY[0]
-        self.y = currentXY[1]
+    def __init__(self, areaData=None, startingAreaID=None, weapons=None,
+    armor=None, misc=None, enemies=None, races=None, npcs=None, events=None, modifiers=None, dialogue=None, DEBUG = 0):
         self.currentArea = None
+
+        self.savedAreas = {
+            "important":[],
+            "local":[],
+            "conditional":[]
+        }
+
+        self.areasAddedByEvents = []
 
         self.areaData = areaData
 
-        self.initializeStartingArea(
-            startingAreaID, weapons, armor, misc, enemies, npcs, events, modifiers)
+        self.generatedExits = False
+        self.currentExits = []
+        self.initializeStartingArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
 
-    def initializeStartingArea(self, startingAreaID=None,
-                               weapons=None, armor=None, misc=None, enemies=None, npcs=None, events=None, modifiers=None):
+    def initializeStartingArea(self, startingAreaID=None, weapons=None, armor=None, misc=None,
+                               enemies=None, races=None, npcs=None, events=None, modifiers=None, dialogue=None):
         ''' Generates the starting area for the game. '''
-        self.generateArea((self.x, self.y), startingAreaID, weapons,
-                          armor, misc, enemies, npcs, events, modifiers)
-        self.currentArea = self.loadCurrentArea()
+        self.generateArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
         self.currentArea.enemy = [] # Make sure no enemies spawn in the starting area
+        self.currentArea.foughtEnemies()
 
-    def generateArea(self, xy=(0, 0), areaType=None,
-                     weapons=None, armor=None, misc=None, enemies=None, npcs=None, events=None, modifiers=None):
-        ''' Generates an area at tthe specified location. '''
-        if self.loadArea(xy) == None:
-            if not xy[0] in self.areaMap.keys():
-                self.areaMap[xy[0]] = {}
-            newArea = Area(self.areaData[areaType])
-            self.areaMap[xy[0]][xy[1]] = newArea
-        self.currentArea = self.areaMap[xy[0]][xy[1]]
-        self.currentArea.load(weapons, armor, misc, enemies, npcs, events, modifiers)
+    def generateArea(self, areaType=None, weapons=None, armor=None, misc=None, enemies=None,
+                     races=None, npcs=None, events=None, modifiers=None, dialogue=None):
+        ''' Generates an area of the specified type then sets it as the current area '''
+        self.setAndLoadCurrentArea(Area(self.areaData[areaType], [], [], areaType), weapons, armor, misc,
+                                        enemies, races, npcs, events, modifiers, dialogue)
+    
+    def loadCurrentArea(self, weapons=None, armor=None, misc=None, enemies=None, races=None, npcs=None,
+                        events=None, modifiers=None, dialogue = None):
+        ''' Calls the current area's "load" function '''
+        self.currentArea.load(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
+        self.generatedExits = False
+        self.currentExits = []
+        self.areasAddedByEvents = []
+    
+    def setAndLoadCurrentArea(self, area, weapons=None, armor=None, misc=None, enemies=None, races=None, 
+                              npcs=None, events=None, modifiers=None, dialogue=None):
+        ''' Sets the current area and loads it in a single call'''
+        self.setCurrentArea(area)
+        self.loadCurrentArea(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue)
+        for category in self.currentArea.revisitable:
+            if self.currentArea not in self.savedAreas[category]:
+                self.savedAreas[category].append(self.getCurrentArea())
+    
+    def setCurrentArea(self, area):
+        ''' Sets the current area '''
+        self.currentArea = area
 
-    def loadArea(self, xy=(0, 0)):
-        ''' Attempts to load the specified area. If the specified area has not
-            yet been generated, then it returns None. '''
-        if xy[0] in self.areaMap.keys():
-            if xy[1] in self.areaMap[xy[0]].keys():
-                return self.areaMap[xy[0]][xy[1]]
+    
+    def clearEvent(self):
+        ''' Wipes any event that is in the current area '''
+        self.currentArea.event = None
+    
+    def addEnemyToCurrentArea(self, enemy):
+        ''' Adds the passed enemy to the list of enemies in the current area '''
+        self.currentArea.addEnemy(enemy)
+    
+    def foughtCurrentAreaEnemies(self):
+        self.currentArea.foughtEnemies()
+    
+    def addExitToArea(self, area):
+        data = [area, "+1", ["required", "limited"]]
+        self.currentArea.newAreaTypes.append(data)
+        self.currentArea.newArea += 1
+    
+    def addExitToAreaFromEvent(self, area):
+        data = [area, "+1", ["required", "limited"]]
+        self.areasAddedByEvents.append(data)
+
+    # GETTERS
+    # Getters for current Area Data
+    def getCurrentArea(self):
+        ''' Returns the current area as an Area object '''
+        return self.currentArea
+    
+    def getCurrentAreaName(self):
+        ''' Returns the current area name '''
+        return self.currentArea.getName()
+
+    def getCurrentAreaId(self):
+        ''' Returns the current area ID '''
+        return self.currentArea.getAreaId()
+
+    def getCurrentAreaType(self):
+        ''' Returns the current area type '''
+        return self.currentArea.getAreaType()
+    
+    def getCurrentAreaDesc(self):
+        ''' Returns the current area description '''
+        return self.currentArea.getAreaDesc()
+    
+    def getCurrentAreaHasEnemies(self):
+        ''' Returns a bool depending on if the current area has enemies or not '''
+        return len(self.currentArea.getEnemies()) > 0
+    
+    def getCurrentAreaEnemies(self):
+        ''' Returns a list of enemies in the current area '''
+        return self.currentArea.getEnemies()
+    
+    def getCurrentAreaEnemyMessage(self):
+        ''' Returns a list of enemies in the current area '''
+        return self.currentArea.getEnemyMessage()
+
+    def getCurrentAreaHostility(self):
+        ''' Returns the current area hostility '''
+        return self.currentArea.getHostility()
+    
+    def getCurrentAreaHasEvent(self, onlyNonFlavorTextEvents = False):
+        ''' Returns a bool depending on if the current area has enemies or not '''
+        event = self.currentArea.getEvent()
+        if event:
+            if event.eventType != "flavor" or not onlyNonFlavorTextEvents:
+                return True
+        return False
+    
+    def getCurrentAreaNeedToFight(self):
+        return self.currentArea.getNeedToFight()
+
+    def getCurrentAreaEvent(self):
+        ''' Returns the current area event '''
+        return self.currentArea.getEvent()
+    
+    def getCurrentAreaNPCs(self):
+        return self.currentArea.getNPC()
+    
+    def getCurrentAreaIdleDialogChance(self):
+        return self.currentArea.getIdleDialogChance()
+
+    def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
+        ''' If self.generatedExits is False, generates a list of exits for the user to travel to next, based on the current area '''
+        if not self.generatedExits:
+            self.currentExits = self.generateCurrentAreaExits(repeatableEvents, globalRandomEvents)
+            self.generatedExits = True
+        return self.currentExits
+    
+    def generateCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
+        ''' Generates a list of exits for the user to travel to next, based on the current area '''
+        choices = []
+        # This is to guarantee that no "limited" areas are used more than once
+        usedAreas = []
+
+        # Grab all required areas and throw them into a seperate list. This is to
+        # guarantee that they are generated.
+        areatypes = self.currentArea.newAreaTypes[::]
+        required = []
+        for area in areatypes:
+            if len(area) > 2:
+                for flag in area[2]:
+                    if flag == "required":
+                        required.append(area)
+
+        # Check if all requirements are met for areas to spawn:
+        # TODO
+
+        # Actually generate areas:
+        numAreas = self.currentArea.newArea + len(self.areasAddedByEvents) + 1
+        for i in range(1, numAreas):
+            if len(required) > 0:
+                newArea = required.pop(0)
             else:
-                return None
+                areatypes = copy.copy(self.currentArea.newAreaTypes) + self.areasAddedByEvents
+                highroll = 0
+                for aType in areatypes:
+                    newroll = rollDice(aType[1])
+                    alreadyUsed = False
+                    if len(aType) > 2:
+                        if "limited" in aType[2]:
+                            if aType[0] in usedAreas:
+                                alreadyUsed = True
+                    if newroll > highroll and not alreadyUsed:
+                        newArea = aType
+                        highroll = newroll
+            generatedArea = Area(self.areaData[newArea[0]], repeatableEvents,
+                                 globalRandomEvents, newArea[0])
+            usedAreas.append(newArea[0])
+            choices.append(generatedArea)
+        return choices
+    
+    def getCurrentAreaRandomizeExits(self):
+        return self.currentArea.getRandomizeExits()
+    
+    def getCurrentAreaTransitionSound(self):
+        return self.currentArea.getTransitionSound()
+
+    # Other Getters
+    def getTravelableTypes(self):
+        ''' Returns a list of the savedArea types that are not empty. '''
+        areaTypes = []
+        for key in self.currentArea.getIsSafeToTravelTo():
+            areas = self.savedAreas[key][::]
+            if self.getCurrentArea() in areas:
+                areas.remove(self.getCurrentArea())
+            if len(areas) > 0:
+                areaTypes.append(key)
+        return areaTypes
+
+    def getSavedAreas(self, areaType=None):
+        ''' If no argument is passed, then returns a dict with the current saved areas data.
+            Otherwise returns a list of all areas saved under that "area type" key '''
+        if not areaType:
+            return self.savedAreas
+        elif areaType in self.savedAreas.keys():
+            return self.savedAreas[areaType]
         else:
             return None
-
-    def loadCurrentArea(self):
-        ''' If the current area has been generated previously, returns it.
-            Otherwise generates a new area. '''
-        currentArea = self.loadArea((self.x, self.y))
-        if currentArea != None:
-            return currentArea
-        else:
-            # TODO generate a new area
-            return None
-
-    def getTravelLocations(self):
-        ''' Gets possible travel locations for the player and returns them as a
-            list. '''
-        pass
-
-    def travelTo(self, travelLocation=0):
-        ''' Causes the current location to change into the location that is
-            being "travelled" to. '''
-        pass

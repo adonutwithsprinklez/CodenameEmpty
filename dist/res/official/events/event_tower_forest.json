@@ -29,8 +29,13 @@
             ""
         ],
         "actions":[
-            ["spawnEnemy",["enemy_bandit", "enemy_bandit", "enemy_bandit","enemy_bandit"]],
-            ["finish"]
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_bandit", "enemy_bandit", "enemy_bandit","enemy_bandit"]],
+                    ["finish"]
+                ]
+            }
         ]
     },
     "#bear":{
@@ -38,8 +43,13 @@
             ""
         ],
         "actions":[
-            ["spawnEnemy",["enemy_bear"]],
-            ["finish"]
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_bear"]],
+                    ["finish"]
+                ]
+            }
         ]
     }
 }

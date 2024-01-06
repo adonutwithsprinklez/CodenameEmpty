@@ -60,9 +60,23 @@ class Weapon(object):
 	def getAttack(self):
 		attack = rollDice(self.damage)
 		return attack
+	
+	def getAttackInfo(self):
+		return ["Weapon", self.name, random.choice(self.actionText), self.damage]
 
 	def getAction(self):
 		return random.choice(self.actionText)
+	
+	def getName(self, full=False, reverse=True):
+		if full:
+			if reverse:
+				return f"[WEAPON] {self.name}"
+			return f"{self.name} [WEAPON]"
+		return self.name
+	
+	def getValue(self):
+		#TODO: Add modifiers to worth
+		return self.worth
 
 	def __str__(self):
-		return self.name
+		return self.getName()

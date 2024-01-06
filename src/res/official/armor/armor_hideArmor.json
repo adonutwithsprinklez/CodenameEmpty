@@ -1,7 +1,7 @@
 {
 	"name":[
-		"Hide Armor",
-		"Fur Armor"
+		"Hide",
+		"Fur"
 	],
 	"desc":[
 		"The armor seems to be made from multiple species of animal.",
@@ -9,5 +9,13 @@
 	],
 	"defence":"1d3-1",
 	"worthMin":30,
-	"worthMax":50
+	"worthMax":50,
+	"weight":"light",
+	"size":[2,4],
+	"limb":{
+		"head": ["Cap","Hood"],
+		"torso": ["Robe","Garmet"],
+		"arm":["Wraps"],
+		"leg":["Boot"]
+	}
 }

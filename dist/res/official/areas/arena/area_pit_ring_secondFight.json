@@ -1,0 +1,31 @@
+{
+    "name":[
+        "The Pit"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+            "Around you the crowd has been a nonstop roar.",
+			"The crowd continues its intense energy as it cheers you on."
+        ]
+    },
+	"desc":[
+        "You take a moment to catch your breath before the next round begins. $descRandom"
+	],
+	"aType":"Arena",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":100,
+	"events":[
+		["arena/fight1","+1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"0",
+	"npcs":[
+    ],
+	"minNewAreas":0,
+	"maxNewAreas":0,
+	"areas":[]
+}

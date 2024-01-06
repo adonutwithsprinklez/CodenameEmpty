@@ -3,23 +3,25 @@
         "$racetype $title",
         "$title"
     ],
-    "title":{
-        "type":"choose",
-        "choices":[
-            "Bandit",
-            "Thief",
-            "Scoundrel",
-            "Outcast"
-        ]
-    },
-    "racetype":{
-        "type":"choose",
-        "choices":[
-            "Human",
-            "Elven",
-            "Orc"
-        ]
-    },
+	"variables":{
+		"title":{
+			"type":"choose",
+			"choices":[
+				"Bandit",
+				"Thief",
+				"Scoundrel",
+				"Outcast"
+			]
+		},
+		"racetype":{
+			"type":"choose",
+			"choices":[
+				"Human",
+				"Elven",
+				"Orc"
+			]
+		}
+	},
 	"eID":"bandit",
 	"desc":[
 		"It's a bandit... What else do you want from me?"

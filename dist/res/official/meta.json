@@ -5,14 +5,14 @@
     "packType": "standalone",
     "version": 0.1,
     "gameLogo": [
-        "            _____  _____  _____     __  _____  _____  _____",
-        "           |  _  || __  ||     | __|  ||   __||     ||_   _|",
-        "           |   __||    -||  |  ||  |  ||   __||   --|  | |",
-        "           |__|   |__|__||_____||_____||_____||_____|  |_|",
-        "                   _____  _____  _____  _____  __ __",
-        "                  |   __||     ||  _  ||_   _||  |  |",
-        "                  |   __|| | | ||   __|  | |  |_   _|",
-        "                  |_____||_|_|_||__|     |_|    |_|"
+        " _____ _____ ____  _____ _____ _____ _____ _____    _ ",
+        "|     |     |    \\|   __|   | |  _  |     |   __|  |_|",
+        "|   --|  |  |  |  |   __| | | |     | | | |   __|   _ ",
+        "|_____|_____|____/|_____|_|___|__|__|_|_|_|_____|  |_|",
+        " _____  _____  _____  _____  __ __",
+        "|   __||     ||  _  ||_   _||  |  |",
+        "|   __|| | | ||   __|  | |  |_   _|",
+        "|_____||_|_|_||__|     |_|    |_|"
     ],
     "gameDesc": [
         "There aren't very many of these",
@@ -21,44 +21,99 @@
         "Entirely open source on GitHub",
         "The void stares back",
         "Now with a tiny bit of story!",
-        "Now with some dev tools!",
-        "Inspired by Huw2k8's The Wastes",
-        "This project has been in development for way too long"
+        "Inspired by Huw2k8's \"The Wastes\"",
+        "This project has been in development for way too long",
+        "The gods have forsaken us",
+        "This has \"drag 'n drop\" mod support!",
+        "Got dialogue?",
+        "Yes, you can pet the dog.",
+        "Dare to step into the arena?",
+        "You can click your actions!",
+        "You can also use the keyboard!"
+    ],
+    "audio":[
+        ["mainmenumusic", "Loop_The_Old_Tower_Inn"],
+        ["forestTransition", "leaves-14478"],
+        ["gateOpening","gate-heavy-openclose-wav-103288"]
     ],
     "areas": [
-        "area_start_1",
-        "area_start_2",
+        "arena/area_entrance",
+        "arena/area_foyer",
+        "arena/area_shops",
+        "arena/area_pit",
+        "arena/area_pit_ring",
+        "arena/area_pit_ring_secondFight",
+        "arena/area_pit_exit",
+        "arena/area_exit",
+
+        "tutorial/area_start_1",
+        "tutorial/area_start_2",
+        "cave_wolf/entrance",
+        "cave_wolf/room_1a",
+        "cave_wolf/room_1b",
+        "cave_wolf/room_2a",
+        "cave_wolf/room_3",
+        "area_abandoned_church",
+        "area_abandoned_church_interior",
         "area_gen_forest_1",
         "area_gen_forest_2",
         "area_gen_forest_3",
         "area_gen_forest_4",
-        "cave_wolf_entrance",
-        "cave_wolf_room_1a",
-        "cave_wolf_room_1b",
-        "cave_wolf_room_2a",
-        "cave_wolf_room_3",
+        "area_forest_trail_crossroad",
         "area_village_gate_east",
         "area_village_gate_west"
     ],
     "armor": [
         "armor_starting_armor",
+        "armor_cultist",
+        "armor_cultistRobes",
+        "armor_ceremonial",
+        "armor_ceremonialRobes",
+        "armor_dragonSkin",
+        "armor_huntersGarmets",
+        "armor_kitchenApparel",
         "armor_wolfHide",
         "armor_hideArmor",
         "armor_ironArmor",
         "armor_greatWolfHide",
         "armor_orcArmor",
-        "armor_orcCaptainArmor"
+        "armor_orcCaptainArmor",
+
+        "armor_werewolfHide"
+    ],
+    "dialogue": [
+        "dialogue_fallback",
+        "dialogue_npc_generic",
+        "dialogue_npc_dog",
+
+        "dialogue_npc_arena_fightMaster",
+        "dialogue_npc_arena_pit_guard",
+        
+        "dialogue_npc_arena_guard",
+        "dialogue_npc_arena_armorSmith",
+        "dialogue_npc_arena_healer",
+        "dialogue_npc_arena_weaponSmith"
     ],
     "enemies": [
         "enemy_bandit",
         "enemy_banditStrong",
         "enemy_bear",
+        "enemy_boar",
+        "enemy_cultist_basic",
         "enemy_greatWolf",
         "enemy_orc",
         "enemy_orcCaptain",
         "enemy_robbedQuestEnemy",
         "enemy_rodentOfUnusualSize",
-        "enemy_wolf"
+        "enemy_wolf",
+
+        "enemy_arena_initiate",
+        "enemy_arena_fighter1",
+        "enemy_arena_fighter2",
+        "enemy_arena_fighter3",
+        "enemy_arena_fighter_random",
+        "enemy_arena_werewolf",
+        "enemy_arena_werewolf_weak"
     ],
     "events": [
         "intro_event_1",
@@ -72,7 +127,14 @@
         "event_forest_apple",
         "event_cave_wolf_1",
         "event_cave_found_item_1",
-        "event_tower_forest"
+        "event_shrine_ambush",
+        "event_tower_forest",
+
+        "arena/entrance",
+        "arena/pit",
+        "arena/fight1",
+        "arena/pit_exit",
+        "arena/exit"
     ],
     "misc": [
         "consumable_apple",
@@ -86,48 +148,61 @@
     ],
     "modifiers": [
         "consumable_modifiers",
+        "cultist_modifiers",
         "enemy_modifiers",
         "enemy_wolf_modifiers",
         "forest_spirit",
         "weapon_modifiers"
     ],
-    "npcs": [],
+    "npcs": [
+        "npc_generic",
+        "npc_generic_weaponSeller",
+        "npc_generic_armorSeller",
+        "npc_dog",
+        
+        "npc_arena_guard",
+        "npc_arena_pit_guard",
+        "npc_arena_fightMaster",
+        "npc_arena_armorSmith",
+        "npc_arena_healer",
+        "npc_arena_weaponSmith"
+    ],
     "quests": [
-        "quest_beginnings"
+        "quest_beginnings",
+
+        "quest_arena_reparations"
     ],
     "races": [
         "race_human",
         "race_elf",
         "race_orc",
         "race_dwarf",
-        "race_draktilien"
-    ],
-    "startableRaces": [
-        "race_human",
-        "race_elf",
-        "race_orc",
-        "race_dwarf",
-        "race_draktilien"
+        "race_draktilien",
+        "race_dog"
     ],
     "weapons": [
+        "weapon_boarTusks",
+        "weapon_butcherknife",
+        "weapon_castironskillet",
         "weapon_club",
+        "weapon_cultist_ceremonialDagger",
+        "weapon_cultist_dagger",
+        "weapon_cultist_sword",
         "weapon_ironSword",
+        "weapon_ladle",
         "weapon_orcSword",
+        "weapon_shovel",
         "weapon_starter_sword",
         "weapon_steelSword",
         "weapon_treeBranch",
-        "weapon_wolfClaws"
+        "weapon_wolfClaws",
+
+        "weapon_werewolfClaws"
+    ],
+    "tutorialArea":[
+        "tutorial/area_start_1"
     ],
     "startingArea": [
-        "area_start_1"
-    ],
-    "startingWeapon": [
-        "weapon_starter_sword"
-    ],
-    "startingArmor": [
-        "armor_starting_armor"
-    ],
-    "startingInventory": [
-        "consumable_potion_health"
+        "area_gen_forest_1"
     ]
 }

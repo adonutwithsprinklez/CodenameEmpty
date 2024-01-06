@@ -1,0 +1,58 @@
+{
+	"name":[
+		"$color Furred Boar",
+        "$color2 Boar"
+	],
+	"variables":{
+		"color":{
+			"type":"choose",
+			"choices":[
+				"Black",
+				"Onyx",
+				"Pitch-Black",
+				"Charcoal",
+				"Dark Gray",
+				"Slate",
+				"Darkly"
+			]
+		},
+		"color2":{
+			"type":"choose",
+			"choices":[
+				"Black",
+				"Dark Gray",
+				"Jet-Black",
+				"Pitch-Black"
+			]
+		}
+	},
+	"eID":"boar",
+    "areaMinEnemyChance":100,
+    "areaEnemyPointsPerHostility":2,
+	"desc":[
+		"The boar eyes you intently. Its tusks glinting in the light.",
+        "The boar weilds two mighty tusks, easily able to rip through flesh."
+	],
+	"deathMsg":[
+		"gives one last roar before succumbing to its wounds.",
+		"groans before collapsing on the ground."
+	],
+	"hp":"2d4+4",
+	"damage":"1d3",
+	"modCount":"1d2",
+	"modifier":[
+		["None",5],
+		["strong",3],
+        ["weak",2],
+        ["sick",2]
+	],
+	"weapon":[
+		"weapon_boarTusks"
+	],
+	"armor":[
+		"armor_greatWolfHide"
+	],
+	"itemChance":0,
+	"itemDrops":[],
+	"xp":15
+}

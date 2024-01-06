@@ -20,7 +20,6 @@
 			"Forest",
 			"Thicket",
 			"Grove",
-            "Wilderness",
             "Woodland"
 		]
 	},
@@ -35,6 +34,9 @@
 			"Old"
 		]
 	},
+	"transitionSound":[
+		"forestTransition"
+	],
 	"desc":[
 		"Trees surround you on either side. There is an eerie sound of an owl in the distance.\nYou push past the trees as you continue moving forward.",
 		"It is almost impossible to see past the trees.\nYou continue to push on.",
@@ -61,15 +63,16 @@
 		["enemy_wolf",3],
 		["enemy_greatWolf",7]
 	],
-	"npcChance":0,
-	"npcs":[
-		"npc_defNPC"
-	],
+	"npcChance":"0",
 	"minNewAreas":3,
 	"maxNewAreas":6,
 	"areas":[
 		["area_gen_forest_1","2d5", ["required"]],
 		["area_gen_forest_2","2d5"],
+		["area_forest_trail_crossroad","1d8+2", ["limited"]],
 		["area_gen_forest_3","2d5"]
-	]
+	],
+    "safeToTravel":[
+        "local"
+    ]
 }

@@ -1,0 +1,96 @@
+{
+    "name":"Dog",
+    "id":"knine",
+    "baseStats":{
+        "strength":5,
+        "vitality":3,
+        "physique":12,
+        "intelligence":2
+    },
+    "shortDescription":"A typical four-legged Canine.",
+    "longDescription":[],
+    "baseSkills":[],
+    "names":[
+        "Rex",
+        "Fido",
+        "Spot",
+        "Rover"
+    ],
+    "standing":{
+        "elf":0,
+        "human":0,
+        "orc":0,
+        "dwarf":0
+    },
+    "limbs":[
+        {
+            "type":"head",
+            "name":"Head",
+            "hitChance":"2d8",
+            "maxHealth":25,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"torso",
+            "name":"Torso",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"leg",
+            "name":"Front Left Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Front Right Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Rear Left Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Rear Right Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"tail",
+            "name":"Tail",
+            "hitChance":"1d3",
+            "maxHealth":50,
+            "attacks":[],
+            "armorable":false,
+            "flags":["unattackable"]
+        }
+    ]
+}

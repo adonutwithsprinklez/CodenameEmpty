@@ -1,0 +1,106 @@
+{
+    "name":"Dog",
+    "id":"knine",
+    "baseStats":{
+        "strength":5,
+        "vitality":3,
+        "physique":12,
+        "intelligence":2
+    },
+    "basePerks":[
+        "Animal Speech"
+    ],
+    "shortDescription":"A typical four-legged Canine.",
+    "longDescription":[],
+    "baseSkills":[],
+    "names":[
+        "Rex",
+        "Fido",
+        "Spot",
+        "Rover"
+    ],
+    "standing":{
+        "elf":-4,
+        "human":-5,
+        "orc":6,
+        "dwarf":3
+    },
+    "playable":true,
+    "playerCreationDescription":"Dogs are found all across the mainland and are typically they are seen as loyal companions. They are known for their agility. Warning: HAS NO HANDS, so weapons won't be equippable. (Added in the Official Additional Content Data Pack)",
+    "startingArmor":[],
+    "startingWeapon": [],
+    "startingInventory": [],
+    "limbs":[
+        {
+            "type":"head",
+            "name":"Head",
+            "hitChance":"2d8",
+            "maxHealth":25,
+            "attacks":[
+                ["Bite", "You bite the target.", "1d5"]
+            ],
+            "flags":["vital"]
+        },
+        {
+            "type":"torso",
+            "name":"Torso",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[],
+            "flags":["vital"]
+        },
+        {
+            "type":"leg",
+            "name":"Front Left Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Front Right Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Rear Left Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"leg",
+            "name":"Rear Right Leg",
+            "hitChance":"1d4",
+            "maxHealth":50,
+            "attacks":[
+                ["Kick", "$user kicks the target.", "1d3"]
+            ],
+            "armorable":false,
+            "flags":[]
+        },
+        {
+            "type":"tail",
+            "name":"Tail",
+            "hitChance":"1d3",
+            "maxHealth":50,
+            "attacks":[],
+            "armorable":false,
+            "flags":["unattackable"]
+        }
+    ]
+}

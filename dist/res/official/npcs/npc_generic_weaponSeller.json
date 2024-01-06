@@ -1,0 +1,43 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Weapons Dealer"
+        ]
+    },
+    "prefix":"the ",
+    "race":[
+        "human"
+    ],
+    "numProfessions":"+1",
+    "professionPool":[
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_fallback",
+        "dialogue_npc_generic"
+    ],
+    "numItems":"1d5+3",
+    "itemPool":[
+        ["weapon_butcherknife", 5],
+        ["weapon_castironskillet", 3],
+        ["weapon_ironSword", 10],
+        ["weapon_shovel", 5],
+        ["weapon_club", 5],
+        ["weapon_orcSword", 3],
+        ["weapon_steelSword", 3]
+    ],
+    "interestedInBuying":[
+
+    ],
+    "numFlags":"1d3",
+    "flagPool":[
+        "tired",
+        "busy",
+        "religious",
+        "sick"
+    ]
+}

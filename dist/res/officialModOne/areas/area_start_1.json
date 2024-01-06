@@ -1,0 +1,25 @@
+{
+	"name":[
+        "FIRST AREA MOD TEST"
+	],
+	"desc":[
+        "Mods are working if you are reading this. This serves as proof that datapacks can overwrite existing data."
+	],
+	"aType":"Forest",
+	"hostilityMin":1,
+	"hostilityMax":1,
+	"eventChance":100,
+	"events":[
+		["intro_event_1","1d1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"0",
+	"npcs":[],
+	"minNewAreas":1,
+	"maxNewAreas":1,
+	"areas":[
+		["area_start_2","1d1", ["required", "limited"]]
+	]
+}

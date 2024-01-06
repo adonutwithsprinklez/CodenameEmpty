@@ -1,0 +1,22 @@
+{
+    "id":"forestMisc",
+    "type":"flavor",
+    "injectArea":{
+        "cave_wolf/room_1a":"1d6-1",
+        "cave_wolf/room_1b":"1d6-1",
+        "cave_wolf/room_2a":"1d6-1"
+    },
+    "injectAreaMinChance":100,
+    "name":[
+        "Noises Nearby"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "An eerie echo reverberates through the cave system. It is a sign that events can be injected through datapacks."
+        ],
+        "actions":[]
+    }
+}

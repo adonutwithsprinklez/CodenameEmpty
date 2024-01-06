@@ -1,0 +1,36 @@
+{
+    "name":[
+        "The Pit - Entrance"
+	],
+    "descRandom":{
+        "type":"choose",
+        "choices":[
+			"Before you stands the large metal gate leading into the Pit. It looks almost slightly bent inwards from those that had been unwilling to fight within.",
+			"The gate to the Pit is made of heavy iron, with intricate patterns etched into its surface. It exudes an aura of danger and excitement.",
+			"The gate, the only thing between you and the Pit itself, is reinforced with thick chains, a testament to the fierce battles that take place inside."
+		]
+    },
+	"desc":[
+        "You stand in the entranceway to the Pit. $descRandom",
+		"The area just before the pit is quiet except for the crowd cheering within. $descRandom",
+		"The air is thick with anticipation as you approach the entrance to the Pit. $descRandom"
+	],
+	"aType":"Arena",
+	"hostilityMin":0,
+	"hostilityMax":0,
+	"eventChance":100,
+	"events":[
+        ["arena/pit", "+1"]
+	],
+	"enemyChance":0,
+	"enemyPointsPerHostility":1,
+	"enemies":[],
+	"npcChance":"+1",
+	"npcs":[
+		"npc_arena_pit_guard"
+	],
+	"minNewAreas":0,
+	"maxNewAreas":0,
+	"areas":[
+	]
+}

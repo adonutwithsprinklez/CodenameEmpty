@@ -1,0 +1,16 @@
+{
+    "id":"arenaExit",
+    "type":"check",
+    "name":[
+        "Noises Nearby"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You hear a rustling in the trees to the right of you."
+        ],
+        "actions":[]
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "id":"arenaExit",
+    "type":"check",
+    "name":[
+        "Victory in the Pit"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You have succeeded in surviving the Pit. Time to return to the Fight Master for your reward."
+        ],
+        "actions":[
+            {
+                "action":"Dust yourself off.",
+                "requirements":[
+                    ["have", "flag", "arenaFightEasy"]
+                ],
+                "eventDo":[
+                    ["removeFlag", "arenaFightEasy"],
+                    ["addFlag", "arenaWinEasy"],
+                    ["addFlag", "arenaChampionEasy"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Dust yourself off.",
+                "requirements":[
+                    ["have", "flag", "arenaFightMed"]
+                ],
+                "eventDo":[
+                    ["removeFlag", "arenaFightMed"],
+                    ["addFlag", "arenaWinMed"],
+                    ["addFlag", "arenaChampionMed"],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Dust yourself off.",
+                "requirements":[
+                    ["have", "flag", "arenaFightHard"]
+                ],
+                "eventDo":[
+                    ["removeFlag", "arenaFightHard"],
+                    ["addFlag", "arenaWinHard"],
+                    ["addFlag", "arenaChampionHard"],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

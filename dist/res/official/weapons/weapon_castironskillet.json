@@ -1,0 +1,16 @@
+{
+    "name": [
+        "Cast Iron Skillet",
+        "Iron Skillet"
+    ],
+    "damage": "1d3-1",
+    "desc": [
+        "A heavy cast iron skillet. There's still a layer of grease from its life before it was used as a weapon."
+    ],
+    "actionText": [
+        "The ladle is clumsily swung through the air."
+    ],
+    "worthMin": 5,
+    "worthMax": 15,
+    "requiredHands": 1
+}

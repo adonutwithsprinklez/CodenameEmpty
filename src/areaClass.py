@@ -5,7 +5,9 @@ import math
 from dieClass import rollDice
 from enemyClass import Enemy
 from eventClass import Event
+from npcClass import NPC
 from textGeneration import generateString
+from universalFunctions import getDataValue
 
 class Area(object):
     def __init__(self,areaType,nonrepeatableevents=[],globalEvents=[],areaId="",**kwargs):
@@ -18,15 +20,22 @@ class Area(object):
         self.aType = areaType["aType"]
         self.enemy = []
         self.event = None
-        self.npc = None
+        self.npc = []
+        self.npcId = []
         self.hostility = random.randint(areaType["hostilityMin"],areaType["hostilityMax"])
+        self.enemyMessage = getDataValue("enemyMessage", areaType, None)
+        self.revisitable = getDataValue("revisitable", areaType, [])
+        self.isSafeToTravelTo = getDataValue("safeToTravel", areaType, [])
+        self.transitionSound = getDataValue("transitionSound", areaType, None)
+        self.randomizeExits = getDataValue("randomizeAreaOrder", areaType, True)
 
         self.kwargs = kwargs
         
-        if random.randint(1,100) <= areaType["eventChance"]:
+        if random.randint(1,100) <= areaType["eventChance"] and len(areaType["events"])>0:
             self.event = self.chooseAnEvent(areaType, nonrepeatableevents, globalEvents)
         
         # Enemy Generation/Spawning
+        self.needToFight = False
         chance = areaType["enemyChance"]
         try:
             hostilityAffectsEnemyChance = areaType["hostilityAffectsEnemyChance"]
@@ -70,33 +79,19 @@ class Area(object):
                                 enemies.append(enemyid)
                 attempts += 1
             self.enemy = enemies
+            self.needToFight = True
 
-        # Optional Area data tags
-        datakeys = areaType.keys()
-        self.enemyMessage = None
-        if "enemyMessage" in datakeys and len(areaType["enemyMessage"]):
-            self.enemyMessage = generateString(areaType, "enemyMessage")
-
-        '''
-        chance = areaType["enemyChance"]
-        enemies = []
-        c = math.pow(15,(self.hostility-2.0)/10.0)
-        for enemy, echance in areaType["enemies"]:
-            enemies+=[enemy]*echance
-        for i in range(0,10):
-            if len(self.enemy)<self.hostility:
-                x = random.random()*chance
-                if x<c:
-                    self.enemy.append(random.choice(enemies))
-        '''
-
-        # NPC's not yet implemented
-        chance = random.randint(0,areaType["npcChance"])
-        if chance < 10 and chance != 0 and len(areaType["npcs"])>0:
-            self.npc = random.choice(areaType["npcs"])
+        self.idleDialogChance = 0
+        numNPCs = rollDice(areaType["npcChance"])
+        if numNPCs > 0 and len(areaType["npcs"])>0:
+            self.npcId = random.sample(areaType["npcs"][::], k=numNPCs)
+            if "idleDialogChance" in areaType.keys():
+                self.idleDialogChance = areaType["idleDialogChance"]
+            else:
+                self.idleDialogChance = 50
         
     def chooseAnEvent(self, areaType, nonrepeatableevents, globalevents):
-        areaChoices = areaType["events"][::]
+        areaChoices = copy.copy(areaType["events"])
         for event in globalevents:
             areaChoices.append(event)
         # Remove any non-repeatable events that have already occured
@@ -112,7 +107,7 @@ class Area(object):
                 highRoll = newRoll
         return currentEvent[0]
 
-    def load(self,weapons,armor,misc,enemies,npcs,events,modifiers):
+    def load(self,weapons,armor,misc,enemies,races,npcs,events,modifiers,dialogue):
         # Loads in the enemies and events with any objects that they may need
         if self.enemy != []:
             e = []
@@ -122,3 +117,73 @@ class Area(object):
             self.enemy = e
         if self.event:
             self.event = Event(events[self.event], self.event)
+        if len(self.npcId) > 0:
+            print(self.npcId)
+            for npcid in self.npcId:
+                npc = NPC(npcs[npcid], npcid)
+                npc.load(races, dialogue, armor, misc, weapons, modifiers)
+                self.npc.append(npc)
+    
+    def addEnemy(self, enemy):
+        self.enemy.append(enemy)
+        self.needToFight = True
+    
+    def foughtEnemies(self):
+        self.needToFight = False
+        
+    
+    # GETTERS
+    def getName(self):
+        return self.name
+        
+    def getAreaId(self):
+        return self.aId
+        
+    def getAreaType(self):
+        return self.aType
+
+    def getAreaDesc(self):
+        return self.desc
+
+    def getEnemies(self):
+        return self.enemy
+    
+    def getEnemyMessage(self):
+        if (type(self.enemyMessage) is list):
+            return random.choice(self.enemyMessage)
+        return self.enemyMessage
+        
+    def getHostility(self):
+        return self.hostility
+    
+    def getEvent(self):
+        return self.event
+    
+    def getNPC(self):
+        return self.npc
+    
+    def getRevisitable(self):
+        return self.revisitable
+    
+    def getIsSafeToTravelTo(self):
+        return self.isSafeToTravelTo
+    
+    def getNeedToFight(self):
+        return self.needToFight
+    
+    def getIdleDialogChance(self):
+        return self.idleDialogChance
+    
+    def getRandomizeExits(self):
+        return self.randomizeExits
+    
+    def getTransitionSound(self):
+        if self.transitionSound != None:
+            return random.choice(self.transitionSound)
+        return None
+    
+    def __str__(self):
+        return "Area ID: " + self.getAreaId() + " | Title: " + self.getName()
+
+    def __eq__(self, comp):
+        return comp.getAreaId() == self.getAreaId()

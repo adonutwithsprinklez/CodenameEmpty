@@ -9,6 +9,7 @@ If the game's resources are zipped then the game will fail to launch.
 
 import os
 import shutil
+import sys
 
 from gameClass import Game
 from jsonDecoder import loadJson, saveJson
@@ -25,17 +26,24 @@ SETTINGS = None
 
 # Starts the gameloop
 def startGame(game):
+	game.newGameMenu()
+	if game.player == None:
+		return False
 	game.loadPlayer()
 	while True:
 		game.displayCurrentArea()
 		game.reactCurrentArea()
 		if game.player.quit:
 			return None
-		game.chooseNewArea()
+		game.areaHub()
 		if game.player.quit:
+			# Removes the player object from the game object once done
+			game.player = None
 			return None
 		if game.player.hp <= 0:
 			# TODO have actual end of game code due to player death
+			# Removes the player object from the game object once done
+			game.player = None
 			return False
 
 def openSettings(game, settingsFile):
@@ -48,16 +56,47 @@ def openDataPacks(game, settingsFile):
 	global RES_FOLDER, SETTINGS
 	game.openDataPacks()
 	saveJson(settingsFile, game.settings)
+	# TODO: Implement check to see if datapacks changed, and set game.initialLoad's 
+	# third argument to True if they did
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
-def startApplication():
+def startApplication(PATH=None, args=None):
 	global GAME_VERSION, MIN_SAVE_VERSION, MIN_SAVE_VERSION
 	global RES_FOLDER, SETTINGS, SETTINGS_FILE
 
 	# Loads some resource stuff
 	RES_FOLDER = "res/"
+	if PATH:
+		RES_FOLDER = PATH + "/res/"
 	SETTINGS_FILE = RES_FOLDER + "settings.json"
-	SETTINGS = loadJson("{}".format(SETTINGS_FILE))
+	SETTINGS = loadJson(SETTINGS_FILE)
+
+	# Check for datapacks in the resource folder
+	dataPackFolders = []
+	for item in os.listdir(RES_FOLDER):
+		if item != "engine":
+			possibleDirectory = os.path.join(RES_FOLDER, item)
+			if os.path.isdir(possibleDirectory):
+				dataPackFolders.append(item)
+	# Remove from the settings file any datapacks that no longer exist in the res folder
+	dps = SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][::]
+	for pack in SETTINGS["DATAPACKSETTINGS"]["packsToLoad"]:
+		if pack[0] not in dataPackFolders:
+			dps.remove(pack)
+			# If the removed datapack = the starting datapack,
+			# reset the starting datapack to the official one
+			if pack[0] == SETTINGS["DATAPACKSETTINGS"]["start"]:
+				SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][0][1] = True
+				SETTINGS["DATAPACKSETTINGS"]["start"] = "official"
+		# Remove datapack from datapackfolders because it is already saved in settings
+		elif pack[0] in dataPackFolders:
+			dataPackFolders.remove(pack[0])
+	# add saved datapacks to settings
+	for pack in dataPackFolders:
+		dps.append([pack, False])
+	SETTINGS["DATAPACKSETTINGS"]["packsToLoad"] = dps
+	# Save the settings file
+	saveJson(SETTINGS_FILE, SETTINGS)
 
 	# TODO Rewrite this bs
 	'''
@@ -74,12 +113,10 @@ def startApplication():
 					print ("\t\tDecompressing datapack...")
 					shutil.unpack_archive(RES_FOLDER + file, RES_FOLDER + file.split(".zip")[0])
 	'''
-	if __name__ != "__main__":
-		pass
 
 	# Inital game / menu loading
 	game = Game()
-	game.initialLoad(RES_FOLDER, SETTINGS)
+	game.initialLoad(RES_FOLDER, SETTINGS, True, args)
 
 	appRunning = True
 	while appRunning and game.disp.window_is_open:
@@ -97,10 +134,10 @@ def startApplication():
 		if cmd == 1:
 			# Actually start the game
 			startGame(game)
-		elif cmd == 2:
+		elif cmd == 3:
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)
-		elif cmd == 3:
+		elif cmd == 4:
 			# Displays the data pack menu
 			openDataPacks(game, SETTINGS_FILE)
 		elif cmd == 0:
@@ -123,4 +160,10 @@ def startApplication():
 
 # This code runs with main.py is opened
 if __name__ == "__main__":
-	startApplication()
+	import faulthandler
+	faulthandler.enable()
+
+	args = None
+	if len(sys.argv)>1:
+		args = sys.argv[1:]
+	startApplication(None, args)
