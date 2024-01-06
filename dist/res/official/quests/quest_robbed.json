@@ -6,8 +6,9 @@
 	"spawnConditions":[
 		["inAreaType","Forest"]
 	],
-	"spawnChance":2,
+	"spawnChance":100,
 	"do":[
+		["hideFromQuestLog", true],
 		["say","An old man ran up to me. He started going off about how someone robbed him then ran off into some area too dangerous for him to follow. I should help him."]
 	],
 	"nextStep":{

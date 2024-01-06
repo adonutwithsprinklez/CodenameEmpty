@@ -1,0 +1,36 @@
+{
+    "name":{
+        "type":"choice",
+        "choices":[
+            "Arena Healer"
+        ]
+    },
+    "prefix":"the ",
+    "race":[
+        "human",
+        "elf"
+    ],
+    "numProfessions":"+2",
+    "professionPool":[
+        "healer",
+        "shopkeep"
+    ],
+    "description":[
+        "Just a generic NPC"
+    ],
+    "dialogue":[
+        "dialogue_npc_arena_healer"
+    ],
+    "numItems":"1d3+2",
+    "itemPool":[
+        ["consumable_potion_health", 3],
+        ["consumable_potion_health", 3],
+        ["consumable_potion_health", 3],
+        ["consumable_potion_health", 3],
+        ["consumable_potion_health", 3],
+        ["consumable_apple", 1]
+    ],
+    "interestedInBuying":[],
+    "numFlags":"0",
+    "flagPool":[]
+}

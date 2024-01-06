@@ -1,0 +1,23 @@
+{
+    "lines":[
+        { "dialogue":"\"Tidings.\"", "criteria":[ ["isAction", "=", "idle"] ], "weight": 1 },
+        { "dialogue":"\"Can I help you with something?\"", "criteria":[ ["isAction", "=", "greeting"] ], "weight": 1 },
+        { "dialogue":"\"I don't really have time for idle chatter traveller.\"", "criteria":[ ["isAction", "=", "smalltalk"] ], "weight": 1 },
+
+        { "dialogue":"\"Here's what I got.\"", "criteria":[ ["isAction", "=", "shop"] ], "weight":1 },
+        { "dialogue":"\"Let me see what you've got.\"", "criteria":[ ["isAction", "=", "shopSell"] ], "weight":1 },
+        { "dialogue":"\"You've gotta have something in order to sell it.\"", "criteria":[ ["isAction", "=", "shopSellFail"] ], "weight":1 },
+
+        { "dialogue":"\"Thank you for your business.\"", "criteria":[ ["isAction", "=", "buyItem"] ], "weight":1 },
+        { "dialogue":"\"You'll need more gold than that.\"", "criteria":[ ["isAction", "=", "buyItemFail"] ], "weight":1 },
+        { "dialogue":"\"Maybe something else will catch your eye.\"", "criteria":[ ["isAction", "=", "buyItemCancel"] ], "weight":1 },
+
+        { "dialogue":"\"Thank you for your business.\"", "criteria":[ ["isAction", "=", "sellItem"] ], "weight":1 },
+        { "dialogue":"\"Hmm. Suit yourself then.\"", "criteria":[ ["isAction", "=", "sellItemCancel"] ], "weight":1 },
+        { "dialogue":"\"Anything else I can get you?\"", "criteria":[ ["isAction", "=", "finishSell"] ], "weight":1 },
+        
+        { "dialogue":"\"Come again.\"", "criteria":[ ["isAction", "=", "finishShop"] ], "weight":1 },
+        { "dialogue":"\"Safe travels.\"", "criteria":[ ["isAction", "=", "goodbye"] ], "weight": 1 }
+    ],
+    "flags":[]
+}

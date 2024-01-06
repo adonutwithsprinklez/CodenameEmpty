@@ -1,0 +1,40 @@
+{
+    "id":"forestShrineEnemies",
+    "type":"random",
+    "name":[
+        "Reaching the Shrine",
+        "Ambush At the Ruins"
+    ],
+    "start":[
+        "#cultists",
+        "#bear"
+    ],
+    "#cultists":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_cultist_basic", "enemy_cultist_basic", "enemy_cultist_basic"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#bear":{
+        "msg":[
+            ""
+        ],
+        "actions":[
+            {
+                "action":"Prepare yourself for a fight",
+                "eventDo":[
+                    ["spawnEnemy",["enemy_bear"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

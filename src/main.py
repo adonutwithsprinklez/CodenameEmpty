@@ -9,6 +9,7 @@ If the game's resources are zipped then the game will fail to launch.
 
 import os
 import shutil
+import sys
 
 from gameClass import Game
 from jsonDecoder import loadJson, saveJson
@@ -55,23 +56,28 @@ def openDataPacks(game, settingsFile):
 	global RES_FOLDER, SETTINGS
 	game.openDataPacks()
 	saveJson(settingsFile, game.settings)
+	# TODO: Implement check to see if datapacks changed, and set game.initialLoad's 
+	# third argument to True if they did
 	game.initialLoad(RES_FOLDER, SETTINGS)
 
-def startApplication():
+def startApplication(PATH=None, args=None):
 	global GAME_VERSION, MIN_SAVE_VERSION, MIN_SAVE_VERSION
 	global RES_FOLDER, SETTINGS, SETTINGS_FILE
 
 	# Loads some resource stuff
 	RES_FOLDER = "res/"
+	if PATH:
+		RES_FOLDER = PATH + "/res/"
 	SETTINGS_FILE = RES_FOLDER + "settings.json"
 	SETTINGS = loadJson(SETTINGS_FILE)
 
 	# Check for datapacks in the resource folder
 	dataPackFolders = []
 	for item in os.listdir(RES_FOLDER):
-		possibleDirectory = os.path.join(RES_FOLDER, item)
-		if os.path.isdir(possibleDirectory):
-			dataPackFolders.append(item)
+		if item != "engine":
+			possibleDirectory = os.path.join(RES_FOLDER, item)
+			if os.path.isdir(possibleDirectory):
+				dataPackFolders.append(item)
 	# Remove from the settings file any datapacks that no longer exist in the res folder
 	dps = SETTINGS["DATAPACKSETTINGS"]["packsToLoad"][::]
 	for pack in SETTINGS["DATAPACKSETTINGS"]["packsToLoad"]:
@@ -110,7 +116,7 @@ def startApplication():
 
 	# Inital game / menu loading
 	game = Game()
-	game.initialLoad(RES_FOLDER, SETTINGS)
+	game.initialLoad(RES_FOLDER, SETTINGS, True, args)
 
 	appRunning = True
 	while appRunning and game.disp.window_is_open:
@@ -154,4 +160,10 @@ def startApplication():
 
 # This code runs with main.py is opened
 if __name__ == "__main__":
-	startApplication()
+	import faulthandler
+	faulthandler.enable()
+
+	args = None
+	if len(sys.argv)>1:
+		args = sys.argv[1:]
+	startApplication(None, args)

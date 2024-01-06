@@ -7,7 +7,15 @@
         "physique":6,
         "intelligence":5
     },
+    "shortDescription":"A generalized race that can adapt to most play styles.",
+    "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Artin",
+        "John",
+        "Regin",
+        "Beinir"
+    ],
     "standing":{
         "elf":6,
         "drakt":-4,
@@ -15,6 +23,16 @@
         "dwarf":3
     },
     "playable":true,
+    "playerCreationDescription":"Humans, due to their natural adaptability have become the most common of their races. They have spread over most of the mainland.",
+    "startingArmor":[
+        ["armor_starting_armor", ["torso", "arm", "arm", "leg", "leg"]]
+    ],
+    "startingWeapon": [
+        "weapon_starter_sword"
+    ],
+    "startingInventory": [
+        "consumable_potion_health"
+    ],
     "limbs":[
         {
             "type":"head",

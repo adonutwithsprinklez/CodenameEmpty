@@ -32,6 +32,19 @@ ARMOR_TYPES = {
 	"heavy":ARMOR_TYPES_HEAVY
 }
 
+ARMOR_SIZES = [
+	"Tiny",
+	"Small",
+	"Medium",
+	"Large",
+	"Massive"
+]
+
+def getArmorSize(size):
+	if size < 1 or size > 5:
+		return "Mysterious"
+	return ARMOR_SIZES[size-1]
+
 class Armor(object):
 	def __init__(self,data,limb=None):
 		self.name = generateString(data)
@@ -83,6 +96,10 @@ class Armor(object):
 	
 	def getDefenceRating(self):
 		return self.defence
+	
+	def getValue(self):
+		#TODO: Add modifiers and defense rating to worth
+		return self.worth
 
 	def __str__(self):
 		return self.getName()

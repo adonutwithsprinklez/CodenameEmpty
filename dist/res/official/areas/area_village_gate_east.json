@@ -23,27 +23,45 @@
             "a crazy woman that seems to be constantly causing issues"
         ]
     },
+	"transitionSound":[
+		"forestTransition"
+	],
 	"desc":[
         "$descWall\nTwo guards stand at the doors of the gate. Their bored expressions conveying their lack of interest at doing such a job.",
         "$descWall\nThe gate's guards lean on the side of the walls. The two of them chatting about $guardDiscussion.",
         "$descWall\nYou overhear the two gate guards discussing $guardDiscussion.",
         "$descWall"
 	],
-	"aType":"Village Wall",
+	"aType":"Village",
 	"hostilityMin":0,
 	"hostilityMax":0,
 	"eventChance":0,
 	"events":[
 	],
 	"enemyChance":0,
-	"enemyMessage":[""],
 	"enemyPointsPerHostility":1,
 	"enemies":[],
-	"npcChance":0,
-	"npcs":[],
-	"minNewAreas":2,
-	"maxNewAreas":4,
+	"npcChance":"1d3+2",
+	"npcs":[
+		"npc_generic",
+		"npc_generic",
+        "npc_generic_weaponSeller",
+        "npc_generic_armorSeller",
+		"npc_dog"
+    ],
+	"minNewAreas":3,
+	"maxNewAreas":5,
 	"areas":[
-        ["area_gen_forest_3", "2d6"]
-	]
+        ["area_gen_forest_1", "1d8"],
+        ["area_gen_forest_3", "2d6", ["required"]],
+        ["arena/area_entrance", "1d6", ["required", "limited"]]
+	],
+    "safeToTravel":[
+        "important",
+        "local"
+    ],
+    "revisitable":[
+        "important",
+        "local"
+    ]
 }

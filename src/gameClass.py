@@ -8,6 +8,7 @@ import os
 # Local module imports
 
 from ApplicationWindowClass import ApplicationWindow
+from audioControllerClass import AudioController
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
@@ -34,8 +35,10 @@ class Game(object):
         self.player = None
 
         self.disp = ApplicationWindow()
+        self.audioController = None
 
         self.loaded = False
+        self.launchArgs = []
         self.settings = {}
         self.gameSettings = {}
         self.dataPackSettings = {}
@@ -51,10 +54,13 @@ class Game(object):
 
         self.displayIsInitialized = False
 
-    def initialLoad(self, folder="res/", settingsdata={}):
+    def initialLoad(self, folder="res/", settingsdata={}, resetAudioController=False, args=None):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
+        if args != None:
+            self.launchArgs = args
+        
         self.cleanDataPackInfo()
 
         global DELAY, DEBUG, EVENTDELAY
@@ -65,6 +71,11 @@ class Game(object):
         DEBUG = self.settings["DEBUG"]
         DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
+        
+        if resetAudioController:
+            self.audioController = AudioController()
+            self.audioController.addLayer("bgMusic")
+            self.audioController.addLayer("transition")
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
@@ -73,11 +84,28 @@ class Game(object):
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+        if "fullscreen" in self.launchArgs:
+            self.disp.set_fullscreen(True)
 
+        if resetAudioController:
+            self.disp.initiate_audio(self.audioController)
+        self.audioController.setMuteLayer("bgMusic", self.gameSettings["MUTEBGMUSIC"])
+        self.audioController.setMuteAll(self.gameSettings["MUTEAUDIO"])
+
+        # Load some engine specific resources
+        if resetAudioController:
+            DEFAULTRESOURCES = self.settings["DEFAULTRESOURCES"]
+            enginedir = folder + DEFAULTRESOURCES["dir"]
+            audiodir = enginedir + DEFAULTRESOURCES["audio"]["dir"]
+            for audio in DEFAULTRESOURCES["audio"]["files"].keys():
+                self.audioController.bufferAudio(audio, audiodir + DEFAULTRESOURCES["audio"]["files"][audio])
+
+        # Load the datapacks/assets
         self.loadDataPackSettings()
         packs = self.dataPackSettings["packsToLoad"]
         self.starter = self.dataPackSettings["start"]
         print("\nLoading assets...")
+        loadTimeStart = time.time()
 
         for pack in packs:
             if pack[1]:
@@ -157,6 +185,10 @@ class Game(object):
                     else:
                         self.dialogue[d] = dialogueData
                     self.disp.dprint("\t\tLoaded Dialogue %s" % d)
+                if resetAudioController:
+                    for a in self.packs[pack]["audio"]:
+                        self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
+                        self.disp.dprint("\t\tLoaded Audio %s" % a[0])
                 print(f"\tFinished loading assets for pack {pack}.")
 
         # Adds all loaded quests into a list of possible quests, as well as
@@ -175,11 +207,15 @@ class Game(object):
                 if self.events[event]["globalEvent"]:
                     self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
+        
+        loadTimeEnd = time.time()
+        print(f"Finished loading assets in {loadTimeEnd - loadTimeStart} seconds.")
+        
         self.loadStartingArea()
         self.loaded = True
 
     def loadStartingArea(self):
-        if self.gameSettings["TUTORIALAREA"]:
+        if not self.gameSettings["TUTORIALAREA"]:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]),
             self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
         else:
@@ -238,10 +274,17 @@ class Game(object):
         self.backlog = []
         self.importantQuestInfo = []
 
+        '''
+        if self.audioController != None:
+            self.audioController.stopAll()
+        '''
+
     def loadGameSettings(self):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
             self.gameSettings[setting[0]] = setting[2]
+        if not "fullscreen" in self.launchArgs:
+            self.disp.set_fullscreen(self.gameSettings["FULLSCREEN"])
 
     def loadDataPackSettings(self):
         self.dataPackSettings = {}
@@ -255,21 +298,32 @@ class Game(object):
 
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
+        transition = self.areaController.getCurrentAreaTransitionSound()
+        if transition != None:
+            self.audioController.playBufferedAudio("transition", transition, False, False)
         self.disp.clearScreen()
-        title = "%s (%s) - Hostility: %d" % (self.areaController.getCurrentAreaName(),
-                self.areaController.getCurrentAreaType(), self.areaController.getCurrentAreaHostility())
+        hostility = self.areaController.getCurrentAreaHostility()
+        if hostility <= 0:
+            hostilityString = f"<green>Hostility: {hostility}<green>"
+        else:
+            hostilityString = f"<red>Hostility: {hostility}<red>"
+        title = f"{self.areaController.getCurrentAreaName()} " + \
+                f"(<yellow>{self.areaController.getCurrentAreaType()}<yellow>) - {hostilityString}"
+        print(title)
+        #title = "%s (%s) - Hostility: %d" % (self.areaController.getCurrentAreaName(),
+        #        self.areaController.getCurrentAreaType(), self.areaController.getCurrentAreaHostility())
         self.disp.displayHeader(title)
         for desc in self.areaController.getCurrentAreaDesc().split("\n"):
             self.disp.display(desc)
         # Display enemies that are in the area (if there are any)
         if self.areaController.getCurrentAreaHasEnemies() and self.areaController.getCurrentAreaNeedToFight():
-            self.disp.closeDisplay()
-            enemyMessage = "You can see enemies in the distance:"
+            self.disp.display("\n<h2>Enemies<h2>")
+            enemyMessage = "<s>You can see enemies in the distance.<s>"
             if self.areaController.getCurrentAreaEnemyMessage() != None:
                 enemyMessage = self.areaController.getCurrentAreaEnemyMessage()
             self.disp.display(enemyMessage, 1, 1)
             for enemy in self.areaController.getCurrentAreaEnemies():
-                self.disp.display(f'{enemy.getName()} (Danger - {enemy.getDanger()})', 0, 0)
+                self.disp.display(f'<red>{enemy.getName()}<red> (Danger - {enemy.getDanger()})', 0, 0)
         self.disp.closeDisplay()
 
         # input("\nEnter to continue")
@@ -287,8 +341,8 @@ class Game(object):
             self.disp.dprint(event.name)
             while not event.finished:
                 self.disp.clearScreen()
-                self.disp.displayHeader(event.name)
-                self.disp.display(event.msg, 1)
+                self.disp.displayHeader(f"{event.name}")
+                self.disp.display(f"{event.msg}", 1)
                 x = 0
                 choices = event.getPossibleActions(self.player)
                 if len(choices) > 0:
@@ -296,7 +350,7 @@ class Game(object):
                     for choice in choices:
                         x += 1
                         action = choice["action"]
-                        self.disp.display(f'{x}. {action}', 0)
+                        self.disp.displayAction(f'{x}. {action}', x, 0)
                     self.disp.closeDisplay()
 
                     try:
@@ -325,6 +379,16 @@ class Game(object):
                                 for enemyid in action[1]:
                                     self.areaController.addEnemyToCurrentArea(Enemy(
                                         self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
+                            elif action[0] == "addArea":
+                                self.areaController.addExitToAreaFromEvent(action[1])
+                            elif action[0] == "addFlag":
+                                if action[1] not in self.player.flags:
+                                    self.player.flags.append(action[1])
+                            elif action[0] == "removeFlag":
+                                if action[1] in self.player.flags:
+                                    self.player.flags.remove(action[1])
+                            elif action[0] == "setName":
+                                event.setName(action[1])
                             elif action[0] == "finish":
                                 event.finish()
                 else:
@@ -343,9 +407,12 @@ class Game(object):
     def displayEventAction(self, message):
         self.disp.clearScreen()
         self.disp.displayHeader(self.areaController.getCurrentAreaEvent().name)
-        self.disp.display(message)
+        if type(message) == list:
+            for line in message:
+                self.disp.display(line)
+        else:
+            self.disp.display(message)
         self.disp.closeDisplay()
-        # input("\nEnter to continue")
         self.disp.wait_for_enter()
 
     def fightEnemies(self):
@@ -368,51 +435,61 @@ class Game(object):
 
                     cmd = -1
                     self.disp.clearScreen()
-                    while not ((int(cmd) <= 2 and int(cmd) >= 0) or (cmd == 90 and DEBUG)):
-                        self.disp.displayHeader("Enemy Encountered - %s" % (areaEnemy.name))
+                    playerAttackOptions = self.player.getAttackOptions()
+                    # TODO: Refactor this whole loop
+                    while not ((int(cmd) <= len(playerAttackOptions)+1 and int(cmd) >= 0) or (cmd == "HEALME" and DEBUG)):
+                        self.disp.displayHeader("Enemy Encountered - <red>%s<red>" % (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
                                           (areaEnemy.getDesc(), areaEnemy.getDanger()), 1, 1)
-                        self.disp.displayHeader("Info")
-                        self.disp.display("Player: %s - %dHP" % (self.player.name, self.player.hp))
-                        self.disp.display("HP: %s" % ("#" * self.player.getHealth()), 0)
-                        self.disp.display("Weapon: %s" % (str(self.player.weapon)), 0)
-                        self.disp.display("Enemy: %s - %dHP" % (areaEnemy.name, areaEnemy.hp))
-                        self.disp.display("HP: %s" % ("#" * areaEnemy.getHealth()), 0)
-                        self.disp.display("Weapon: %s" % (str(areaEnemy.weapon)), 0, 1)
+                        self.disp.displayHeader(f"<cyan>{self.player.name}<cyan>")
+                        self.disp.display(f"HP: <green>{self.player.getHp()}/{self.player.getMaxHP()}<green>", 0)
+                        self.disp.display("Weapon: <i>%s<i>" % (str(self.player.weapon)), 0, 1)
+
+                        self.disp.displayHeader(f"<red>{areaEnemy.name}<red>")
+                        self.disp.display(f"HP: <red>{areaEnemy.getHp()}/{areaEnemy.getMaxHp()}<red>", 0)
+                        self.disp.display("Weapon: <i>%s<i>" % (str(areaEnemy.weapon)), 0, 1)
+
                         self.disp.displayHeader("Actions")
-                        self.disp.display("1. Use your weapon (%s)" % str(self.player.weapon))
-                        self.disp.display("2. Attempt to escape", 0)
-                        self.disp.display("0. Player Menu")
+                        i = 1
+                        for option in playerAttackOptions:
+                            self.disp.displayAction(f"{i}. {option[0]} - {option[1]}", i, i==1)
+                            i += 1
+                        if len(playerAttackOptions) == 0:
+                            self.disp.display("Something happened and you can't attack." +
+                                              "Probably contact the dev because this should never happen.", 1)
+                        self.disp.displayAction(f"{i}. Attempt to escape", i, 1)
+                        self.disp.displayAction("0. Player Menu", 0)
                         self.disp.closeDisplay()
                         try:
                             # cmd = int(input())
-                            cmd = self.disp.get_input(True)
+                            cmd = self.disp.get_input(False)
                             if not self.disp.window_is_open:
                                 self.player.quit = True
                                 return None
-                            self.disp.clearScreen()
                         except ValueError:
-                            self.disp.clearScreen()
                             cmd = -1
-                        if cmd == 0:
+                        self.disp.clearScreen()
+                        if cmd == "0":
                             self.player.playerMenu(
                                 self.currentQuests, self.completedQuests)
                             if self.player.quit:
                                 # TODO Exit the game completely
                                 return None
-                        elif cmd in (9, 90) and DEBUG:
-                            self.disp.dprint("Healing player fully.")
-                            self.player.hp = self.player.getMaxHP()
-                        elif cmd not in (1, 2, 0):
+                        elif int(cmd) not in list(range(i+1)):
                             self.disp.displayHeader("Error")
                             self.disp.display("That was not a valid response.", 1, 1)
+                        elif DEBUG:
+                            # Refactored to allow for more debug commands
+                            if cmd == "HEALME":
+                                self.disp.dprint("Healing player fully.")
+                                self.player.hp = self.player.getMaxHP()
 
-                    if cmd == 1 or cmd == 90:
+                    if int(cmd) in list(range(i)) or cmd == "HEALME":
                         self.disp.clearScreen()
-                        damage = self.player.getWeaponDamage()
+                        damage = self.player.getWeaponDamage(int(cmd)-1)
                         if DEBUG and cmd == 90:
                             damage *= 10
-                        msg = self.player.getWeaponAction()
+                        msg = self.player.getWeaponAction(int(cmd)-1)
                         damage -= int(areaEnemy.getArmorDefence())
                         if damage < 0:
                             damage = 0
@@ -432,7 +509,7 @@ class Game(object):
                         self.disp.closeDisplay()
                         # input("\nEnter to continue.")
                         self.disp.wait_for_enter()
-                    elif cmd == 2:
+                    elif cmd == str(i):
                         self.disp.clearScreen()
                         escape = False
                         if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < 1 + areaEnemy.getArmorDefence():
@@ -484,6 +561,8 @@ class Game(object):
     
     def areaHub(self):
         ''' Acts as the area hub if there are NPCs'''
+        for flag in self.player.flags:
+            self.disp.dprint(flag)
         npcList = self.areaController.getCurrentAreaNPCs()
         if len(npcList) > 0:
             npcDialogCheck = False
@@ -498,21 +577,29 @@ class Game(object):
                     npc = random.choice(npcList)
                     npcdialog = npc.getDialogueLine(fullQuery)
                     self.disp.display("You hear someone mutter something.")
-                    self.disp.display(f"{npc.getName()} - {npcdialog}  ")
+                    self.disp.display(f"<green>{npc.getName()}<green> - <i>{npcdialog['dialogue']}<i>")
                     self.disp.closeDisplay()
+                    if "addPlayerFlags" in npcdialog.keys():
+                        for flag in npcdialog["addPlayerFlags"]:
+                            if flag not in self.player.flags:
+                                self.player.flags.append(flag)
+                    if "removePlayerFlags" in npcdialog.keys():
+                        for flag in npcdialog["removePlayerFlags"]:
+                            if flag in self.flags:
+                                self.flags.remove(flag)
                     npcDialogCheck = True
                 i = 1
-                self.disp.display("1. Travel", 1, 1)
+                self.disp.displayAction("1. Travel", 1, 1, 1)
                 for npc in npcList:
                     i+=1
                     npcProfessions = npc.getProfessions()
                     if len(npcProfessions) > 0:
                         npcProfessions = ", ".join(npcProfessions).upper()
-                        self.disp.display(f"{i}. [{npcProfessions}] - {npc.getName()}", 0)
+                        self.disp.displayAction(f"{i}. [{npcProfessions}] - {npc.getName()}", i, 0)
                     else:
-                        self.disp.display(f"{i}. {npc.getName()}",0)
+                        self.disp.displayAction(f"{i}. {npc.getName()}", i, 0)
                     pass
-                self.disp.display("0. Player Menu")
+                self.disp.displayAction("0. Player Menu", 0)
                 self.disp.closeDisplay()
                 cmd = self.disp.get_input(True)
                 if 2 <= cmd <= 2+len(npcList):
@@ -543,7 +630,8 @@ class Game(object):
         # Create various area choices:
         choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
-        random.shuffle(choices)
+        if self.areaController.getCurrentAreaRandomizeExits():
+            random.shuffle(choices)
         cmd = -1
         travelTypes = self.areaController.getTravelableTypes()
 
@@ -556,16 +644,16 @@ class Game(object):
             if len(travelTypes) > 0:
                 for category in travelTypes:
                     x += 1
-                    self.disp.display("%d. %s Travel Locations" % (x, category.capitalize()), 0)
+                    self.disp.displayAction("%d. %s Travel Locations" % (x, category.capitalize()), x, 0)
                 self.disp.display("", 1, 0)
             for area in choices:
                 x += 1
-                self.disp.display("%d. %-37s %12s   Hostility - %2d" %
-                                  (x, area.name, area.aType, area.hostility), 0)
+                self.disp.displayAction("%d. %-37s %12s   Hostility - %2d" %
+                                  (x, area.name, area.aType, area.hostility), x, 0)
             if canCancel:
-                self.disp.display("0. Back")
+                self.disp.displayAction("0. Back", 0)
             else:
-                self.disp.display("0. Player Menu")
+                self.disp.displayAction("0. Player Menu", 0)
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)
@@ -618,8 +706,8 @@ class Game(object):
             x = 0
             for area in choices:
                 x += 1
-                self.disp.display("%d. %s" % (x, area.getName()))
-            self.disp.display("0. to exit")
+                self.disp.displayAction("%d. %s" % (x, area.getName()), x)
+            self.disp.displayAction("0. Exit", 0)
             self.disp.closeDisplay()
             try:
                 cmd = self.disp.get_input(True)
@@ -730,40 +818,40 @@ class Game(object):
             if playerName != "" and playerRace != "":
                 ready = True
             self.disp.clearScreen()
-            self.disp.displayHeader("New Game")
+            self.disp.displayHeader("<green>New Game<green>")
             if len(playerName) > 0:
-                self.disp.display("Name: %s" % playerName)
+                self.disp.display("<h3><b>Name:<b> <cyan>%s<cyan><h3>" % playerName)
             else:
-                self.disp.display("Name: ?")
+                self.disp.display("<h3><b>Name:<b> ?<h3>")
             if playerRace == "":
-                self.disp.display("Race: ")
+                self.disp.display("<b>Race:<b> ?")
             else:
                 r = Race(self.races[playerRace])
-                self.disp.display("Race: %s" % (r.getName()))
+                self.disp.display("<h3><b>Race:<b> <red>%s<red><h3>" % (r.getName(False)))
                 self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
                 self.disp.display("\t%s" %(r.getDescription()),0, 1)
 
                 self.disp.displayHeader("Character Stats")
-                self.disp.display("Stats:")
-                self.disp.display(f'\tStrength     - {r.getStat("strength")}', 0)
-                self.disp.display(f'\tVitality     - {r.getStat("vitality")}', 0)
-                self.disp.display(f'\tPhysique     - {r.getStat("physique")}', 0)
-                self.disp.display(f'\tIntelligence - {r.getStat("intelligence")}', 0)
+                self.disp.display("<h2>Stats:<h2>")
+                self.disp.display(f'\t<b>Strength<b>     - {r.getStat("strength")}', 0)
+                self.disp.display(f'\t<b>Vitality<b>     - {r.getStat("vitality")}', 0)
+                self.disp.display(f'\t<b>Physique<b>     - {r.getStat("physique")}', 0)
+                self.disp.display(f'\t<b>Intelligence<b> - {r.getStat("intelligence")}', 0)
                 if len(r.getPerks()) > 0:
-                    self.disp.display(f'Racial Perks:')
+                    self.disp.display(f'<h2>Racial Perks:<h2>')
                     for perk in r.getPerks():
                         self.disp.display(f'\t{perk}', 0)
 
             self.disp.display("", 1)
             self.disp.displayHeader("Options")
-            self.disp.display("1. Change Name")
-            self.disp.display("2. Change Race", 0)
-            self.disp.display("3. [DISABLED] Change Stats", 0)
-            self.disp.display("4. [DISABLED] Change Skills", 0)
-            self.disp.display("5. [DISABLED] Randomize All", 1, 1)
+            self.disp.displayAction("1. Change Name", 1)
+            self.disp.displayAction("2. Change Race", 2, 0)
+            self.disp.displayAction("3. [<b><red>DISABLED<red><b>] Change Stats", 3, 1)
+            self.disp.displayAction("4. [<b><red>DISABLED<red><b>] Change Skills", 4, 0)
+            self.disp.displayAction("5. [<b><red>DISABLED<red><b>] Randomize All", 5, 1, 1)
             if ready:
-                self.disp.display("9. Start", 0)
-            self.disp.display("0. Exit", 0)
+                self.disp.displayAction("<green>9. Start<green>", 9, 0)
+            self.disp.displayAction("<red>0. Exit<red>", 0, 0)
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True)
             if ready and cmd == 9:
@@ -775,7 +863,7 @@ class Game(object):
                 # Returns a None which causes the game to return to the main menu
                 return None
             elif cmd == 1:
-                playerName = self.newGameSetName(playerName)
+                playerName = self.newGameSetName(playerName, playerRace)
             elif cmd == 2:
                 playerRace = self.newGameSetRace(playerRace)
             elif cmd == 3:
@@ -788,17 +876,23 @@ class Game(object):
                 # TODO Randomize full character
                 pass
     
-    def newGameSetName(self, currentName):
-        self.disp.clearScreen()
-        self.disp.displayHeader("Name Select")
-        self.disp.display("Current Name: %s" % currentName)
-        self.disp.display("Enter your desired name")
-        self.disp.display("0. to Cancel")
-        self.disp.closeDisplay()
-        name = self.disp.get_input()
-        if name == "0" or name == "":
-            return currentName
-        return name
+    def newGameSetName(self, currentName, currentRace):
+        while True:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Name Select")
+            self.disp.display("Current Name: <cyan>%s<cyan>" % currentName)
+            self.disp.display("Enter your desired name")
+            if currentRace != "":
+                self.disp.displayAction("1. Random Name", 1)
+            self.disp.displayAction("<red>0. Back<red>", 0)
+            self.disp.closeDisplay()
+            name = self.disp.get_input(acceptNothing=True)
+            if name == "1" and currentRace != "":
+                currentName = Race(self.races[currentRace]).getRandomName()
+            elif name == "0" or name == "" or name == None:
+                return currentName
+            else:
+                return name
 
     def newGameSetRace(self, currentRace):
         r = Race(self.races[currentRace])
@@ -813,20 +907,20 @@ class Game(object):
         while True:
             self.disp.clearScreen()
             self.disp.displayHeader("Race Select")
-            self.disp.display("Current Race: %s" % r.getName(False))
+            self.disp.display("<h2>Current Race: <red>%s<red><h2>" % r.getName(False))
             self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
             if len(r.getPerks()) > 0:
                 self.disp.display(f'Racial Perks:')
                 for perk in r.getPerks():
                     self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
-            self.disp.display("Choices:")
+            self.disp.display("<h3>Choices:<h3>")
             x = 0
             for race in races:
                 x += 1
-                self.disp.display(f"\t{x}. {race.getName(False)} - {race.getShortDescription()}")
+                self.disp.displayAction(f"\t<b>{x}. <red>{race.getName(False)}<red><b> - <i>{race.getShortDescription()}<i>", x)
             self.disp.closeDisplay()
-            self.disp.display("0. to Cancel")
+            self.disp.displayAction("<red>0. Back<red>", 0)
             self.disp.closeDisplay()
             # Get input, convert to int
             cmd = self.disp.get_input(True)
@@ -840,23 +934,23 @@ class Game(object):
     
     def newGameRaceInspect(self, race):
         self.disp.clearScreen()
-        self.disp.displayHeader(f"Race Select: {race.getName(False)}")
-        self.disp.display(f"Select {race.getName(False)}?")
-        self.disp.display(f"Stats:")
-        self.disp.display(f'\tStrength     - {race.getStat("strength")}', 0)
-        self.disp.display(f'\tVitality     - {race.getStat("vitality")}', 0)
-        self.disp.display(f'\tPhysique     - {race.getStat("physique")}', 0)
-        self.disp.display(f'\tIntelligence - {race.getStat("intelligence")}', 0)
+        self.disp.displayHeader(f"Race Select: <red>{race.getName(False)}<red>")
+        self.disp.display(f"Select <red>{race.getName(False)}<red>?")
+        self.disp.display(f"<h2>Stats:<h2>")
+        self.disp.display(f'\t<b>Strength<b>     - {race.getStat("strength")}', 0)
+        self.disp.display(f'\t<b>Vitality<b>     - {race.getStat("vitality")}', 0)
+        self.disp.display(f'\t<b>Physique<b>     - {race.getStat("physique")}', 0)
+        self.disp.display(f'\t<b>Intelligence<b> - {race.getStat("intelligence")}', 0)
         if len(race.getPerks()) > 0:
-            self.disp.display(f'Racial Perks:')
+            self.disp.display(f'<h2>Racial Perks:<h2>')
             for perk in race.getPerks():
                 self.disp.display(f'\t{perk}', 0)
-        self.disp.display(f"Description:")
+        self.disp.display(f"<h2>Description:<h2>")
         self.disp.display(f"\t{race.getPlayerCreationDescription()}", 0)
         self.disp.display(f"\t{race.getPureRaceDescription()}", 0)
         self.disp.closeDisplay()
-        self.disp.display("1. to Confirm")
-        self.disp.display("Anything else to cancel", 0)
+        self.disp.displayAction("<green>1. Confirm<green>", 1)
+        self.disp.displayAction("<red>0. Back<red>", 0, 0)
         self.disp.closeDisplay()
         if self.disp.get_input(True, True, True) == 1:
             return True
@@ -864,27 +958,28 @@ class Game(object):
 
     def displayMainMenu(self):
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
-
-        self.disp.clearScreen()
+        self.audioController.playBufferedAudio("bgMusic", "mainmenumusic", False, True)
+        self.disp.clearScreen() 
         self.disp.displayHeader("Main Menu")
 
         logo = random.choice(self.logos)
         firstLine = logo[0]
-        self.disp.display(firstLine)
+        self.disp.display(f"<cyan>{firstLine}<cyan>")
         for line in logo[1:]:
-            self.disp.display(line, 0)
+            self.disp.display(f"<cyan>{line}<cyan>", 0)
         
-        self.disp.display(f'Version: {self.settings["VERSION"]}')
-        self.disp.display(random.choice(self.descs))
+        self.disp.display(f'<s>Version: {self.settings["VERSION"]}<s>')
+        desc = random.choice(self.descs)
+        self.disp.display(f"<h2>{desc}<h2>")
         self.disp.closeDisplay()
 
-        self.disp.display("1. New Game")
+        self.disp.displayAction("<green>1. New Game<green>", 1)
         # TODO: Check for save files and display below option if there are any
         if False:
             self.disp.display("2. Load Game", 0)
-        self.disp.display("3. Settings")
-        self.disp.display("4. Data Packs", 0)
-        self.disp.display("0. Exit")
+        self.disp.displayAction("3. Settings", 3)
+        self.disp.displayAction("4. Data Packs", 4, 0)
+        self.disp.displayAction("<red>0. Exit<red>", 0)
         self.disp.closeDisplay()
 
     def openOptionsWindow(self):
@@ -919,13 +1014,13 @@ class Game(object):
 
         listOfOptions = self.settings["GAMESETTINGS"][startOptions:endOptions]
         firstOption = listOfOptions.pop(0)
-        enabled = "ENABLED" if firstOption[2] else "DISABLED"
-        self.disp.display(f'1. {firstOption[1]:<50} {enabled:>18}')
+        enabled = "<green>ENABLED<green>" if firstOption[2] else "<red>DISABLED<red>"
+        self.disp.displayAction(f'1. {firstOption[1]:<50} <b>{enabled:>30}<b>', 1)
         i = 1
         for option in listOfOptions:
             i += 1
-            enabled = "ENABLED" if option[2] else "DISABLED"
-            self.disp.display(f'{i}. {option[1]:<50} {enabled:>18}', 0)
+            enabled = "<green>ENABLED<green>" if option[2] else "<red>DISABLED<red>"
+            self.disp.displayAction(f'{i}. {option[1]:<50} <b>{enabled:>30}<b>', i, 0)
         self.disp.closeDisplay()
         self.disp.display( "Input option # to toggle. Settings take effect on screen exit.")
         pagebreak = 1
@@ -935,7 +1030,7 @@ class Game(object):
         if page > 0:
             self.disp.display("11. for previous page of settings", pagebreak)
             pagebreak = 0
-        self.disp.display("0. to exit", pagebreak)
+        self.disp.displayAction("0. to exit", 0, pagebreak)
         self.disp.closeDisplay()
 
         return listOfOptions
@@ -999,13 +1094,13 @@ class Game(object):
         if pack["packType"] == "standalone" and enabled:
             self.disp.display("INFO: This data pack cannot be disabled. You must enabled a different " +
                               "\"standalone\" data pack in order for this one to be disabled.")
-            self.disp.display("Enter to exit")
+            self.disp.displayAction("0. Exit", 0)
         elif pack["packType"] == "standalone" and not enabled:
-            self.disp.display("1. to change the currently active \"standalone\" data pack to this one")
-            self.disp.display("Anything else to cancel", 0)
+            self.disp.displayAction("1. to change the currently active \"standalone\" data pack to this one", 1)
+            self.disp.displayAction("0. Cancel", 0, 0)
         else:
-            self.disp.display("1. to toggle status")
-            self.disp.display("Anything else to cancel", 0)
+            self.disp.displayAction("1. to toggle status", 1)
+            self.disp.displayAction("0. Cancel", 0, 0)
         self.disp.closeDisplay()
         return self.disp.get_input(True, True, True) == 1
 
@@ -1027,17 +1122,17 @@ class Game(object):
             packType = pack["packType"]
             packAuth = pack["author"]
 
-            self.disp.display(f'{i}. {packName:<50} {enabled:>18}')
-            self.disp.display(f'\tPack Type: {packType.upper()} | Author: {packAuth}', 0)
+            self.disp.displayAction(f'<h3>{i}. {packName:<50} <b>{enabled:>18}<b><h3>', i)
+            self.disp.display(f'\tPack Type: <i>{packType.upper()}<i> | Author: <i>{packAuth}<i>', 0)
         self.disp.closeDisplay()
         pagebreak = 1
         if page < numPages:
-            self.disp.display("12. for next page of settings")
+            self.disp.displayAction("12. for next page of settings", 12)
             pagebreak = 0
         if page > 0:
-            self.disp.display("11. for previous page of settings", pagebreak)
+            self.disp.displayAction("11. for previous page of settings", 11, pagebreak)
             pagebreak = 0
-        self.disp.display("0. to exit", pagebreak)
+        self.disp.displayAction("0. to exit", 0, pagebreak)
         self.disp.closeDisplay()
 
         return listOfOptions

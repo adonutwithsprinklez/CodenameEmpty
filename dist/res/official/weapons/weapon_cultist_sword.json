@@ -1,0 +1,25 @@
+{
+    "name": [
+        "Twisted Sword"
+    ],
+    "damage": "1d4+2",
+    "desc": [
+        "The dagger's blade twists in a strange way. You can't figure out what purpose its design has.",
+        "Glyphs cover the dagger from its handle all the way up its twisted blade."
+    ],
+    "actionText": [
+        "There is a blur as the twisted blade swings through the air.",
+        "The sword is silent as is is stabbed into its target."
+    ],
+    "modifierCount": "+1",
+    "modifiers": [
+        [
+            "cult_wep_sharpened",
+            "1d6"
+        ]
+    ],
+    "modifierChance": 50,
+    "worthMin": 25,
+    "worthMax": 35,
+    "requiredHands": 2
+}

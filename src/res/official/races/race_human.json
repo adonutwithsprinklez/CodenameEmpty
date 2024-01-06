@@ -10,6 +10,12 @@
     "shortDescription":"A generalized race that can adapt to most play styles.",
     "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Artin",
+        "John",
+        "Regin",
+        "Beinir"
+    ],
     "standing":{
         "elf":6,
         "drakt":-4,

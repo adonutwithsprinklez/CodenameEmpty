@@ -83,6 +83,12 @@ class Enemy(object):
                 description = "{} {}".format(description, mod["d"])
         description = description.replace("$name", self.name)
         return description
+    
+    def getHp(self):
+        return self.hp
+    
+    def getMaxHp(self):
+        return self.hpMax
 
     def getHealth(self):
         return int(((1.0*self.hp)/self.hpMax)*68 + 0.5)

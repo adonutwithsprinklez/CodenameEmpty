@@ -1,0 +1,257 @@
+{
+    "id":"fight1",
+    "type":"check",
+    "name":[
+        "Entering the Pit"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "The chears of the crowd going wild fills your ears.",
+            "The energy within the pit is contagious. You feel yourself growing condident in what lies ahead."
+        ],
+        "actions":[
+            {
+                "action":"Ready yourself for the fight",
+                "requirements":[
+                    ["have","flag","arenaFightEasy"]
+                ],
+                "eventDo":[
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_exit"],
+                    ["goto", ["#wolves","#boars","#bear"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the first round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightMed"],
+                    ["nothave","flag","step2"]
+                ],
+                "eventDo":[
+                    ["addFlag", "step2"],
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_ring_secondFight"],
+                    ["goto", ["#wolves","#boars","#bear"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the first round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightHard"],
+                    ["nothave","flag","step2"],
+                    ["nothave","flag","step3"]
+                ],
+                "eventDo":[
+                    ["addFlag", "step2"],
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_ring_secondFight"],
+                    ["goto", ["#wolves","#boars","#bear"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the final round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightMed"],
+                    ["have","flag","step2"]
+                ],
+                "eventDo":[
+                    ["removeFlag", "step2"],
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_exit"],
+                    ["goto", ["#round2_bigAnimal","#round2_exoticAnimal"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the second round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightHard"],
+                    ["have","flag","step2"]
+                ],
+                "eventDo":[
+                    ["removeFlag", "step2"],
+                    ["addFlag", "step3"],
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_ring_secondFight"],
+                    ["goto", ["#round2_bigAnimal","#round2_exoticAnimal"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the final round of the fight",
+                "requirements":[
+                    ["have","flag","arenaFightHard"],
+                    ["have","flag","step3"]
+                ],
+                "eventDo":[
+                    ["removeFlag", "step3"],
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_exit"],
+                    ["goto", ["#round3_animal","#round3_bigAnimal","#round3_exoticAnimal"]]
+                ]
+            },
+            {
+                "action":"Ready yourself for the duel",
+                "requirements":[
+                    ["have","flag","arenaFightDuel"]
+                ],
+                "eventDo":[
+                    ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
+                    ["addArea","arena/area_pit_exit"],
+                    ["goto", ["#duelFightSetup"]]
+                ]
+            }
+        ]
+    },
+    "#duelFightSetup":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["goto", ["#duel"]]
+                ]
+            }
+        ]
+    },
+    "#wolves":{
+        "msg":[
+            "As the gate begins to open, you can hear the snarling of wolves."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#boars":{
+        "msg":[
+            "As the gate begins to open, you can hear the snarling of wolves."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["spawnEnemy", ["enemy_boar", "enemy_boar", "enemy_boar", "enemy_boar"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#bear":{
+        "msg":[
+            "As the gate begins to open, you can hear the deep gutteral sounds of a large beast. You immediately recognize it as the noise of a bear."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["spawnEnemy",["enemy_bear"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#duel":{
+        "msg":[
+            "You walk towards the door leading to the pit. You can hear the chearing of the crowd on the other side.",
+            "You move towards the entrance to the pit, a large wooden door. You can hear a crowd chearing on the other side."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#round2_bigAnimal":{
+        "msg":[
+            "The gates of the Pit once more begin to open. From the darkness three massive shapes emerge, all of them large bears."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "You calm yourself, attempting to ready yourself for the fight."],
+                    ["spawnEnemy",["enemy_bear","enemy_bear","enemy_bear"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#round2_exoticAnimal":{
+        "msg":[
+            "The gates of the Pit once more begin to open. A humanoid creature comes lumbering out of the darkness."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "You square up your shoulders, realizing that you are about to take on a Werewolf."],
+                    ["spawnEnemy",["enemy_arena_werewolf_weak"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#round3_animal":{
+        "msg":[
+            "The stampede of animals that pour out into the Pit surprises you. It seems like the ones running the fights have extra animals they're looking to get rid of."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "You take a deep breath and ready yourself as the animals surround you."],
+                    ["spawnEnemy",["enemy_wolf", "enemy_greatWolf", "enemy_bear", "enemy_wolf", "enemy_boar", "enemy_greatWolf", "enemy_bear"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#round3_bigAnimal":{
+        "msg":[
+            "Out sprint two massive wolves. Then, lumbering out of the darkness you see a humanoid form."
+        ],
+        "actions":[
+            {
+                "action":"Approach the entrance to the pit",
+                "eventDo":[
+                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
+                    ["spawnEnemy",["enemy_greatWolf", "enemy_greatWolf", "enemy_arena_werewolf_weak"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#round3_exoticAnimal":{
+        "msg":[
+            "The gates of the Pit once more begin to open. You can hear a deep, gutteral growling from within. Then, lumbering out of the darkness you see a humanoid form."
+        ],
+        "actions":[
+            {
+                "action":"Stand you ground",
+                "eventDo":[
+                    ["say", "You square up your shoulders, realizing that you are about to take on a Werewolf."],
+                    ["spawnEnemy",["enemy_arena_werewolf"]],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

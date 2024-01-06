@@ -1,13 +1,16 @@
 import random
 
-from dialogueRules import getSatisfactoryDialogueLines
+from dialogueRules import getSatisfactoryDialogueLines, getAllPossibleSpeachOptions, modifyFlag
 from dieClass import rollDice
 from itemGeneration import generateItem
 from raceClass import Race
 
+SELLERRATE = 1.1
+
 class NPC(object):
-	def __init__(self,data, npcId = "NO NPC ID PROVIDED"):
+	def __init__(self, data, npcId = "NO NPC ID PROVIDED"):
 		self.npcId = npcId
+		self.npcPersonalId = f"{self.npcId}-{random.randint(0,999999)}"
 		if data["name"]["type"] == "choice":
 			self.name = random.choice(data["name"]["choices"])
 		else:
@@ -26,6 +29,9 @@ class NPC(object):
 		self.dialogueIds = data["dialogue"][::]
 		self.dialogue = []
 		self.otherDialogueOptions = []
+		self.dialogueFlags = {
+			"miscFlags":[]
+		}
 		numItems = rollDice(data["numItems"])
 		self.inventoryData = data["itemPool"]
 		possibleitems = []
@@ -58,28 +64,35 @@ class NPC(object):
 	# Dialog stuff
 	def getDialogueLine(self, query):
 		fullQuery = {**query, **self.getSelfQuery()}
+		print(fullQuery)
 		possibleDialog = getSatisfactoryDialogueLines(self.dialogue, fullQuery)
 		if len(possibleDialog["lines"]) > 0:
-			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]["dialogue"]
+			return random.choices(possibleDialog["lines"], weights=possibleDialog["weights"], k=1)[0]
 		else:
-			return f"ERR - No dialog line found\n'isAction'={query['isAction']}"
+			return {"dialogue":f"ERR - No dialog line found\n'isAction'={query['isAction']}"}
 	
 	def getSelfQuery(self):
-		return {
+		query = {
 			"npcProfessions":self.getProfessions(),
 			"npcFlags":self.getFlags(),
 			"npcId":self.getId(),
+			"npcPersonalId":self.getPersonalId(),
 			"npcRace":self.getRaceId(),
 			"npcInventoryCount":self.getInventoryCount(),
 			"npcInventoryIds":self.getInventoryIds(),
 			"npcInventoryItemTypes":self.getInventoryItemTypes(),
 			"npcInventoryItemTypeCount":self.getNumInventoryItemTypes()
 		}
+		query = {**query, **self.getDialogueFlags()}
+		return query
 
 	# Getters
 
 	def getId(self):
 		return self.npcId
+	
+	def getPersonalId(self):
+		return self.npcPersonalId
 
 	def getName(self):
 		return self.name
@@ -117,6 +130,9 @@ class NPC(object):
 
 	def getFlags(self):
 		return self.flags
+	
+	def getDialogueFlags(self):
+		return self.dialogueFlags
 
 	def getInventory(self):
 		return self.inventory
@@ -127,8 +143,16 @@ class NPC(object):
 	def getGeneratedInventoryItem(self, index):
 		return self.generatedInventory[index]
 
-	def getGeneratedInventoryItemValue(self, index):
-		return self.getGeneratedInventoryItem(index).worth
+	def getGeneratedInventoryItemValue(self, index, selling=False):
+		item = self.getGeneratedInventoryItem(index)
+		return self.getItemValue(item, selling)
+	
+	def getItemValue(self, item, selling=False):
+		if selling:
+			value = round(1.0 * item.worth / SELLERRATE)
+		else:
+			value = round((0.5 + item.worth) * SELLERRATE)
+		return value
 	
 	def popItemFromGeneratedInventory(self, index):
 		return self.generatedInventory.pop(index)
@@ -136,8 +160,14 @@ class NPC(object):
 	def getDialogueIds(self):
 		return self.dialogueIds
 	
-	def getOtherDialogueOptions(self):
-		return self.otherDialogueOptions
+	def getOtherDialogueOptions(self, query):
+		otherDialogueOptions = getAllPossibleSpeachOptions(self.otherDialogueOptions, query)
+		return otherDialogueOptions
 	
 	def addItemToInventory(self, item):
 		self.generatedInventory.append(item)
+
+	def modifyDialogueFlag(self, modification):
+		if modification["flag"] not in self.dialogueFlags:
+			self.dialogueFlags[modification["flag"]] = modification["defaultValueIfNone"]
+		self.dialogueFlags[modification["flag"]] = modifyFlag(self.dialogueFlags[modification["flag"]], modification["modifier"], modification["value"])

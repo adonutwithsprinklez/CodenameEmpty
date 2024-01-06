@@ -10,6 +10,12 @@
     "shortDescription":"A race with low physique and intelligence, but overpowering strength and vitality.",
     "longDescription":[],
     "baseSkills":[],
+    "names":[
+        "Artug",
+        "Uggra",
+        "Grat",
+        "Drethag"
+    ],
     "standing":{
         "elf":-4,
         "drakt":6,

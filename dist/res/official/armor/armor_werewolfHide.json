@@ -1,0 +1,11 @@
+{
+	"name":[
+		"Werewolf Hide"
+	],
+	"desc":[
+		"There should be no way in which you should be reading this... Contact the developer..."
+	],
+	"worthMin":0,
+	"worthMax":0,
+	"defence":"1d4+2"
+}
