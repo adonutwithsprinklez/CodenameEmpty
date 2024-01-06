@@ -154,7 +154,7 @@
     [
       "TUTORIALAREA",
       "Disable Tutorial Area",
-      true
+      false
     ],
     [
       "DISABLEENEMIES",
