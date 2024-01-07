@@ -1,11 +1,12 @@
 import random
 import copy
 
-from itemGeneration import generateWeapon
-from textGeneration import generateStringWithVariables
 from armorClass import Armor
-from miscClass import Misc
 from dieClass import rollDice, maxRoll
+from itemGeneration import generateWeapon
+from miscClass import Misc
+from textGeneration import generateStringWithVariables
+from universalFunctions import getDataValue
 
 
 class Enemy(object):
@@ -68,6 +69,9 @@ class Enemy(object):
             except Exception as e:
                 print("Error loading {} item reward.".format(self.name))
                 print(e)
+        
+        # Get tags
+        self.tags = getDataValue("tags", data, [])
 
         if self.xp < 1:
             self.xp = 1
@@ -133,3 +137,11 @@ class Enemy(object):
         maxArmor = maxRoll(armor)
         danger = int((1.0*(self.hpMax+self.hp) + maxDamage + maxWeaponDamage + maxArmor)/5)
         return danger
+    
+    def getTags(self):
+        '''Returns the tags associated with the enemy.'''
+        return self.tags
+    
+    def hasTag(self, tag):
+        '''Returns true if the enemy has the given tag.'''
+        return tag in self.tags
