@@ -23,5 +23,8 @@
 	"itemChance":0,
 	"itemDrops":[
 	],
+	"tags":[
+		"cannotFlee"
+	],
 	"xp":10
 }
