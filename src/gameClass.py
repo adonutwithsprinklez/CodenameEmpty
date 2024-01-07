@@ -457,7 +457,10 @@ class Game(object):
                         if len(playerAttackOptions) == 0:
                             self.disp.display("Something happened and you can't attack." +
                                               "Probably contact the dev because this should never happen.", 1)
-                        self.disp.displayAction(f"{i}. Attempt to escape", i, 1)
+                        if not areaEnemy.hasTag("cannotFlee"):
+                            self.disp.displayAction(f"{i}. Attempt to escape", i, 1)
+                        else:
+                            i -= 1
                         self.disp.displayAction("0. Player Menu", 0)
                         self.disp.closeDisplay()
                         try:
@@ -509,7 +512,7 @@ class Game(object):
                         self.disp.closeDisplay()
                         # input("\nEnter to continue.")
                         self.disp.wait_for_enter()
-                    elif cmd == str(i):
+                    elif not areaEnemy.hasTag("cannotFlee") and cmd == str(i):
                         self.disp.clearScreen()
                         escape = False
                         if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < 1 + areaEnemy.getArmorDefence():
