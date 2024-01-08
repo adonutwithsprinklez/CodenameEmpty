@@ -11,9 +11,29 @@
 	"weight":"light",
 	"size":[2,4],
 	"limb":{
-		"head": ["Helm"],
-		"torso": ["Armor"],
-		"arm":["Glove"],
-		"leg":["Boot"]
+		"head":{
+			"name":["Helm"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"torso":{
+			"name":["Armor"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"arm":{
+			"name":["Gloves"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"leg":{
+			"name":["Boots"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		}
 	}
 }

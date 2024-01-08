@@ -16,7 +16,7 @@ class Race(object):
             self.playable = False
             if "playable" in data.keys():
                 self.playable = data["playable"]
-            self.limbs = []
+            self.limbs:Limb = []
             self.basePerks = getDataValue("basePerks", data, [])
             for limb in data["limbs"]:
                 newLimb = copy.copy(Limb(limb, self.id))

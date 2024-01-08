@@ -13,8 +13,23 @@
 	"weight":"light",
 	"size":[1,4],
 	"limb":{
-		"head": ["Cap","Hat"],
-		"torso": ["Robe","Garmet"],
-		"leg":["Shoes"]
+		"head":{
+			"name":["Cap","Hat"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"torso":{
+			"name":["Robe","Garmet"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"leg":{
+			"name":["Shoes"],
+			"desc":"",
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		}
 	}
 }

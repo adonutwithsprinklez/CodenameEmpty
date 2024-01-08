@@ -1,29 +1,105 @@
 import random
 
 from textGeneration import generateString
+from universalFunctions import getDataValue
 
 ARMOR_TYPES_LIGHT = {
-	"head": ["Cap","Hood"],
-	"torso": ["Robe","Garmet"],
-	"arm":["Wrap"],
-	"leg":["shoe"],
-	"tail":["Tailcover"]
+	"head":{
+		"name":["Cap","Hood"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	},
+	"torso":{
+		"name":["Robe","Garmet"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	},
+	"arm":{
+		"name":["Wraps"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":2
+	},
+	"leg":{
+		"name":["Shoes"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":2
+	},
+	"tail":{
+		"name":["Tailcover"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	}
 }
 
 ARMOR_TYPES_MEDIUM = {
-	"head": ["Helmet"],
-	"torso": ["Armor"],
-	"arm":["Glove"],
-	"leg":["Legging"],
-	"tail":["Tailcover", "Tailguard"]
+	"head":{
+		"name":["Helmet"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	},
+	"torso":{
+		"name":["Armor"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	},
+	"arm":{
+		"name":["Gloves"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":2
+	},
+	"leg":{
+		"name":["Leggings"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":2
+	},
+	"tail":{
+		"name":["Tailcover", "Tailguard"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	}
 }
 
 ARMOR_TYPES_HEAVY = {
-	"head": ["Helm"],
-	"torso": ["Breastplate"],
-	"arm":["Gauntlet"],
-	"leg":["Legguard"],
-	"tail":["Tailguard"]
+	"head":{
+		"name":["Helm"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	},
+	"torso":{
+		"name":["Breastplate"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	},
+	"arm":{
+		"name":["Gauntlets"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":2
+	},
+	"leg":{
+		"name":["Legguards"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":2
+	},
+	"tail":{
+		"name":["Tailguard"],
+		"desc":"",
+		"numLimbsRequired":1,
+		"numLimbsAllowed":1
+	}
 }
 
 ARMOR_TYPES = {
@@ -46,46 +122,53 @@ def getArmorSize(size):
 	return ARMOR_SIZES[size-1]
 
 class Armor(object):
-	def __init__(self,data,limb=None):
-		self.name = generateString(data)
-		self.t = "a"
-		self.desc = generateString(data, "desc")
-		self.defence = data["defence"]
-		self.worth = random.randint(data["worthMin"],data["worthMax"])
+	def __init__(self, data, limb=None):
+		"""
+		Initialize an instance of the Armor class.
+
+		Parameters:
+		- data (dict): A dictionary containing the data for the armor.
+		- limb (str, optional): The limb type for the armor. Defaults to None.
+		"""
+		self.name:str = generateString(data)
+		self.t:str = "a"
+		self.desc:str = generateString(data, "desc")
+		self.defence:str = data["defence"]
+		self.worth:int = random.randint(data["worthMin"], data["worthMax"])
 
 		# Optional Tags:
 
 		# Size (ranges):
-		#	1 - Tiny
-		#	2 - Small
-		#	3 - Medium
-		#	4 - Large
-		#	5 - Massive
-		if "size" in data.keys():
-			self.sizeMin = data["size"][0]
-			self.sizeMax = data["size"][1]
-		else:
-			self.sizeMin = 1
-			self.sizeMax = 5
+		#   1 - Tiny
+		#   2 - Small
+		#   3 - Medium
+		#   4 - Large
+		#   5 - Massive
+		sizes = getDataValue("size", data, [1,5])
+		self.sizeMin:int = sizes[0]
+		self.sizeMax:int = sizes[1]
 		
 		# Weight type:
-		if "weight" in data.keys():
-			self.armorWeight = data["weight"]
-		else:
-			self.armorWeight = random.choice(list(ARMOR_TYPES.keys()))
+		self.armorWeight:str = getDataValue("weight", data, random.choice(list(ARMOR_TYPES.keys())))
 		
 		# Limb Type:
+		# First select a limb type
 		if limb:
 			self.limb = limb
+			limbData = data["limb"][self.limb]
 		else:
 			if "limb" in data.keys():
 				self.limb = random.choice(list(data["limb"].keys()))
+				limbData = data["limb"][self.limb]
 			else:
 				self.limb = random.choice(list(ARMOR_TYPES[self.armorWeight].keys()))
-		if "limb" in data.keys():
-			self.nameSuffix = random.choice(data["limb"][self.limb])
-		else:
-			self.nameSuffix = random.choice(ARMOR_TYPES[self.armorWeight][self.limb])
+				limbData = ARMOR_TYPES[self.armorWeight][self.limb]
+
+		# Now get limb specific data
+		self.nameSuffix:str = random.choice(limbData["name"])
+		self.numLimbsRequired:int = limbData["numLimbsRequired"]
+		self.numLimbsAllowed:int = limbData["numLimbsAllowed"]
+		self.limbDesc:str = limbData["desc"]
 	
 	def getName(self, full=False, reverse = True):
 		if full:
@@ -100,6 +183,26 @@ class Armor(object):
 	def getValue(self):
 		#TODO: Add modifiers and defense rating to worth
 		return self.worth
+	
+	def getWeight(self):
+		''' Returns the weight of the armor. '''
+		return self.armorWeight
+	
+	def getLimb(self):
+		''' Returns the limb type the armor is for. '''
+		return self.limb
+	
+	def getLimbDesc(self):
+		''' Returns the description of the limb the armor is for. '''
+		return self.limbDesc
+	
+	def getNumLimbsRequired(self):
+		''' Returns the number of limbs required to wear the armor. '''
+		return self.numLimbsRequired
+	
+	def getNumLimbsAllowed(self):
+		''' Returns the number of limbs allowed to wear the armor. '''
+		return self.numLimbsAllowed
 
 	def __str__(self):
 		return self.getName()
