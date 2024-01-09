@@ -116,7 +116,16 @@ ARMOR_SIZES = [
 	"Massive"
 ]
 
-def getArmorSize(size):
+def getArmorSize(size:int)->str:
+	"""
+	Get the armor size based on the given size value.
+
+	Args:
+		size (int): The size value of the armor.
+
+	Returns:
+		str: The armor size or "Mysterious" if the size is invalid.
+	"""
 	if size < 1 or size > 5:
 		return "Mysterious"
 	return ARMOR_SIZES[size-1]
@@ -131,6 +140,8 @@ class Armor(object):
 		- limb (str, optional): The limb type for the armor. Defaults to None.
 		"""
 		self.name:str = generateString(data)
+		idnum = random.randint(0,999999)
+		self.id:str = f"{self.name}-{idnum}"
 		self.t:str = "a"
 		self.desc:str = generateString(data, "desc")
 		self.defence:str = data["defence"]
@@ -203,6 +214,10 @@ class Armor(object):
 	def getNumLimbsAllowed(self):
 		''' Returns the number of limbs allowed to wear the armor. '''
 		return self.numLimbsAllowed
+	
+	def getId(self):
+		''' Returns the id of the armor. '''
+		return self.id
 
 	def __str__(self):
 		return self.getName()
