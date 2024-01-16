@@ -25,7 +25,7 @@
     "playable":true,
     "playerCreationDescription":"Humans, due to their natural adaptability have become the most common of their races. They have spread over most of the mainland.",
     "startingArmor":[
-        ["armor_starting_armor", ["torso", "arm", "arm", "leg", "leg"]]
+        ["armor_starting_armor", ["torso", "arm", "leg"]]
     ],
     "startingWeapon": [
         "weapon_starter_sword"

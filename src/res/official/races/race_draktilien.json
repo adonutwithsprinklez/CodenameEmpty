@@ -25,7 +25,7 @@
     "playable":true,
     "playerCreationDescription":"Draktiliens are the newest race to enter the mainland. Thought to be descendents of dragons, their natural verocity and lack of intelligence has made the other races wary of their existence.",
     "startingArmor":[
-        ["armor_starting_armor", ["torso", "arm", "arm", "leg", "leg"]]
+        ["armor_starting_armor", ["torso", "arm", "leg"]]
     ],
     "startingWeapon": [
         "weapon_starter_sword"

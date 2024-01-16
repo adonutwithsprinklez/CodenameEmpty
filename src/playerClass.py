@@ -1030,10 +1030,16 @@ class Player(object):
         for armor in armors:
             equipped = False
             limbs = self.race.getLimbsOfLimbType(armor.limb)
+            limbsEquippedTo = 0
             for limb in limbs:
                 if not equipped and not limb.armor:
                     limb.armor = armor
-                    equipped = True
+                    limbsEquippedTo += 1
+                    if limbsEquippedTo >= armor.getNumLimbsRequired():
+                        equipped = True
+                elif equipped and not limb.armor and limbsEquippedTo < armor.getNumLimbsAllowed():
+                    limb.armor = armor
+                    limbsEquippedTo += 1
 
     def setRace(self, race):
         # TODO check for equipped gear to make sure the player can still wield it
