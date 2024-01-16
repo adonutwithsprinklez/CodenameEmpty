@@ -15,31 +15,31 @@
 	"limb":{
 		"head":{
 			"name":["Helmet", "Helm"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		},
 		"torso":{
 			"name":["Armor", "Plate Armor"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		},
 		"arm":{
 			"name":["Gauntlets", "Gloves"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":2
 		},
 		"leg":{
 			"name":["Boots", "Legguards"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":2
 		},
 		"tail":{
 			"name":["Tailguard"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		}

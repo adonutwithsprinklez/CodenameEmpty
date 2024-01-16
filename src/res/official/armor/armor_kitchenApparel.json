@@ -15,19 +15,19 @@
 	"limb":{
 		"head":{
 			"name":["Cap","Hat"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		},
 		"torso":{
 			"name":["Robe","Garmet"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		},
 		"leg":{
 			"name":["Shoes"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":2
 		}

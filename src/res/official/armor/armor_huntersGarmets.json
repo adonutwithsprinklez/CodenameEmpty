@@ -14,31 +14,31 @@
 	"limb":{
 		"head":{
 			"name":["Cap","Hood","Hat"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		},
 		"torso":{
 			"name":["Clothes","Garmet"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		},
 		"arm":{
 			"name":["Handwraps","Gloves"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":2
 		},
 		"leg":{
 			"name":["Shoes","Boots"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":2
 		},
 		"tail":{
 			"name":["Tailcovering"],
-			"desc":"",
+			"desc":[""],
 			"numLimbsRequired":1,
 			"numLimbsAllowed":1
 		}

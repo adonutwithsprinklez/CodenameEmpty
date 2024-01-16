@@ -61,18 +61,19 @@ class Player(object):
             self.disp.displayHeader(f"Player Info: <cyan>{self.name}<cyan>")
             self.disp.display("<h2>Quick Stats:<h2>")
             for stat in self.getUserInfo():
-                self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
+                self.disp.display(f"{stat[1]:>15} - {stat[0]}", 0)
             self.disp.display("<h2>Wielding:<h2>")
             if self.weapon != None:
-                self.disp.display("\t<i>%s<i> (%s damage)" % (self.weapon.name, self.weapon.damage),0)
+                self.disp.display(f"\t<i>{self.weapon.name}<i> ({self.weapon.damage} damage)", 0)
             else:
                 self.disp.display("\tYou are not currently wielding a weapon",0)
             self.disp.display("<h2>Wearing:<h2>")
             for limb in self.race.getLimbsEquippableLimbs():
                 if limb.getArmor():
-                    self.disp.display("\t%s - <i>%s<i> (%s defence)" % (limb.name, limb.getArmor(), limb.armor.getDefenceRating()),0)
+                    armor:Armor = limb.getArmor()
+                    self.disp.display(f"\t{limb.name} - <i>{armor.getName()}<i> ({armor.getDefenceRating()} defence)", 0)
                 else:
-                    self.disp.display("\t%s - Nothing" % (limb.name),0)
+                    self.disp.display(f"\t{limb.name} - Nothing", 0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
             self.disp.displayAction("1. View Inventory", 1, 0)
@@ -136,7 +137,7 @@ class Player(object):
                 self.disp.displayHeader("Error")
                 self.disp.display("That was not a valid response.", 1, 0)
                 self.disp.closeDisplay()
-                input()
+                self.disp.wait_for_enter()
                 cmd = -1
             if not self.disp.window_is_open:
                 self.quit = True

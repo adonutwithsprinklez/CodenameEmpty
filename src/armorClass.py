@@ -6,31 +6,31 @@ from universalFunctions import getDataValue
 ARMOR_TYPES_LIGHT = {
 	"head":{
 		"name":["Cap","Hood"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	},
 	"torso":{
 		"name":["Robe","Garmet"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	},
 	"arm":{
 		"name":["Wraps"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":2
 	},
 	"leg":{
 		"name":["Shoes"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":2
 	},
 	"tail":{
 		"name":["Tailcover"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	}
@@ -39,31 +39,31 @@ ARMOR_TYPES_LIGHT = {
 ARMOR_TYPES_MEDIUM = {
 	"head":{
 		"name":["Helmet"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	},
 	"torso":{
 		"name":["Armor"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	},
 	"arm":{
 		"name":["Gloves"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":2
 	},
 	"leg":{
 		"name":["Leggings"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":2
 	},
 	"tail":{
 		"name":["Tailcover", "Tailguard"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	}
@@ -72,31 +72,31 @@ ARMOR_TYPES_MEDIUM = {
 ARMOR_TYPES_HEAVY = {
 	"head":{
 		"name":["Helm"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	},
 	"torso":{
 		"name":["Breastplate"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	},
 	"arm":{
 		"name":["Gauntlets"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":2
 	},
 	"leg":{
 		"name":["Legguards"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":2
 	},
 	"tail":{
 		"name":["Tailguard"],
-		"desc":"",
+		"desc":[""],
 		"numLimbsRequired":1,
 		"numLimbsAllowed":1
 	}
@@ -139,7 +139,7 @@ class Armor(object):
 		- data (dict): A dictionary containing the data for the armor.
 		- limb (str, optional): The limb type for the armor. Defaults to None.
 		"""
-		self.name:str = generateString(data)
+		self.name:str = generateString(data, "name")
 		idnum = random.randint(0,999999)
 		self.id:str = f"{self.name}-{idnum}"
 		self.t:str = "a"
@@ -177,50 +177,62 @@ class Armor(object):
 
 		# Now get limb specific data
 		self.nameSuffix:str = random.choice(limbData["name"])
-		self.numLimbsRequired:int = limbData["numLimbsRequired"]
-		self.numLimbsAllowed:int = limbData["numLimbsAllowed"]
-		self.limbDesc:str = limbData["desc"]
+		self.numLimbsRequired:int = getDataValue("numLimbsRequired", limbData, 1)
+		self.numLimbsAllowed:int = getDataValue("numLimbsAllowed", limbData, self.numLimbsRequired)
+		extraLimbDesc = getDataValue("desc", limbData, [""])
+		self.limbDesc:str = random.choice(extraLimbDesc)
 	
-	def getName(self, full=False, reverse = True):
+	def getName(self, full=False, reverse=True)->str:
+		"""
+		Returns the name of the armor.
+
+		Parameters:
+		- full (bool): Default False.
+						If True, returns the full name of the armor including the limb and suffix. 
+						If False, returns only the name and suffix.
+		- reverse (bool): Default True.
+							If True, the limb is placed before the name and suffix in the full name.
+							If False, the limb is placed after the name and suffix in the full name.
+
+		Returns:
+		- str: The name of the armor.
+		"""
 		if full:
 			if reverse:
 				return f"[{self.limb.upper()} ARMOR] {self.name} {self.nameSuffix}"
 			return f"{self.name} {self.nameSuffix} [{self.limb.upper()} ARMOR]"
 		return self.name + " " + self.nameSuffix
 	
-	def getDefenceRating(self):
-		return self.defence
+	def getDefenceRating(self)->int:
+			"""
+			Returns the defence rating of the armor.
+			"""
+			return self.defence
 	
-	def getValue(self):
+	def getValue(self)->int:
 		#TODO: Add modifiers and defense rating to worth
 		return self.worth
 	
-	def getWeight(self):
+	def getWeight(self)->str:
 		''' Returns the weight of the armor. '''
 		return self.armorWeight
 	
-	def getLimb(self):
+	def getLimb(self)->str:
 		''' Returns the limb type the armor is for. '''
 		return self.limb
 	
-	def getLimbDesc(self):
+	def getLimbDesc(self)->str:
 		''' Returns the description of the limb the armor is for. '''
 		return self.limbDesc
 	
-	def getNumLimbsRequired(self):
+	def getNumLimbsRequired(self)->int:
 		''' Returns the number of limbs required to wear the armor. '''
 		return self.numLimbsRequired
 	
-	def getNumLimbsAllowed(self):
+	def getNumLimbsAllowed(self)->int:
 		''' Returns the number of limbs allowed to wear the armor. '''
 		return self.numLimbsAllowed
 	
-	def getId(self):
+	def getId(self)->str:
 		''' Returns the id of the armor. '''
 		return self.id
-
-	def __str__(self):
-		return self.getName()
-
-	def __int__(self):
-		return self.getDefenceRating()
