@@ -1,7 +1,5 @@
 {
 	"name":[
-		"Hunter's",
-		"Hunter's",
 		"Hunter's"
 	],
 	"desc":[
@@ -14,10 +12,35 @@
 	"weight":"light",
 	"size":[1,5],
 	"limb":{
-		"head": ["Cap","Hood","Hat"],
-		"torso": ["Clothes","Garmet"],
-		"arm":["Handwrap","Glove"],
-		"leg":["Shoe","Boot"],
-		"tail":["Tailcovering"]
+		"head":{
+			"name":["Cap","Hood","Hat"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"torso":{
+			"name":["Clothes","Garmet"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"arm":{
+			"name":["Handwraps","Gloves"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"leg":{
+			"name":["Shoes","Boots"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"tail":{
+			"name":["Tailcovering"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		}
 	}
 }

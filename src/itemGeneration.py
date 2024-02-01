@@ -18,7 +18,7 @@ def generateItem(itemId, armorData, miscData, weaponData, modifiers, limb=None):
     return None
 
 def generateArmor(data=None, modifiers=None, limb=None):
-    newArmor = Armor(data, limb)
+    newArmor = Armor(data, limb, modifiers)
     return newArmor
 
 def generateAmorSet(data=None, modifiers=None, limbs=[]):

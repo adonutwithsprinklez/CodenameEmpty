@@ -11,10 +11,35 @@
 	"weight":"medium",
 	"size":[2,4],
 	"limb":{
-		"head": ["Helmet"],
-		"torso": ["Armor"],
-		"arm":["Gauntlet"],
-		"leg":["Boot"],
-		"tail":["Tailcover", "Tailguard"]
+		"head":{
+			"name":["Helmet"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"torso":{
+			"name":["Armor"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"arm":{
+			"name":["Gauntlets"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"leg":{
+			"name":["Boots"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"tail":{
+			"name":["Tailcover", "Tailguard"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		}
 	}
 }

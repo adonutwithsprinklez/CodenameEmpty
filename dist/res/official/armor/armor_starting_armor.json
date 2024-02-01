@@ -13,9 +13,29 @@
 	"weight":"light",
 	"size":[1,5],
 	"limb":{
-		"torso": ["Cloak"],
-		"arm":["Gloves"],
-		"leg":["Boot"],
-		"head":["Hood"]
+		"torso": {
+			"name":["Cloak"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"arm":{
+			"name":["Gloves"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"leg":{
+			"name":["Boots"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"head":{
+			"name":["Hood"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		}
 	}
 }

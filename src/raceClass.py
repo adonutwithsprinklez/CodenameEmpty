@@ -5,46 +5,26 @@ import random
 from universalFunctions import getDataValue
 
 class Race(object):
-    def __init__(self, data=None):
+    def __init__(self, data):
         ''' Instantiates a Race object. '''
-        if data:
-            self.id = data["id"]
-            self.name = data["name"]
-            self.baseStats = data["baseStats"]
-            self.baseSkills = data["baseSkills"]
-            self.standing = data["standing"]
-            self.playable = False
-            if "playable" in data.keys():
-                self.playable = data["playable"]
-            self.limbs = []
-            self.basePerks = getDataValue("basePerks", data, [])
-            for limb in data["limbs"]:
-                newLimb = copy.copy(Limb(limb, self.id))
-                self.limbs.append(newLimb)
-            self.shortDescription = getDataValue("shortDescription", data, "")
-            self.playerCreationDescription = getDataValue("playerCreationDescription", data, "")
-            self.startingWeapon = getDataValue("startingWeapon", data, [])
-            self.startingArmor = getDataValue("startingArmor", data, [])
-            self.startingInventory = getDataValue("startingInventory", data, [])
-            self.basePerks = getDataValue("basePerks", data, [])
-            self.names = getDataValue("names", data, [])
-
-        else:
-            self.id = ""
-            self.name = ""
-            self.baseStats = {}
-            self.baseSkills = []
-            self.basePerks = []
-            self.standing = {}
-            self.playable = False
-            self.limbs = []
-            self.shortDescription = ""
-            self.playerCreationDescription = ""
-            self.startingWeapon = []
-            self.startingArmor = []
-            self.startingInventory = []
-            self.basePerks = []
-            self.names = []
+        self.id:str = data["id"]
+        self.name:str = data["name"]
+        self.baseStats:dict = data["baseStats"]
+        self.baseSkills:list = data["baseSkills"]
+        self.standing:dict = data["standing"]
+        self.playable:bool = getDataValue("playable", data, False)
+        self.limbs:Limb = []
+        self.basePerks:list = getDataValue("basePerks", data, [])
+        for limb in data["limbs"]:
+            newLimb = copy.copy(Limb(limb, self.id))
+            self.limbs.append(newLimb)
+        self.shortDescription:str = getDataValue("shortDescription", data, "")
+        self.playerCreationDescription:str = getDataValue("playerCreationDescription", data, "")
+        self.startingWeapon:list = getDataValue("startingWeapon", data, [])
+        self.startingArmor:list = getDataValue("startingArmor", data, [])
+        self.startingInventory:list = getDataValue("startingInventory", data, [])
+        self.basePerks:list = getDataValue("basePerks", data, [])
+        self.names:list = getDataValue("names", data, [])
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.

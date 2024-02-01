@@ -1,0 +1,13 @@
+{
+    "armor_strong":{
+        "name": [
+            "Stengthened", "Reinforced", "Fortified"
+        ],
+        "desc": [
+            "The armor is stronger than normal, and will protect you better.",
+            "The armor is reinforced, and provides some increases protection."
+        ],
+        "effect": "defence",
+        "strength": "1d2-1"
+    }
+}

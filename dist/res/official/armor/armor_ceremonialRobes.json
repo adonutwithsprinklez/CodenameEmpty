@@ -11,9 +11,29 @@
 	"weight":"light",
 	"size":[2,4],
 	"limb":{
-		"head": ["Hood"],
-		"torso": ["Robe","Garmet","Clothes"],
-		"arm":["Hand Wrap"],
-		"leg":["Shoe"]
+		"head":{
+			"name":["Hood"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"torso":{
+			"name":["Robe","Garmet","Clothes"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"arm":{
+			"name":["Hand Wraps"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"leg":{
+			"name":["Shoes"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		}
 	}
 }
