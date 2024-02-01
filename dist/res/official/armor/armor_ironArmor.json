@@ -9,14 +9,44 @@
 	],
 	"worthMin":45,
 	"worthMax":55,
+	"modifierChance":75,
+	"modifierCount":"+1",
+	"modifiers":[
+		["armor_strong","1d6"]
+	],
 	"defence":"1d4",
 	"weight":"medium",
 	"size":[2,4],
 	"limb":{
-		"head": ["Helmet", "Helm"],
-		"torso": ["Armor", "Plate Armor"],
-		"arm":["Gauntlet", "Glove"],
-		"leg":["Boot", "Legguard"],
-		"tail":["Tailguard"]
+		"head":{
+			"name":["Helmet", "Helm"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"torso":{
+			"name":["Armor", "Plate Armor"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		},
+		"arm":{
+			"name":["Gauntlets", "Gloves"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"leg":{
+			"name":["Boots", "Legguards"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":2
+		},
+		"tail":{
+			"name":["Tailguard"],
+			"desc":[""],
+			"numLimbsRequired":1,
+			"numLimbsAllowed":1
+		}
 	}
 }
