@@ -147,6 +147,7 @@
         "misc_mysteriousOrb"
     ],
     "modifiers": [
+        "armor_modifiers",
         "consumable_modifiers",
         "cultist_modifiers",
         "enemy_modifiers",

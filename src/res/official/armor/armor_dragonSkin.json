@@ -12,6 +12,11 @@
 	"defence":"1d3+2",
 	"worthMin":80,
 	"worthMax":90,
+	"modifierChance":75,
+	"modifierCount":"+1",
+	"modifiers":[
+		["armor_strong","1d6"]
+	],
 	"weight":"Medium",
 	"size":[3,5],
 	"limb":{

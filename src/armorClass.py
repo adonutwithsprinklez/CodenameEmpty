@@ -1,5 +1,8 @@
+
+import copy
 import random
 
+from dieClass import rollDice
 from textGeneration import generateString
 from universalFunctions import getDataValue
 
@@ -131,7 +134,7 @@ def getArmorSize(size:int)->str:
 	return ARMOR_SIZES[size-1]
 
 class Armor(object):
-	def __init__(self, data, limb=None):
+	def __init__(self, data, limb=None, modifiers=None):
 		"""
 		Initialize an instance of the Armor class.
 
@@ -181,6 +184,37 @@ class Armor(object):
 		self.numLimbsAllowed:int = getDataValue("numLimbsAllowed", limbData, self.numLimbsRequired)
 		extraLimbDesc = getDataValue("desc", limbData, [""])
 		self.limbDesc:str = random.choice(extraLimbDesc)
+
+		# Check for modifiers
+		self.modifiers = []
+		if "modifiers" in data.keys() and modifiers:
+			# Get the chance of a modifier
+			if random.randint(0,100) < data["modifierChance"]:
+				# Get the number of modifers to add
+				modCount = rollDice(data["modifierCount"])
+
+				possibleMods = copy.copy(data["modifiers"])
+				for i in range(modCount):
+					if len(possibleMods) > 0:
+						highRoll = 0
+						newMod = None
+						for mod in possibleMods:
+							newRoll = rollDice(mod[1])
+							if newRoll > highRoll:
+								newMod = mod
+								highRoll = newRoll
+						if newMod:
+							possibleMods.remove(newMod)
+							newMod = modifiers[newMod[0]].getInfo()
+							self.name = "{} {}".format(newMod["n"], self.name)
+							if newMod["e"] == "defence":
+								self.defence += ";{}".format(newMod["s"])
+							elif newMod["e"] == "worth":
+								self.worth += rollDice(newMod["s"])
+							if "d" in newMod.keys():
+								self.desc = f'{self.desc} {newMod["d"]}'
+
+				
 	
 	def getName(self, full=False, reverse=True)->str:
 		"""

@@ -9,6 +9,11 @@
 	],
 	"worthMin":45,
 	"worthMax":55,
+	"modifierChance":75,
+	"modifierCount":"+1",
+	"modifiers":[
+		["armor_strong","1d6"]
+	],
 	"defence":"1d4",
 	"weight":"medium",
 	"size":[2,4],
