@@ -2,7 +2,7 @@
 from armorClass import Armor, getArmorSize
 from ApplicationWindowClass import ApplicationWindow
 from dieClass import rollDice
-from raceClass import Race
+from raceClass import Race, Limb
 from weaponClass import Weapon
 
 
@@ -61,18 +61,19 @@ class Player(object):
             self.disp.displayHeader(f"Player Info: <cyan>{self.name}<cyan>")
             self.disp.display("<h2>Quick Stats:<h2>")
             for stat in self.getUserInfo():
-                self.disp.display(f'{stat[1]:>15} - {stat[0]}', 0)
+                self.disp.display(f"{stat[1]:>15} - {stat[0]}", 0)
             self.disp.display("<h2>Wielding:<h2>")
             if self.weapon != None:
-                self.disp.display("\t<i>%s<i> (%s damage)" % (self.weapon.name, self.weapon.damage),0)
+                self.disp.display(f"\t<i>{self.weapon.name}<i> ({self.weapon.damage} damage)", 0)
             else:
                 self.disp.display("\tYou are not currently wielding a weapon",0)
             self.disp.display("<h2>Wearing:<h2>")
             for limb in self.race.getLimbsEquippableLimbs():
                 if limb.getArmor():
-                    self.disp.display("\t%s - <i>%s<i> (%s defence)" % (limb.name, limb.getArmor(), limb.armor.getDefenceRating()),0)
+                    armor:Armor = limb.getArmor()
+                    self.disp.display(f"\t{limb.name} - <i>{armor.getName()}<i> ({armor.getDefenceRating()} defence)", 0)
                 else:
-                    self.disp.display("\t%s - Nothing" % (limb.name),0)
+                    self.disp.display(f"\t{limb.name} - Nothing", 0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
             self.disp.displayAction("1. View Inventory", 1, 0)
@@ -136,7 +137,7 @@ class Player(object):
                 self.disp.displayHeader("Error")
                 self.disp.display("That was not a valid response.", 1, 0)
                 self.disp.closeDisplay()
-                input()
+                self.disp.wait_for_enter()
                 cmd = -1
             if not self.disp.window_is_open:
                 self.quit = True
@@ -168,8 +169,8 @@ class Player(object):
             self.disp.displayAction("2. Drop", 2, 0)
             self.disp.displayAction("0. Back", 0, 0)
         elif self.inv[cmd-1].t == "a":
-            self.disp.displayHeader("Equip %s" % (self.inv[cmd-1].getName()))
-            self.disp.display("Inspecting: %s - %s defence" % (self.inv[cmd-1].name, self.inv[cmd-1].defence))
+            self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].getName()))
+            self.disp.display("Inspecting: %s - %s defence" % (self.inv[cmd-1].getName(), self.inv[cmd-1].defence))
             self.disp.display("\tClass - %s" % (self.inv[cmd-1].armorWeight), 0, 0)
             self.disp.display("\tMin size - %s | Max Size - %s" % (self.inv[cmd-1].sizeMin, self.inv[cmd-1].sizeMax), 0, 0)
             self.disp.display("Currently equipped:")
@@ -183,14 +184,14 @@ class Player(object):
             self.disp.displayAction("2. Drop", 2, 0)
             self.disp.displayAction("0. Back", 0, 0)
         elif self.inv[cmd-1].t == "consumable":
-            self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
+            self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1, 1)
             self.disp.displayAction("1. {}".format(self.inv[cmd-1].consumeText), 1, 0)
             self.disp.displayAction("2. Drop", 2, 0)
             self.disp.displayAction("0. Back", 0, 0)
         else:
-            self.disp.displayHeader("Examining %s" % (self.inv[cmd-1].name))
+            self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth)
             self.disp.displayAction("2. Drop", 2)
@@ -208,9 +209,7 @@ class Player(object):
             self.inv.append(self.weapon)
             self.weapon = self.inv.pop(cmd-1)
         elif self.inv[cmd-1].t == "a" and equip == 1:
-            armor = self.inv[cmd-1]
-            if self.equipArmor(armor):
-                self.inv.pop(cmd-1)
+            self.equipArmorMenu(cmd-1)
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
             self.inv[cmd-1].consumableEffect(self)
             self.inv.pop(cmd-1)
@@ -221,6 +220,112 @@ class Player(object):
             # input("\nEnter to continue")
             self.disp.wait_for_enter()
             self.disp.clearScreen()
+    
+    
+    def equipArmorMenu(self, inventoryIndex)->bool:
+        armor:Armor = self.inv[inventoryIndex]
+        limbs:Limb = self.race.getLimbsOfLimbType(armor.getLimb(), True)
+
+        # Confirm the armor is equippable
+        if len(limbs) == 0:
+            self.disp.displayHeader(f"Unable to Equip {armor.getName()}")
+            self.disp.display(f"You cannot equip {armor.getName()} as you do not have any {armor.limb}s.")
+            self.disp.wait_for_enter()
+            return False
+        elif len(limbs) < armor.getNumLimbsRequired():
+            self.disp.displayHeader(f"Unable to Equip {armor.getName()}")
+            plural:str = ""
+            if armor.getNumLimbsRequired() > 1:
+                plural = "s"
+            self.disp.display(f"You cannot equip {armor.getName()} as you do not have {armor.getNumLimbsRequired()} {armor.limb}{plural}.")
+            self.disp.wait_for_enter()
+            return False
+        
+        # The armor is equippable, so display the menu
+        inMenu:bool = True
+        equipped:bool = False
+        selected:list = []
+        while inMenu:
+            self.disp.displayHeader(f"Equipping {armor.getName()}")
+            self.disp.display(f"Armor: {armor.getName()}")
+            self.disp.display(f"\t- {armor.desc}", 0)
+            self.disp.display(f"Defence: {armor.defence}", 1)
+            self.disp.display(f"Worth: {armor.worth}", 0, 1)
+            self.disp.displayHeader("Equip To:")
+            # If the armor needs, or can be equipped to multiple limbs, display the limb options
+            if armor.getNumLimbsRequired() > 1 or armor.getNumLimbsAllowed() > 1:
+                self.disp.display(f"Selected: {len(selected)} | Required: {armor.getNumLimbsRequired()} | Permitted: {armor.getNumLimbsAllowed()}")
+            i:int = 1
+            for limb in limbs:
+                i+=1
+                selectedStr:str = ""
+                if i-2 in selected:
+                    selectedStr = "<green>"
+                if limb.armor == None:
+                    self.disp.displayAction(f"{i}. {selectedStr}{limb.name} - None{selectedStr}", i, i==2)
+                else:
+                    self.disp.displayAction(f"{i}. {selectedStr}{limb.name} - {limb.armor.getName()}{selectedStr}", i, i==2)
+            if len(selected) >= armor.getNumLimbsRequired():
+                self.disp.displayAction("1. Confirm", 1)
+            self.disp.displayAction("0. Back", 0)
+            self.disp.closeDisplay()
+            
+            # Get user input
+            cmd:int = self.disp.get_input(True, True, True)
+            if cmd == 0:
+                inMenu = False
+            elif cmd == 1:
+                # Convert the selected limbs to a list of limbs
+                selectedLimbs:list = []
+                for limbIndex in selected:
+                    selectedLimbs.append(limbs[limbIndex])
+                # Attempt to equip the armor to the selected limbs
+                self.assignArmor(inventoryIndex, selectedLimbs)
+                inMenu = False
+                equipped = True
+            elif cmd > 1 and cmd <= len(limbs)+1:
+                selection = cmd-2
+                if selection in selected:
+                    selected.remove(selection)
+                elif len(selected) < armor.getNumLimbsAllowed():
+                    selected.append(selection)
+            self.disp.clearScreen()
+        return equipped
+    
+    def assignArmor(self, armorInvIndex:int, limbs:list):
+        armor:Armor = self.inv[armorInvIndex]
+        # First, remove the armor on the selected limbs
+        removedArmors = []
+        for limb in limbs:
+            if limb.armor:
+                removedArmors.append(limb.armor.getId())
+        
+        # Next, Count the number of limbs that still have the armor equipped
+        armorCounts = {}
+        for limb in self.race.getLimbsOfLimbType(armor.getLimb(), True):
+            if limb.armor:
+                if limb.armor.getId() in removedArmors:
+                    # The armor was removed from this limb, so check add it to the count
+                    if limb.armor.getId() in armorCounts.keys():
+                        armorCounts[limb.armor.getId()][0].append(limb)
+                        armorCounts[limb.armor.getId()][1] += 1
+                    else:
+                        armorCounts[limb.armor.getId()] = [[limb], 1]
+        
+        # Remove the armor from the player's inventory
+        self.inv.pop(armorInvIndex)
+
+        # Check those armor counts
+        for armorId in armorCounts.keys():
+            if armorCounts[armorId][1] == 1 or armorCounts[armorId][0][0].armor and armorCounts[armorId][1] < armorCounts[armorId][0][0].armor.getNumLimbsRequired():
+                # The armor no longer meets the requirements, so remove it from all limbs and add it back to the inventory
+                self.inv.append(armorCounts[armorId][0][0].armor)
+                for limb in armorCounts[armorId][0]:
+                    limb.armor = None
+        
+        # Equip the armor to the selected limbs
+        for limb in limbs:
+            limb.armor = armor
         
     def viewAttemptUnequipArmor(self, armor, limbs):
         """
@@ -925,10 +1030,16 @@ class Player(object):
         for armor in armors:
             equipped = False
             limbs = self.race.getLimbsOfLimbType(armor.limb)
+            limbsEquippedTo = 0
             for limb in limbs:
                 if not equipped and not limb.armor:
                     limb.armor = armor
-                    equipped = True
+                    limbsEquippedTo += 1
+                    if limbsEquippedTo >= armor.getNumLimbsRequired():
+                        equipped = True
+                elif equipped and not limb.armor and limbsEquippedTo < armor.getNumLimbsAllowed():
+                    limb.armor = armor
+                    limbsEquippedTo += 1
 
     def setRace(self, race):
         # TODO check for equipped gear to make sure the player can still wield it
