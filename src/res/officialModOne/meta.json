@@ -30,6 +30,7 @@
         "race_dog"
     ],
     "weapons": [
-        "mod_weapon_boarTusks"
+        "mod_weapon_boarTusks",
+        "mod_weapon_uberSpecialSword"
     ]
 }

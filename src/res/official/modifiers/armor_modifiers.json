@@ -5,7 +5,7 @@
         ],
         "desc": [
             "The armor is stronger than normal, and will protect you better.",
-            "The armor is reinforced, and provides some increases protection."
+            "The armor is reinforced, and provides some increased protection."
         ],
         "effect": "defence",
         "strength": "1d2-1"

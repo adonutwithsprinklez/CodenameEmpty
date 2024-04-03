@@ -124,14 +124,36 @@ class Game(object):
                 # TODO: Clean this up. Either seperate into different functions or
                 # rewrite. This was fine until data injection became a feature. Now
                 # it's waaay too cluttered.
+                itemInjections = {}
                 for w in self.packs[pack]["weapons"]:
                     self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
+                    # Check if the weapon has an injectSeller key
+                    if "injectSeller" in self.weapons[w].keys():
+                        for data in self.weapons[w]["injectSeller"]:
+                            if data[0] in itemInjections.keys():
+                                itemInjections[data[0]].append([w, data[1]])
+                            else:
+                                itemInjections[data[0]] = [[w, data[1]]]
                     self.disp.dprint("\t\tLoaded Weapon %s" % w)
                 for a in self.packs[pack]["armor"]:
                     self.armor[a] = loadJson("%s%s/armor/%s.json" % (folder, pack, a))
+                    # Check if the weapon has an injectSeller key
+                    if "injectSeller" in self.armor[a].keys():
+                        for data in self.armor[a]["injectSeller"]:
+                            if data[0] in itemInjections.keys():
+                                itemInjections[data[0]].append([a, data[1]])
+                            else:
+                                itemInjections[data[0]] = [[a, data[1]]]
                     self.disp.dprint("\t\tLoaded Armor %s" % a)
                 for m in self.packs[pack]["misc"]:
                     self.misc[m] = loadJson("%s%s/misc/%s.json" % (folder, pack, m))
+                    # Check if the weapon has an injectSeller key
+                    if "injectSeller" in self.misc[m].keys():
+                        for data in self.misc[m]["injectSeller"]:
+                            if data[0] in itemInjections.keys():
+                                itemInjections[data[0]].append([m, data[1]])
+                            else:
+                                itemInjections[data[0]] = [[m, data[1]]]
                     self.disp.dprint("\t\tLoaded Misc %s" % m)
                 for a in self.packs[pack]["areas"]:
                     self.areas[a] = loadJson("%s%s/areas/%s.json" % (folder, pack, a))
@@ -190,6 +212,11 @@ class Game(object):
                         self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
                         self.disp.dprint("\t\tLoaded Audio %s" % a[0])
                 print(f"\tFinished loading assets for pack {pack}.")
+            
+            # Inject items into sellers
+            for seller in itemInjections.keys():
+                for item in itemInjections[seller]:
+                    self.npcs[seller]["itemPool"].append(item)
 
         # Adds all loaded quests into a list of possible quests, as well as
         # loads thems into actual objects
@@ -1028,10 +1055,10 @@ class Game(object):
         self.disp.display( "Input option # to toggle. Settings take effect on screen exit.")
         pagebreak = 1
         if page < numPages:
-            self.disp.display("12. for next page of settings")
+            self.disp.displayAction("12. for next page of settings", 12)
             pagebreak = 0
         if page > 0:
-            self.disp.display("11. for previous page of settings", pagebreak)
+            self.disp.displayAction("11. for previous page of settings", 11, pagebreak)
             pagebreak = 0
         self.disp.displayAction("0. to exit", 0, pagebreak)
         self.disp.closeDisplay()
