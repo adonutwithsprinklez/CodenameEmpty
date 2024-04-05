@@ -1,0 +1,15 @@
+{
+    "name":[
+        "Potion of Orcish Form"
+    ],
+    "desc":[
+        "An orange liquid in a small vial. It smells like sweat and blood",
+        "The liquid within has a bright orange color. Its smell is that of sweat and blood"
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "effects":[
+        "change_race_temp_orc"
+    ],
+    "worth":150
+}

@@ -107,12 +107,12 @@ class Area(object):
                 highRoll = newRoll
         return currentEvent[0]
 
-    def load(self,weapons,armor,misc,enemies,races,npcs,events,modifiers,dialogue):
+    def load(self,weapons,armor,misc,enemies,races,npcs,events,modifiers,dialogue,effects):
         # Loads in the enemies and events with any objects that they may need
         if self.enemy != []:
             e = []
             for enemy in self.enemy:
-                newEnemy = Enemy(enemies[enemy],weapons,armor,misc,modifiers)
+                newEnemy = Enemy(enemies[enemy],weapons,armor,misc,modifiers, effects)
                 e.append(newEnemy)
             self.enemy = e
         if self.event:
@@ -121,7 +121,7 @@ class Area(object):
             print(self.npcId)
             for npcid in self.npcId:
                 npc = NPC(npcs[npcid], npcid)
-                npc.load(races, dialogue, armor, misc, weapons, modifiers)
+                npc.load(races, dialogue, armor, misc, weapons, modifiers, effects)
                 self.npc.append(npc)
     
     def addEnemy(self, enemy):

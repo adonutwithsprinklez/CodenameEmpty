@@ -1,0 +1,155 @@
+{
+    "heal_basic_potion": {
+        "effectID":"heal",
+        "name": "Minor Heal",
+        "desc": "Heals 1d8 HP",
+        "strength": "1d8",
+        "duration": "+0",
+        "immediate": true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"Your wounds begin to close and you feel a bit better."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false
+    },
+    "heal_over_time_basic_potion":{
+        "effectID":"heal",
+        "name": "Minor Heal Over Time",
+        "desc": "Heals 1d6 HP each round for 5 rounds",
+        "strength": "1d6",
+        "duration": "+5",
+        "durationInCombat":true,
+        "durationInTravel":true,
+        "immediate": false,
+        "repeat":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false
+    },
+    "poison_basic_potion":{
+        "name": "Minor Poison",
+        "desc": "Deals 1d6 damage each round for 5 rounds",
+        "strength": "1d6",
+        "duration": "+5",
+        "durationInCombat":true,
+        "durationInTravel":true,
+        "repeat":true,
+        "immediate": true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false
+    },
+    "change_race_temp_drakt":{
+        "effectID":"race_transform_temp",
+        "name": "Draktilien Form",
+        "desc": "This creature has assumed the form of a Draktilien.",
+        "immediate": true,
+        "duration": "1d20+10",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape.",
+            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"drakt"
+        }
+    },
+    "change_race_temp_dwarf":{
+        "effectID":"race_transform_temp",
+        "name": "Dwarven Form",
+        "desc": "This creature has assumed the form of a Dwarf.",
+        "immediate": true,
+        "duration": "1d20+10",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape.",
+            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"dwarf"
+        }
+    },
+    "change_race_temp_elf":{
+        "effectID":"race_transform_temp",
+        "name": "Elven Form",
+        "desc": "This creature has assumed the form of an Elf.",
+        "immediate": true,
+        "duration": "1d20+10",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape.",
+            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"elf"
+        }
+    }
+    ,
+    "change_race_temp_human":{
+        "effectID":"race_transform_temp",
+        "name": "Human Form",
+        "desc": "This creature has assumed the form of a Human.",
+        "immediate": true,
+        "duration": "1d20+10",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape.",
+            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"human"
+        }
+    },
+    "change_race_temp_orc":{
+        "effectID":"race_transform_temp",
+        "name": "Orcish Form",
+        "desc": "This creature has assumed the form of an Orc.",
+        "immediate": true,
+        "duration": "1d20+10",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape.",
+            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"orc"
+        }
+    }
+}

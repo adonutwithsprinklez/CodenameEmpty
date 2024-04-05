@@ -27,7 +27,7 @@
 	"enemies":[],
 	"npcChance":"+1",
 	"npcs":[
-		"npc_arena_pit_guard"
+		"arena/npc_pit_guard"
 	],
 	"minNewAreas":0,
 	"maxNewAreas":0,

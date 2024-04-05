@@ -1,0 +1,15 @@
+{
+    "name":[
+        "Potion of Elvish Form"
+    ],
+    "desc":[
+        "A bright green liquid sloshes within a glass vial. Swirling it causes it to faintly glow",
+        "It's a small vial full of a deep green liquid. It smells like fresh grass and flowers"
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "effects":[
+        "change_race_temp_elf"
+    ],
+    "worth":150
+}

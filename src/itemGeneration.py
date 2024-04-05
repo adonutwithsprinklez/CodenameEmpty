@@ -8,11 +8,11 @@ from textGeneration import generateString
 from weaponClass import Weapon
 
 
-def generateItem(itemId, armorData, miscData, weaponData, modifiers, limb=None):
+def generateItem(itemId, armorData, miscData, weaponData, modifiers, effects, limb=None):
     if itemId in armorData.keys():
         return generateArmor(armorData[itemId], modifiers, limb)
     if itemId in miscData.keys():
-        return generateMisc(miscData[itemId], modifiers)
+        return generateMisc(miscData[itemId], modifiers, effects)
     if itemId in weaponData.keys():
         return generateWeapon(weaponData[itemId], modifiers)
     return None
@@ -27,8 +27,8 @@ def generateAmorSet(data=None, modifiers=None, limbs=[]):
         newArmors.append(generateArmor(data, modifiers, limb))
     return newArmors
 
-def generateMisc(data=None, modifiers=None):
-    newMisc = Misc(data, modifiers)
+def generateMisc(data=None, modifiers=None, effects=None):
+    newMisc = Misc(data, modifiers, effects)
     return newMisc
 
 def generateWeapon(data=None, modifiers=None):

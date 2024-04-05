@@ -89,7 +89,7 @@ class Event(object):
         if item == "gold":
             player.gold -= amount
 
-    def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers):
+    def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers, effects):
         if itemId == "gold":
             player.gold += amount
             return True
@@ -100,7 +100,7 @@ class Event(object):
             player.inv.append(copy.copy(Armor(armor[itemId])))
             return True
         elif itemId in misc.keys():
-            player.inv.append(copy.copy(Misc(misc[itemId], modifiers)))
+            player.inv.append(copy.copy(Misc(misc[itemId], modifiers, effects)))
             return True
         print("Item id '{}' not found".format(itemId))
         return False

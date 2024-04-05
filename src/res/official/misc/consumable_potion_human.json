@@ -1,0 +1,15 @@
+{
+    "name":[
+        "Potion of Human Form"
+    ],
+    "desc":[
+        "A bluish liquid sloshes within a glass vial. The liquid seems to move on its own",
+        "It's a small vial full of a blue-gray liquid. The contents smell faintly of copper and salt"
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "effects":[
+        "change_race_temp_human"
+    ],
+    "worth":150
+}

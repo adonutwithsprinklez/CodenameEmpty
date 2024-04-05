@@ -10,7 +10,7 @@ from universalFunctions import getDataValue
 
 
 class Enemy(object):
-    def __init__(self, data, weapons, armor, misc, modifiers):
+    def __init__(self, data, weapons, armor, misc, modifiers, effects):
         self.name = generateStringWithVariables(data, "name")
         self.eID = data["eID"]
         self.desc = generateStringWithVariables(data, "desc")
@@ -65,7 +65,7 @@ class Enemy(object):
                 elif self.itemDrop[0] in armor.keys():
                     self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
                 elif self.itemDrop[0] in misc.keys():
-                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]], modifiers)
+                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]], modifiers, effects)
             except Exception as e:
                 print("Error loading {} item reward.".format(self.name))
                 print(e)

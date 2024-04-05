@@ -94,6 +94,10 @@
         "dialogue_npc_arena_healer",
         "dialogue_npc_arena_weaponSmith"
     ],
+    "effects": [
+        "basicEffects",
+        "lycanthropyEffects"
+    ],
     "enemies": [
         "enemy_bandit",
         "enemy_banditStrong",
@@ -107,13 +111,13 @@
         "enemy_rodentOfUnusualSize",
         "enemy_wolf",
 
-        "enemy_arena_initiate",
-        "enemy_arena_fighter1",
-        "enemy_arena_fighter2",
-        "enemy_arena_fighter3",
-        "enemy_arena_fighter_random",
-        "enemy_arena_werewolf",
-        "enemy_arena_werewolf_weak"
+        "arena/enemy_initiate",
+        "arena/enemy_fighter2",
+        "arena/enemy_fighter3",
+        "arena/enemy_fighter1",
+        "arena/enemy_fighter_random",
+        "arena/enemy_werewolf",
+        "arena/enemy_werewolf_weak"
     ],
     "events": [
         "intro_event_1",
@@ -140,6 +144,12 @@
         "consumable_apple",
         "consumable_potion_health",
         "consumable_raw_meat",
+        "consumable_potion_drakt",
+        "consumable_potion_dwarf",
+        "consumable_potion_elf",
+        "consumable_potion_human",
+        "consumable_potion_orc",
+        "consumable_werewolf_blood",
         "material_wolfPelt",
         "material_stick",
         "material_greatWolfPelt",
@@ -161,17 +171,15 @@
         "npc_generic_armorSeller",
         "npc_dog",
         
-        "npc_arena_guard",
-        "npc_arena_pit_guard",
-        "npc_arena_fightMaster",
-        "npc_arena_armorSmith",
-        "npc_arena_healer",
-        "npc_arena_weaponSmith"
+        "arena/npc_guard",
+        "arena/npc_pit_guard",
+        "arena/npc_fightMaster",
+        "arena/npc_armorSmith",
+        "arena/npc_healer",
+        "arena/npc_weaponSmith"
     ],
     "quests": [
-        "quest_beginnings",
-
-        "quest_arena_reparations"
+        "quest_beginnings"
     ],
     "races": [
         "race_human",

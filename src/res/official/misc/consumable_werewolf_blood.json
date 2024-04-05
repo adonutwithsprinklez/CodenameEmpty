@@ -1,0 +1,19 @@
+{
+    "name":[
+        "Jar of Werewolf Blood",
+        "Jar of Lycanthrope Blood",
+        "Jar of Blood",
+        "Jar of Dark Red Blood"
+    ],
+    "desc":[
+        "A jar of dark red blood. It's warm to the touch and smells of wet fur."
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "consumeTextDetailed":[
+        "You open the jar and drink the blood. The thick liquid is warm and nauseating, but you manage to drink it all."],
+    "effects":[
+        "lycanthropyInitialInfection"
+    ],
+    "worth":10
+}

@@ -1,0 +1,96 @@
+{
+
+    "lycanthropyInitialInfection":{
+        "effectID":"lycanthropy",
+        "name": "Lycanthropy Infection",
+        "desc": "",
+        "immediate": true,
+        "duration": "1d2",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [
+            "lycanthropyStage1"
+        ],
+        "modifiers":[],
+        "effectLines":{
+        },
+        "hidden":true,
+        "hiddenDuration":true,
+        "hiddenMessages":false,
+        "miscData":{
+            "flags":[
+                "disease"
+            ]
+        }
+    },
+    "lycanthropyStage1":{
+        "effectID":"lycanthropy",
+        "name": "Lycanthropy Infection",
+        "desc": "",
+        "immediate": true,
+        "hidden":false,
+        "hiddenDuration":true,
+        "duration": "1d2",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [
+            "lycanthropyStage2"
+        ],
+        "modifiers":[],
+        "effectLines":{
+        },
+        "miscData":{
+            "flags":[
+                "disease"
+            ],
+            "color":"red"
+        }
+    },
+    "lycanthropyStage2":{
+        "effectID":"lycanthropy",
+        "name": "Lycanthropy Infection",
+        "desc": "",
+        "immediate": true,
+        "hidden":false,
+        "hiddenDuration":true,
+        "duration": "1d2",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [
+            "lycanthropyFinal"
+        ],
+        "modifiers":[],
+        "effectLines":{
+        },
+        "miscData":{
+            "flags":[
+                "disease"
+            ],
+            "color":"red"
+        }
+    },
+    "lycanthropyFinal":{
+        "effectID":"lycanthropy",
+        "name": "Fully Blooded Werewolf",
+        "desc": "",
+        "immediate": true,
+        "hidden":false,
+        "hiddenDuration":true,
+        "permanent":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+        },
+        "miscData":{
+            "flags":[
+                "disease",
+                "uncurable",
+                "werewolf"
+            ],
+            "color":"red",
+            "perks":[
+                "Animal Speech"
+            ]
+        }
+    }
+}

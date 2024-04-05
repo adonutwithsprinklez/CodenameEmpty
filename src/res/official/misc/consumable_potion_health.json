@@ -18,7 +18,7 @@
         ["None", 6]
     ],
     "effects":[
-        ["heal","1d12+6"]
+        "heal_basic_potion"
     ],
     "worth":15
 }

@@ -9,7 +9,7 @@
     "iType":"consumable",
     "consumeText":["Eat"],
     "effects":[
-        ["heal","1d4"]
+        "heal_basic_potion"
     ],
     "worth":3
 }

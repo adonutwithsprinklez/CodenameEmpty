@@ -31,7 +31,13 @@
         "weapon_starter_sword"
     ],
     "startingInventory": [
-        "consumable_potion_health"
+        "consumable_potion_health",
+        "consumable_potion_drakt",
+        "consumable_potion_dwarf",
+        "consumable_potion_elf",
+        "consumable_potion_human",
+        "consumable_potion_orc",
+        "consumable_werewolf_blood"
     ],
     "limbs":[
         {

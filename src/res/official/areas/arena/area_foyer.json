@@ -40,7 +40,7 @@
 	"enemies":[],
 	"npcChance":"+1",
 	"npcs":[
-		"npc_arena_fightMaster"
+		"arena/npc_fightMaster"
     ],
 	"minNewAreas":3,
 	"maxNewAreas":3,

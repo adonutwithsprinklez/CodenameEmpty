@@ -24,6 +24,7 @@ class Race(object):
         self.startingArmor:list = getDataValue("startingArmor", data, [])
         self.startingInventory:list = getDataValue("startingInventory", data, [])
         self.basePerks:list = getDataValue("basePerks", data, [])
+        self.baseEffects:list = getDataValue("baseEffects", data, [])
         self.names:list = getDataValue("names", data, [])
 
     ### GETTERS ###

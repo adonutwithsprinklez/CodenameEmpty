@@ -1,0 +1,15 @@
+{
+    "name":[
+        "Potion of Dwarfish Form"
+    ],
+    "desc":[
+        "A dark brown liquid sloshes within a glass vial. Chunks of gold float within the liquid",
+        "It's a small vial full of a brownish liquid. It smells like a beer"
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "effects":[
+        "change_race_temp_dwarf"
+    ],
+    "worth":150
+}

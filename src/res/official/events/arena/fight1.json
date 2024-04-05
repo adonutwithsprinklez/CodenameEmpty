@@ -127,7 +127,6 @@
             {
                 "action":"Stand you ground",
                 "eventDo":[
-                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
                     ["spawnEnemy",["enemy_wolf", "enemy_wolf", "enemy_greatWolf"]],
                     ["finish"]
                 ]
@@ -142,7 +141,6 @@
             {
                 "action":"Stand you ground",
                 "eventDo":[
-                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
                     ["spawnEnemy", ["enemy_boar", "enemy_boar", "enemy_boar", "enemy_boar"]],
                     ["finish"]
                 ]
@@ -157,7 +155,6 @@
             {
                 "action":"Stand you ground",
                 "eventDo":[
-                    ["say", "As you approach the door to the pit a burly looking guard gestures for you to stop."],
                     ["spawnEnemy",["enemy_bear"]],
                     ["finish"]
                 ]
@@ -203,7 +200,7 @@
                 "action":"Stand you ground",
                 "eventDo":[
                     ["say", "You square up your shoulders, realizing that you are about to take on a Werewolf."],
-                    ["spawnEnemy",["enemy_arena_werewolf_weak"]],
+                    ["spawnEnemy",["arena/enemy_werewolf_weak"]],
                     ["finish"]
                 ]
             }
@@ -248,7 +245,7 @@
                 "action":"Stand you ground",
                 "eventDo":[
                     ["say", "You square up your shoulders, realizing that you are about to take on a Werewolf."],
-                    ["spawnEnemy",["enemy_arena_werewolf"]],
+                    ["spawnEnemy",["arena/enemy_werewolf"]],
                     ["finish"]
                 ]
             }

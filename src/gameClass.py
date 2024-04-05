@@ -6,12 +6,12 @@ import os
 
 
 # Local module imports
-
 from ApplicationWindowClass import ApplicationWindow
 from audioControllerClass import AudioController
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
+from effectClass import Effect
 from enemyClass import Enemy
 from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
@@ -207,6 +207,12 @@ class Game(object):
                     else:
                         self.dialogue[d] = dialogueData
                     self.disp.dprint("\t\tLoaded Dialogue %s" % d)
+                for ef in self.packs[pack]["effects"]:
+                    effects = loadJson("%s%s/effects/%s.json" % (folder, pack, ef))
+                    for effect in effects.keys():
+                        self.effects[effect] = effects[effect]
+                    self.disp.dprint("\t\tLoaded Effect %s" % ef)
+
                 if resetAudioController:
                     for a in self.packs[pack]["audio"]:
                         self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
@@ -244,10 +250,10 @@ class Game(object):
     def loadStartingArea(self):
         if not self.gameSettings["TUTORIALAREA"]:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
+            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue, self.effects)
         else:
             self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
+            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue, self.effects)
 
     def loadPlayer(self):
 
@@ -268,7 +274,7 @@ class Game(object):
         for item in self.player.getStartingInventory():
             newItem = None
             if item in self.misc.keys():
-                newItem = Misc(self.misc[item], self.modifiers)
+                newItem = Misc(self.misc[item], self.modifiers, self.effects)
             elif item in self.weapons.keys():
                 newItem = generateWeapon(self.weapons[item], self.modifiers)
             elif item in self.armor.keys():
@@ -294,6 +300,7 @@ class Game(object):
         self.enemies = {}
         self.modifiers = {}
         self.dialogue = {}
+        self.effects = {}
 
         self.possibleQuests = []
         self.currentQuests = []
@@ -399,13 +406,13 @@ class Game(object):
                             elif action[0] == "give":
                                 for i in range(action[2]):
                                     result = event.giveItem(action[1], action[2], self.player, self.weapons,
-                                                            self.armor, self.misc, self.modifiers)
+                                                            self.armor, self.misc, self.modifiers, self.effects)
                                     if self.settings["DEBUG"] and not result:
                                         raise Exception("Something went wrong when processing an event's 'give' command.")
                             elif action[0] == "spawnEnemy":
                                 for enemyid in action[1]:
                                     self.areaController.addEnemyToCurrentArea(Enemy(
-                                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
+                                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers, self.effects))
                             elif action[0] == "addArea":
                                 self.areaController.addExitToAreaFromEvent(action[1])
                             elif action[0] == "addFlag":
@@ -416,6 +423,12 @@ class Game(object):
                                     self.player.flags.remove(action[1])
                             elif action[0] == "setName":
                                 event.setName(action[1])
+                            elif action[0] == "addEffect":
+                                newEffect = Effect(self.effects[action[1]])
+                                if newEffect.immediate:
+                                    messages = newEffect.processEffect(self.player)
+                                    for message in messages:
+                                        self.displayEventAction(message)
                             elif action[0] == "finish":
                                 event.finish()
                 else:
@@ -514,7 +527,7 @@ class Game(object):
                                 self.disp.dprint("Healing player fully.")
                                 self.player.hp = self.player.getMaxHP()
 
-                    if int(cmd) in list(range(i)) or cmd == "HEALME":
+                    if (int(cmd) in list(range(i)) and int(cmd) > 0) or cmd == "HEALME":
                         self.disp.clearScreen()
                         damage = self.player.getWeaponDamage(int(cmd)-1)
                         if DEBUG and cmd == 90:
@@ -539,6 +552,16 @@ class Game(object):
                         self.disp.closeDisplay()
                         # input("\nEnter to continue.")
                         self.disp.wait_for_enter()
+
+                        # Update player effects
+                        effectMessages = self.player.processEffects(True, False)
+                        if len(effectMessages) > 0:
+                            self.disp.clearScreen()
+                            self.disp.displayHeader("Effects")
+                            for message in effectMessages:
+                                self.disp.display(message)
+                            self.disp.closeDisplay()
+                            self.disp.wait_for_enter()
                     elif not areaEnemy.hasTag("cannotFlee") and cmd == str(i):
                         self.disp.clearScreen()
                         escape = False
@@ -562,6 +585,17 @@ class Game(object):
                                 areaEnemy.weapon.getAction(), areaEnemy.name, damage))
                         self.disp.closeDisplay()
                         self.disp.wait_for_enter()
+
+                        # Update player effects
+                        effectMessages = self.player.processEffects(True, False)
+                        if len(effectMessages) > 0:
+                            self.disp.clearScreen()
+                            self.disp.displayHeader("Effects")
+                            for message in effectMessages:
+                                self.disp.display(message)
+                            self.disp.closeDisplay()
+                            self.disp.wait_for_enter()
+
                         if escape:
                             break
 
@@ -657,6 +691,7 @@ class Game(object):
     def chooseNewArea(self, canCancel=True):
         '''This lets the player choose a new area to travel to.
            Returns True if travel occured, otherwise False'''
+        
         # Create various area choices:
         choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
@@ -715,9 +750,19 @@ class Game(object):
         if cmd > len(travelTypes):
             cmd -= len(travelTypes)
         self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
-                            self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue)
+                            self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue, self.effects)
         
         self.updateTravelInfoForQuests()
+        
+        # Process any effects that are active (and update the effect duration counter)
+        effectMessages = self.player.processEffects(False, True)
+        if len(effectMessages) > 0:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Effects")
+            for message in effectMessages:
+                self.disp.display(message)
+            self.disp.closeDisplay()
+            self.disp.wait_for_enter()
 
         return True
     
@@ -792,7 +837,7 @@ class Game(object):
                 self.disp.dprint("Processed giveXP condition.")
             elif action[0] == "giveItem":
                 itemKey = action[1]
-                item = generateItem(itemKey, self.armor, self.misc, self.weapons, self.modifiers)
+                item = generateItem(itemKey, self.armor, self.misc, self.weapons, self.modifiers, self.effects)
                 if item != None:
                     self.disp.display("You recieved {}.".format(item.name))
                     self.player.inv.append(item)
@@ -886,8 +931,12 @@ class Game(object):
             cmd = self.disp.get_input(True)
             if ready and cmd == 9:
                 self.player = Player()
+                self.player.gameData = {
+                    "races":self.races,
+                    "effects":self.effects
+                }
                 self.player.setName(playerName)
-                self.player.setRace(Race(self.races[playerRace]))
+                self.player.setRace(Race(self.races[playerRace]), True)
                 return True
             elif cmd == 0:
                 # Returns a None which causes the game to return to the main menu

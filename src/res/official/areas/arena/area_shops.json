@@ -27,9 +27,9 @@
 	"enemies":[],
 	"npcChance":"+3",
 	"npcs":[
-		"npc_arena_armorSmith",
-		"npc_arena_healer",
-        "npc_arena_weaponSmith"
+		"arena/npc_armorSmith",
+		"arena/npc_healer",
+        "arena/npc_weaponSmith"
     ],
 	"minNewAreas":3,
 	"maxNewAreas":3,

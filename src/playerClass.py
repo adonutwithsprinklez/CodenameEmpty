@@ -1,6 +1,9 @@
 
+import copy
+
 from armorClass import Armor, getArmorSize
 from ApplicationWindowClass import ApplicationWindow
+from effectClass import processAppliedEffects
 from dieClass import rollDice
 from raceClass import Race, Limb
 from weaponClass import Weapon
@@ -25,6 +28,8 @@ class Player(object):
         self.level:int = 1
         self.xp:int = 0
         self.race:Race = None
+        self.previousRace = None
+        self.originalRace:Race = None
         self.perks:list = []
         self.weapon:Weapon = None
         self.armor:Armor = None
@@ -43,6 +48,8 @@ class Player(object):
             "physique": 0,
             "intelligence": 0
         }
+        self.effects = []
+        self.gameData = None
 
     def playerMenu(self, currentQuests, completedQuests):
         """
@@ -56,9 +63,11 @@ class Player(object):
         - None
         """
         cmd = -1
+        for effect in self.effects:
+            print(effect.name)
         while cmd != 0 and not self.quit:
             self.disp.clearScreen()
-            self.disp.displayHeader(f"Player Info: <cyan>{self.name}<cyan>")
+            self.disp.displayHeader(f"Player Info: <cyan>{self.name}<cyan> ({self.getRace().getName(False)})")
             self.disp.display("<h2>Quick Stats:<h2>")
             for stat in self.getUserInfo():
                 self.disp.display(f"{stat[1]:>15} - {stat[0]}", 0)
@@ -74,6 +83,21 @@ class Player(object):
                     self.disp.display(f"\t{limb.name} - <i>{armor.getName()}<i> ({armor.getDefenceRating()} defence)", 0)
                 else:
                     self.disp.display(f"\t{limb.name} - Nothing", 0)
+            visibleEffects = []
+            for effect in self.effects:
+                if not effect.hidden:
+                    visibleEffects.append(effect)
+            if len(visibleEffects) > 0:
+                self.disp.display("<h2>Effects:<h2>")
+                for effect in visibleEffects:
+                    if "color" in effect.miscData.keys():
+                        color = f"<{effect.miscData['color']}>"
+                    else:
+                        color = ""
+                    if not effect.hiddenDuration:
+                        self.disp.display(f"\t{color}{effect.name}{color} - {effect.durationLeft+1} turns remaining", 0)
+                    else:
+                        self.disp.display(f"\t{color}{effect.name}{color}", 0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
             self.disp.displayAction("1. View Inventory", 1, 0)
@@ -211,7 +235,7 @@ class Player(object):
         elif self.inv[cmd-1].t == "a" and equip == 1:
             self.equipArmorMenu(cmd-1)
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
-            self.inv[cmd-1].consumableEffect(self)
+            self.inv[cmd-1].consumableEffect(self, self.gameData)
             self.inv.pop(cmd-1)
         elif equip == 2:
             self.disp.displayHeader("Item dropped")
@@ -375,9 +399,12 @@ class Player(object):
             self.disp.display("\t{}".format(self.getEquipmentString()), 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
-            if len(self.getRace().getPerks()) > 0:
-                self.disp.display(f'Racial Perks:')
-                for perk in self.getRace().getPerks():
+            perks = []
+            perks.extend(self.getPerks())
+            perks.extend(self.getRace().getPerks())
+            if len(perks) > 0:
+                self.disp.display(f'Perks:')
+                for perk in perks:
                     self.disp.display(f'\t{perk}', 0)
             self.disp.closeDisplay()
             self.disp.displayAction("0. Exit", 0)
@@ -946,6 +973,15 @@ class Player(object):
         if cmd == 1:
             return True
         return False
+
+    def getFlags(self):
+        """
+        Returns the player's flags.
+        """
+        flags = copy.copy(self.flags)
+        for effect in self.effects:
+            flags.extend(effect.getFlags())
+        return flags
     
     def getPlayerQuery(self):
         """
@@ -965,7 +1001,7 @@ class Player(object):
             "playerXPNeededForLevelUp": self.getXpNeededForLevelUp(),
             "playerPerks": self.getPerks(),
             "playerDialogueFlags": self.dialogueFlags,
-            "playerFlags": self.flags
+            "playerFlags": self.getFlags()
         }
         return playerQuery
     
@@ -994,6 +1030,21 @@ class Player(object):
         self.hp += hp
         if self.hp > self.getMaxHP():
             self.hp = self.getMaxHP()
+    
+    def takeHP(self, hp):
+        """
+        Decreases the player's HP by the specified amount.
+
+        Args:
+            hp (int): The amount of HP to subtract.
+
+        Returns:
+            None
+        """
+        self.hp -= hp
+        if self.hp < 0:
+            self.hp = 0
+        # TODO check for death
         
     def equipArmor(self, armor):
         """
@@ -1041,8 +1092,12 @@ class Player(object):
                     limb.armor = armor
                     limbsEquippedTo += 1
 
-    def setRace(self, race):
+    def setRace(self, race, setOriginal=False, setPrevious=False):
         # TODO check for equipped gear to make sure the player can still wield it
+        if setOriginal:
+            self.originalRace = race
+        if setPrevious:
+            self.previousRace = copy.copy(self.race)
         self.race = race
 
     # Class Getters
@@ -1181,6 +1236,8 @@ class Player(object):
     def getPerks(self):
         perks = self.perks[::]
         perks.extend(self.getRace().getPerks())
+        for effect in self.effects:
+            perks.extend(effect.getPerks())
         perks = list(set(perks))
         return perks
     
@@ -1190,7 +1247,7 @@ class Player(object):
     def getMaxHP(self):
         baseHealth = self.getStat("vitality") * 10
         bonusHealth = 0
-        # TODO add supprot for perks to getMaxHP
+        # TODO add support for perks to getMaxHP
         return baseHealth + bonusHealth
 
     def getMaxInventorySlots(self):
@@ -1230,3 +1287,13 @@ class Player(object):
         # Make sure first letter is capitalized before setting name
         name = name.capitalize()
         self.name = name
+    
+    def processEffects(self, combat=False, travel=False):
+        """
+        Processes all effects on the player.
+
+        Returns:
+            effectMessages (list): A list of messages generated by the effects.
+        """
+        effectMessages = processAppliedEffects(self, combat, travel)
+        return effectMessages

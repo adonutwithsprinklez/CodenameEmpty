@@ -21,14 +21,19 @@
     "dialogue":[
         "dialogue_npc_arena_healer"
     ],
-    "numItems":"1d3+2",
+    "numItems":"2d3+2",
     "itemPool":[
-        ["consumable_potion_health", 3],
-        ["consumable_potion_health", 3],
-        ["consumable_potion_health", 3],
-        ["consumable_potion_health", 3],
-        ["consumable_potion_health", 3],
-        ["consumable_apple", 1]
+        ["consumable_potion_health", 7],
+        ["consumable_potion_health", 7],
+        ["consumable_potion_health", 7],
+        ["consumable_potion_health", 7],
+        ["consumable_potion_health", 7],
+        ["consumable_apple", 5],
+        ["consumable_potion_drakt", 2],
+        ["consumable_potion_dwarf", 2],
+        ["consumable_potion_elf", 2],
+        ["consumable_potion_human", 2],
+        ["consumable_potion_orc", 2]
     ],
     "interestedInBuying":[],
     "numFlags":"0",

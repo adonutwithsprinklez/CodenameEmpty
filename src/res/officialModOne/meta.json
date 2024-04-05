@@ -16,6 +16,9 @@
     "dialogue": [
         "dialogue_npc_dog"
     ],
+    "effects":[
+
+    ],
     "enemies": [
         "mod_enemy_giantBoar"
     ],
