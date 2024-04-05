@@ -11,7 +11,7 @@
     "iType":"consumable",
     "consumeText":["Eat"],
     "effects":[
-        "heal_basic_potion"
+        "hunger_satisfied"
     ],
     "worth":2
 }

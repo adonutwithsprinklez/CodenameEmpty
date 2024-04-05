@@ -46,110 +46,56 @@
         "hiddenDuration":false,
         "hiddenMessages":false
     },
-    "change_race_temp_drakt":{
-        "effectID":"race_transform_temp",
-        "name": "Draktilien Form",
-        "desc": "This creature has assumed the form of a Draktilien.",
-        "immediate": true,
-        "duration": "1d20+10",
-        "durationInCombat":false,
+    "hunger_mostly_satisfied":{
+        "effectID":"heal",
+        "name": "Mostly Satisfied Hunger",
+        "desc": "Heals 1d3 HP while traveling",
+        "strength": "1d3",
+        "duration": "1d6+3",
         "durationInTravel":true,
+        "durationInCombat":false,
+        "immediate": true,
+        "repeat":true,
         "followUpEffects": [],
         "modifiers":[],
-        "effectLines":{
-            "activated":"You feel a strange sensation as your body begins to change shape.",
-            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
-        },
         "hidden":false,
         "hiddenDuration":false,
-        "hiddenMessages":false,
+        "hiddenMessages":true,
+        "overwrites":[
+            {"ID":"hunger_mostly_satified", "onlyIfLongerDuration":true}
+        ],
         "miscData":{
-            "race":"drakt"
+            "color":"yellow"
         }
     },
-    "change_race_temp_dwarf":{
-        "effectID":"race_transform_temp",
-        "name": "Dwarven Form",
-        "desc": "This creature has assumed the form of a Dwarf.",
-        "immediate": true,
-        "duration": "1d20+10",
-        "durationInCombat":false,
+    "hunger_satisfied":{
+        "effectID":"heal",
+        "name": "Satisifed Hunger",
+        "desc": "Heals 1d6 HP while traveling",
+        "strength": "1d6",
+        "duration": "1d6+3",
         "durationInTravel":true,
-        "followUpEffects": [],
+        "durationInCombat":false,
+        "immediate": true,
+        "repeat":true,
+        "followUpEffects": [
+            "hunger_mostly_satified"
+        ],
         "modifiers":[],
-        "effectLines":{
-            "activated":"You feel a strange sensation as your body begins to change shape.",
-            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
-        },
         "hidden":false,
         "hiddenDuration":false,
         "hiddenMessages":false,
-        "miscData":{
-            "race":"dwarf"
-        }
-    },
-    "change_race_temp_elf":{
-        "effectID":"race_transform_temp",
-        "name": "Elven Form",
-        "desc": "This creature has assumed the form of an Elf.",
-        "immediate": true,
-        "duration": "1d20+10",
-        "durationInCombat":false,
-        "durationInTravel":true,
-        "followUpEffects": [],
-        "modifiers":[],
+        "useDefaultMessages":false,
         "effectLines":{
-            "activated":"You feel a strange sensation as your body begins to change shape.",
-            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
+            "activated":"You feel full and satisfied.",
+            "wornOff":"You feel a bit hungry."
         },
-        "hidden":false,
-        "hiddenDuration":false,
-        "hiddenMessages":false,
+        "overwrites":[
+            {"ID":"hunger_mostly_satified", "onlyIfLongerDuration":false},
+            {"ID":"hunger_satisfied", "onlyIfLongerDuration":true}
+        ],
         "miscData":{
-            "race":"elf"
-        }
-    }
-    ,
-    "change_race_temp_human":{
-        "effectID":"race_transform_temp",
-        "name": "Human Form",
-        "desc": "This creature has assumed the form of a Human.",
-        "immediate": true,
-        "duration": "1d20+10",
-        "durationInCombat":false,
-        "durationInTravel":true,
-        "followUpEffects": [],
-        "modifiers":[],
-        "effectLines":{
-            "activated":"You feel a strange sensation as your body begins to change shape.",
-            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
-        },
-        "hidden":false,
-        "hiddenDuration":false,
-        "hiddenMessages":false,
-        "miscData":{
-            "race":"human"
-        }
-    },
-    "change_race_temp_orc":{
-        "effectID":"race_transform_temp",
-        "name": "Orcish Form",
-        "desc": "This creature has assumed the form of an Orc.",
-        "immediate": true,
-        "duration": "1d20+10",
-        "durationInCombat":false,
-        "durationInTravel":true,
-        "followUpEffects": [],
-        "modifiers":[],
-        "effectLines":{
-            "activated":"You feel a strange sensation as your body begins to change shape.",
-            "wornOff":"You feel a strange sensation as your body returns to its normal shape."
-        },
-        "hidden":false,
-        "hiddenDuration":false,
-        "hiddenMessages":false,
-        "miscData":{
-            "race":"orc"
+            "color":"green"
         }
     }
 }

@@ -96,7 +96,8 @@
     ],
     "effects": [
         "basicEffects",
-        "lycanthropyEffects"
+        "lycanthropyEffects",
+        "tempRaceChangeEffects"
     ],
     "enemies": [
         "enemy_bandit",
@@ -141,15 +142,15 @@
         "arena/exit"
     ],
     "misc": [
-        "consumable_apple",
-        "consumable_potion_health",
-        "consumable_raw_meat",
-        "consumable_potion_drakt",
-        "consumable_potion_dwarf",
-        "consumable_potion_elf",
-        "consumable_potion_human",
-        "consumable_potion_orc",
-        "consumable_werewolf_blood",
+        "consumable/apple",
+        "consumable/potion_health",
+        "consumable/raw_meat",
+        "consumable/potion_drakt",
+        "consumable/potion_dwarf",
+        "consumable/potion_elf",
+        "consumable/potion_human",
+        "consumable/potion_orc",
+        "consumable/werewolf_blood",
         "material_wolfPelt",
         "material_stick",
         "material_greatWolfPelt",

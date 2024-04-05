@@ -94,10 +94,14 @@ class Player(object):
                         color = f"<{effect.miscData['color']}>"
                     else:
                         color = ""
-                    if not effect.hiddenDuration:
-                        self.disp.display(f"\t{color}{effect.name}{color} - {effect.durationLeft+1} turns remaining", 0)
+                    if effect.showDesc:
+                        desc = f" - {effect.desc}"
                     else:
-                        self.disp.display(f"\t{color}{effect.name}{color}", 0)
+                        desc = ""
+                    if not effect.hiddenDuration:
+                        self.disp.display(f"\t{color}{effect.name}{color}{desc} - {effect.durationLeft+1} turns remaining", 0)
+                    else:
+                        self.disp.display(f"\t{color}{effect.name}{color}{desc}", 0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
             self.disp.closeDisplay()
             self.disp.displayAction("1. View Inventory", 1, 0)

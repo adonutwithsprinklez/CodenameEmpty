@@ -424,7 +424,7 @@ class Game(object):
                             elif action[0] == "setName":
                                 event.setName(action[1])
                             elif action[0] == "addEffect":
-                                newEffect = Effect(self.effects[action[1]])
+                                newEffect = Effect(action[1], self.effects[action[1]])
                                 if newEffect.immediate:
                                     messages = newEffect.processEffect(self.player)
                                     for message in messages:
@@ -558,8 +558,10 @@ class Game(object):
                         if len(effectMessages) > 0:
                             self.disp.clearScreen()
                             self.disp.displayHeader("Effects")
+                            i=0
                             for message in effectMessages:
-                                self.disp.display(message)
+                                i += 1
+                                self.disp.display(message, i)
                             self.disp.closeDisplay()
                             self.disp.wait_for_enter()
                     elif not areaEnemy.hasTag("cannotFlee") and cmd == str(i):
@@ -591,8 +593,10 @@ class Game(object):
                         if len(effectMessages) > 0:
                             self.disp.clearScreen()
                             self.disp.displayHeader("Effects")
+                            i = 0
                             for message in effectMessages:
-                                self.disp.display(message)
+                                i += 1
+                                self.disp.display(message, i)
                             self.disp.closeDisplay()
                             self.disp.wait_for_enter()
 
@@ -759,8 +763,10 @@ class Game(object):
         if len(effectMessages) > 0:
             self.disp.clearScreen()
             self.disp.displayHeader("Effects")
+            i=0
             for message in effectMessages:
-                self.disp.display(message)
+                i += 1
+                self.disp.display(message, i)
             self.disp.closeDisplay()
             self.disp.wait_for_enter()
 

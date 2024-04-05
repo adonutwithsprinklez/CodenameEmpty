@@ -14,7 +14,7 @@ class Misc(object):
 		effectsList = getDataValue("effects", data, [])
 		self.effects = []
 		for effect in effectsList:
-			newEffect = Effect(copy.copy(gameEffects[effect]))
+			newEffect = Effect(effect, copy.copy(gameEffects[effect]))
 			self.effects.append(newEffect)
 		try:
 			self.consumeText = random.choice(data["consumeText"])

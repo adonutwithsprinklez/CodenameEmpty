@@ -5,7 +5,7 @@ from textGeneration import generateString
 from universalFunctions import getDataValue
 
 class Effect(object):
-    def __init__(self, data):
+    def __init__(self, ID, data):
         self.started = False
         '''
         Possible effect IDs:
@@ -17,9 +17,11 @@ class Effect(object):
                 Only one temporary transformation can be active at a time
             lycanthropy: Affects stats and abilities of the target
         '''
+        self.ID = ID
         self.effectID:str = getDataValue("effectID", data, "Err Loading Effect ID")
         self.name:str = getDataValue("name", data, "Err Loading Effect Name")
         self.desc:str = getDataValue("desc", data, "Err Loading Effect Desc")
+        self.showDesc:bool = getDataValue("showDesc", data, True)
         self.strength:str = getDataValue("strength", data, "1d6")
         self.duration:str = getDataValue("duration", data, "+0")
         self.durationLeft:int = rollDice(self.duration)
@@ -31,10 +33,12 @@ class Effect(object):
         self.hidden:bool = getDataValue("hidden", data, False)
         self.hiddenDuration:bool = getDataValue("hiddenDuration", data, False)
         self.hiddenMessages:bool = getDataValue("hiddenMessages", data, False)
+        self.useDefaultMessages:bool = getDataValue("useDefaultMessages", data, True)
         self.chance:str = getDataValue("chance", data, "+0")
         self.immediate:bool = getDataValue("immediate", data, False)
         self.miscData:dict = getDataValue("miscData", data, {})
         self.permanent:bool = getDataValue("permanent", data, False)
+        self.overwrites:list = getDataValue("overwrites", data, [])
 
         '''
         Possible effect lines:
@@ -65,11 +69,30 @@ def processEffect(effect, target, gameData):
     '''Process an effect on a target, return messages to display to the player.'''
     messages = []
 
+    # Check if effect has overwrites
+    for overwrite in effect.overwrites:
+        for currentEffect in target.effects:
+            if currentEffect == effect:
+                continue
+            if currentEffect.ID == overwrite["ID"]:
+                # Check if the overwrite needs to be a longer duration
+                if overwrite["onlyIfLongerDuration"] and currentEffect.durationLeft > effect.durationLeft:
+                    if effect in target.effects:
+                        target.effects.remove(effect)
+                    effect.durationLeft = 0
+                    messages.append(f"{target.name} does nothing due to {currentEffect.name}.")
+                else:
+                    # Overwrite the old effect
+                    target.effects.remove(currentEffect)
+                return messages
+
     # Process initial effect
     if effect.repeat or not effect.started:
         effect.started = True
         if "activated" in effect.effectLines.keys():
             messages.append(effect.effectLines["activated"])
+        elif effect.useDefaultMessages:
+            messages.append(f"{effect.name} has been activated.")
         if effect.effectID == "heal":
             healing = effect.rollStrength()
             target.giveHP(healing)
@@ -112,11 +135,11 @@ def processEffect(effect, target, gameData):
         target.effects.remove(effect)
         if "wornOff" in effect.effectLines.keys():
             messages.append(effect.effectLines["wornOff"])
-        else:
+        elif effect.useDefaultMessages:
             messages.append(f"{effect.name} has worn off.")
         # Chcek for follow up effects
         for followUpEffect in effect.followUpEffects:
-            newEffect = Effect(target.gameData["effects"][followUpEffect])
+            newEffect = Effect(followUpEffect, target.gameData["effects"][followUpEffect])
             target.effects.append(newEffect)
             if "applied" in newEffect.effectLines.keys():
                 messages.append(newEffect.effectLines["applied"])

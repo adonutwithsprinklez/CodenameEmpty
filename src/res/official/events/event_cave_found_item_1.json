@@ -39,7 +39,7 @@
                 "action":"Take it",
                 "eventDo":[
                     ["say","You slip the apple into your bag and continue on."],
-                    ["give","consumable_apple",1],
+                    ["give","consumable/apple",1],
                     ["finish"]
                 ]
             },
@@ -61,7 +61,7 @@
                 "action":"Take it",
                 "eventDo":[
                     ["say","You slip the potion into your bag and continue on."],
-                    ["give","consumable_potion_health",1],
+                    ["give","consumable/potion_health",1],
                     ["finish"]
                 ]
             },
@@ -83,7 +83,7 @@
                 "action":"Take them",
                 "eventDo":[
                     ["say","You slip the potions into your bag and continue on."],
-                    ["give","consumable_potion_health",2],
+                    ["give","consumable/potion_health",2],
                     ["finish"]
                 ]
             },
