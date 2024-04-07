@@ -21,8 +21,7 @@ class Misc(object):
 		except:
 			self.consumeText = ""
 		self.consumeTextDetailed = getDataValue("consumeTextDetailed", data,
-							 ["You {} the {} and wait to feels its effects.".format(self.consumeText, self.name)])
-
+							 ["You {} the {} and wait to feels its effects.".format(self.consumeText, self.getName())])
 		# Modifier logic
 		print("\n" + self.name)
 		print(data.keys())
@@ -46,10 +45,14 @@ class Misc(object):
 		player.disp.displayHeader("You {} the {}".format(self.consumeText, self.name))		
 		player.disp.display(random.choice(self.consumeTextDetailed))
 
+		mods = []
+		if self.modifier:
+			mods = [self.modifier]
+
 		for effect in self.effects:
 			# TODO: make sure player is able to be affected by the effect
 			if effect.immediate:
-				messages = processEffect(effect, player, gameData)
+				messages = processEffect(effect, player, gameData, mods)
 				for message in messages:
 					player.disp.display(message)
 			if effect.durationLeft > 0:
@@ -76,6 +79,17 @@ class Misc(object):
 		
 		player.disp.closeDisplay()
 		player.disp.wait_for_enter()
+	
+	def applyEffectsTo(self, disp, target):
+		disp.displayHeader(f"Applying {self.getName()} to {target.name}")
+		disp.display(f"You apply the {self.getName()} to {target.name}.")
+		
+		for effect in self.effects:
+			if effect.appliable:
+				target.effects.append(effect)
+
+		disp.closeDisplay()
+		disp.wait_for_enter()
 	
 	def getName(self, full=False, reverse=True):
 		if full:

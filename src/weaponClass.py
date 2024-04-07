@@ -3,10 +3,12 @@ import copy
 import random
 
 from dieClass import rollDice
+from effectClass import Effect
+from universalFunctions import getDataValue
 
 
 class Weapon(object):
-	def __init__(self, data=None, modifiers = None):
+	def __init__(self, data=None, modifiers = None, effectData = None):
 		# Decides whether or not the item is generated
 		if "generated" in data.keys():
 			self.generated = data["generated"]
@@ -16,18 +18,16 @@ class Weapon(object):
 		self.t="w"
 		self.desc = random.choice(data["desc"])
 		self.damage = data["damage"]
-		if "requiredHands" in data.keys():
-			self.requiredHands = data["requiredHands"]
-		else:
-			self.requiredHands = 1
-		if "actionText" in data.keys():
-			self.actionText = data["actionText"]
-		else:
-			self.actionText = ""
-		if "worthMin" in data.keys():
-			self.worth = random.randint(data["worthMin"],data["worthMax"])
-		else:
-			self.worth = 0
+		self.requiredHands = getDataValue("requiredHands", data, 1)
+		self.actionText = getDataValue("actionText", data, "")
+		minworth = getDataValue("worthMin", data, 0)
+		maxworth = getDataValue("worthMax", data, 0)
+		self.worth = random.randint(minworth,maxworth)
+		effects = getDataValue("effects", data, [])
+		self.effects = []
+		for effect in effects:
+			newEffect = Effect(effect, copy.copy(effectData[effect]))
+			self.effects.append(newEffect)
 		self.modifiers = []
 		if "modifiers" in data.keys():
 			# Get the chance of a modifier
@@ -56,16 +56,19 @@ class Weapon(object):
 								self.worth += rollDice(newMod["s"])
 							if "d" in newMod.keys():
 								self.desc += " {}".format(newMod["d"])
-	
+
 	def getAttack(self):
 		attack = rollDice(self.damage)
 		return attack
 	
 	def getAttackInfo(self):
-		return ["Weapon", self.name, random.choice(self.actionText), self.damage]
+		return ["Weapon", self.name, random.choice(self.actionText), self.damage, self.effects]
 
 	def getAction(self):
 		return random.choice(self.actionText)
+	
+	def getModifiers(self):
+		return self.modifiers
 	
 	def getName(self, full=False, reverse=True):
 		if full:
@@ -77,6 +80,18 @@ class Weapon(object):
 	def getValue(self):
 		#TODO: Add modifiers to worth
 		return self.worth
+	
+	def getEffects(self, appliableOnly):
+		if appliableOnly:
+			for effect in self.effects:
+				if effect.appliable:
+					effects.append(effect)
+		else:
+			effects = self.effects
+		return effects
+	
+	def hasEffect(self, appliableOnly):
+		return len(self.getEffects(appliableOnly)) > 0
 
 	def __str__(self):
 		return self.getName()

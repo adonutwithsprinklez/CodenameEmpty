@@ -145,6 +145,7 @@
         "consumable/apple",
         "consumable/potion_health",
         "consumable/raw_meat",
+        "consumable/poison_basic",
         "consumable/potion_drakt",
         "consumable/potion_dwarf",
         "consumable/potion_elf",

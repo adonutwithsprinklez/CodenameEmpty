@@ -9,8 +9,8 @@
         "desc": [
             "It seems to be less than average."
         ],
-        "effect": "impaired",
-        "strength": "1d6+6"
+        "effect": "impairedEffect",
+        "strength": "1d6"
     },
     "improvedEffect": {
         "name": [
@@ -21,7 +21,7 @@
         "desc": [
             "It seems to be well above average."
         ],
-        "effect": "improved",
+        "effect": "improvedEffect",
         "strength": "1d6+6"
     },
     "slightlyImprovedEffect": {
@@ -33,7 +33,7 @@
         "desc": [
             "It seems to be above average."
         ],
-        "effect": "improved",
+        "effect": "improvedEffect",
         "strength": "1d3+3"
     },
     "strongEffect": {
@@ -47,5 +47,29 @@
         ],
         "effect": "strongEffect",
         "strength": "+2"
+    },
+    "longLastingEffect": {
+        "name": [
+            "Long Lasting",
+            "Enduring",
+            "Persistent"
+        ],
+        "desc": [
+            "It seems to last longer than average."
+        ],
+        "effect": "longEffect",
+        "strength": "1d6"
+    },
+    "shortLastingEffect": {
+        "name": [
+            "Short Lasting",
+            "Brief",
+            "Temporary"
+        ],
+        "desc": [
+            "It seems to last less than average."
+        ],
+        "effect": "shortEffect",
+        "strength": "1d6"
     }
 }

@@ -11,7 +11,7 @@ from audioControllerClass import AudioController
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
-from effectClass import Effect
+from effectClass import Effect, processEffect
 from enemyClass import Enemy
 from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
@@ -263,7 +263,7 @@ class Game(object):
             # TODO: Allow for starting armors to have modifiers
             modifiers = None
             # TODO: Implement the ability to equip multiple weapons
-            self.player.weapon = generateWeapon(self.weapons[weapon], modifiers)
+            self.player.weapon = generateWeapon(self.weapons[weapon], modifiers, self.effects)
         for armor in self.player.getStartingArmor():
             # TODO: Allow for starting armors to have modifiers
             modifiers = None
@@ -486,7 +486,7 @@ class Game(object):
                         self.disp.display("Weapon: <i>%s<i>" % (str(self.player.weapon)), 0, 1)
 
                         self.disp.displayHeader(f"<red>{areaEnemy.name}<red>")
-                        self.disp.display(f"HP: <red>{areaEnemy.getHp()}/{areaEnemy.getMaxHp()}<red>", 0)
+                        self.disp.display(f"HP: <red>{areaEnemy.getHp()}/{areaEnemy.getMaxHP()}<red>", 0)
                         self.disp.display("Weapon: <i>%s<i>" % (str(areaEnemy.weapon)), 0, 1)
 
                         self.disp.displayHeader("Actions")
@@ -537,8 +537,27 @@ class Game(object):
                         if damage < 0:
                             damage = 0
                         areaEnemy.hp -= damage
+                        # Check if the weapon has effects
+                        messages = []
+                        effectsApplied = []
+                        if int(cmd) == 1:
+                            for effect in self.player.weapon.getEffects(False):
+                                if effect.appliable and effect.rollChance(True) > 0:
+                                    if effect.immediate:
+                                        gameData = {"races":self.races, "effects":self.effects}
+                                        messages.extend(processEffect(effect, areaEnemy, gameData, self.player.getWeaponModifiers(int(cmd)-1)))
+                                    if effect.removeAfterApply and self.player.weapon.effects.count(effect) > 0:
+                                        self.player.weapon.effects.remove(effect)
+                                    areaEnemy.effects.append(effect)
+                                    effectsApplied.append(effect)
                         self.disp.displayHeader("You")
                         self.disp.display("%s You dealt %d damage." % (msg, damage), 1, 1)
+                        if len(messages) > 0:
+                            self.disp.displayHeader("Effects")
+                            i = 0
+                            for message in messages:
+                                i += 1
+                                self.disp.display(message, i==1, i==len(messages))
                         self.disp.displayHeader(areaEnemy.name)
                         damage = areaEnemy.getWeaponDamage()
                         damage -= self.player.getArmorDefence()
@@ -549,21 +568,20 @@ class Game(object):
                         else:
                             self.player.hp -= damage
                             self.disp.display("%s %s dealt %d damage." % (areaEnemy.weapon.getAction(), areaEnemy.name, damage))
-                        self.disp.closeDisplay()
-                        # input("\nEnter to continue.")
-                        self.disp.wait_for_enter()
 
                         # Update player effects
                         effectMessages = self.player.processEffects(True, False)
+                        for effect in areaEnemy.getEffects():
+                            if effect not in effectsApplied:
+                                effectMessages.extend(processEffect(effect, areaEnemy, gameData, []))
                         if len(effectMessages) > 0:
-                            self.disp.clearScreen()
-                            self.disp.displayHeader("Effects")
+                            self.disp.displayHeader("Effects",1)
                             i=0
                             for message in effectMessages:
                                 i += 1
                                 self.disp.display(message, i)
-                            self.disp.closeDisplay()
-                            self.disp.wait_for_enter()
+                        self.disp.closeDisplay()
+                        self.disp.wait_for_enter()
                     elif not areaEnemy.hasTag("cannotFlee") and cmd == str(i):
                         self.disp.clearScreen()
                         escape = False

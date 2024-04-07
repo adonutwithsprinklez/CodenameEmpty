@@ -94,7 +94,7 @@ class Event(object):
             player.gold += amount
             return True
         elif itemId in weapons.keys():
-            player.inv.append(copy.copy(generateWeapon(weapons[itemId], modifiers)))
+            player.inv.append(copy.copy(generateWeapon(weapons[itemId], modifiers, effects)))
             return True
         elif itemId in armor.keys():
             player.inv.append(copy.copy(Armor(armor[itemId])))

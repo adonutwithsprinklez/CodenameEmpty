@@ -31,10 +31,12 @@
         "weapon_starter_sword"
     ],
     "startingInventory": [
-        "consumable_potion_health",
-        "consumable_apple",
-        "consumable_apple",
-        "consumable_apple"
+        "consumable/potion_health",
+        "consumable/apple",
+        "consumable/raw_meat",
+        "consumable/poison_basic",
+        "consumable/werewolf_blood",
+        "consumable/raw_meat"
     ],
     "limbs":[
         {

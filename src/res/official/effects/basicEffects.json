@@ -3,8 +3,10 @@
         "effectID":"heal",
         "name": "Minor Heal",
         "desc": "Heals 1d8 HP",
+        "showDesc": "False",
         "strength": "1d8",
         "duration": "+0",
+        "appliable":true,
         "immediate": true,
         "followUpEffects": [],
         "modifiers":[],
@@ -18,9 +20,10 @@
     "heal_over_time_basic_potion":{
         "effectID":"heal",
         "name": "Minor Heal Over Time",
-        "desc": "Heals 1d6 HP each round for 5 rounds",
+        "desc": "Heals $strength HP each turn (both in combat and while traveling) for 5 rounds",
         "strength": "1d6",
         "duration": "+5",
+        "appliable":true,
         "durationInCombat":true,
         "durationInTravel":true,
         "immediate": false,
@@ -29,27 +32,36 @@
         "modifiers":[],
         "hidden":false,
         "hiddenDuration":false,
-        "hiddenMessages":false
+        "hiddenMessages":false,
+        "miscData":{
+            "color":"green"
+        }
     },
-    "poison_basic_potion":{
+    "poison_basic":{
+        "effectID":"hurt",
         "name": "Minor Poison",
-        "desc": "Deals 1d6 damage each round for 5 rounds",
+        "desc": "Deals $strength damage each turn (both in combat and while traveling)",
         "strength": "1d6",
         "duration": "+5",
         "durationInCombat":true,
         "durationInTravel":true,
         "repeat":true,
         "immediate": true,
+        "appliable":true,
+        "removeAfterApply":true,
         "followUpEffects": [],
         "modifiers":[],
         "hidden":false,
         "hiddenDuration":false,
-        "hiddenMessages":false
+        "hiddenMessages":false,
+        "miscData":{
+            "color":"red"
+        }
     },
     "hunger_mostly_satisfied":{
         "effectID":"heal",
         "name": "Mostly Satisfied Hunger",
-        "desc": "Heals 1d3 HP while traveling",
+        "desc": "Heals $strength HP while traveling",
         "strength": "1d3",
         "duration": "1d6+3",
         "durationInTravel":true,
@@ -62,7 +74,7 @@
         "hiddenDuration":false,
         "hiddenMessages":true,
         "overwrites":[
-            {"ID":"hunger_mostly_satified", "onlyIfLongerDuration":true}
+            {"ID":"hunger_mostly_satisfied", "onlyIfLongerDuration":true}
         ],
         "miscData":{
             "color":"yellow"
@@ -71,7 +83,7 @@
     "hunger_satisfied":{
         "effectID":"heal",
         "name": "Satisifed Hunger",
-        "desc": "Heals 1d6 HP while traveling",
+        "desc": "Heals $strength HP while traveling",
         "strength": "1d6",
         "duration": "1d6+3",
         "durationInTravel":true,
@@ -91,7 +103,7 @@
             "wornOff":"You feel a bit hungry."
         },
         "overwrites":[
-            {"ID":"hunger_mostly_satified", "onlyIfLongerDuration":false},
+            {"ID":"hunger_mostly_satisfied", "onlyIfLongerDuration":false},
             {"ID":"hunger_satisfied", "onlyIfLongerDuration":true}
         ],
         "miscData":{

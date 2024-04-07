@@ -14,7 +14,7 @@ def generateItem(itemId, armorData, miscData, weaponData, modifiers, effects, li
     if itemId in miscData.keys():
         return generateMisc(miscData[itemId], modifiers, effects)
     if itemId in weaponData.keys():
-        return generateWeapon(weaponData[itemId], modifiers)
+        return generateWeapon(weaponData[itemId], modifiers, effects)
     return None
 
 def generateArmor(data=None, modifiers=None, limb=None):
@@ -31,8 +31,8 @@ def generateMisc(data=None, modifiers=None, effects=None):
     newMisc = Misc(data, modifiers, effects)
     return newMisc
 
-def generateWeapon(data=None, modifiers=None):
-    newWeapon = Weapon(data, modifiers)
+def generateWeapon(data=None, modifiers=None, effects=None):
+    newWeapon = Weapon(data, modifiers, effects)
     if newWeapon.generated:
         newWeapon = _generateWeapon(newWeapon, data)
     return newWeapon

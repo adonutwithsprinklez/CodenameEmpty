@@ -95,11 +95,11 @@ class Player(object):
                     else:
                         color = ""
                     if effect.showDesc:
-                        desc = f" - {effect.desc}"
+                        desc = f" - {effect.getDesc()}"
                     else:
                         desc = ""
                     if not effect.hiddenDuration:
-                        self.disp.display(f"\t{color}{effect.name}{color}{desc} - {effect.durationLeft+1} turns remaining", 0)
+                        self.disp.display(f"\t{color}{effect.name}{color}{desc} - roughly {effect.getTimeLeft()+1} turns remaining", 0)
                     else:
                         self.disp.display(f"\t{color}{effect.name}{color}{desc}", 0)
             #self.disp.display("\t- %s (%s defence)" % (self.armor, self.armor.defence))
@@ -216,7 +216,8 @@ class Player(object):
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1, 1)
             self.disp.displayAction("1. {}".format(self.inv[cmd-1].consumeText), 1, 0)
-            self.disp.displayAction("2. Drop", 2, 0)
+            self.disp.displayAction("2. Apply to Weapon", 2, 0)
+            self.disp.displayAction("3. Drop", 3, 0)
             self.disp.displayAction("0. Back", 0, 0)
         else:
             self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
@@ -241,6 +242,10 @@ class Player(object):
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
             self.inv[cmd-1].consumableEffect(self, self.gameData)
             self.inv.pop(cmd-1)
+        elif self.inv[cmd-1].t == "consumable" and equip == 2:
+            self.inv[cmd-1].applyEffectsTo(self.disp, self.weapon)
+            self.inv.pop(cmd-1)
+            print(self.weapon.effects)
         elif equip == 2:
             self.disp.displayHeader("Item dropped")
             self.disp.display("You drop %s." % (self.inv.pop(cmd-1).name))
@@ -1046,9 +1051,9 @@ class Player(object):
             None
         """
         self.hp -= hp
+        # TODO check for death
         if self.hp < 0:
             self.hp = 0
-        # TODO check for death
         
     def equipArmor(self, armor):
         """
@@ -1217,6 +1222,21 @@ class Player(object):
         else:
             # TODO: Get special racial stuff
             return self.getAttackOptions()[i][2]
+    
+    def getWeaponModifiers(self, i=0):
+        """
+        Returns the modifier associated with the player's weapon.
+
+        Parameters:
+            i (int): Index of the attack option to retrieve (default is 0).
+
+        Returns:
+            str: The modifier associated with the player's weapon, or the special racial stuff if available.
+        """
+        if self.weapon and i == 0:
+            return self.weapon.getModifiers()
+        else:
+            return []
 
     def getArmorDefence(self):
         armorTotal = 0

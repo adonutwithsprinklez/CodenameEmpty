@@ -1,0 +1,23 @@
+{
+    "name":[
+        "Basic Poison",
+        "Bottle of Poison"
+    ],
+    "desc":[
+        "A green liquid sloshes within the glass vial",
+        "A small glass vial filled with a green liquid",
+        "A label on the bottle reads \"Do not drink\""
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "modifier":[
+        ["strongEffect", 1],
+        ["improvedEffect", 2],
+        ["slightlyImprovedEffect", 3],
+        ["impairedEffect", 3]
+    ],
+    "effects":[
+        "poison_basic"
+    ],
+    "worth":15
+}

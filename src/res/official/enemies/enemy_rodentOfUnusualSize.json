@@ -58,7 +58,7 @@
 	],
 	"itemChance":50,
 	"itemDrops":[
-		["consumable_raw_meat","You are able to salvage some of the beast's flesh."]
+		["consumable/raw_meat","You are able to salvage some of the beast's flesh."]
 	],
 	"xp":1
 }

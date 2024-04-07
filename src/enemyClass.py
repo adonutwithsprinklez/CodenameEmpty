@@ -18,8 +18,10 @@ class Enemy(object):
         self.damage = data["damage"]
         self.xp = data["xp"]
         self.weapon = None
+        self.effects = getDataValue("effects", data, [])
+        self.flags = getDataValue("flags", data, [])
         if data["weapon"]:
-            self.weapon = generateWeapon(weapons[random.choice(data["weapon"])], modifiers)
+            self.weapon = generateWeapon(weapons[random.choice(data["weapon"])], modifiers, effects)
 
         # Adds modifiers to the enemy
         self.modifiers = []
@@ -88,10 +90,13 @@ class Enemy(object):
         description = description.replace("$name", self.name)
         return description
     
+    def getEffects(self):
+        return self.effects
+    
     def getHp(self):
         return self.hp
     
-    def getMaxHp(self):
+    def getMaxHP(self):
         return self.hpMax
 
     def getHealth(self):
@@ -145,3 +150,32 @@ class Enemy(object):
     def hasTag(self, tag):
         '''Returns true if the enemy has the given tag.'''
         return tag in self.tags
+    
+    def giveHP(self, hp):
+        """
+        Increases the enemy's HP by the specified amount.
+
+        Args:
+            hp (int): The amount of HP to add.
+
+        Returns:
+            None
+        """
+        self.hp += hp
+        if self.hp > self.getMaxHP():
+            self.hp = self.getMaxHP()
+    
+    def takeHP(self, hp):
+        """
+        Decreases the enemy's HP by the specified amount.
+
+        Args:
+            hp (int): The amount of HP to subtract.
+
+        Returns:
+            None
+        """
+        self.hp -= hp
+        # TODO check for death
+        if self.hp < 0:
+            self.hp = 0

@@ -4,8 +4,9 @@
         "effectID":"lycanthropy",
         "name": "Lycanthropy Infection",
         "desc": "",
+        "showDesc":false,
         "immediate": true,
-        "duration": "1d2",
+        "duration": "1d2+1",
         "durationInCombat":false,
         "durationInTravel":true,
         "followUpEffects": [
@@ -13,10 +14,12 @@
         ],
         "modifiers":[],
         "effectLines":{
+            "applies":"You shiver, feeling a cold chill run down your spine."
         },
         "hidden":true,
         "hiddenDuration":true,
         "hiddenMessages":false,
+        "useDefaultMessages":false,
         "miscData":{
             "flags":[
                 "disease"
@@ -25,11 +28,13 @@
     },
     "lycanthropyStage1":{
         "effectID":"lycanthropy",
-        "name": "Lycanthropy Infection",
-        "desc": "",
+        "name": "Strange Feeling",
+        "desc": "You feel strange, as if your whole body is on edge.",
         "immediate": true,
         "hidden":false,
         "hiddenDuration":true,
+        "hiddenMessages":false,
+        "useDefaultMessages":false,
         "duration": "1d2",
         "durationInCombat":false,
         "durationInTravel":true,
@@ -38,7 +43,11 @@
         ],
         "modifiers":[],
         "effectLines":{
+            "applies":"You feel a strange hunger gnawing at your insides. Why does raw meat sound so appealing?"
         },
+        "overwrites":[
+            {"ID":"lycanthropyInitialInfection", "onlyIfLongerDuration":false}
+        ],
         "miscData":{
             "flags":[
                 "disease"
@@ -48,11 +57,14 @@
     },
     "lycanthropyStage2":{
         "effectID":"lycanthropy",
-        "name": "Lycanthropy Infection",
-        "desc": "",
+        "name": "Unusual Feeling",
+        "desc": "You feel a strange sense of power coursing through your veins.",
+        "showDesc":false,
         "immediate": true,
         "hidden":false,
         "hiddenDuration":true,
+        "hiddenMessages":false,
+        "useDefaultMessages":false,
         "duration": "1d2",
         "durationInCombat":false,
         "durationInTravel":true,
@@ -62,6 +74,10 @@
         "modifiers":[],
         "effectLines":{
         },
+        "overwrites":[
+            {"ID":"lycanthropyInitialInfection", "onlyIfLongerDuration":false},
+            {"ID":"lycanthropyStage1", "onlyIfLongerDuration":false}
+        ],
         "miscData":{
             "flags":[
                 "disease"
@@ -72,15 +88,24 @@
     "lycanthropyFinal":{
         "effectID":"lycanthropy",
         "name": "Fully Blooded Werewolf",
-        "desc": "",
+        "desc": "The blood of the werewolf runs through your veins.",
+        "showDesc":true,
         "immediate": true,
         "hidden":false,
         "hiddenDuration":true,
+        "hiddenMessages":false,
+        "useDefaultMessages":false,
         "permanent":true,
         "followUpEffects": [],
         "modifiers":[],
         "effectLines":{
+            "applied":"The call of the moon is strong, and you feel the beast within you stirs."
         },
+        "overwrites":[
+            {"ID":"lycanthropyInitialInfection", "onlyIfLongerDuration":false},
+            {"ID":"lycanthropyStage1", "onlyIfLongerDuration":false},
+            {"ID":"lycanthropyStage2", "onlyIfLongerDuration":false}
+        ],
         "miscData":{
             "flags":[
                 "disease",

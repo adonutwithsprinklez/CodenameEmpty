@@ -14,5 +14,8 @@
 	"actionText":[
 		"There is a blur as the sword swings through the air.",
 		"The sword is silent as is is jabbed into its target."
+	],
+	"effects":[
+		"poison_basic"
 	]
 }
