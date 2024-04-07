@@ -19,5 +19,6 @@
     "effects":[
         "poison_basic"
     ],
+    "appliable":true,
     "worth":15
 }

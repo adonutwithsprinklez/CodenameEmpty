@@ -20,5 +20,6 @@
     "effects":[
         "heal_basic_potion"
     ],
+    "appliable":true,
     "worth":15
 }

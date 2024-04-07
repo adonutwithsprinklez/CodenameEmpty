@@ -21,7 +21,8 @@ class Misc(object):
 		except:
 			self.consumeText = ""
 		self.consumeTextDetailed = getDataValue("consumeTextDetailed", data,
-							 ["You {} the {} and wait to feels its effects.".format(self.consumeText, self.getName())])
+			["You {} the {} and wait to feels its effects.".format(self.consumeText.lower(), self.getName())])
+		self.appliable = getDataValue("appliable", data, False)
 		# Modifier logic
 		print("\n" + self.name)
 		print(data.keys())
@@ -42,7 +43,7 @@ class Misc(object):
 
 	def consumableEffect(self, player, gameData):
 		player.disp.clearScreen()
-		player.disp.displayHeader("You {} the {}".format(self.consumeText, self.name))		
+		player.disp.displayHeader("You {} the {}".format(self.consumeText.lower(), self.name))		
 		player.disp.display(random.choice(self.consumeTextDetailed))
 
 		mods = []

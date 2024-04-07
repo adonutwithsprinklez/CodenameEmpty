@@ -70,11 +70,23 @@ class Weapon(object):
 	def getModifiers(self):
 		return self.modifiers
 	
-	def getName(self, full=False, reverse=True):
+	def getName(self, full=False, reverse=True, effects = False):
 		if full:
 			if reverse:
 				return f"[WEAPON] {self.name}"
 			return f"{self.name} [WEAPON]"
+		if effects and len(self.effects) > 0:
+			postfix = ""
+			i = 0
+			for effect in self.effects:
+				if i > 0:
+					postfix += ", "
+				color = ""
+				if effect.hasColor():
+					color = f"<{effect.getColor()}>"
+				postfix += f"{color}{effect.getName()}{color}"
+				i += 1
+			return f"{self.name} ({postfix})"
 		return self.name
 	
 	def getValue(self):
@@ -83,6 +95,7 @@ class Weapon(object):
 	
 	def getEffects(self, appliableOnly):
 		if appliableOnly:
+			effects = []
 			for effect in self.effects:
 				if effect.appliable:
 					effects.append(effect)

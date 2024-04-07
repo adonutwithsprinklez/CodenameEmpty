@@ -13,6 +13,9 @@
         "effectLines":{
             "activated":"Your wounds begin to close and you feel a bit better."
         },
+        "miscData":{
+            "color":"green"
+        },
         "hidden":false,
         "hiddenDuration":false,
         "hiddenMessages":false

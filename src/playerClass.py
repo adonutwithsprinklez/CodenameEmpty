@@ -73,7 +73,15 @@ class Player(object):
                 self.disp.display(f"{stat[1]:>15} - {stat[0]}", 0)
             self.disp.display("<h2>Wielding:<h2>")
             if self.weapon != None:
-                self.disp.display(f"\t<i>{self.weapon.name}<i> ({self.weapon.damage} damage)", 0)
+                self.disp.display(f"\t<i>{self.weapon.getName(False, False)}<i> ({self.weapon.damage} damage)", 0)
+                if len(self.weapon.getEffects(True)) > 0:
+                    for effect in self.weapon.getEffects(True):
+                        desc, color = "", ""
+                        if effect.hasColor():
+                            color = f"<{effect.getColor()}>"
+                        if effect.showDesc:
+                            desc = f" - {effect.getDesc()}"
+                        self.disp.display(f"\t\t> {color}{effect.getName()}{color}{desc}", 0)
             else:
                 self.disp.display("\tYou are not currently wielding a weapon",0)
             self.disp.display("<h2>Wearing:<h2>")
@@ -216,8 +224,9 @@ class Player(object):
             self.disp.display(self.inv[cmd-1].desc)
             self.disp.display("Worth: %d" % self.inv[cmd-1].worth, 1, 1)
             self.disp.displayAction("1. {}".format(self.inv[cmd-1].consumeText), 1, 0)
-            self.disp.displayAction("2. Apply to Weapon", 2, 0)
-            self.disp.displayAction("3. Drop", 3, 0)
+            self.disp.displayAction("2. Drop", 2, 0)
+            if self.inv[cmd-1].appliable:
+                self.disp.displayAction("3. Apply to Weapon", 3, 0)
             self.disp.displayAction("0. Back", 0, 0)
         else:
             self.disp.displayHeader("Inspecting %s" % (self.inv[cmd-1].name))
@@ -242,7 +251,7 @@ class Player(object):
         elif self.inv[cmd-1].t == "consumable" and equip == 1:
             self.inv[cmd-1].consumableEffect(self, self.gameData)
             self.inv.pop(cmd-1)
-        elif self.inv[cmd-1].t == "consumable" and equip == 2:
+        elif self.inv[cmd-1].t == "consumable" and equip == 3 and self.inv[cmd-1].appliable:
             self.inv[cmd-1].applyEffectsTo(self.disp, self.weapon)
             self.inv.pop(cmd-1)
             print(self.weapon.effects)

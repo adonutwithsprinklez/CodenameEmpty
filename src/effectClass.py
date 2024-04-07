@@ -56,6 +56,17 @@ class Effect(object):
         '''
         self.effectLines:dict = getDataValue("effectLines", data, {})
     
+    def hasColor(self):
+        return "color" in self.miscData.keys()
+    
+    def getColor(self):
+        if self.hasColor():
+            return self.miscData["color"]
+        return "white"
+    
+    def getName(self):
+        return self.name
+    
     def getDesc(self):
         descData = {
             "type":"choose",
