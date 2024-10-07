@@ -1,0 +1,33 @@
+{
+    "name":"Angel",
+    "id":"angel",
+    "baseStats":{
+        "strength":3,
+        "vitality":3,
+        "physique":3,
+        "intelligence":3
+    },
+    "shortDescription":"Wings that appear angelic.",
+    "longDescription":[],
+    "baseSkills":[],
+    "names":[
+        "Angel"
+    ],
+    "standing":{
+        "elf":0,
+        "human":0,
+        "orc":0,
+        "dwarf":0
+    },
+    "limbs":[
+        {
+            "type":"wings",
+            "name":"Wings",
+            "hitChance":"1d4",
+            "maxHealth":20,
+            "attacks":[],
+            "flags":["flying"],
+            "armorable":false
+        }
+    ]
+}

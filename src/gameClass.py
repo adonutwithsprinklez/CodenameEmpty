@@ -7,7 +7,7 @@ import os
 
 # Local module imports
 from ApplicationWindowClass import ApplicationWindow
-from audioControllerClass import AudioController
+# from audioControllerClass import AudioController
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
@@ -72,10 +72,12 @@ class Game(object):
         DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
         
+        '''
         if resetAudioController:
             self.audioController = AudioController()
             self.audioController.addLayer("bgMusic")
             self.audioController.addLayer("transition")
+        '''
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
@@ -87,6 +89,7 @@ class Game(object):
         if "fullscreen" in self.launchArgs:
             self.disp.set_fullscreen(True)
 
+        '''
         if resetAudioController:
             self.disp.initiate_audio(self.audioController)
         self.audioController.setMuteLayer("bgMusic", self.gameSettings["MUTEBGMUSIC"])
@@ -99,6 +102,7 @@ class Game(object):
             audiodir = enginedir + DEFAULTRESOURCES["audio"]["dir"]
             for audio in DEFAULTRESOURCES["audio"]["files"].keys():
                 self.audioController.bufferAudio(audio, audiodir + DEFAULTRESOURCES["audio"]["files"][audio])
+        '''
 
         # Load the datapacks/assets
         self.loadDataPackSettings()
@@ -212,11 +216,13 @@ class Game(object):
                     for effect in effects.keys():
                         self.effects[effect] = effects[effect]
                     self.disp.dprint("\t\tLoaded Effect %s" % ef)
-
+                
+                '''
                 if resetAudioController:
                     for a in self.packs[pack]["audio"]:
                         self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
                         self.disp.dprint("\t\tLoaded Audio %s" % a[0])
+                '''
                 print(f"\tFinished loading assets for pack {pack}.")
             
             # Inject items into sellers
@@ -333,8 +339,10 @@ class Game(object):
     def displayCurrentArea(self):
         '''Displays info on the area the player is currently in.'''
         transition = self.areaController.getCurrentAreaTransitionSound()
+        '''
         if transition != None:
             self.audioController.playBufferedAudio("transition", transition, False, False)
+        '''
         self.disp.clearScreen()
         hostility = self.areaController.getCurrentAreaHostility()
         if hostility <= 0:
@@ -1061,7 +1069,7 @@ class Game(object):
 
     def displayMainMenu(self):
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
-        self.audioController.playBufferedAudio("bgMusic", "mainmenumusic", False, True)
+        # self.audioController.playBufferedAudio("bgMusic", "mainmenumusic", False, True)
         self.disp.clearScreen() 
         self.disp.displayHeader("Main Menu")
 

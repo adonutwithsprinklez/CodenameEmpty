@@ -232,3 +232,6 @@ class Limb(object):
     
     def getAttacks(self):
         return self.attacks
+    
+    def getName(self):
+        return self.name

@@ -1,0 +1,14 @@
+{
+    "name":[
+        "Potion of Angelic Wings"
+    ],
+    "desc":[
+        "An brightly glowing golden substance in a small glass vial."
+    ],
+    "iType":"consumable",
+    "consumeText":["Drink"],
+    "effects":[
+        "temp_body_part_angel_wings"
+    ],
+    "worth":150
+}

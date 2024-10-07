@@ -104,5 +104,35 @@
         "miscData":{
             "race":"orc"
         }
+    },
+    "temp_body_part_angel_wings":{
+        "effectID":"body_part_temp",
+        "name": "Angel Wings",
+        "desc": "This creature has sprouted a pair of angelic wings.",
+        "immediate": true,
+        "duration": "1d4+1",
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as a pair of wings sprout from your back.",
+            "wornOff":"You feel a strange sensation as your wings receed back into your body."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "count":"+1",
+            "repeat":false,
+            "bodyPart":[
+                {
+                    "replace":false,
+                    "race":"angel",
+                    "type":"wings",
+                    "count":"+1"
+                }
+            ]
+        }
     }
 }

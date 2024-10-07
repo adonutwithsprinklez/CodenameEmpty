@@ -1,6 +1,8 @@
 
+import random
+
 from dieClass import rollDice
-from raceClass import Race
+from raceClass import Race, Limb
 from textGeneration import generateString
 from universalFunctions import getDataValue
 
@@ -203,11 +205,13 @@ def processEffect(effect, target, gameData, modifiers=[]):
             target.setRace(race)
             messages.append(f"{target.name} has transformed into a {target.getRace().getName(False)}.")
         
-        # Temporary R ace transformation effect
+        # Temporary Race transformation effect
         elif effect.effectID == "race_transform_temp":
             allowTempTransformation = True
             for currentEffect in target.effects:
                 if currentEffect.effectID == "race_transform_temp" and effect != currentEffect:
+                    allowTempTransformation = False
+                elif currentEffect.effectID == "body_part_temp":
                     allowTempTransformation = False
             if allowTempTransformation:
                 race = Race(gameData["races"][effect.miscData["race"]])
@@ -217,6 +221,32 @@ def processEffect(effect, target, gameData, modifiers=[]):
                 messages = [f"{target.name}'s current effects block them from transforming."]
                 effect.durationLeft = 0
                 return messages
+        
+        # Temporary limb effect
+        elif effect.effectID == "body_part_temp":
+            numLimbs = rollDice(effect.miscData["count"])
+            repeat = effect.miscData["repeat"]
+            possibleLimbData = effect.miscData["bodyPart"]
+            for i in range(numLimbs):
+                if len(possibleLimbData) > 0:
+                    limbData = random.choice(possibleLimbData)
+                    # Get possible limbs that meet criteria from race game data
+                    raceData = gameData["races"][limbData["race"]]
+                    possibleRaceLimbs = []
+                    for limb in raceData["limbs"]:
+                        if limb["type"] == limbData["type"]:
+                            possibleRaceLimbs.append(limb)
+                    if len(possibleRaceLimbs) > 0:
+                        limb = Limb(random.choice(possibleRaceLimbs))
+                        limbsToAdd = [limb] * rollDice(limbData["count"])
+                        for limbToAdd in limbsToAdd:
+                            if limbData["replace"]:
+                                pass
+                            else:
+                                target.tempAddedLimbs.append(limbToAdd)
+                    if repeat:
+                        possibleLimbData.remove(limbData)
+
     
     # Process duration
     if effect.durationLeft > 0:
@@ -227,6 +257,9 @@ def processEffect(effect, target, gameData, modifiers=[]):
         if effect.effectID == "race_transform_temp":
             target.setRace(target.previousRace)
             messages.append(f"{target.name} has reverted to their previous form.")
+        elif effect.effectID == "body_part_temp":
+            for limb in target.tempAddedLimbs:
+                target.tempAddedLimbs.remove(limb)
 
         # Remove effect
         target.effects.remove(effect)

@@ -151,6 +151,7 @@
         "consumable/potion_elf",
         "consumable/potion_human",
         "consumable/potion_orc",
+        "consumable/potion_temp_angel_wings",
         "consumable/werewolf_blood",
         "material_wolfPelt",
         "material_stick",
@@ -189,7 +190,8 @@
         "race_orc",
         "race_dwarf",
         "race_draktilien",
-        "race_dog"
+        "race_dog",
+        "body_parts_angel"
     ],
     "weapons": [
         "weapon_boarTusks",

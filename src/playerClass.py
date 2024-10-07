@@ -30,6 +30,8 @@ class Player(object):
         self.race:Race = None
         self.previousRace = None
         self.originalRace:Race = None
+        self.tempAddedLimbs = []
+        self.tempRemovedLimbs = []
         self.perks:list = []
         self.weapon:Weapon = None
         self.armor:Armor = None
@@ -85,10 +87,16 @@ class Player(object):
             else:
                 self.disp.display("\tYou are not currently wielding a weapon",0)
             self.disp.display("<h2>Wearing:<h2>")
-            for limb in self.race.getLimbsEquippableLimbs():
+            limbs = self.race.getLimbsEquippableLimbs()
+            limbs.extend(self.tempAddedLimbs)
+            for limb in limbs:
+                print(f"{limb.name} - {limb.armor}")
                 if limb.getArmor():
-                    armor:Armor = limb.getArmor()
-                    self.disp.display(f"\t{limb.name} - <i>{armor.getName()}<i> ({armor.getDefenceRating()} defence)", 0)
+                    if limb.getArmor() != "Unequippable":
+                        armor:Armor = limb.getArmor()
+                        self.disp.display(f"\t{limb.name} - <i>{armor.getName()}<i> ({armor.getDefenceRating()} defence)", 0)
+                    else:
+                        self.disp.display(f"\t{limb.name} - {limb.getArmor()}", 0)
                 else:
                     self.disp.display(f"\t{limb.name} - Nothing", 0)
             visibleEffects = []
@@ -414,7 +422,7 @@ class Player(object):
             self.disp.display(f'\tPhysique     - {self.getStat("physique")}', 0)
             self.disp.display(f'\tIntelligence - {self.getStat("intelligence")}', 0)
             self.disp.display("Equipped Gear:", 1, 0)
-            self.disp.display("\t{}".format(self.getEquipmentString()), 0)
+            self.disp.display(f"\t{self.getEquipmentString()}", 0)
             self.disp.display("Body:")
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
             perks = []
@@ -1146,9 +1154,9 @@ class Player(object):
         else:
             armorString = armors.pop(0).getName()
             while len(armors) > 1:
-                armorString += ", %s" % armors.pop(0)
+                armorString += ", %s" % armors.pop(0).getName(False)
             if len(armors) == 1:
-                armorString += ", and %s" % armors.pop(0)
+                armorString += ", and %s" % armors.pop(0).getName(False)
             equipstr += "You are wearing {}.".format(armorString)
         return equipstr
 
@@ -1289,11 +1297,23 @@ class Player(object):
         # TODO add support for perks to getMaxInventorySlots
         return baseSlots + bonusSlots
     
+    def tempAddedLimbs(self):
+        return self.tempAddedLimbs
+    
     def getBodyDescription(self):
         ''' Returns a description of the player's race. ''' 
         # TODO return a real class object
-
-        return self.race.getDescription()
+        bodyDescription = f"{self.race.getDescription()}"
+        if len(self.tempAddedLimbs) > 0:
+            bodyDescription += f" Along with this, your body has been temporarily altered to also have "
+            i = 0
+            for limb in self.tempAddedLimbs:
+                i += 1
+                if i > 1:
+                    bodyDescription += ", "
+                bodyDescription += f"{limb.getName()}"
+            bodyDescription += "."
+        return bodyDescription
     
     def getXpNeededForLevelUp(self):
         # TODO improve required xp formula

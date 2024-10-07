@@ -127,7 +127,8 @@ def startApplication(PATH=None, args=None):
 			print(cmd)
 		except ValueError:
 			cmd = -1
-		except:
+		except Exception as e:
+			print(e)
 			cmd = -1
 			appRunning = False
 		

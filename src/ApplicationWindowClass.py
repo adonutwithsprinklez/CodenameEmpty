@@ -221,7 +221,7 @@ class ApplicationWindow(tk.Frame):
         if self._enter_pressed:
             self._enter_pressed = False
             #if self.audioControllerInitalized:
-            self.audioController.playBufferedAudio("UI", "click", False, False)
+            # self.audioController.playBufferedAudio("UI", "click", False, False)
             return True
         return False
     
