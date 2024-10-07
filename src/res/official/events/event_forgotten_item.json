@@ -83,7 +83,7 @@
                 "action":"Take the potion",
                 "eventDo":[
                     ["say","You grab the health potion and throw it into your own bag."],
-                    ["give","consumable/potion_health",1],
+                    ["give","consumable/potion/health",1],
                     ["finish"]
                 ]
             },

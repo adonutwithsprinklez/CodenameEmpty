@@ -97,7 +97,7 @@
     "effects": [
         "basicEffects",
         "lycanthropyEffects",
-        "tempRaceChangeEffects"
+        "raceChangeEffects"
     ],
     "enemies": [
         "enemy_bandit",
@@ -143,21 +143,22 @@
     ],
     "misc": [
         "consumable/apple",
-        "consumable/potion_health",
+        "consumable/potion/health",
         "consumable/raw_meat",
         "consumable/poison_basic",
-        "consumable/potion_drakt",
-        "consumable/potion_dwarf",
-        "consumable/potion_elf",
-        "consumable/potion_human",
-        "consumable/potion_orc",
-        "consumable/potion_temp_angel_wings",
         "consumable/werewolf_blood",
         "material_wolfPelt",
         "material_stick",
         "material_greatWolfPelt",
         "misc_pieceOfMetal",
-        "misc_mysteriousOrb"
+        "misc_mysteriousOrb",
+
+        "consumable/potion/trans_drakt",
+        "consumable/potion/trans_dwarf",
+        "consumable/potion/trans_elf",
+        "consumable/potion/trans_human",
+        "consumable/potion/trans_orc",
+        "consumable/potion/temp_angel_wings"
     ],
     "modifiers": [
         "armor_modifiers",

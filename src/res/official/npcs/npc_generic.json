@@ -26,7 +26,7 @@
         ["armor_hideArmor", 4],
         ["armor_ironArmor", 2],
         ["consumable/apple", 15],
-        ["consumable/potion_health", 30],
+        ["consumable/potion/health", 30],
         ["weapon_butcherknife", 5],
         ["weapon_castironskillet", 3],
         ["weapon_ironSword", 5],

@@ -46,8 +46,8 @@
     ],
     "itemChance":60,
     "itemDrops":[
-        ["consumable/potion_health", "You search the bandit, finding a potion."],
-        ["consumable/potion_health", "You search the bandit, finding a potion."],
+        ["consumable/potion/health", "You search the bandit, finding a potion."],
+        ["consumable/potion/health", "You search the bandit, finding a potion."],
         ["weapon_steelSword", "You search the bandit, finding a potion."]
     ],
     "xp":10

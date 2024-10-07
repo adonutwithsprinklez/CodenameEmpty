@@ -19,7 +19,8 @@
         { "dialogue":"\"You smell like the forest. Have you been out there?\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"] ] },
         { "dialogue":"\"Person? Talking to me? Hi person!\"", "criteria":[ ["isAction", "=", "greeting"], ["playerPerks", "has", "Animal Speech"] , ["playerRace", "!=", "knine"]] },
         { "dialogue":"\"Bye person!\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
-        { "dialogue":"\"Hey! What are you doing?\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] }
+        { "dialogue":"\"Hey! What are you doing?\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "!=", "knine"] ] },
+        { "dialogue":"\"You... smell strange...\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerPerks", "has", "Animal Speech"], ["playerFlags", "has", "werewolf"] ], "weight":5 }
     ],
     "otherDialogueOptions":[
         {"option":"Pet the dog","isAction":"pet","playerDialogue":"You attempt to pet the dog."}

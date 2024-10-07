@@ -34,7 +34,7 @@
         "weapon_starter_sword"
     ],
     "startingInventory": [
-        "consumable_potion_health"
+        "consumable/potion/health"
     ],
     "limbs":[
         {

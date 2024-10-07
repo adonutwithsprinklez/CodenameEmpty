@@ -85,7 +85,7 @@
                 "action":"Open the bag",
                 "eventDo":[
                     ["say","You open the top flap of the bag and shake its contents out in front of you. Three glass bottles drop onto the ground.\nPicking one up to look at closer makes you realize that they are healing potions! You throw the potions into your bag."],
-                    ["give","consumable/potion_health",3],
+                    ["give","consumable/potion/health",3],
                     ["goto", ["#anEncounter","#noEncounter"]]
                 ]
             }

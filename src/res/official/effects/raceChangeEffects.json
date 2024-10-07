@@ -1,5 +1,100 @@
 {
-    "change_race_temp_drakt":{
+    "change_race_drakt":{
+        "effectID":"race_transform",
+        "name": "Draktilien Form",
+        "desc": "This creature has assumed the form of a Draktilien.",
+        "immediate": true,
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"drakt"
+        }
+    },
+    "change_race_dwarf":{
+        "effectID":"race_transform",
+        "name": "Dwarven Form",
+        "desc": "This creature has assumed the form of a Dwarf.",
+        "immediate": true,
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"dwarf"
+        }
+    },
+    "change_race_elf":{
+        "effectID":"race_transform",
+        "name": "Elven Form",
+        "desc": "This creature has assumed the form of an Elf.",
+        "immediate": true,
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"elf"
+        }
+    }
+    ,
+    "change_race_human":{
+        "effectID":"race_transform",
+        "name": "Human Form",
+        "desc": "This creature has assumed the form of a Human.",
+        "immediate": true,
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"human"
+        }
+    },
+    "change_race_orc":{
+        "effectID":"race_transform",
+        "name": "Orcish Form",
+        "desc": "This creature has assumed the form of an Orc.",
+        "immediate": true,
+        "durationInCombat":false,
+        "durationInTravel":true,
+        "followUpEffects": [],
+        "modifiers":[],
+        "effectLines":{
+            "activated":"You feel a strange sensation as your body begins to change shape."
+        },
+        "hidden":false,
+        "hiddenDuration":false,
+        "hiddenMessages":false,
+        "miscData":{
+            "race":"orc"
+        }
+    },"change_race_temp_drakt":{
         "effectID":"race_transform_temp",
         "name": "Draktilien Form",
         "desc": "This creature has assumed the form of a Draktilien.",
@@ -61,8 +156,7 @@
         "miscData":{
             "race":"elf"
         }
-    }
-    ,
+    },
     "change_race_temp_human":{
         "effectID":"race_transform_temp",
         "name": "Human Form",

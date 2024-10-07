@@ -31,7 +31,9 @@
         "weapon_starter_sword"
     ],
     "startingInventory": [
-        "consumable/potion_health",
+        "consumable/potion/health",
+        "consumable/potion/temp_angel_wings",
+        "consumable/potion/trans_drakt",
         "consumable/apple",
         "consumable/raw_meat",
         "consumable/poison_basic",
