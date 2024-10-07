@@ -324,7 +324,7 @@ class Player(object):
             cmd:int = self.disp.get_input(True, True, True)
             if cmd == 0:
                 inMenu = False
-            elif cmd == 1:
+            elif cmd == 1 and len(selected) >= armor.getNumLimbsRequired():
                 # Convert the selected limbs to a list of limbs
                 selectedLimbs:list = []
                 for limbIndex in selected:
@@ -343,39 +343,53 @@ class Player(object):
         return equipped
     
     def assignArmor(self, armorInvIndex:int, limbs:list):
-        armor:Armor = self.inv[armorInvIndex]
-        # First, remove the armor on the selected limbs
+        '''Unequips any old armor (if applicable) then equips the new armor to the selected limbs.
+        Steps:
+        1. Remove the armor on the selected limbs
+            1a. If no other limbs are equipped with the armor, add the armor back to the inventory
+            1b. Otherwise, keep track of that armor in case it no longers meets the requirements to be worn
+        2. Equip the armor to the selected limbs
+        3. Check if old armors still meet the requirements to be worn
+            3a. If not, remove them from the limbs and add them back to the inventory
+            
+        Args:
+            armorInvIndex (int): The index of the armor in the player's inventory.
+            limbs (list): The list of limbs to equip the armor to.
+        '''
+        # First, remove the armor on the selected limbs, and keep track of the armor that was removed
         removedArmors = []
         for limb in limbs:
             if limb.armor:
-                removedArmors.append(limb.armor.getId())
+                removedArmors.append(limb.armor)
+                limb.armor = None
         
-        # Next, Count the number of limbs that still have the armor equipped
-        armorCounts = {}
-        for limb in self.race.getLimbsOfLimbType(armor.getLimb(), True):
-            if limb.armor:
-                if limb.armor.getId() in removedArmors:
-                    # The armor was removed from this limb, so check add it to the count
-                    if limb.armor.getId() in armorCounts.keys():
-                        armorCounts[limb.armor.getId()][0].append(limb)
-                        armorCounts[limb.armor.getId()][1] += 1
-                    else:
-                        armorCounts[limb.armor.getId()] = [[limb], 1]
-        
-        # Remove the armor from the player's inventory
-        self.inv.pop(armorInvIndex)
-
-        # Check those armor counts
-        for armorId in armorCounts.keys():
-            if armorCounts[armorId][1] == 1 or armorCounts[armorId][0][0].armor and armorCounts[armorId][1] < armorCounts[armorId][0][0].armor.getNumLimbsRequired():
+        # Check if the removed armor still meets the requirements to be worn
+        for removedArmor in removedArmors:
+            if removedArmor.getNumLimbsRequired() > 1 or removedArmor.getNumLimbsAllowed() > 1:
+                # The armor can be equipped to multiple limbs, so check if it still meets the requirements
+                limbsWithArmor = self.race.getLimbsOfLimbType(removedArmor.getLimb(), True)
+                for limb in self.tempAddedLimbs:
+                    if limb.armor:
+                        limbsWithArmor.append(limb)
+                equippedLimbs = []
+                for limb in limbsWithArmor:
+                    if limb.armor == removedArmor:
+                        equippedLimbs.append(limb)
+        # remove duplicates from removedArmors
+        removedArmors = list(set(removedArmors))
+        for removedArmor in removedArmors:
+            if len(equippedLimbs) < removedArmor.getNumLimbsRequired():
                 # The armor no longer meets the requirements, so remove it from all limbs and add it back to the inventory
-                self.inv.append(armorCounts[armorId][0][0].armor)
-                for limb in armorCounts[armorId][0]:
+                self.inv.append(removedArmor)
+                for limb in limbsWithArmor:
                     limb.armor = None
         
         # Equip the armor to the selected limbs
         for limb in limbs:
-            limb.armor = armor
+            limb.armor = self.inv[armorInvIndex]
+        
+        # Remove the armor from the player's inventory
+        self.inv.pop(armorInvIndex)
         
     def viewAttemptUnequipArmor(self, armor, limbs):
         """
@@ -1305,7 +1319,7 @@ class Player(object):
         # TODO return a real class object
         bodyDescription = f"{self.race.getDescription()}"
         if len(self.tempAddedLimbs) > 0:
-            bodyDescription += f" Along with this, your body has been temporarily altered to also have "
+            bodyDescription += f"\n\tAlong with this, your body has been temporarily altered to also have "
             i = 0
             for limb in self.tempAddedLimbs:
                 i += 1
