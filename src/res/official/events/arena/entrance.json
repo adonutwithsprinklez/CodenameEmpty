@@ -15,7 +15,7 @@
             {
                 "action":"Enter the Arena",
                 "requirements":[
-                    ["have","flag","arenaAccepted"]
+                    ["playerFlags","nothas","arenaAccepted"]
                 ],
                 "eventDo":[
                     ["say","You knock on the Arena's door. You see a light flicker behind the door for a moment before it opens up. A guard stands at the entrance to the doorway, gesturing for you to enter."],
@@ -36,9 +36,9 @@
             {
                 "action":"Knock on the Door",
                 "requirements":[
-                    ["nothave","flag","arenaAccepted"],
-                    ["nothave","flag","arenaDenied"],
-                    ["nothave","flag","arenaHated"]
+                    ["playerFlags","nothas","arenaAccepted"],
+                    ["playerFlags","nothas","arenaDenied"],
+                    ["playerFlags","nothas","arenaHated"]
                 ],
                 "eventDo":[
                     ["say", [
@@ -52,7 +52,7 @@
             {
                 "action":"Knock on the Door",
                 "requirements":[
-                    ["have","flag","arenaDenied"]
+                    ["playerFlags","has","arenaDenied"]
                 ],
                 "eventDo":[
                     ["say","You hear movement from behind the door."],
@@ -76,7 +76,7 @@
             {
                 "action":"Ask for entrance to the Arena",
                 "requirements":[
-                    ["have","flag","knowsAboutArena"]
+                    ["playerFlags","has","knowsAboutArena"]
                 ],
                 "eventDo":[
                     ["say","You ask the guard for entrance to the arena."],
@@ -86,7 +86,7 @@
             {
                 "action":"Ask what this place is",
                 "requirements":[
-                    ["nothave","flag","knowsAboutArena"]
+                    ["playerFlags","nothas","knowsAboutArena"]
                 ],
                 "eventDo":[
                     ["say","You ask the guard what this place is."],

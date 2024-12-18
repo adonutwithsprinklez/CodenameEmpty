@@ -2,15 +2,17 @@ import copy
 import random
 import re
 
+from armorClass import Armor
+from dialogueRules import evaluateDialogueLine
 from itemGeneration import generateWeapon
 from miscClass import Misc
-from armorClass import Armor
 
 
 class Event(object):
-    def __init__(self, data, resourceId):
+    def __init__(self, eventName, gameData):
+        data = gameData.getGameData("event", eventName)
         self.id = data["id"]
-        self.resourceId = resourceId
+        self.resourceId = eventName
         self.name = random.choice(data["name"])
         self.eventType = data["type"]
 
@@ -58,31 +60,8 @@ class Event(object):
         return actions
 
     def playerMeetsRequirements(self, requirements, player):
-        # TODO add support for other types of requirements
-        meetsRequiements = True
-        for requirement in requirements:
-            if requirement[0] == "have":
-                # Used to see if player has the corresponding item/gold/xp/lvl/etc.
-                if requirement[1] == "gold":
-                    if player.gold < requirement[2]:
-                        meetsRequiements = False
-                elif requirement[1] == "flag":
-                    if not requirement[2] in player.flags:
-                        meetsRequiements = False
-            elif requirement[0] == "nothave":
-                # Used to see if player does not have the corresponding item/gold/xp/lvl/etc.
-                if requirement[1] == "gold":
-                    if player.gold >= requirement[2]:
-                        meetsRequiements = False
-                elif requirement[1] == "flag":
-                    if requirement[2] in player.flags:
-                        meetsRequiements = False
-            elif requirement[0] == "hasMinimumStat":
-                # used to make sure the player meets the minimum stat requirement
-                if player.getStat(requirement[1]) < requirement[2]:
-                    meetsRequiements = False
-                
-        return meetsRequiements
+        query = player.getPlayerQuery()
+        return evaluateDialogueLine(requirements, query)
 
     def takeItem(self, item, amount, player):
         # TODO add support for other items
@@ -90,6 +69,7 @@ class Event(object):
             player.gold -= amount
 
     def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers, effects):
+        # TODO: Rewrite to use the new GameDataHandler class
         if itemId == "gold":
             player.gold += amount
             return True

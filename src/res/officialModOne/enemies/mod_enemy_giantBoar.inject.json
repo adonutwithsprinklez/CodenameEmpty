@@ -1,0 +1,7 @@
+{
+    "injectArea":[
+        ["area_forest_trail_crossroad", 2]
+    ],
+    "areaMinEnemyChance":100,
+    "areaEnemyPointsPerHostility":2
+}

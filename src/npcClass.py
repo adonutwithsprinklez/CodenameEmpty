@@ -48,16 +48,16 @@ class NPC(object):
 		self.flags = random.sample(data["flagPool"], k=rollDice(data["numFlags"]))
 		self.loaded = False
 	
-	def load(self, race, dialogue, armor, misc, weapons, modifiers, effects):
-		self.race = Race(race[self.race])
+	def load(self, gameData):
+		self.race = Race(gameData.getGameData("race",self.race))
 		for dialogId in self.dialogueIds:
-			self.dialogue.extend(dialogue[dialogId]["lines"])
-			if "otherDialogueOptions" in dialogue[dialogId].keys():
-				for option in dialogue[dialogId]["otherDialogueOptions"]:
+			self.dialogue.extend(gameData.getGameData("dialogue",dialogId)["lines"])
+			if "otherDialogueOptions" in gameData.getGameData("dialogue",dialogId).keys():
+				for option in gameData.getGameData("dialogue",dialogId)["otherDialogueOptions"]:
 					self.otherDialogueOptions.append(option)
 		if not self.inventoryGenerated:
 			for item in self.inventory:
-				self.generatedInventory.append(generateItem(item, armor, misc, weapons, modifiers, effects))
+				self.generatedInventory.append(generateItem(item, gameData))
 				self.inventoryGenerated = True
 		self.loaded = True
 	

@@ -16,7 +16,7 @@
             {
                 "action":"Ready yourself for the fight",
                 "requirements":[
-                    ["have","flag","arenaFightEasy"]
+                    ["playerFlags","has","arenaFightEasy"]
                 ],
                 "eventDo":[
                     ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],
@@ -27,8 +27,8 @@
             {
                 "action":"Ready yourself for the first round of the fight",
                 "requirements":[
-                    ["have","flag","arenaFightMed"],
-                    ["nothave","flag","step2"]
+                    ["playerFlags","has","arenaFightMed"],
+                    ["playerFlags","nothas","step2"]
                 ],
                 "eventDo":[
                     ["addFlag", "step2"],
@@ -40,9 +40,9 @@
             {
                 "action":"Ready yourself for the first round of the fight",
                 "requirements":[
-                    ["have","flag","arenaFightHard"],
-                    ["nothave","flag","step2"],
-                    ["nothave","flag","step3"]
+                    ["playerFlags","has","arenaFightHard"],
+                    ["playerFlags","nothas","step2"],
+                    ["playerFlags","nothas","step3"]
                 ],
                 "eventDo":[
                     ["addFlag", "step2"],
@@ -54,8 +54,8 @@
             {
                 "action":"Ready yourself for the final round of the fight",
                 "requirements":[
-                    ["have","flag","arenaFightMed"],
-                    ["have","flag","step2"]
+                    ["playerFlags","has","arenaFightMed"],
+                    ["playerFlags","has","step2"]
                 ],
                 "eventDo":[
                     ["removeFlag", "step2"],
@@ -67,8 +67,8 @@
             {
                 "action":"Ready yourself for the second round of the fight",
                 "requirements":[
-                    ["have","flag","arenaFightHard"],
-                    ["have","flag","step2"]
+                    ["playerFlags","has","arenaFightHard"],
+                    ["playerFlags","has","step2"]
                 ],
                 "eventDo":[
                     ["removeFlag", "step2"],
@@ -81,8 +81,8 @@
             {
                 "action":"Ready yourself for the final round of the fight",
                 "requirements":[
-                    ["have","flag","arenaFightHard"],
-                    ["have","flag","step3"]
+                    ["playerFlags","has","arenaFightHard"],
+                    ["playerFlags","has","step3"]
                 ],
                 "eventDo":[
                     ["removeFlag", "step3"],
@@ -94,7 +94,7 @@
             {
                 "action":"Ready yourself for the duel",
                 "requirements":[
-                    ["have","flag","arenaFightDuel"]
+                    ["playerFlags","has","arenaFightDuel"]
                 ],
                 "eventDo":[
                     ["say", "You square up your shoulders, focussing on the gate at the other end of the pit."],

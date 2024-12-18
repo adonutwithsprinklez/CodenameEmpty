@@ -7,25 +7,35 @@ from universalFunctions import getDataValue
 class Race(object):
     def __init__(self, data):
         ''' Instantiates a Race object. '''
+        # Required data
         self.id:str = data["id"]
         self.name:str = data["name"]
         self.baseStats:dict = data["baseStats"]
         self.baseSkills:list = data["baseSkills"]
-        self.standing:dict = data["standing"]
-        self.playable:bool = getDataValue("playable", data, False)
-        self.limbs:Limb = []
+
+        # Optional data
+        self.standing:dict = getDataValue("standing", data, {})
+        self.playable:bool = getDataValue("playable", data, False) # Defaults to false
         self.basePerks:list = getDataValue("basePerks", data, [])
-        for limb in data["limbs"]:
-            newLimb = copy.copy(Limb(limb, self.id))
-            self.limbs.append(newLimb)
         self.shortDescription:str = getDataValue("shortDescription", data, "")
         self.playerCreationDescription:str = getDataValue("playerCreationDescription", data, "")
         self.startingWeapon:list = getDataValue("startingWeapon", data, [])
         self.startingArmor:list = getDataValue("startingArmor", data, [])
         self.startingInventory:list = getDataValue("startingInventory", data, [])
-        self.basePerks:list = getDataValue("basePerks", data, [])
         self.baseEffects:list = getDataValue("baseEffects", data, [])
         self.names:list = getDataValue("names", data, [])
+
+        # Limbs and calculations
+        self.limbs:list = []
+        for limb in data["limbs"]:
+            newLimb = copy.copy(Limb(limb, self.id))
+            self.limbs.append(newLimb)
+        self.limbsOptional:list = getDataValue("limbsOptional", data, [])
+        self.selectedOptional:list = []
+        for choice in self.getOptionalLimbs():
+            for default in choice["defaultSelection"]:
+                self.selectedOptional.append(choice["choices"][default])
+
 
     ### GETTERS ###
     # These functions are to allow for future changes without having to modify the calls to them.
@@ -52,10 +62,14 @@ class Race(object):
         ''' Returns the list of limb objects without any modifications. '''
         return self.limbs
 
-    def getLimbCounts(self):
+    def getLimbCounts(self, optionalSelected=False):
         ''' Returns a dictionary with each limb race, and type as a key, and the count of each type as the value '''
         returnable = {}
-        for limb in self.limbs:
+        limbs = copy.copy(self.limbs)
+        if optionalSelected:
+            for limb in self.selectedOptional:
+                limbs.append(limb)
+        for limb in limbs:
             if limb.race in returnable.keys():
                 if limb.type in returnable[limb.race].keys():
                     returnable[limb.race][limb.type] += 1
@@ -84,17 +98,17 @@ class Race(object):
     def getIsPureRace(self):
         return len(self.getLimbCounts().keys()) == 1
 
-    def getDescription(self):
+    def getDescription(self, optionalSelected = False):
         ''' Generates a description of the race's appearance. '''
         if self.getIsPureRace():
-            return self.getPureRaceDescription()
+            return self.getPureRaceDescription(optionalSelected)
         else:
-            return self.getMixedRaceDescription()
+            return self.getMixedRaceDescription(optionalSelected)
 
-    def getPureRaceDescription(self):
+    def getPureRaceDescription(self, optionalSelected = False):
         ''' This description is used when the character is of a pure race.
             Eg. only made up of limbs from the same race. '''
-        limbCounts = self.getLimbCounts()
+        limbCounts = self.getLimbCounts(optionalSelected)
         firstLimbType = list(limbCounts[self.id].keys())[0]
         description = f'Your body is that of the typical {self.name}. You have {limbCounts[self.id][firstLimbType]} {firstLimbType}'
         if limbCounts[self.id][firstLimbType] > 1:
@@ -106,10 +120,10 @@ class Race(object):
         description += "."
         return description
     
-    def getMixedRaceDescription(self):
+    def getMixedRaceDescription(self, optionalSelected=False):
         ''' Creates a dynamic description for the race since their limbs do not all belong to any singular race '''
         # TODO add a description generator for nonpure races.
-        limbCounts = self.getLimbCounts()
+        limbCounts = self.getLimbCounts(optionalSelected)
         description = 'You look like a strange Chimera of different races.\n\t'
         for rId in limbCounts.keys():
             firstLimbType = list(limbCounts[rId].keys())[0]
@@ -190,6 +204,32 @@ class Race(object):
     def getRandomName(self):
         return random.choice(self.names)
     
+    def getOptionalLimbs(self):
+        optionallimbs = []
+        # Check for optional limbs and add the default choices if there are any
+        for ol in self.limbsOptional:
+            choice = {
+                "name":ol["name"],
+                "type":ol["type"],
+                "minCount":ol["minCount"],
+                "maxCount":ol["maxCount"],
+                "defaultSelection":getDataValue("defaultSelection", ol, []),
+                "choices":[]
+            }
+            for l in ol["choices"]:
+                limb = Limb(l, self.id)
+                choice["choices"].append(limb)
+            optionallimbs.append(choice)
+        return optionallimbs
+    
+    def updateLimbs(self):
+        for choice in self.getOptionalLimbs():
+            for default in choice["defaultSelection"]:
+                l = choice["choices"][default]
+                for e in l.getAdditionalEffects():
+                    self.baseEffects.append(e)
+                self.limbs.append(l)
+    
     def __str__(self):
         return f"{self.getId()} - {self.getName(False)}"
 
@@ -222,6 +262,7 @@ class Limb(object):
         self.armorable = True
         if "armorable" in data.keys():
             self.armorable = data["armorable"]
+        self.additionalEffects = getDataValue("additionalEffects", data, [])
         
     def getArmor(self):
         if self.armor:
@@ -230,8 +271,14 @@ class Limb(object):
             return "Unequippable"
         return None
     
+    def getType(self):
+        return self.type
+    
     def getAttacks(self):
         return self.attacks
     
     def getName(self):
         return self.name
+    
+    def getAdditionalEffects(self):
+        return self.additionalEffects

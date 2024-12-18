@@ -6,7 +6,7 @@ from universalFunctions import getDataValue
 
 
 class Misc(object):
-	def __init__(self, data, gameModifiers, gameEffects):
+	def __init__(self, data, gameData):
 		self.name = random.choice(data["name"])
 		self.t = data["iType"]
 		self.desc = random.choice(data["desc"])
@@ -14,7 +14,7 @@ class Misc(object):
 		effectsList = getDataValue("effects", data, [])
 		self.effects = []
 		for effect in effectsList:
-			newEffect = Effect(effect, copy.copy(gameEffects[effect]))
+			newEffect = Effect(effect, copy.copy(gameData.getGameData("effect", effect)))
 			self.effects.append(newEffect)
 		try:
 			self.consumeText = random.choice(data["consumeText"])
@@ -34,7 +34,7 @@ class Misc(object):
 				mods += [mod[0]]*mod[1]
 			mod = random.choice(mods)
 			if mod != "None":
-				self.modifier = gameModifiers[mod].getInfo()
+				self.modifier = gameData.getGameData("modifier", mod).getInfo()
 				self.name = "{} {}".format(self.modifier["n"], self.name)
 		try:
 			pass
@@ -51,13 +51,11 @@ class Misc(object):
 			mods = [self.modifier]
 
 		for effect in self.effects:
-			# TODO: make sure player is able to be affected by the effect
-			if effect.immediate:
-				messages = processEffect(effect, player, gameData, mods)
-				for message in messages:
-					player.disp.display(message)
-			if effect.durationLeft > 0:
-				player.effects.append(effect)
+			player.effects.append(effect)
+			effect = player.effects[-1]
+			messages = processEffect(effect, player, gameData, mods)
+			for message in messages:
+				player.disp.display(message)
 		'''
 		for effect in self.effects:
 			if effect[0] == "heal":

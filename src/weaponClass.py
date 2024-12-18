@@ -8,7 +8,8 @@ from universalFunctions import getDataValue
 
 
 class Weapon(object):
-	def __init__(self, data=None, modifiers = None, effectData = None):
+	def __init__(self, wepName=None, gameData=None):
+		data = gameData.getGameData("weapon", wepName)
 		# Decides whether or not the item is generated
 		if "generated" in data.keys():
 			self.generated = data["generated"]
@@ -26,7 +27,7 @@ class Weapon(object):
 		effects = getDataValue("effects", data, [])
 		self.effects = []
 		for effect in effects:
-			newEffect = Effect(effect, copy.copy(effectData[effect]))
+			newEffect = Effect(effect, copy.copy(gameData.getGameData("effect", effect)))
 			self.effects.append(newEffect)
 		self.modifiers = []
 		if "modifiers" in data.keys():
@@ -48,7 +49,7 @@ class Weapon(object):
 								highRoll = newRoll
 						if newMod:
 							possibleMods.remove(newMod)
-							newMod = modifiers[newMod[0]].getInfo()
+							newMod = gameData.getGameData("modifier", newMod[0]).getInfo()
 							self.name = "{} {}".format(newMod["n"], self.name)
 							if newMod["e"] == "damage":
 								self.damage += ";{}".format(newMod["s"])

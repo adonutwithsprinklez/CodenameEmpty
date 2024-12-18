@@ -1,6 +1,4 @@
 
-
-
 def getDataValue(variable, data, default):
     """
     Retrieves the value of a variable from a dictionary, or returns a default value if the variable is not found.

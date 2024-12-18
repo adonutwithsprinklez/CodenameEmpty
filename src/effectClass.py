@@ -1,11 +1,15 @@
 
+import copy
 import random
 
+from dialogueRules import evaluateDialogueLine
 from dieClass import rollDice
 from raceClass import Race, Limb
 from textGeneration import generateString
 from universalFunctions import getDataValue
 
+# These are mods that get used in the processEffect function,
+# but are not immediately applied to the effect
 MODS_TO_STORE = [
     "improvedEffect",
     "impairedEffect"
@@ -24,10 +28,19 @@ class Effect(object):
                 Only one temporary transformation can be active at a time
             lycanthropy: Affects stats and abilities of the target
         '''
+        # Required data
         self.ID = ID
-        self.effectID:str = getDataValue("effectID", data, "Err Loading Effect ID")
-        self.name:str = getDataValue("name", data, "Err Loading Effect Name")
-        self.desc:str = getDataValue("desc", data, "Err Loading Effect Desc")
+        self.effectID:str = getDataValue("effectID", data, -1)
+        self.name:str = getDataValue("name", data, -1)
+        self.desc:str = getDataValue("desc", data, -1)
+
+        # Crash immediately to allow for easier debugging,
+        # instead of waiting for game to crash
+        if self.effectID == -1 or self.name == -1 or self.desc == -1:
+            raise ValueError(f"{self.ID} is missing required data.\neffectID:{self.effectID}\nname:{self.name}\ndesc:{self.desc}")
+
+        # Optional data 
+        # Could crash if data is not included. Depends on effectID
         self.showDesc:bool = getDataValue("showDesc", data, True)
         self.strength:str = getDataValue("strength", data, "1d6")
         self.duration:str = getDataValue("duration", data, "+0")
@@ -36,6 +49,8 @@ class Effect(object):
         self.durationInTravel:bool = getDataValue("durationInTravel", data, True)
         self.repeat:bool = getDataValue("repeat", data, False)
         self.followUpEffects:list = getDataValue("followUpEffects", data, [])
+        self.randomFollowUpEffect:bool = getDataValue("randomFollowUpEffect", data, False)
+        self.randomFollowUpEffectOnDispel:bool = getDataValue("randomFollowUpEffectOnDispel", data, False)
         self.modifiers:list = getDataValue("modifiers", data, [])
         self.hidden:bool = getDataValue("hidden", data, False)
         self.hiddenDuration:bool = getDataValue("hiddenDuration", data, False)
@@ -49,12 +64,23 @@ class Effect(object):
         self.permanent:bool = getDataValue("permanent", data, False)
         self.overwrites:list = getDataValue("overwrites", data, [])
         self.modifiers:list = getDataValue("modifiers", data, [])
+        self.requirements:list = getDataValue("requirements", data, [])
+        self.occasionalMessage:bool = getDataValue("occasionalMessage", data, False)
+        self.occasionalMessageTimer:str = getDataValue("occasionalMessageChance", data, "1d10+10")
+        self.occasionalMessageRepeats:bool = getDataValue("occasionalMessageRepeats", data, True)
+        self.occasionalMessageTimeLeft:int = rollDice(self.occasionalMessageTimer) * 10
+        self.occasionalMessageFired:bool = False
 
         '''
         Possible effect lines:
             activated: Message to display when the effect is fired off
             applied: Message to display when effect is applied to a target
+            occasionalMessage: A list of random messages that will be played
+                when the occasional message timer fires
             wornOff: Message to display when effect wears off of the target
+            dispelled: Message to display when effect is dispelled
+            heal: Message to display when healing the target
+            hurt: Message to display when damaging the target
         '''
         self.effectLines:dict = getDataValue("effectLines", data, {})
     
@@ -64,7 +90,7 @@ class Effect(object):
     def getColor(self):
         if self.hasColor():
             return self.miscData["color"]
-        return "white"
+        return "white" # Default value
     
     def getName(self):
         return self.name
@@ -77,6 +103,9 @@ class Effect(object):
             "duration":{"type":"choose","choices":[self.duration]},
         }
         return generateString(descData, "desc")
+    
+    def getEffectLines(self):
+        return self.effectLines
     
     def getTimeLeft(self):
         timeLeft = self.durationLeft // 10
@@ -130,13 +159,12 @@ def processEffect(effect, target, gameData, modifiers=[]):
     '''Process an effect on a target, return messages to display to the player.'''
     messages = []
     time = 10
+    REMOVED_AFTER = False
 
-    # Check for modifiers that affect the effect
+    # Check for modifiers that affect the effect 
     for modifier in modifiers:
         if modifier["e"] in MODS_TO_STORE:
-            allowModifierRepeats = False
-            if "allowModifierRepeats" in effect.miscData.keys():
-                allowModifierRepeats = effect.miscData["allowModifierRepeats"]
+            allowModifierRepeats = getDataValue("allowModifierRepeats", effect.miscData, False)
             if allowModifierRepeats or modifier["e"] not in effect.modifiers:
                 effect.modifiers.append(modifier)
         elif modifier["e"] == "longEffect":
@@ -146,19 +174,38 @@ def processEffect(effect, target, gameData, modifiers=[]):
     
     if time < 0:
         time = 0
+    
+    # See if the target is the player, and grab call the player's query
+    # function to see if it meets all requirements to keep the effect
+    if type(target).__name__ == "Player":
+        query = target.getPlayerQuery()
+        meetsRequirements = evaluateDialogueLine(effect.requirements, query)
+        if not meetsRequirements:
+            if effect in target.effects:
+                target.effects.remove(effect)
+            effect.durationLeft = 0
+            if "dispelled" in effect.effectLines.keys():
+                messages.append(copy.copy(effect.effectLines["dispelled"]))
+            elif effect.useDefaultMessages:
+                messages.append(copy.copy(f"{effect.name} dissipates within {target.name}."))
+            if not effect.randomFollowUpEffectOnDispel:
+                return messages
+            else:
+                REMOVED_AFTER = True
 
     # Check if effect has overwrites
-    for overwrite in effect.overwrites:
+    # Use first in first out for overwrites
+    for overwrite in reversed(effect.overwrites):
         for currentEffect in target.effects:
             if currentEffect == effect:
                 continue
             if currentEffect.ID == overwrite["ID"]:
                 # Check if the overwrite needs to be a longer duration
-                if overwrite["onlyIfLongerDuration"] and currentEffect.durationLeft > effect.durationLeft:
+                if overwrite["onlyIfLongerDuration"] and ((currentEffect.durationLeft > effect.durationLeft and not effect.permanent) or currentEffect.permanent):
                     if effect in target.effects:
                         target.effects.remove(effect)
                     effect.durationLeft = 0
-                    messages.append(f"{target.name} does nothing due to {currentEffect.name}.")
+                    messages.append(copy.copy(f"{target.name} does nothing due to {currentEffect.name}."))
                 else:
                     # Overwrite the old effect
                     target.effects.remove(currentEffect)
@@ -175,25 +222,25 @@ def processEffect(effect, target, gameData, modifiers=[]):
             strengthRoll = 0
 
         if "activated" in effect.effectLines.keys():
-            messages.append(effect.effectLines["activated"])
+            messages.append(copy.copy(effect.effectLines["activated"]))
         elif effect.useDefaultMessages:
-            messages.append(f"{effect.name} has been activated.")
+            messages.append(copy.copy(f"{effect.name} has been activated."))
         
         # Healing effect
         if effect.effectID == "heal":
             target.giveHP(strengthRoll)
             if "heal" in effect.effectLines.keys():
-                messages.append(effect.effectLines["heal"])
+                messages.append(copy.copy(effect.effectLines["heal"]))
             elif effect.useDefaultMessages:
-                messages.append(f"{target.name} was healed for {strengthRoll} HP.")
+                messages.append(copy.copy(f"{target.name} was healed for {strengthRoll} HP."))
         
         # Damage effect
         elif effect.effectID == "hurt":
             target.takeHP(strengthRoll)
             if "hurt" in effect.effectLines.keys():
-                messages.append(effect.effectLines["hurt"])
+                messages.append(copy.copy(effect.effectLines["hurt"]))
             elif effect.useDefaultMessages:
-                messages.append(f"{target.name} took {strengthRoll} damage.")
+                messages.append(copy.copy(f"{target.name} took {strengthRoll} damage."))
         
         # Race transformation effect
         elif effect.effectID == "race_transform":
@@ -202,8 +249,10 @@ def processEffect(effect, target, gameData, modifiers=[]):
                 if currentEffect.effectID == "race_transform_temp":
                     target.Effects.remove(currentEffect)
             race = Race(gameData["races"][effect.miscData["race"]])
-            target.setRace(race)
-            messages.append(f"{target.name} has transformed into a {target.getRace().getName(False)}.")
+            # Make sure the race is actually playable
+            if race.playable:
+                target.setRace(race)
+                messages.append(copy.copy(f"{target.name} has transformed into a {target.getRace().getName(False)}."))
         
         # Temporary Race transformation effect
         elif effect.effectID == "race_transform_temp":
@@ -215,10 +264,16 @@ def processEffect(effect, target, gameData, modifiers=[]):
                     allowTempTransformation = False
             if allowTempTransformation:
                 race = Race(gameData["races"][effect.miscData["race"]])
+                # Make sure the race is playable
+                if not race.playable:
+                    messages = [f"This form is not compatible with {target.name}'s soul."]
+                    effect.durationLeft = 0
+                    return messages
+                # Otherwise, set the race
                 target.setRace(race, False, True)
-                messages.append(f"{target.name} has transformed into a {target.getRace().getName(False)}.")
+                messages.append(copy.copy(f"{target.name} has transformed into a {target.getRace().getName(False)}."))
             else:
-                messages = [f"{target.name}'s current effects block them from transforming."]
+                messages = [copy.copy(f"{target.name}'s current effects block them from transforming.")]
                 effect.durationLeft = 0
                 return messages
         
@@ -252,31 +307,54 @@ def processEffect(effect, target, gameData, modifiers=[]):
     if effect.durationLeft > 0:
         if "permanentEffects" not in target.flags:
             effect.durationLeft -= time
-    elif effect.durationLeft <= 0 and effect in target.effects and not effect.permanent:
+        if effect.occasionalMessage:
+            if effect.occasionalMessageTimeLeft <= 0 and (effect.occasionalMessageRepeats or not effect.occasionalMessageFired):
+                # Time to display random message
+                messages.append(random.choice(copy.copy(effect.effectLines["occasionalMessage"])))
+                effect.occasionalMessageTimeLeft = rollDice(effect.occasionalMessageTimer) * 10
+                effect.occasionalMessageFired = True
+            else:
+                # Decrement time
+                effect.occasionalMessageTimeLeft -= time
+
+    elif effect.durationLeft <= 0 and (effect in target.effects or REMOVED_AFTER) and not effect.permanent:
         # Check if effect needs any final processing
         if effect.effectID == "race_transform_temp":
             target.setRace(target.previousRace)
-            messages.append(f"{target.name} has reverted to their previous form.")
+            messages.append(copy.copy(f"{target.name} has reverted to their previous form."))
         elif effect.effectID == "body_part_temp":
             for limb in target.tempAddedLimbs:
                 target.tempAddedLimbs.remove(limb)
 
         # Remove effect
-        target.effects.remove(effect)
+        if not REMOVED_AFTER:
+            target.effects.remove(effect)
         if "wornOff" in effect.effectLines.keys():
-            messages.append(effect.effectLines["wornOff"])
+            messages.append(copy.copy(effect.effectLines["wornOff"]))
         elif effect.useDefaultMessages:
-            messages.append(f"{effect.name} has worn off.")
+            messages.append(copy.copy(f"{effect.name} has worn off."))
         # Chcek for follow up effects
-        for followUpEffect in effect.followUpEffects:
-            newEffect = Effect(followUpEffect, target.gameData["effects"][followUpEffect])
-            target.effects.append(newEffect)
-            if "applies" in effect.effectLines.keys():
-                messages.append(effect.effectLines["applies"])
-            if "applied" in newEffect.effectLines.keys():
-                messages.append(newEffect.effectLines["applied"])
-            elif newEffect.useDefaultMessages:
-                messages.append(f"{newEffect.name} has been applied to {target.name}.")
+        if not effect.randomFollowUpEffect:
+            for followUpEffect in effect.followUpEffects:
+                newEffect = Effect(followUpEffect, target.gameData["effects"][followUpEffect])
+                target.effects.append(newEffect)
+                if "applies" in effect.effectLines.keys():
+                    messages.append(copy.copy(effect.effectLines["applies"]))
+                if "applied" in newEffect.effectLines.keys():
+                    messages.append(copy.copy(newEffect.effectLines["applied"]))
+                elif newEffect.useDefaultMessages:
+                    messages.append(copy.copy(f"{newEffect.name} has been applied to {target.name}."))
+        else:
+            e = random.choice(effect.followUpEffects)
+            if e.lower() != "none":
+                newEffect = Effect(e, target.gameData.getGameData("effect", e))
+                target.effects.append(newEffect)
+                if "applies" in effect.effectLines.keys():
+                    messages.append(copy.copy(effect.effectLines["applies"]))
+                if "applied" in newEffect.effectLines.keys():
+                    messages.append(copy.copy(newEffect.effectLines["applied"]))
+                elif newEffect.useDefaultMessages:
+                    messages.append(copy.copy(f"{newEffect.name} has been applied to {target.name}."))
     if effect.hiddenMessages:
         messages = []
     return messages

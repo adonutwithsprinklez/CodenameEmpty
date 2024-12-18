@@ -15,7 +15,7 @@
             {
                 "action":"Dust yourself off.",
                 "requirements":[
-                    ["have", "flag", "arenaFightEasy"]
+                    ["playerFlags", "has", "arenaFightEasy"]
                 ],
                 "eventDo":[
                     ["removeFlag", "arenaFightEasy"],
@@ -27,7 +27,7 @@
             {
                 "action":"Dust yourself off.",
                 "requirements":[
-                    ["have", "flag", "arenaFightMed"]
+                    ["playerFlags", "has", "arenaFightMed"]
                 ],
                 "eventDo":[
                     ["removeFlag", "arenaFightMed"],
@@ -39,7 +39,7 @@
             {
                 "action":"Dust yourself off.",
                 "requirements":[
-                    ["have", "flag", "arenaFightHard"]
+                    ["playerFlags", "has", "arenaFightHard"]
                 ],
                 "eventDo":[
                     ["removeFlag", "arenaFightHard"],

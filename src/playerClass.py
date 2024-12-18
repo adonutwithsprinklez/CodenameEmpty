@@ -3,8 +3,11 @@ import copy
 
 from armorClass import Armor, getArmorSize
 from ApplicationWindowClass import ApplicationWindow
-from effectClass import processAppliedEffects
+from effectClass import Effect, processAppliedEffects
+from eventClass import Event
 from dieClass import rollDice
+from gameDataHandler import GameDataHandler
+from miscFunctions import fireEvent
 from raceClass import Race, Limb
 from weaponClass import Weapon
 
@@ -51,7 +54,7 @@ class Player(object):
             "intelligence": 0
         }
         self.effects = []
-        self.gameData = None
+        self.gameData:GameDataHandler = None
 
     def playerMenu(self, currentQuests, completedQuests):
         """
@@ -135,6 +138,9 @@ class Player(object):
                 cmd = -1
             if cmd == 0:
                 pass
+            elif cmd == -11:
+                for effect in self.effects:
+                    print(effect.name)
             elif cmd == 1:
                 self.viewInventory()
             elif cmd == 3:
@@ -441,7 +447,6 @@ class Player(object):
             self.disp.display(f'\t{self.getBodyDescription()}', 0)
             perks = []
             perks.extend(self.getPerks())
-            perks.extend(self.getRace().getPerks())
             if len(perks) > 0:
                 self.disp.display(f'Perks:')
                 for perk in perks:
@@ -568,7 +573,7 @@ class Player(object):
                 # TODO Incorrect input notification
                 pass
         
-    def converseNPC(self, npc, query):
+    def converseNPC(self, npc, query, areaController):
         """
         Perform a conversation with an NPC.
 
@@ -624,6 +629,13 @@ class Player(object):
                         else:
                             # TODO: take item from player
                             pass
+
+                if "addPlayerEffects" in npcDialogueLine.keys():
+                    for effect in npcDialogueLine["addPlayerEffects"]:
+                        self.effects.append(Effect(effect, self.gameData.getGameData("effect", effect)))
+                
+                if "fireEvent" in npcDialogueLine.keys():
+                    fireEvent(Event(npcDialogueLine["fireEvent"], self.gameData), self, areaController, self.disp, self.gameData, False)
 
                 dialogueLine = f"{npc.getName()} - {npcDialogueLine['dialogue']}"
                 playerQuery = self.getPlayerQuery()
@@ -1041,8 +1053,20 @@ class Player(object):
             "playerXPNeededForLevelUp": self.getXpNeededForLevelUp(),
             "playerPerks": self.getPerks(),
             "playerDialogueFlags": self.dialogueFlags,
-            "playerFlags": self.getFlags()
+            "playerFlags": self.getFlags(),
+            "playerLimbTypes":[]
         }
+        # Add to this query, a list with the names of each limb type the player
+        # has, and one entry for each limb type with the counts of that limb
+        # type.
+        playerQuery["playerLimbs"] = []
+        for limb in self.getRace().getLimbObjects():
+            if limb.getType() not in playerQuery["playerLimbTypes"]:
+                playerQuery["playerLimbs"].append(limb.getType())
+            if f"playerLimbCount_{limb.getType()}" in playerQuery.keys():
+                playerQuery[f"playerLimbCount_{limb.getType()}"] += 1
+            else:
+                playerQuery[f"playerLimbCount_{limb.getType()}"] = 1
         return playerQuery
     
     def giveXP(self, xp):
@@ -1139,6 +1163,9 @@ class Player(object):
         if setPrevious:
             self.previousRace = copy.copy(self.race)
         self.race = race
+        for effect in self.race.baseEffects:
+            newEffect = Effect(effect, self.gameData.getGameData("effect", effect))
+            self.effects.append(newEffect)
 
     # Class Getters
     def getDodge(self):
@@ -1327,6 +1354,13 @@ class Player(object):
                     bodyDescription += ", "
                 bodyDescription += f"{limb.getName()}"
             bodyDescription += "."
+        # Add any effect descriptions that have "bodyDesc" in effectLines
+        count = 0
+        for effect in self.effects:
+            if "bodyDesc" in effect.getEffectLines():
+                if count == 0:
+                    bodyDescription += "\n\t"
+                bodyDescription += f"{effect.getEffectLines()['bodyDesc']} "
         return bodyDescription
     
     def getXpNeededForLevelUp(self):

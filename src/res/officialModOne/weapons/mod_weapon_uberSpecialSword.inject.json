@@ -1,0 +1,5 @@
+{
+    "injectSeller":[
+        ["arena/npc_weaponSmith", 10]
+    ]
+}

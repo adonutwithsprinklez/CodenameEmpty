@@ -39,7 +39,7 @@
             {
                 "action":"Accept his invitation",
                 "requirements":[
-                    ["have","gold",1]
+                    ["gold", ">=", 1]
                 ],
                 "eventDo":[
                     ["say","You accept his proposal and hand the man a coin."],

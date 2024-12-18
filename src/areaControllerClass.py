@@ -8,8 +8,7 @@ from dieClass import rollDice
 class AreaController(object):
     ''' This class generates and stores all needed data for the world. Whenever
         a new area needs generated or reloaded this class will handle it. '''
-    def __init__(self, areaData=None, startingAreaID=None, weapons=None,
-    armor=None, misc=None, enemies=None, races=None, npcs=None, events=None, modifiers=None, dialogue=None, effects=None, DEBUG = 0):
+    def __init__(self, gameData=None, startingAreaID=None, DEBUG = 0):
         self.currentArea = None
 
         self.savedAreas = {
@@ -20,38 +19,33 @@ class AreaController(object):
 
         self.areasAddedByEvents = []
 
-        self.areaData = areaData
+        self.gameData = gameData
 
         self.generatedExits = False
         self.currentExits = []
-        self.initializeStartingArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue, effects)
+        self.initializeStartingArea(startingAreaID)
 
-    def initializeStartingArea(self, startingAreaID=None, weapons=None, armor=None, misc=None,
-                               enemies=None, races=None, npcs=None, events=None, modifiers=None, dialogue=None, effects=None):
+    def initializeStartingArea(self, startingAreaID=None):
         ''' Generates the starting area for the game. '''
-        self.generateArea(startingAreaID, weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue, effects)
+        self.generateArea(startingAreaID)
         self.currentArea.enemy = [] # Make sure no enemies spawn in the starting area
         self.currentArea.foughtEnemies()
 
-    def generateArea(self, areaType=None, weapons=None, armor=None, misc=None, enemies=None,
-                     races=None, npcs=None, events=None, modifiers=None, dialogue=None, effects=None):
+    def generateArea(self, areaType=None):
         ''' Generates an area of the specified type then sets it as the current area '''
-        self.setAndLoadCurrentArea(Area(self.areaData[areaType], [], [], areaType), weapons, armor, misc,
-                                        enemies, races, npcs, events, modifiers, dialogue, effects)
+        self.setAndLoadCurrentArea(Area(self.gameData.getGameData("area", areaType), [], [], areaType))
     
-    def loadCurrentArea(self, weapons=None, armor=None, misc=None, enemies=None, races=None, npcs=None,
-                        events=None, modifiers=None, dialogue = None, effects = None):
+    def loadCurrentArea(self):
         ''' Calls the current area's "load" function '''
-        self.currentArea.load(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue, effects)
+        self.currentArea.load(self.gameData)
         self.generatedExits = False
         self.currentExits = []
         self.areasAddedByEvents = []
     
-    def setAndLoadCurrentArea(self, area, weapons=None, armor=None, misc=None, enemies=None, races=None, 
-                              npcs=None, events=None, modifiers=None, dialogue=None, effects=None):
+    def setAndLoadCurrentArea(self, area):
         ''' Sets the current area and loads it in a single call'''
         self.setCurrentArea(area)
-        self.loadCurrentArea(weapons, armor, misc, enemies, races, npcs, events, modifiers, dialogue, effects)
+        self.loadCurrentArea()
         for category in self.currentArea.revisitable:
             if self.currentArea not in self.savedAreas[category]:
                 self.savedAreas[category].append(self.getCurrentArea())
@@ -184,7 +178,7 @@ class AreaController(object):
                     if newroll > highroll and not alreadyUsed:
                         newArea = aType
                         highroll = newroll
-            generatedArea = Area(self.areaData[newArea[0]], repeatableEvents,
+            generatedArea = Area(self.gameData.getGameData("area", newArea[0]), repeatableEvents,
                                  globalRandomEvents, newArea[0])
             usedAreas.append(newArea[0])
             choices.append(generatedArea)

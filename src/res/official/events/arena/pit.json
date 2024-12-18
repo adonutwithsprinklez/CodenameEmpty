@@ -23,7 +23,7 @@
             {
                 "action":"Turn around and leave",
                 "requirements":[
-                    ["have","flag","knowsArenaRules"]
+                    ["playerFlags","has","knowsArenaRules"]
                 ],
                 "eventDo":[
                     ["say","You pause for a moment before turning around to leave. You are not sure that want to get into a fight right at this moment."],
@@ -34,7 +34,7 @@
             {
                 "action":"Turn around and leave",
                 "requirements":[
-                    ["nothave","flag","knowsArenaRules"]
+                    ["playerFlags","nothas","knowsArenaRules"]
                 ],
                 "eventDo":[
                     ["say","You pause for a moment before turning around to leave.\nYou should probably ask someone about this place before just entering something called \"The Pit\""],
@@ -53,7 +53,7 @@
             {
                 "action":"Tell him you're already signed up for a fight",
                 "requirements":[
-                    ["have","flag","arenaFightEasy"]
+                    ["playerFlags","has","arenaFightEasy"]
                 ],
                 "eventDo":[
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
@@ -69,7 +69,7 @@
             {
                 "action":"Tell him you're already signed up for a fight",
                 "requirements":[
-                    ["have","flag","arenaFightMed"]
+                    ["playerFlags","has","arenaFightMed"]
                 ],
                 "eventDo":[
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
@@ -85,7 +85,7 @@
             {
                 "action":"Tell him you're already signed up for a fight",
                 "requirements":[
-                    ["have","flag","arenaFightHard"]
+                    ["playerFlags","has","arenaFightHard"]
                 ],
                 "eventDo":[
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
@@ -101,7 +101,7 @@
             {
                 "action":"Tell him you're already signed up for a duel",
                 "requirements":[
-                    ["have","flag","arenaFightDuel"]
+                    ["playerFlags","has","arenaFightDuel"]
                 ],
                 "eventDo":[
                     ["say","You tell the guard that you already talked to the Fight Master and have already signed up."],
@@ -140,7 +140,7 @@
             {
                 "action":"Ask him how to sign up for a fight",
                 "requirements":[
-                    ["nothave","flag","knowsArenaRules"]
+                    ["playerFlags","nothas","knowsArenaRules"]
                 ],
                 "eventDo":[
                     ["say",[

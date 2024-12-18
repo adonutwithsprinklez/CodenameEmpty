@@ -134,7 +134,7 @@ def getArmorSize(size:int)->str:
 	return ARMOR_SIZES[size-1]
 
 class Armor(object):
-	def __init__(self, data, limb=None, modifiers=None):
+	def __init__(self, data, limb=None, gameData=None):
 		"""
 		Initialize an instance of the Armor class.
 
@@ -187,7 +187,7 @@ class Armor(object):
 
 		# Check for modifiers
 		self.modifiers = []
-		if "modifiers" in data.keys() and modifiers:
+		if "modifiers" in data.keys() and gameData:
 			# Get the chance of a modifier
 			if random.randint(0,100) < data["modifierChance"]:
 				# Get the number of modifers to add
@@ -205,7 +205,7 @@ class Armor(object):
 								highRoll = newRoll
 						if newMod:
 							possibleMods.remove(newMod)
-							newMod = modifiers[newMod[0]].getInfo()
+							newMod = gameData.getGameData("modifier", newMod[0]).getInfo()
 							self.name = "{} {}".format(newMod["n"], self.name)
 							if newMod["e"] == "defence":
 								self.defence += ";{}".format(newMod["s"])

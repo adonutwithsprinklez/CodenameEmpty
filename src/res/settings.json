@@ -7,7 +7,7 @@
     "WIDTH": 1000,
     "HEIGHT": 600,
     "RESIZABLE": true,
-    "FONTSIZE": 12,
+    "FONTSIZE": 18,
     "THEME": {
       "WINDOWBGCOLOR": "#2d3436",
       "INPUTBGCOLOR": "#636e72",
@@ -15,39 +15,39 @@
       "STYLE": {
         "regular": {
           "tag": "p",
-          "font": "Courier 14"
+          "font": "Courier 18"
         },
         "bold": {
           "tag": "b",
-          "font": "Courier 14 bold"
+          "font": "Courier 18 bold"
         },
         "italic": {
           "tag": "i",
-          "font": "Courier 14 italic"
+          "font": "Courier 18 italic"
         },
         "underline": {
           "tag": "u",
-          "font": "Courier 14 underline"
+          "font": "Courier 18 underline"
         },
         "action": {
           "tag": "a",
-          "font": "Courier 14 italic"
+          "font": "Courier 18 italic"
         },
         "header1": {
           "tag": "h1",
-          "font": "Courier 20 underline"
+          "font": "Courier 24 underline"
         },
         "header2": {
           "tag": "h2",
-          "font": "Courier 18 bold"
+          "font": "Courier 22 bold"
         },
         "header3": {
           "tag": "h3",
-          "font": "Courier 16 bold"
+          "font": "Courier 20 bold"
         },
         "smaller": {
           "tag": "s",
-          "font": "Courier 12 italic"
+          "font": "Courier 16 italic"
         }
       },
       "FOREGROUND": {

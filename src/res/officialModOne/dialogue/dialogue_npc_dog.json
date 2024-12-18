@@ -6,5 +6,6 @@
         { "dialogue":"\"Bye friend!\"", "criteria":[ ["isAction", "=", "goodbye"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "=", "knine"] ] },
         { "dialogue":"\"Hey! What are you doing? Stop that!\"", "criteria":[ ["isAction", "=", "pet"], ["playerPerks", "has", "Animal Speech"], ["playerRace", "=", "knine"] ] }
     ],
-    "flags":["additionalDialogue"]
+    "flags":["additionalDialogue"],
+    "otherDialogueOptions":[]
 }

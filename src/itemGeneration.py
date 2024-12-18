@@ -8,33 +8,33 @@ from textGeneration import generateString
 from weaponClass import Weapon
 
 
-def generateItem(itemId, armorData, miscData, weaponData, modifiers, effects, limb=None):
-    if itemId in armorData.keys():
-        return generateArmor(armorData[itemId], modifiers, limb)
-    if itemId in miscData.keys():
-        return generateMisc(miscData[itemId], modifiers, effects)
-    if itemId in weaponData.keys():
-        return generateWeapon(weaponData[itemId], modifiers, effects)
+def generateItem(itemId, gameData, limb=None):
+    if itemId in gameData.getListOfKeys("armor"):
+        return generateArmor(gameData.getGameData("armor",itemId), gameData, limb)
+    elif itemId in gameData.getListOfKeys("misc"):
+        return generateMisc(gameData.getGameData("misc",itemId), gameData)
+    elif itemId in gameData.getListOfKeys("weapon"):
+        return generateWeapon(itemId, gameData)
     return None
 
-def generateArmor(data=None, modifiers=None, limb=None):
-    newArmor = Armor(data, limb, modifiers)
+def generateArmor(data=None, gameData=None, limb=None):
+    newArmor = Armor(data, limb, gameData)
     return newArmor
 
-def generateAmorSet(data=None, modifiers=None, limbs=[]):
+def generateAmorSet(data=None, gameData=None, limbs=[]):
     newArmors = []
     for limb in limbs:
-        newArmors.append(generateArmor(data, modifiers, limb))
+        newArmors.append(generateArmor(data, gameData, limb))
     return newArmors
 
-def generateMisc(data=None, modifiers=None, effects=None):
-    newMisc = Misc(data, modifiers, effects)
+def generateMisc(data=None, gameData=None):
+    newMisc = Misc(data, gameData)
     return newMisc
 
-def generateWeapon(data=None, modifiers=None, effects=None):
-    newWeapon = Weapon(data, modifiers, effects)
+def generateWeapon(name=None, gameData=None):
+    newWeapon = Weapon(name, gameData)
     if newWeapon.generated:
-        newWeapon = _generateWeapon(newWeapon, data)
+        newWeapon = _generateWeapon(newWeapon, gameData.getGameData("weapon", name))
     return newWeapon
 
 def _generateWeapon(newWeapon=None, data=None):

@@ -17,8 +17,5 @@
 	"modifierCount":"+1",
 	"modifiers":[
 		["wep_goodShape","1d6"]
-	],
-    "injectSeller":[
-        ["npc_arena_weaponSmith", 10]
-    ]
+	]
 }

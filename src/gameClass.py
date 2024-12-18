@@ -1,5 +1,6 @@
 
 # Official Python module imports
+import copy
 import random
 import time
 import os
@@ -12,7 +13,9 @@ from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
 from effectClass import Effect, processEffect
+from eventClass import Event
 from enemyClass import Enemy
+from gameDataHandler import GameDataHandler
 from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
 from miscClass import Misc
@@ -20,6 +23,7 @@ from modifierClass import Modifier
 from playerClass import Player
 from questClass import Quest
 from raceClass import Race
+from miscFunctions import fireEvent
 
 
 DEBUG = 0
@@ -42,6 +46,7 @@ class Game(object):
         self.settings = {}
         self.gameSettings = {}
         self.dataPackSettings = {}
+        self.gamedata:GameDataHandler = None
 
         self.areaController = None
         self.starter = None
@@ -71,13 +76,6 @@ class Game(object):
         DEBUG = self.settings["DEBUG"]
         DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
         DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
-        
-        '''
-        if resetAudioController:
-            self.audioController = AudioController()
-            self.audioController.addLayer("bgMusic")
-            self.audioController.addLayer("transition")
-        '''
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
@@ -89,146 +87,11 @@ class Game(object):
         if "fullscreen" in self.launchArgs:
             self.disp.set_fullscreen(True)
 
-        '''
-        if resetAudioController:
-            self.disp.initiate_audio(self.audioController)
-        self.audioController.setMuteLayer("bgMusic", self.gameSettings["MUTEBGMUSIC"])
-        self.audioController.setMuteAll(self.gameSettings["MUTEAUDIO"])
-
-        # Load some engine specific resources
-        if resetAudioController:
-            DEFAULTRESOURCES = self.settings["DEFAULTRESOURCES"]
-            enginedir = folder + DEFAULTRESOURCES["dir"]
-            audiodir = enginedir + DEFAULTRESOURCES["audio"]["dir"]
-            for audio in DEFAULTRESOURCES["audio"]["files"].keys():
-                self.audioController.bufferAudio(audio, audiodir + DEFAULTRESOURCES["audio"]["files"][audio])
-        '''
-
         # Load the datapacks/assets
+        # TODO: add default resources to the gamedata
         self.loadDataPackSettings()
-        packs = self.dataPackSettings["packsToLoad"]
+        self.gamedata = GameDataHandler(self.dataPackSettings, {}, DEBUG)
         self.starter = self.dataPackSettings["start"]
-        print("\nLoading assets...")
-        loadTimeStart = time.time()
-
-        for pack in packs:
-            if pack[1]:
-                pack = pack[0]
-
-                print("\tLoading pack \"{}\"...".format(pack))
-                self.packs[pack] = loadJson("%s%s/meta.json" % (folder, pack))
-
-                if "gameLogo" in self.packs[pack].keys():
-                    self.logos.append(self.packs[pack]["gameLogo"])
-                if "gameDesc" in self.packs[pack].keys():
-                    for desc in self.packs[pack]["gameDesc"]:
-                        self.descs.append(desc)
-
-                # Asset loading
-                # TODO: Clean this up. Either seperate into different functions or
-                # rewrite. This was fine until data injection became a feature. Now
-                # it's waaay too cluttered.
-                itemInjections = {}
-                for w in self.packs[pack]["weapons"]:
-                    self.weapons[w] = loadJson("%s%s/weapons/%s.json" % (folder, pack, w))
-                    # Check if the weapon has an injectSeller key
-                    if "injectSeller" in self.weapons[w].keys():
-                        for data in self.weapons[w]["injectSeller"]:
-                            if data[0] in itemInjections.keys():
-                                itemInjections[data[0]].append([w, data[1]])
-                            else:
-                                itemInjections[data[0]] = [[w, data[1]]]
-                    self.disp.dprint("\t\tLoaded Weapon %s" % w)
-                for a in self.packs[pack]["armor"]:
-                    self.armor[a] = loadJson("%s%s/armor/%s.json" % (folder, pack, a))
-                    # Check if the weapon has an injectSeller key
-                    if "injectSeller" in self.armor[a].keys():
-                        for data in self.armor[a]["injectSeller"]:
-                            if data[0] in itemInjections.keys():
-                                itemInjections[data[0]].append([a, data[1]])
-                            else:
-                                itemInjections[data[0]] = [[a, data[1]]]
-                    self.disp.dprint("\t\tLoaded Armor %s" % a)
-                for m in self.packs[pack]["misc"]:
-                    self.misc[m] = loadJson("%s%s/misc/%s.json" % (folder, pack, m))
-                    # Check if the weapon has an injectSeller key
-                    if "injectSeller" in self.misc[m].keys():
-                        for data in self.misc[m]["injectSeller"]:
-                            if data[0] in itemInjections.keys():
-                                itemInjections[data[0]].append([m, data[1]])
-                            else:
-                                itemInjections[data[0]] = [[m, data[1]]]
-                    self.disp.dprint("\t\tLoaded Misc %s" % m)
-                for a in self.packs[pack]["areas"]:
-                    self.areas[a] = loadJson("%s%s/areas/%s.json" % (folder, pack, a))
-                    if "injectArea" in self.areas[a].keys():
-                        for aKey in self.areas[a]["injectArea"].keys():
-                            injectData = [a] + self.areas[a]["injectArea"][aKey]
-                            self.areas[aKey]["areas"].append(injectData)
-                    self.disp.dprint("\t\tLoaded Area %s" % a)
-                for r in self.packs[pack]["races"]:
-                    raceData = loadJson("%s%s/races/%s.json" % (folder, pack, r))
-                    self.races[raceData["id"]] = raceData
-                    self.disp.dprint("\t\tLoaded Race %s" % r)
-                for n in self.packs[pack]["npcs"]:
-                    self.npcs[n] = loadJson("%s%s/npcs/%s.json" % (folder, pack, n))
-                    self.disp.dprint("\t\tLoaded NPC %s" % n)
-                for e in self.packs[pack]["enemies"]:
-                    self.enemies[e] = loadJson("%s%s/enemies/%s.json" % (folder, pack, e))
-                    if "injectArea" in self.enemies[e].keys():
-                        for injection in self.enemies[e]["injectArea"]:
-                            injectionEnemy = [e, injection[1]]
-                            self.areas[injection[0]]["enemies"].append(injectionEnemy)
-                            if "areaMinEnemyChance" in self.enemies[e].keys():
-                                self.areas[aKey]["enemyChance"] = max(self.areas[injection[0]]["enemyChance"],
-                                                                      self.enemies[e]["areaMinEnemyChance"])
-                            if "areaEnemyPointsPerHostility" in self.enemies[e].keys():
-                                self.areas[injection[0]]["enemyPointsPerHostility"] = self.enemies[e]["areaEnemyPointsPerHostility"]
-                    self.disp.dprint("\t\tLoaded Enemy %s" % e)
-                for q in self.packs[pack]["quests"]:
-                    self.quests[q] = loadJson("%s%s/quests/%s.json" % (folder, pack, q))
-                    self.disp.dprint("\t\tLoaded Quest %s" % q)
-                for e in self.packs[pack]["events"]:
-                    self.events[e] = loadJson("%s%s/events/%s.json" % (folder, pack, e))
-                    if "injectArea" in self.events[e].keys():
-                        for aKey in self.events[e]["injectArea"].keys():
-                            injectionEvent = [e, self.events[e]["injectArea"][aKey]]
-                            self.areas[aKey]["events"].append(injectionEvent)
-                            if "injectAreaMinChance" in self.events[e].keys():
-                                self.areas[aKey]["eventChance"] = max(self.areas[aKey]["eventChance"],
-                                                                      self.events[e]["injectAreaMinChance"])
-                    self.disp.dprint("\t\tLoaded Event %s" % e)
-                for m in self.packs[pack]["modifiers"]:
-                    mods = loadJson("%s%s/modifiers/%s.json" % (folder, pack, m))
-                    for mod in mods.keys():
-                        self.modifiers[mod] = Modifier(mod, mods[mod])
-                    self.disp.dprint("\t\tLoaded Modifier %s" % m)
-                for d in self.packs[pack]["dialogue"]:
-                    dialogueData = loadJson("%s%s/dialogue/%s.json" % (folder, pack, d))
-                    if "additionalDialogue" in dialogueData["flags"]:
-                        for line in dialogueData["lines"]:
-                            self.dialogue[d]["lines"].append(line)
-                    else:
-                        self.dialogue[d] = dialogueData
-                    self.disp.dprint("\t\tLoaded Dialogue %s" % d)
-                for ef in self.packs[pack]["effects"]:
-                    effects = loadJson("%s%s/effects/%s.json" % (folder, pack, ef))
-                    for effect in effects.keys():
-                        self.effects[effect] = effects[effect]
-                    self.disp.dprint("\t\tLoaded Effect %s" % ef)
-                
-                '''
-                if resetAudioController:
-                    for a in self.packs[pack]["audio"]:
-                        self.audioController.bufferAudio(a[0], "%s%s/audio/%s.wav" % (folder, pack, a[1]))
-                        self.disp.dprint("\t\tLoaded Audio %s" % a[0])
-                '''
-                print(f"\tFinished loading assets for pack {pack}.")
-            
-            # Inject items into sellers
-            for seller in itemInjections.keys():
-                for item in itemInjections[seller]:
-                    self.npcs[seller]["itemPool"].append(item)
 
         # Adds all loaded quests into a list of possible quests, as well as
         # loads thems into actual objects
@@ -247,19 +110,17 @@ class Game(object):
                     self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
         
-        loadTimeEnd = time.time()
-        print(f"Finished loading assets in {loadTimeEnd - loadTimeStart} seconds.")
+        # loadTimeEnd = time.time()
+        # print(f"Finished loading assets in {loadTimeEnd - loadTimeStart} seconds.")
         
         self.loadStartingArea()
         self.loaded = True
 
     def loadStartingArea(self):
         if not self.gameSettings["TUTORIALAREA"]:
-            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["tutorialArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue, self.effects)
+            self.areaController = AreaController(self.gamedata, random.choice(self.gamedata.getGameData("pack",self.starter)["tutorialArea"]))
         else:
-            self.areaController = AreaController(self.areas, random.choice(self.packs[self.starter]["startingArea"]),
-            self.weapons, self.armor, self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue, self.effects)
+            self.areaController = AreaController(self.gamedata, random.choice(self.gamedata.getGameData("pack",self.starter)["startingArea"]))
 
     def loadPlayer(self):
 
@@ -269,22 +130,22 @@ class Game(object):
             # TODO: Allow for starting armors to have modifiers
             modifiers = None
             # TODO: Implement the ability to equip multiple weapons
-            self.player.weapon = generateWeapon(self.weapons[weapon], modifiers, self.effects)
+            self.player.weapon = generateWeapon(weapon, self.gamedata)
         for armor in self.player.getStartingArmor():
             # TODO: Allow for starting armors to have modifiers
             modifiers = None
-            armorSet = generateAmorSet(self.armor[armor[0]], modifiers, armor[1])
+            armorSet = generateAmorSet(self.gamedata.getGameData("armor", armor[0]), self.gamedata, armor[1])
             self.player.equipArmorSet(armorSet)
 
         # Add all the extra inventory gear
         for item in self.player.getStartingInventory():
             newItem = None
-            if item in self.misc.keys():
-                newItem = Misc(self.misc[item], self.modifiers, self.effects)
-            elif item in self.weapons.keys():
-                newItem = generateWeapon(self.weapons[item], self.modifiers)
-            elif item in self.armor.keys():
-                newItem = Armor(self.armor[item])
+            if item in self.gamedata.getListOfKeys("misc"):
+                newItem = Misc(self.gamedata.getGameData("misc", item), self.gamedata)
+            elif item in self.gamedata.getListOfKeys("weapon"):
+                newItem = generateWeapon(self.gamedata.getGameData("weapon", item), self.gamedata)
+            elif item in self.gamedata.getListOfKeys("armor"):
+                newItem = Armor(self.gamedata.getGameData("armor", item), None, self.gamedata)
             if newItem != None:
                 self.player.inv.append(newItem)
             
@@ -380,70 +241,7 @@ class Game(object):
         ##### Random event Code #####
         if self.areaController.getCurrentAreaHasEvent(self.gameSettings["DISABLEFLAVOREVENTS"]):
             event = self.areaController.getCurrentAreaEvent()
-            self.disp.dprint(event.name)
-            while not event.finished:
-                self.disp.clearScreen()
-                self.disp.displayHeader(f"{event.name}")
-                self.disp.display(f"{event.msg}", 1)
-                x = 0
-                choices = event.getPossibleActions(self.player)
-                if len(choices) > 0:
-                    self.disp.displayHeader("Actions", 1, 1)
-                    for choice in choices:
-                        x += 1
-                        action = choice["action"]
-                        self.disp.displayAction(f'{x}. {action}', x, 0)
-                    self.disp.closeDisplay()
-
-                    try:
-                        #cmd = int(input())
-                        cmd = self.disp.get_input(True)
-                    except:
-                        cmd = -1
-                    if cmd > 0 and cmd <= x:
-                        for action in choices[cmd-1]["eventDo"]:
-                            self.disp.dprint(action)
-                            if action[0] == "say":
-                                self.displayEventAction(action[1])
-                            elif action[0] == "goto":
-                                event.gotoPart(random.choice(action[1]))
-                            elif action[0] == "addTag":
-                                self.player.tags.append(event.getTag(action[1]))
-                            elif action[0] == "take":
-                                event.takeItem(action[1], action[2], self.player)
-                            elif action[0] == "give":
-                                for i in range(action[2]):
-                                    result = event.giveItem(action[1], action[2], self.player, self.weapons,
-                                                            self.armor, self.misc, self.modifiers, self.effects)
-                                    if self.settings["DEBUG"] and not result:
-                                        raise Exception("Something went wrong when processing an event's 'give' command.")
-                            elif action[0] == "spawnEnemy":
-                                for enemyid in action[1]:
-                                    self.areaController.addEnemyToCurrentArea(Enemy(
-                                        self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers, self.effects))
-                            elif action[0] == "addArea":
-                                self.areaController.addExitToAreaFromEvent(action[1])
-                            elif action[0] == "addFlag":
-                                if action[1] not in self.player.flags:
-                                    self.player.flags.append(action[1])
-                            elif action[0] == "removeFlag":
-                                if action[1] in self.player.flags:
-                                    self.player.flags.remove(action[1])
-                            elif action[0] == "setName":
-                                event.setName(action[1])
-                            elif action[0] == "addEffect":
-                                newEffect = Effect(action[1], self.effects[action[1]])
-                                if newEffect.immediate:
-                                    messages = newEffect.processEffect(self.player)
-                                    for message in messages:
-                                        self.displayEventAction(message)
-                            elif action[0] == "finish":
-                                event.finish()
-                else:
-                    self.disp.closeDisplay()
-                    event.finish()
-                    #input("\nEnter to continue")
-                    self.disp.wait_for_enter()
+            fireEvent(event, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
         else:
             self.areaController.clearEvent()
 
@@ -451,17 +249,6 @@ class Game(object):
         self.areaController.foughtCurrentAreaEnemies()
         if self.player.quit:
             return None
-
-    def displayEventAction(self, message):
-        self.disp.clearScreen()
-        self.disp.displayHeader(self.areaController.getCurrentAreaEvent().name)
-        if type(message) == list:
-            for line in message:
-                self.disp.display(line)
-        else:
-            self.disp.display(message)
-        self.disp.closeDisplay()
-        self.disp.wait_for_enter()
 
     def fightEnemies(self):
         ##### Fighting Code #####
@@ -485,7 +272,9 @@ class Game(object):
                     self.disp.clearScreen()
                     playerAttackOptions = self.player.getAttackOptions()
                     # TODO: Refactor this whole loop
-                    while not ((int(cmd) <= len(playerAttackOptions)+1 and int(cmd) >= 0) or (cmd == "HEALME" and DEBUG)):
+                    if type(cmd) != int and cmd != "HEALME":
+                        cmd = -1
+                    while not ((cmd == "HEALME" and DEBUG) or (int(cmd) <= len(playerAttackOptions)+1 and int(cmd) >= 0)):
                         self.disp.displayHeader("Enemy Encountered - <red>%s<red>" % (areaEnemy.name))
                         self.disp.display("%s The enemy has a danger level of %d." %
                                           (areaEnemy.getDesc(), areaEnemy.getDanger()), 1, 1)
@@ -526,7 +315,7 @@ class Game(object):
                             if self.player.quit:
                                 # TODO Exit the game completely
                                 return None
-                        elif int(cmd) not in list(range(i+1)):
+                        elif type(cmd) == int and int(cmd) not in list(range(i+1)):
                             self.disp.displayHeader("Error")
                             self.disp.display("That was not a valid response.", 1, 1)
                         elif DEBUG:
@@ -534,8 +323,9 @@ class Game(object):
                             if cmd == "HEALME":
                                 self.disp.dprint("Healing player fully.")
                                 self.player.hp = self.player.getMaxHP()
-
-                    if (int(cmd) in list(range(i)) and int(cmd) > 0) or cmd == "HEALME":
+                    if cmd == "HEALME":
+                        cmd = -1
+                    if int(cmd) in list(range(i)) and int(cmd) > 0:
                         self.disp.clearScreen()
                         damage = self.player.getWeaponDamage(int(cmd)-1)
                         if DEBUG and cmd == 90:
@@ -549,15 +339,16 @@ class Game(object):
                         messages = []
                         effectsApplied = []
                         if int(cmd) == 1:
-                            for effect in self.player.weapon.getEffects(False):
-                                if effect.appliable and effect.rollChance(True) > 0:
-                                    if effect.immediate:
-                                        gameData = {"races":self.races, "effects":self.effects}
-                                        messages.extend(processEffect(effect, areaEnemy, gameData, self.player.getWeaponModifiers(int(cmd)-1)))
-                                    if effect.removeAfterApply and self.player.weapon.effects.count(effect) > 0:
-                                        self.player.weapon.effects.remove(effect)
-                                    areaEnemy.effects.append(effect)
-                                    effectsApplied.append(effect)
+                            if self.player.weapon != None:
+                                for effect in self.player.weapon.getEffects(False):
+                                    if effect.appliable and effect.rollChance(True) > 0:
+                                        if effect.immediate:
+                                            gameData = {"races":self.races, "effects":self.effects}
+                                            messages.extend(processEffect(effect, areaEnemy, gameData, self.player.getWeaponModifiers(int(cmd)-1)))
+                                        if effect.removeAfterApply and self.player.weapon.effects.count(effect) > 0:
+                                            self.player.weapon.effects.remove(effect)
+                                        areaEnemy.effects.append(effect)
+                                        effectsApplied.append(effect)
                         self.disp.displayHeader("You")
                         self.disp.display("%s You dealt %d damage." % (msg, damage), 1, 1)
                         if len(messages) > 0:
@@ -649,6 +440,11 @@ class Game(object):
                     self.disp.wait_for_enter()
                     self.player.giveXP(areaEnemy.xp)
 
+                    if areaEnemy.defeatEvent:
+                        # Fire the defeat event
+                        fireEvent(areaEnemy.defeatEvent, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
+
+
                 # UPDATE QUEST INFO
                 self.updateQuestInfo()
                 self.workOnBacklog()
@@ -697,7 +493,7 @@ class Game(object):
                 self.disp.closeDisplay()
                 cmd = self.disp.get_input(True)
                 if 2 <= cmd <= 2+len(npcList):
-                    self.player.converseNPC(npcList[cmd-2], self.generateDialogueQuery())
+                    self.player.converseNPC(npcList[cmd-2], self.generateDialogueQuery(), self.areaController)
                 elif cmd == 1:
                     if self.chooseNewArea(True):
                         return None
@@ -779,8 +575,7 @@ class Game(object):
 
         if cmd > len(travelTypes):
             cmd -= len(travelTypes)
-        self.areaController.setAndLoadCurrentArea(choices[cmd - 1], self.weapons, self.armor,
-                            self.misc, self.enemies, self.races, self.npcs, self.events, self.modifiers, self.dialogue, self.effects)
+        self.areaController.setAndLoadCurrentArea(choices[cmd - 1])
         
         self.updateTravelInfoForQuests()
         
@@ -920,7 +715,9 @@ class Game(object):
         cmd = -1
         ready = False
         playerName = ""
-        playerRace = "human"
+        playerRace = "knine"
+        # optionalLimbs = Race(self.races[playerRace]).getOptionalLimbs()
+        r = Race(self.gamedata.getGameData("race", playerRace))
         while self.disp.window_is_open:
             if playerName != "" and playerRace != "":
                 ready = True
@@ -933,10 +730,9 @@ class Game(object):
             if playerRace == "":
                 self.disp.display("<b>Race:<b> ?")
             else:
-                r = Race(self.races[playerRace])
                 self.disp.display("<h3><b>Race:<b> <red>%s<red><h3>" % (r.getName(False)))
                 self.disp.display(f"\t{r.getPlayerCreationDescription()}",0)
-                self.disp.display("\t%s" %(r.getDescription()),0, 1)
+                self.disp.display("\t%s" %(r.getDescription(True)),0, 1)
 
                 self.disp.displayHeader("Character Stats")
                 self.disp.display("<h2>Stats:<h2>")
@@ -953,9 +749,11 @@ class Game(object):
             self.disp.displayHeader("Options")
             self.disp.displayAction("1. Change Name", 1)
             self.disp.displayAction("2. Change Race", 2, 0)
-            self.disp.displayAction("3. [<b><red>DISABLED<red><b>] Change Stats", 3, 1)
-            self.disp.displayAction("4. [<b><red>DISABLED<red><b>] Change Skills", 4, 0)
-            self.disp.displayAction("5. [<b><red>DISABLED<red><b>] Randomize All", 5, 1, 1)
+            if len(r.getOptionalLimbs()) > 0:
+                self.disp.displayAction("3. Configure Body", 3, 0)
+            # self.disp.displayAction("4. [<b><red>DISABLED<red><b>] Change Stats", 4, 1)
+            # self.disp.displayAction("5. [<b><red>DISABLED<red><b>] Change Skills", 5, 0)
+            # self.disp.displayAction("6. [<b><red>DISABLED<red><b>] Randomize All", 6, 1, 1)
             if ready:
                 self.disp.displayAction("<green>9. Start<green>", 9, 0)
             self.disp.displayAction("<red>0. Exit<red>", 0, 0)
@@ -963,12 +761,12 @@ class Game(object):
             cmd = self.disp.get_input(True)
             if ready and cmd == 9:
                 self.player = Player()
-                self.player.gameData = {
-                    "races":self.races,
-                    "effects":self.effects
-                }
+                # This is a very hacky way make sure the player can pass this
+                # info to events and effect calls. This is a temp solution
+                self.player.gameData = self.gamedata
                 self.player.setName(playerName)
-                self.player.setRace(Race(self.races[playerRace]), True)
+                r.updateLimbs()
+                self.player.setRace(r, True)
                 return True
             elif cmd == 0:
                 # Returns a None which causes the game to return to the main menu
@@ -977,13 +775,16 @@ class Game(object):
                 playerName = self.newGameSetName(playerName, playerRace)
             elif cmd == 2:
                 playerRace = self.newGameSetRace(playerRace)
+                r = Race(self.gamedata.getGameData("race", playerRace))
             elif cmd == 3:
+                r = self.newGameOptionalLimbs(r)
+            elif cmd == 4:
                 # TODO Randomize Money
                 pass
-            elif cmd == 4:
+            elif cmd == 5:
                 # TODO Randomize race
                 pass
-            elif cmd == 5:
+            elif cmd == 6:
                 # TODO Randomize full character
                 pass
     
@@ -999,18 +800,18 @@ class Game(object):
             self.disp.closeDisplay()
             name = self.disp.get_input(acceptNothing=True)
             if name == "1" and currentRace != "":
-                currentName = Race(self.races[currentRace]).getRandomName()
+                currentName = Race(self.gamedata.getGameData("race", currentRace)).getRandomName()
             elif name == "0" or name == "" or name == None:
                 return currentName
             else:
                 return name
 
     def newGameSetRace(self, currentRace):
-        r = Race(self.races[currentRace])
+        r = Race(self.gamedata.getGameData("race", currentRace))
         # Get all races to display
         races = []
-        for raceData in self.races:
-            additionalRace = Race(self.races[raceData])
+        for raceData in self.gamedata.getListOfKeys("race"):
+            additionalRace = Race(self.gamedata.getGameData("race", raceData))
             if additionalRace.getPlayeable():
                 races.append(additionalRace)
 
@@ -1066,6 +867,61 @@ class Game(object):
         if self.disp.get_input(True, True, True) == 1:
             return True
         return False
+    
+    def newGameOptionalLimbs(self,race):
+        while True:
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"Body Configurator: <red>{race.getName(False)}<red>")
+            self.disp.display("Your current body has the following configurable limbs:")
+            for l in race.selectedOptional:
+                self.disp.display(f"\t* {l.getName()}", 0, 0)
+            i = 0
+            for choice in race.getOptionalLimbs():
+                self.disp.displayAction(f"{i+1}. {choice['name']}", i+1, i==0)
+                i+=1
+            self.disp.displayAction("<red>0. Back<red>", 0, 1, 1)
+            self.disp.closeDisplay()
+            i = self.disp.get_input(True, True, True)
+            if i == 0:
+                return race
+            elif i-1 >=0 and i-1 < len(race.getOptionalLimbs()):
+                limbs = self.newGameConfigureLimb(race, i-1)
+                if limbs != None:
+                    race.limbsOptional[i-1]['defaultSelection'] = limbs
+                race.selectedOptional = []
+                for choice in race.getOptionalLimbs():
+                    for default in choice["defaultSelection"]:
+                        race.selectedOptional.append(choice["choices"][default])
+        
+    def newGameConfigureLimb(self, race, choice):
+        limbOptions = race.getOptionalLimbs()[choice]
+        currentSelection = copy.copy(limbOptions["defaultSelection"])
+        while True:
+            self.disp.clearScreen()
+            self.disp.displayHeader(f"Modifying {limbOptions['name']}")
+            self.disp.display(f"Current choices: {len(currentSelection)} | Minimum choices: {limbOptions['minCount']} | Maximum choices: {limbOptions['maxCount']}",1,1)
+            i = 0
+            for limb in limbOptions["choices"]:
+                if i in currentSelection:
+                    self.disp.displayAction(f"{i+2}. <green>{limb.getName()}<green>", i+2, 0)
+                else:
+                    self.disp.displayAction(f"{i+2}. {limb.getName()}", i+2, 0)
+                i+=1
+            if limbOptions["minCount"] <= len(currentSelection) <= limbOptions["maxCount"]:
+                self.disp.displayAction("1. Accept", 1, 1, 0)
+            self.disp.displayAction("0. Cancel", 0, 1, 0)
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True, True, True)
+            if cmd == 0:
+                return None
+            elif cmd == 1 and limbOptions["minCount"] <= len(currentSelection) <= limbOptions["maxCount"]:
+                return currentSelection
+            else:
+                if cmd-2 in currentSelection:
+                    currentSelection.remove(cmd-2)
+                elif cmd-2 >= 0 and cmd-2 < len(limbOptions["choices"]):
+                    currentSelection.append(cmd-2)
+
 
     def displayMainMenu(self):
         self.disp.dprint("Debug Arguments: {}".format(self.settings["DEBUG"]))
@@ -1073,14 +929,14 @@ class Game(object):
         self.disp.clearScreen() 
         self.disp.displayHeader("Main Menu")
 
-        logo = random.choice(self.logos)
+        logo = random.choice(self.gamedata.getLogos())
         firstLine = logo[0]
         self.disp.display(f"<cyan>{firstLine}<cyan>")
         for line in logo[1:]:
             self.disp.display(f"<cyan>{line}<cyan>", 0)
         
         self.disp.display(f'<s>Version: {self.settings["VERSION"]}<s>')
-        desc = random.choice(self.descs)
+        desc = random.choice(self.gamedata.getDescs())
         self.disp.display(f"<h2>{desc}<h2>")
         self.disp.closeDisplay()
 
@@ -1143,7 +999,7 @@ class Game(object):
             pagebreak = 0
         self.disp.displayAction("0. to exit", 0, pagebreak)
         self.disp.closeDisplay()
-
+        
         return listOfOptions
 
     def openDataPacks(self):

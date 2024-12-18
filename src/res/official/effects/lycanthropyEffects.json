@@ -1,5 +1,4 @@
 {
-
     "lycanthropyInitialInfection":{
         "effectID":"lycanthropy",
         "name": "Lycanthropy Infection",
@@ -35,7 +34,7 @@
         "hiddenDuration":true,
         "hiddenMessages":false,
         "useDefaultMessages":false,
-        "duration": "1d2",
+        "duration": "1d20+40",
         "durationInCombat":false,
         "durationInTravel":true,
         "followUpEffects": [
@@ -43,7 +42,8 @@
         ],
         "modifiers":[],
         "effectLines":{
-            "applies":"You feel a strange hunger gnawing at your insides. Why does raw meat sound so appealing?"
+            "applies":"You feel a strange hunger gnawing at your insides. Why does raw meat sound so appealing?",
+            "occasionalMessage":["The strange hunger to consume raw flesh intensifies."]
         },
         "overwrites":[
             {"ID":"lycanthropyInitialInfection", "onlyIfLongerDuration":false}
@@ -53,7 +53,10 @@
                 "disease"
             ],
             "color":"red"
-        }
+        },
+        "occasionalMessage":true,
+        "occasionalMessageChance":"+10+1d10",
+        "occasionalMessageRepeats":true
     },
     "lycanthropyStage2":{
         "effectID":"lycanthropy",
@@ -65,7 +68,7 @@
         "hiddenDuration":true,
         "hiddenMessages":false,
         "useDefaultMessages":false,
-        "duration": "1d2",
+        "duration": "1d20+40",
         "durationInCombat":false,
         "durationInTravel":true,
         "followUpEffects": [
@@ -73,6 +76,7 @@
         ],
         "modifiers":[],
         "effectLines":{
+            "occasionalMessage":["You yearn for the taste of fresh blood."]
         },
         "overwrites":[
             {"ID":"lycanthropyInitialInfection", "onlyIfLongerDuration":false},
@@ -83,7 +87,10 @@
                 "disease"
             ],
             "color":"red"
-        }
+        },
+        "occasionalMessage":true,
+        "occasionalMessageChance":"+10+1d10",
+        "occasionalMessageRepeats":true
     },
     "lycanthropyFinal":{
         "effectID":"lycanthropy",
@@ -99,7 +106,8 @@
         "followUpEffects": [],
         "modifiers":[],
         "effectLines":{
-            "applied":"The call of the moon is strong, and you feel the beast within you stirs."
+            "applied":"The call of the moon is strong, and you feel the beast within you stirs.",
+            "occasionalMessage":["You feel the beast within you stir. You suppress the urge to howl at the moon."]
         },
         "overwrites":[
             {"ID":"lycanthropyInitialInfection", "onlyIfLongerDuration":false},
@@ -109,13 +117,15 @@
         "miscData":{
             "flags":[
                 "disease",
-                "uncurable",
                 "werewolf"
             ],
             "color":"red",
             "perks":[
                 "Animal Speech"
-            ]
+            ],
+            "occasionalMessage":true,
+            "occasionalMessageChance":"+20+1d20",
+            "occasionalMessageRepeats":true
         }
     }
 }

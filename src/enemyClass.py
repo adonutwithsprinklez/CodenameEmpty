@@ -3,6 +3,7 @@ import copy
 
 from armorClass import Armor
 from dieClass import rollDice, maxRoll
+from eventClass import Event
 from itemGeneration import generateWeapon
 from miscClass import Misc
 from textGeneration import generateStringWithVariables
@@ -10,7 +11,8 @@ from universalFunctions import getDataValue
 
 
 class Enemy(object):
-    def __init__(self, data, weapons, armor, misc, modifiers, effects):
+    def __init__(self, enemy, gameData):
+        data = gameData.getGameData("enemy", enemy)
         self.name = generateStringWithVariables(data, "name")
         self.eID = data["eID"]
         self.desc = generateStringWithVariables(data, "desc")
@@ -21,7 +23,7 @@ class Enemy(object):
         self.effects = getDataValue("effects", data, [])
         self.flags = getDataValue("flags", data, [])
         if data["weapon"]:
-            self.weapon = generateWeapon(weapons[random.choice(data["weapon"])], modifiers, effects)
+            self.weapon = generateWeapon(random.choice(data["weapon"]), gameData)
 
         # Adds modifiers to the enemy
         self.modifiers = []
@@ -39,7 +41,7 @@ class Enemy(object):
                 mod = random.choice(mods)
                 # If the mod is not none add the info
                 if mod != "None":
-                    mod = modifiers[mod].getInfo()
+                    mod = gameData.getGameData("modifier", mod).getInfo()
                     # modifies the enemy's name to match the effect
                     self.name = "%s %s" % (mod["n"], self.name)
                     # Gets into the mod's effects
@@ -53,7 +55,7 @@ class Enemy(object):
 
         armorType = random.choice(data["armor"])
         if armorType != "None":
-            self.armor = Armor(armor[armorType])
+            self.armor = Armor(gameData.getGameData("armor", armorType))
         else:
             self.armor = None
         self.deathMsg = random.choice(data["deathMsg"])
@@ -61,16 +63,28 @@ class Enemy(object):
         if self.itemChance > 0:
             self.itemDrop = copy.copy(random.choice(data["itemDrops"]))
             try:
-                if self.itemDrop[0] in weapons.keys():
-                    self.itemDrop[0] = generateWeapon(
-                        weapons[self.itemDrop[0]], modifiers)
-                elif self.itemDrop[0] in armor.keys():
-                    self.itemDrop[0] = Armor(armor[self.itemDrop[0]])
-                elif self.itemDrop[0] in misc.keys():
-                    self.itemDrop[0] = Misc(misc[self.itemDrop[0]], modifiers, effects)
+                if self.itemDrop[0] in gameData.getListOfKeys("weapon"):
+                    self.itemDrop[0] = generateWeapon(self.itemDrop[0], gameData)
+                elif self.itemDrop[0] in gameData.getListOfKeys("armor"):
+                    self.itemDrop[0] = Armor(gameData.getGameData("armor",self.itemDrop[0]))
+                elif self.itemDrop[0] in gameData.getListOfKeys("misc"):
+                    self.itemDrop[0] = Misc(gameData.getGameData("misc", self.itemDrop[0]), gameData)
             except Exception as e:
                 print("Error loading {} item reward.".format(self.name))
                 print(e)
+        
+        self.defeatEvent = getDataValue("defeatEvent", data, None)
+        if self.defeatEvent:
+            self.defeatEventRoll = getDataValue("defeatEventRoll", data, "1d20")
+            roll = rollDice(self.defeatEventRoll)
+            # Check if the roll is high enough to trigger the event
+            # Default value to beat is 0, meaning if one is not provided, the event will always trigger
+            if roll < getDataValue("defeatEventScoreToBeat", data, 0):
+                self.defeatEvent = None
+            else:
+                event = random.choice(self.defeatEvent)
+                self.defeatEvent = Event(event, gameData)
+
         
         # Get tags
         self.tags = getDataValue("tags", data, [])
