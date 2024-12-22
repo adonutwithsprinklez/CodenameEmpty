@@ -8,18 +8,16 @@ import os
 
 # Local module imports
 from ApplicationWindowClass import ApplicationWindow
-# from audioControllerClass import AudioController
 from areaControllerClass import AreaController
 from armorClass import Armor
 from dieClass import rollDice
-from effectClass import Effect, processEffect
+from effectClass import processEffect
 from eventClass import Event
 from enemyClass import Enemy
 from gameDataHandler import GameDataHandler
 from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
 from miscClass import Misc
-from modifierClass import Modifier
 from playerClass import Player
 from questClass import Quest
 from raceClass import Race
@@ -59,7 +57,7 @@ class Game(object):
 
         self.displayIsInitialized = False
 
-    def initialLoad(self, folder="res/", settingsdata={}, resetAudioController=False, args=None):
+    def initialLoad(self, folder="res/", settingsdata={}, args=None):
         '''This does all of the heavy duty loading. Once this is complete, all
         game data is loaded until the game is closed, which cuts down on load
         times.'''
@@ -80,11 +78,11 @@ class Game(object):
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
             self.disp.initiate_window(f'Codename: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS,
-                                      DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
+                                      DELAY, DEBUGDISPLAY)
             self.displayIsInitialized = True
         else:
-            self.disp.set_settings(DISPLAYSETTINGS, DELAY, self.gameSettings["DELAYENABLED"], DEBUGDISPLAY)
-        if "fullscreen" in self.launchArgs:
+            self.disp.set_settings(DISPLAYSETTINGS, DEBUGDISPLAY)
+        if "fullscreen" in self.launchArgs or self.gameSettings["FULLSCREEN"]:
             self.disp.set_fullscreen(True)
 
         # Load the datapacks/assets
@@ -174,6 +172,9 @@ class Game(object):
         self.completedQuests = []
         self.backlog = []
         self.importantQuestInfo = []
+
+        if self.gamedata != None:
+            self.gamedata.clearAssetReferences()
 
         '''
         if self.audioController != None:
@@ -712,10 +713,16 @@ class Game(object):
     
     def newGameMenu(self):
         ''' This displays all required info for a player to start a new game '''
+        # Need to kick off the intro event, if there is one
+        if self.settings["INTROEVENT"] and self.settings["TUTORIALAREA"] and "introEvent" in self.gamedata.getGameData("pack",self.starter).keys():
+            event = random.choice(self.gamedata.getGameData("pack",self.starter)["introEvent"])
+            event = Event(event, self.gamedata)
+            fireEvent(event, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
+
         cmd = -1
         ready = False
         playerName = ""
-        playerRace = "knine"
+        playerRace = random.choice(self.gamedata.getGameData("pack",self.starter)["defaultRace"])
         # optionalLimbs = Race(self.races[playerRace]).getOptionalLimbs()
         r = Race(self.gamedata.getGameData("race", playerRace))
         while self.disp.window_is_open:
@@ -760,10 +767,8 @@ class Game(object):
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True)
             if ready and cmd == 9:
+                print(f"{len(self.gamedata.packs)} - GAMEENGINE")
                 self.player = Player()
-                # This is a very hacky way make sure the player can pass this
-                # info to events and effect calls. This is a temp solution
-                self.player.gameData = self.gamedata
                 self.player.setName(playerName)
                 r.updateLimbs()
                 self.player.setRace(r, True)
@@ -989,15 +994,15 @@ class Game(object):
             enabled = "<green>ENABLED<green>" if option[2] else "<red>DISABLED<red>"
             self.disp.displayAction(f'{i}. {option[1]:<50} <b>{enabled:>30}<b>', i, 0)
         self.disp.closeDisplay()
-        self.disp.display( "Input option # to toggle. Settings take effect on screen exit.")
+        self.disp.display( "<s>Settings take effect on screen exit<s>")
         pagebreak = 1
         if page < numPages:
-            self.disp.displayAction("12. for next page of settings", 12)
+            self.disp.displayAction("12. More", 12)
             pagebreak = 0
         if page > 0:
-            self.disp.displayAction("11. for previous page of settings", 11, pagebreak)
+            self.disp.displayAction("11. Previous", 11, pagebreak)
             pagebreak = 0
-        self.disp.displayAction("0. to exit", 0, pagebreak)
+        self.disp.displayAction("0. Save and Return", 0, pagebreak)
         self.disp.closeDisplay()
         
         return listOfOptions
@@ -1027,11 +1032,17 @@ class Game(object):
                 if toggle:
                     if not self.dataPackSettings["start"] == packId and not packData["packType"] == "standalone":
                         self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
-                    # TODO Disable current standalone pack and enable new one
-                    '''
-                    elif not self.dataPackSettings["start"] and packData["packType"] == "standalone":
+                    elif not self.dataPackSettings["start"] == packId and packData["packType"] == "standalone":
+                        # First, all standalone packs are disabled
+                        i = 0
+                        for pack in self.dataPackSettings["packsToLoad"]:
+                            packData = loadJson(f'{self.dataPackSettings["folder"]}{pack[0]}/meta.json')
+                            if packData["packType"] == "standalone":
+                                self.dataPackSettings["packsToLoad"][i][1] = False
+                            i += 1
+                        # Then, the pack is enabled
                         self.dataPackSettings["packsToLoad"][cmd-1+9*packPage][1] ^= True
-                    '''
+                        self.dataPackSettings["start"] = packId
             elif cmd == 12 and packPage < numPages:
                 packPage += 1
             elif cmd == 11 and packPage > 0:
@@ -1058,15 +1069,15 @@ class Game(object):
         self.disp.display(f'Type: {packType}')
 
         self.disp.closeDisplay()
-        if pack["packType"] == "standalone" and enabled:
+        if pack["packType"] == "standalone" and enabled=="ENABLED":
             self.disp.display("INFO: This data pack cannot be disabled. You must enabled a different " +
                               "\"standalone\" data pack in order for this one to be disabled.")
             self.disp.displayAction("0. Exit", 0)
-        elif pack["packType"] == "standalone" and not enabled:
-            self.disp.displayAction("1. to change the currently active \"standalone\" data pack to this one", 1)
+        elif pack["packType"] == "standalone":
+            self.disp.displayAction(f"1. Set {packName} Active", 1)
             self.disp.displayAction("0. Cancel", 0, 0)
         else:
-            self.disp.displayAction("1. to toggle status", 1)
+            self.disp.displayAction("1. Toggle", 1)
             self.disp.displayAction("0. Cancel", 0, 0)
         self.disp.closeDisplay()
         return self.disp.get_input(True, True, True) == 1
@@ -1094,15 +1105,31 @@ class Game(object):
         self.disp.closeDisplay()
         pagebreak = 1
         if page < numPages:
-            self.disp.displayAction("12. for next page of settings", 12)
+            self.disp.displayAction("12. for next page of data packs", 12)
             pagebreak = 0
         if page > 0:
-            self.disp.displayAction("11. for previous page of settings", 11, pagebreak)
+            self.disp.displayAction("11. for previous page of data packs", 11, pagebreak)
             pagebreak = 0
         self.disp.displayAction("0. to exit", 0, pagebreak)
         self.disp.closeDisplay()
 
         return listOfOptions
+    
+    def confirmationWindow(self, message="Are you sure?", yesButton="Confirm", noButton="Cancel"):
+        result = None
+        while result == None:
+            self.disp.clearScreen()
+            self.disp.displayHeader("Confirmation")
+            self.disp.display(message)
+            self.disp.displayAction(f"1. {yesButton}", 1)
+            self.disp.displayAction(f"0. {noButton}", 0)
+            self.disp.closeDisplay()
+            cmd = self.disp.get_input(True)
+            if cmd == 1:
+                result = True
+            elif cmd == 0:
+                result = False
+        return result
 
     # GAME SHUTDOWN
     def shutdown_game(self):

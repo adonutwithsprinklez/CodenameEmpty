@@ -1,0 +1,81 @@
+{
+    "id":"the_cart",
+    "type":"intro",
+    "name":[
+        "The Cart"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You are surrounded by darkness, the only sound is the creaking of the cart you are in."
+        ],
+        "actions":[
+            {
+                "action":"Open your eyes",
+                "eventDo":[
+                    ["say", ["You open your eyes, and are greated by the sight of several other prisoners in the cart with you.",
+                            "\"Hey, you. You're finally awake.\"",
+                            "You turn to look at the one speaking. He is wearing the easily identifiable garb of the rebellious Stormcloaks."
+                        ]
+                    ],
+                    ["goto", "#thecartride"]
+                ]
+            }
+        ]
+    },
+    "#thecartride":{
+        "msg":[
+            "\"The name's Ralof,\" he says, \"You were trying to cross the border, right? Walked right into that Imperial ambush, same as us, and that thief over there.\""
+        ],
+        "actions":[
+            {
+                "action":"Look at the thief",
+                "eventDo":[
+                    ["say", ["You turn to the one Ralof called a thief. He wears nothing but rags, and has an angry look on his face.",
+                            "\"Damn you Stormcloaks. Skyrim was fine until you came along. Empire was nice and lazy,\" the thief yells at Ralof, \" If they hadn't been looking for you, I could've stolen that horse and been halfway to Hammerfell,\" he stops for a moment before turning to you, \"You there. You and me - we shouldn't be here. It's these Stormcloaks the Empire wants.\"",
+                            "Ralof shrugs, \"We're all brothers and sisters in binds now, thief.\""
+                        ]
+                    ],
+                    ["goto", "#ulfric"]
+                ]
+            },
+            {
+                "action":"Look around",
+                "eventDo":[
+                    ["say", ["You glance around the cart. There are several other prisoners, with their hand bound the same as you.",
+                            "\"Damn you Stormcloaks. Skyrim was fine until you came along. Empire was nice and lazy. If they hadn't been looking for you, I could've stolen that horse and been halfway to Hammerfell,\" the thief yells at Ralof, \"You there,\" you turn your head to the thief, \"You and me- we shouldn't be here. It's these Stormcloaks the Empire wants.\"",
+                            "Ralof shrugs, \"We're all brothers and sisters in binds now, thief.\""
+                        ]
+                    ],
+                    ["goto", "#ulfric"]
+                ]
+            }
+        ]
+    },
+    "#ulfric":{
+        "msg":[
+            "The Imperial soldier driving the cart calls out, \"Shut up back there!\""
+        ],
+        "actions":[
+            {
+                "action":"Lean back",
+                "eventDo":[
+                    ["say", ["The thief gestures to the man with a gag in his mouth, \"What's wrong with him, huh?\"",
+                            "\"Watch your tongue! You're speaking to Ulfric Stormcloak, the true High King,\" Ralof says.",
+                            "\"Ulfric? The Jarl of Windhelm? You're the leader of the rebellion. But if they've captured you...\" the thief trails off, \"Oh gods, where are they taking us?\"",
+                            "Ralof looks at you, \"I don't know where we're going, but Sovngarde awaits.\"",
+                            "The thief looks around frantically, \"No, this can't be happening. This isn't happening.\"",
+                            "Ralof looks at you, \"Hey, what village are you from, horse thief?\"",
+                            "\"Why do you care?\"",
+                            "Ralof shrugs, \"A Nord's last thoughts should be of home.\"",
+                            "\"Rorikstead. I'm Lokir... from Rorikstead,\""
+                        ]
+                    ],
+                    ["goto", "#entrance"]
+                ]
+            }
+        ]
+    }
+}

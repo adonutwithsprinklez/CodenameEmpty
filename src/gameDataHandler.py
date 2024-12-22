@@ -10,49 +10,54 @@ from universalFunctions import getDataValue
 
 
 class GameDataHandler(object):
-    def __init__(self, datapackSettings={}, defaultResources={}, DEBUG=False):
-        self.DEBUG = DEBUG
+    DEBUG:bool = False
+
+    packs:dict = {} # Used to hold metadata for each datapack
+
+    weapons:dict = {}
+    armor:dict = {}
+    misc:dict = {}
+    areas:dict = {}
+    races:dict = {}
+    quests:dict = {}
+    events:dict = {}
+    npcs:dict = {}
+    enemies:dict = {}
+    modifiers:dict = {}
+    dialogue:dict = {}
+    effects:dict = {}
+
+    logos:dict = [] # List of logos
+    descs:dict = [] # List of descriptions
+
+    datapackSettings = None
+    resFolder = None
+    defaultResources = None
+
+    def __init__(self, ds=None, dr=None, DEBUG=None):
+        if DEBUG != None:
+            self.DEBUG = DEBUG
+        
         # PRINT DEBUG STATUS NO MATTER WHAT
         print (f"Game Data Handler Debug = {self.DEBUG}")
 
-        self.packs:dict = {} # Used to hold metadata for each datapack
-
-        self.weapons:dict = {}
-        self.armor: dict = {}
-        self.misc: dict = {}
-        self.areas: dict = {}
-        self.races: dict = {}
-        self.quests: dict = {}
-        self.events: dict = {}
-        self.npcs: dict = {}
-        self.enemies: dict = {}
-        self.modifiers: dict = {}
-        self.dialogue: dict = {}
-        self.effects: dict = {}
-
-        self.logos: list = [] # List of logos
-        self.descs: list = [] # List of descriptions
-
-        self.datapackSettings = None
-        self.resFolder = None
-        self.defaultResources = None
-
         self.dp("Initializing GameDataHandler")
 
-        self.refreshAssetReferences(datapackSettings, defaultResources)
+        if ds != None and dr != None:
+            self.refreshAssetReferences(ds, dr)
 
-        print("Done")
+        self.dp("Done")
 
-    def refreshAssetReferences(self, datapackSettings={}, defaultResources={}):
+    def refreshAssetReferences(self, dpsettings={}, defRes={}):
         ''' Refreshes the asset references '''
         self.clearAssetReferences()
 
-        self.datapackSettings = datapackSettings
-        self.resFolder = self.datapackSettings["folder"]
-        self.defaultResources = defaultResources
+        GameDataHandler.datapackSettings = dpsettings
+        GameDataHandler.resFolder = GameDataHandler.datapackSettings["folder"]
+        GameDataHandler.defaultResources = defRes
 
-        self.dp(f"Datapack Settings: {datapackSettings}")
-        self.dp(f"Default Resources: {defaultResources}")
+        self.dp(f"Datapack Settings: {GameDataHandler.datapackSettings}")
+        self.dp(f"Default Resources: {GameDataHandler.defaultResources}")
 
         self.loadData()
 
@@ -61,7 +66,7 @@ class GameDataHandler(object):
         loadTimeStart = time.time()
 
         # Grab all of the data pack metadata
-        for pack in self.datapackSettings["packsToLoad"]:
+        for pack in GameDataHandler.datapackSettings["packsToLoad"]:
             # Check if pack is enabled
             if pack[1]:
                 self.prepDatapack(pack)
@@ -71,47 +76,47 @@ class GameDataHandler(object):
         print(f"Initial data loaded in {loadTimeEnd - loadTimeStart} seconds")
 
         # Load all files if debug to make sure nothing loaded improperly
-        if self.DEBUG:
+        if GameDataHandler.DEBUG:
             loadTimeStart = time.time()
-            for key in self.weapons.keys():
-                self.weapons[key].load()
-            for key in self.armor.keys():
-                self.armor[key].load()
-            for key in self.misc.keys():
-                self.misc[key].load()
-            for key in self.areas.keys():
-                self.areas[key].load()
-            for key in self.quests.keys():
-                self.quests[key].load()
-            for key in self.events.keys():
-                self.events[key].load()
-            for key in self.npcs.keys():
-                self.npcs[key].load()
-            for key in self.enemies.keys():
-                self.enemies[key].load()
-            for key in self.dialogue.keys():
-                self.dialogue[key].load()
+            for key in GameDataHandler.weapons.keys():
+                GameDataHandler.weapons[key].load()
+            for key in GameDataHandler.armor.keys():
+                GameDataHandler.armor[key].load()
+            for key in GameDataHandler.misc.keys():
+                GameDataHandler.misc[key].load()
+            for key in GameDataHandler.areas.keys():
+                GameDataHandler.areas[key].load()
+            for key in GameDataHandler.quests.keys():
+                GameDataHandler.quests[key].load()
+            for key in GameDataHandler.events.keys():
+                GameDataHandler.events[key].load()
+            for key in GameDataHandler.npcs.keys():
+                GameDataHandler.npcs[key].load()
+            for key in GameDataHandler.enemies.keys():
+                GameDataHandler.enemies[key].load()
+            for key in GameDataHandler.dialogue.keys():
+                GameDataHandler.dialogue[key].load()
             loadTimeEnd = time.time()
             print(f"It took {loadTimeEnd-loadTimeStart} seconds")
 
     def prepDatapack(self, pack):
         packName = pack[0]
         packData = loadJson(f"{self.resFolder}{packName}/meta.json")
-        self.packs[packName] = packData
+        GameDataHandler.packs[packName] = packData
 
         # Grab any logos and descriptions
         if "gameLogo" in packData.keys():
-            self.logos.append(packData["gameLogo"])
+            GameDataHandler.logos.append(packData["gameLogo"])
         if "gameDesc" in packData.keys():
             for desc in packData["gameDesc"]:
-                self.descs.append(desc)
+                GameDataHandler.descs.append(desc)
 
         # Create all needed GameDataObjects for the Datapack:
-        folder = self.datapackSettings["folder"]
+        folder = GameDataHandler.datapackSettings["folder"]
         itemInjections = {}
-        for w in self.packs[packName]["weapons"]:
+        for w in GameDataHandler.packs[packName]["weapons"]:
             datafile = f"{folder}{packName}/weapons/{w}.json"
-            self.weapons[w] = GameDataObject(datafile, "weapon")
+            GameDataHandler.weapons[w] = GameDataObject(datafile, "weapon")
 
             # Check if the weapon has a .inject files associated
             injectFile = f"{folder}{packName}/weapons/{w}.inject.json"
@@ -127,9 +132,9 @@ class GameDataHandler(object):
                             itemInjections[data[0]] = [[w, data[1]]]
             self.dp("\t\tLoaded Weapon %s" % w)
         
-        for a in self.packs[packName]["armor"]:
+        for a in GameDataHandler.packs[packName]["armor"]:
             datafile = f"{folder}{packName}/armor/{a}.json"
-            self.armor[a] = GameDataObject(datafile, "armor")
+            GameDataHandler.armor[a] = GameDataObject(datafile, "armor")
 
             # Check if the armor has a .inject files associated
             injectFile = f"{folder}{packName}/armor/{a}.inject.json"
@@ -144,9 +149,9 @@ class GameDataHandler(object):
                         else:
                             itemInjections[data[0]] = [[a, data[1]]]
             self.dp("\t\tLoaded Armor %s" % a)
-        for m in self.packs[packName]["misc"]:
+        for m in GameDataHandler.packs[packName]["misc"]:
             datafile = f"{folder}{packName}/misc/{m}.json"
-            self.misc[m] = GameDataObject(datafile, "misc")
+            GameDataHandler.misc[m] = GameDataObject(datafile, "misc")
 
             # Check if the misc item has a .inject files associated
             injectFile = f"{folder}{packName}/misc/{m}.inject.json"
@@ -162,9 +167,9 @@ class GameDataHandler(object):
                             itemInjections[data[0]] = [[m, data[1]]]
             self.dp("\t\tLoaded Misc %s" % m)
         
-        for a in self.packs[packName]["areas"]:
+        for a in GameDataHandler.packs[packName]["areas"]:
             datafile = f"{folder}{packName}/areas/{a}.json"
-            self.areas[a] = GameDataObject(datafile, "area")
+            GameDataHandler.areas[a] = GameDataObject(datafile, "area")
 
             # Check if the area has a .inject files associated
             injectFile = f"{folder}{packName}/areas/{a}.inject.json"
@@ -179,26 +184,26 @@ class GameDataHandler(object):
                             "areaId":aKey,
                             "chance":injectData["injectArea"][aKey]
                         }
-                        self.areas[aKey].addInjection(injection)
+                        GameDataHandler.areas[aKey].addInjection(injection)
             self.dp("\t\tLoaded Area %s" % a)
 
         # Load the fantasy race data
-        for r in self.packs[packName]["races"]:
+        for r in GameDataHandler.packs[packName]["races"]:
             datafile = f"{folder}{packName}/races/{r}.json"
 
             # Sadly, due to poor implementation, we have to load the data first to get the id
             data = GameDataObject(datafile, "race")
             data.load()
-            self.races[data.getData()["id"]] = data
+            GameDataHandler.races[data.getData()["id"]] = data
 
-        for n in self.packs[packName]["npcs"]:
-            self.npcs[n] = GameDataObject(f"{self.resFolder}{packName}/npcs/{n}.json", "npc")
+        for n in GameDataHandler.packs[packName]["npcs"]:
+            GameDataHandler.npcs[n] = GameDataObject(f"{GameDataHandler.resFolder}{packName}/npcs/{n}.json", "npc")
             # self.npcs[n] = loadJson("%s%s/npcs/%s.json" % (folder, pack, n))
             self.dp("\t\tLoaded NPC %s" % n)
         
-        for e in self.packs[packName]["enemies"]:
+        for e in GameDataHandler.packs[packName]["enemies"]:
             datafile = f"{folder}{packName}/enemies/{e}.json"
-            self.enemies[e] = GameDataObject(datafile, "enemy")
+            GameDataHandler.enemies[e] = GameDataObject(datafile, "enemy")
 
             # Check if the enemy has a .inject files associated
             injectFile = f"{folder}{packName}/enemies/{e}.inject.json"
@@ -214,16 +219,16 @@ class GameDataHandler(object):
                             "areaMinEnemyChance":getDataValue("areaMinEnemyChance", injectData, 0),
                             "areaEnemyPointsPerHostility":getDataValue("areaEnemyPointsPerHostility", injectData, 0)
                         }
-                        self.areas[injection[0]].addInjection(injectionEnemy)
+                        GameDataHandler.areas[injection[0]].addInjection(injectionEnemy)
         
-        for q in self.packs[packName]["quests"]:
+        for q in GameDataHandler.packs[packName]["quests"]:
             datafile = f"{folder}{packName}/quests/{q}.json"
-            self.quests[q] = GameDataObject(datafile, "quest")
+            GameDataHandler.quests[q] = GameDataObject(datafile, "quest")
             self.dp("\t\tLoaded Quest %s" % q)
 
-        for e in self.packs[packName]["events"]:
+        for e in GameDataHandler.packs[packName]["events"]:
             datafile = f"{folder}{packName}/events/{e}.json"
-            self.events[e] = GameDataObject(datafile, "event")
+            GameDataHandler.events[e] = GameDataObject(datafile, "event")
             
             # Check if the event has a .inject files associated
             injectFile = f"{folder}{packName}/events/{e}.inject.json"
@@ -237,7 +242,7 @@ class GameDataHandler(object):
                         }
             self.dp("\t\tLoaded Event %s" % e)
         
-        for m in self.packs[packName]["modifiers"]:
+        for m in GameDataHandler.packs[packName]["modifiers"]:
             datafile = f"{folder}{packName}/modifiers/{m}.json"
 
             # Due to the way modifiers are implemented, we have to load the data first,
@@ -246,20 +251,20 @@ class GameDataHandler(object):
             data.load()
 
             for mod in data.getData().keys():
-                self.modifiers[mod] = Modifier(mod, data.getData()[mod])
+                GameDataHandler.modifiers[mod] = Modifier(mod, data.getData()[mod])
             
         
-        for d in self.packs[packName]["dialogue"]:
+        for d in GameDataHandler.packs[packName]["dialogue"]:
             datafile = f"{folder}{packName}/dialogue/{d}.json"
-            if d not in self.dialogue:
-                self.dialogue[d] = GameDataObject(datafile, "dialogue")
+            if d not in GameDataHandler.dialogue:
+                GameDataHandler.dialogue[d] = GameDataObject(datafile, "dialogue")
             else:
                 # Dialogue already exists, add the new data to the existing object as an injection
                 # The data object will handle which data is actually used when the time comes
-                self.dialogue[d].addInjection(datafile)
+                GameDataHandler.dialogue[d].addInjection(datafile)
             self.dp("\t\tLoaded Dialogue %s" % d)
 
-        for ef in self.packs[packName]["effects"]:
+        for ef in GameDataHandler.packs[packName]["effects"]:
             datafile = f"{folder}{packName}/effects/{ef}.json"
 
             # Like the modifiers, we have to load the data first, since each file contains multiple effects
@@ -267,16 +272,16 @@ class GameDataHandler(object):
             data.load()
             
             for effect in data.getData().keys():
-                self.effects[effect] = data.getData()[effect]
+                GameDataHandler.effects[effect] = data.getData()[effect]
     
         # Inject items into sellers
         for seller in itemInjections.keys():
             for item in itemInjections[seller]:
                 # self.npcs[seller]["itemPool"].append(item)
-                self.npcs[seller].addInjection(item)
+                GameDataHandler.npcs[seller].addInjection(item)
 
         # Check if this pack is the starting pack
-        if self.datapackSettings["start"] == packName:
+        if GameDataHandler.datapackSettings["start"] == packName:
             pass
 
         print(f"\tFinished loading assets for pack {packName}.")
@@ -284,91 +289,91 @@ class GameDataHandler(object):
     def getGameData(self, category, key, forceReload=False):
         ''' Returns the data for a given category and key '''
         if category == "weapon":
-            return self.weapons[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.weapons[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "armor":
-            return self.armor[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.armor[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "misc":
-            return self.misc[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.misc[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "area":
-            return self.areas[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.areas[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "race":
-            return self.races[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.races[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "quest":
-            return self.quests[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.quests[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "event":
-            return self.events[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.events[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "npc":
-            return self.npcs[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.npcs[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "enemy":
-            return self.enemies[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.enemies[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "modifier":
-            return self.modifiers[key]
+            return GameDataHandler.modifiers[key]
         elif category == "effect":
-            return self.effects[key]
+            return GameDataHandler.effects[key]
         elif category == "dialogue":
-            return self.dialogue[key].getData(forceReload or self.DEBUG)
+            return GameDataHandler.dialogue[key].getData(forceReload or GameDataHandler.DEBUG)
         elif category == "pack":
-            return self.packs[key]
+            return GameDataHandler.packs[key]
         
         raise ValueError(f"Invalid category {category}")
     
     def getListOfKeys(self, category):
         ''' Returns a list of keys for the given category '''
         if category == "weapon":
-            return list(self.weapons.keys())
+            return list(GameDataHandler.weapons.keys())
         elif category == "armor":
-            return list(self.armor.keys())
+            return list(GameDataHandler.armor.keys())
         elif category == "misc":
-            return list(self.misc.keys())
+            return list(GameDataHandler.misc.keys())
         elif category == "area":
-            return list(self.areas.keys())
+            return list(GameDataHandler.areas.keys())
         elif category == "race":
-            return list(self.races.keys())
+            return list(GameDataHandler.races.keys())
         elif category == "quest":
-            return list(self.quests.keys())
+            return list(GameDataHandler.quests.keys())
         elif category == "event":
-            return list(self.events.keys())
+            return list(GameDataHandler.events.keys())
         elif category == "npc":
-            return list(self.npcs.keys())
+            return list(GameDataHandler.npcs.keys())
         elif category == "enemy":
-            return list(self.enemies.keys())
+            return list(GameDataHandler.enemies.keys())
         elif category == "modifier":
-            return list(self.modifiers.keys())
+            return list(GameDataHandler.modifiers.keys())
         elif category == "effect":
-            return list(self.effects.keys())
+            return list(GameDataHandler.effects.keys())
         elif category == "dialogue":
-            return list(self.dialogue.keys())
+            return list(GameDataHandler.dialogue.keys())
         elif category == "pack":
-            return list(self.packs.keys())
+            return list(GameDataHandler.packs.keys())
     
     def getLogos(self):
-        return self.logos
+        return GameDataHandler.logos
     
     def getDescs(self):
-        return self.descs
+        return GameDataHandler.descs
 
     def clearAssetReferences(self):
-        self.packs:dict = {} # Used to hold metadata for each datapack
+        GameDataHandler.packs:dict = {} # Used to hold metadata for each datapack
 
-        self.weapons:dict = {}
-        self.armor: dict = {}
-        self.misc: dict = {}
-        self.areas: dict = {}
-        self.races: dict = {}
-        self.quests: dict = {}
-        self.events: dict = {}
-        self.npcs: dict = {}
-        self.enemies: dict = {}
-        self.modifiers: dict = {}
-        self.dialogue: dict = {}
-        self.effects: dict = {}
+        GameDataHandler.weapons:dict = {}
+        GameDataHandler.armor: dict = {}
+        GameDataHandler.misc: dict = {}
+        GameDataHandler.areas: dict = {}
+        GameDataHandler.races: dict = {}
+        GameDataHandler.quests: dict = {}
+        GameDataHandler.events: dict = {}
+        GameDataHandler.npcs: dict = {}
+        GameDataHandler.enemies: dict = {}
+        GameDataHandler.modifiers: dict = {}
+        GameDataHandler.dialogue: dict = {}
+        GameDataHandler.effects: dict = {}
 
-        self.logos: list = [] # List of logos
-        self.descs: list = [] # List of descriptions
+        GameDataHandler.logos: list = [] # List of logos
+        GameDataHandler.descs: list = [] # List of descriptions
     
     def dp(self,msg):
         ''' Debug print. Only prints if self.DEBUG is true '''
-        if self.DEBUG:
+        if GameDataHandler.DEBUG:
             print(msg)
 
 

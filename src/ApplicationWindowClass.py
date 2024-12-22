@@ -3,6 +3,8 @@ from tkinter import font #, simpledialog
 import tkinter as tk
 from tkinter import *
 import tkinter.font as tkfont
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 
 from displayClass import Screen
 
@@ -14,7 +16,7 @@ class ApplicationWindow(tk.Frame):
         self.acceptingUserInput = False
 
         # Setup the screen object
-        self.screen = Screen(pdelay, delay, debug)
+        self.screen = Screen( debug)
 
         # Runtime variables
         self._enter_pressed = False
@@ -27,7 +29,7 @@ class ApplicationWindow(tk.Frame):
 
         self.fullscreen = False
     
-    def initiate_window(self, windowTitle, displaySettings = {}, pdelay=0, delay=True, debugdisplay=False):
+    def initiate_window(self, windowTitle, displaySettings = {}, pdelay=0, debugdisplay=False):
         # Reset local settings
         self.settings = displaySettings
         self.fontSize = self.settings["FONTSIZE"]
@@ -35,11 +37,11 @@ class ApplicationWindow(tk.Frame):
 
         # Set the virtual screen settings:
         self.screen.debugging = debugdisplay
-        self.screen.delay = delay
         self.screen.printdelay = pdelay
 
         # Window initiation
         root = tk.Tk()
+        ttk.Style("darkly")
         super().__init__(root)
         self.winfo_toplevel().title(windowTitle)
         self.master = root
@@ -58,15 +60,13 @@ class ApplicationWindow(tk.Frame):
         self.audioController.addLayer("UI")
         self.audioControllerInitalized = True
     
-    def set_settings(self, displaySettings, pdelay=0, delay=True, debugdisplay=False):
+    def set_settings(self, displaySettings, debugdisplay=False):
         # Reset local settings
         self.settings = displaySettings
         self.fontSize = self.settings["FONTSIZE"]
 
         # Set the virtual screen settings:
         self.screen.debugging = debugdisplay
-        self.screen.delay = delay
-        self.screen.printdelay = pdelay
     
     def close_window(self):
         if self.window_is_open:
@@ -78,6 +78,7 @@ class ApplicationWindow(tk.Frame):
     # (Basically acts as a way to keep the legacy Screen object working)
     def clearScreen(self):
         self.screen.clearScreen()
+        self.action_list_items = []
         self.links = []
     
     def display(self, msg="", br=1, br2=0):
@@ -90,6 +91,17 @@ class ApplicationWindow(tk.Frame):
         self.output_box.tag_bind(tag, "<Button-1>", lambda event: self._get_auto_input(event, command))
         self.links.append(f"cmd{command}")
         message = f"{tag}<a>{msg}<a>{tag}"
+        # Remove any color or styling tags from msg
+        # Make sure all instances of the tag (and the colors themselves) are removed
+        for tag in self.tags:
+            msg = msg.replace(f"<{tag}>", "")
+        if ". " in msg:
+            # remove everything before the first period and space
+            msg = msg.split(". ")[1]
+            # Make the first letter uppercase
+            msg = msg[0].upper() + msg[1:]
+        action_item = (msg, command)
+        self.action_list_items.append(action_item)
         self.screen.display(message, br, br2)
     
     def displayHeader(self, msg="", br=0, br2=0):
@@ -108,6 +120,13 @@ class ApplicationWindow(tk.Frame):
                 # self.output_box.insert(END, "{}\n".format(line), ("<r>"))
             self.output_box.see("end")
             self.output_box.configure(state=DISABLED)
+            self.action_list.delete(0, END)
+            for item in self.action_list_items:
+                # list the action in the action list and bind it to a click event
+                self.action_list.insert(END, item[0])
+            self.action_list.select_set(0)
+            # Scroll the output box to the top
+            self.output_box.yview_moveto(0)
     
     def formatAndDisplayLine(self, line):
         ''' Gets all tags from the line and inserts the line into the output box with the proper tags '''
@@ -116,10 +135,15 @@ class ApplicationWindow(tk.Frame):
         for formattedLine in lines:
             self.output_box.insert(END, "{}".format(formattedLine[0]), (formattedLine[1]))
         self.output_box.insert(END, "\n")
-        # Reset focus to input line
-        self.input_line.focus_set()
-        self.input_line.focus()
-        self.input_line.focus_set()
+        # Reset focus to input line if the action list is not active
+        if not self.master.focus_get() == self.action_list:
+            self.input_line.focus_set()
+            self.input_line.focus()
+            self.input_line.focus_set()
+        # Else, reset the focus to the action list, with the first item selected
+        else:
+            self.action_list.focus_set()
+            self.action_list.select_set(0)
     
     def formatLine(self, line, tags, tagsApplied = []):
         ''' Formats a line with the proper tags '''
@@ -162,11 +186,11 @@ class ApplicationWindow(tk.Frame):
         self.fontSize = 10
         self.font = font.Font(family="courier", size=self.fontSize)
 
-        self.output_box = tk.Text(self.master, wrap=tk.WORD, font=self.font, state=tk.DISABLED, padx=10, pady=10)
-        self.output_box.grid(row=0, column=0, columnspan=2, sticky="nsew")
+        self.output_box = ttk.Text(self.master, wrap=tk.WORD, font=self.font, state=tk.DISABLED, padx=10, pady=10)
+        self.output_box.grid(row=0, column=0, columnspan=2, rowspan=3, sticky="nsew")
 
-        self.scroll_bar = tk.Scrollbar(self.master, command=self.output_box.yview)
-        self.scroll_bar.grid(row=0, column=2, sticky="ns")
+        self.scroll_bar = ttk.Scrollbar(self.master, command=self.output_box.yview)
+        self.scroll_bar.grid(row=0, column=2, rowspan=2, sticky="ns")
         self.output_box.config(background=self.theme["WINDOWBGCOLOR"], foreground=self.theme["DEFAULTTEXTCOLOR"], 
                                borderwidth=0, highlightthickness=0, yscrollcommand=self.scroll_bar.set)
         
@@ -194,11 +218,25 @@ class ApplicationWindow(tk.Frame):
             self.tags.append(newtag)
             self.output_box.tag_configure(f"<{newtag}>", background=self.theme['BACKGROUND'][tag]['background'])
 
+        # Create a listbox that will hold possible clickable actions
+        self.action_list_items = []
+        self.action_list = tk.Listbox(self.master, font=("Courier", 16), foreground=self.theme["DEFAULTTEXTCOLOR"],
+                                      background=self.theme["INPUTBGCOLOR"], width=36, selectmode=SINGLE)
+        self.action_list.grid(row=0, column=3, pady=5, padx=0, sticky="nsew")
+        # bind the listbox to a double click event
+        self.action_list.bind("<Double-1>", lambda event: self._get_auto_input_list(event))
+        # bind the listbox to move the selection up and down with the arrow keys
+        # and the enter key to select the item
+        # but only if the listbox has focus
+        self.action_list.bind("<Down>", lambda event: self.action_list_select_down(event))
+        self.action_list.bind("<Up>", lambda event: self.action_list_select_up(event))
+        self.action_list.bind("<Return>", lambda event: self.action_list_select(event))
+
         # Create the input textbox
         self.inputText = StringVar()
-        self.input_line = tk.Entry(self.master, font=("Courier", 12), foreground=self.theme["DEFAULTTEXTCOLOR"],
-                                   background=self.theme["INPUTBGCOLOR"], borderwidth=2, width=50)
-        self.input_line.grid(row=1, column=0, pady=10)
+        self.input_line = ttk.Entry(self.master, font=("Courier", 12), foreground=self.theme["DEFAULTTEXTCOLOR"],
+                                   background=self.theme["INPUTBGCOLOR"], width=50)
+        self.input_line.grid(row=1, column=3, pady=10, padx=10)
 
         self.input_line.focus_set()
 
@@ -266,11 +304,40 @@ class ApplicationWindow(tk.Frame):
         # Return the input string
         return input_string
     
+    def action_list_select_down(self, event):
+        selected = self.action_list.curselection()
+        if len(selected) > 0:
+            index = selected[0]
+            if index < len(self.action_list_items) - 1:
+                self.action_list.select_clear(index)
+                self.action_list.select_set(index + 1)
+    
+    def action_list_select_up(self, event):
+        selected = self.action_list.curselection()
+        if len(selected) > 0:
+            index = selected[0]
+            if index > 0:
+                self.action_list.select_clear(index)
+                self.action_list.select_set(index - 1)
+    
+    def action_list_select(self, event):
+        selected = self.action_list.curselection()
+        if len(selected) > 0:
+            self._get_auto_input(event, self.action_list_items[selected[0]][1])
+    
     def _get_auto_input(self, event, cmd):
         self.input_line.delete(0,END)
         self.input_line.insert(0, cmd)
         self._enter_pressed = True
     
+    def _get_auto_input_list(self, event):
+        # Get the selected item from the action list
+        selected = self.action_list.curselection()
+        # get the command from the selected item
+        if len(selected) > 0:
+            cmd = self.action_list_items[selected[0]][1]
+            self._get_auto_input(event, cmd)
+
     def wait_for_enter(self):
         self.displayAction("<i>Anything to continue...<i>", 0)
         self.closeDisplay()
@@ -301,6 +368,6 @@ class ApplicationWindow(tk.Frame):
         return self.settings
     
     def set_fullscreen(self, fullscreen):
-        if self.window_is_open and self.fullscreen != fullscreen:
+        if self.window_is_open:
             self.master.attributes("-fullscreen", fullscreen)
             self.fullscreen = fullscreen

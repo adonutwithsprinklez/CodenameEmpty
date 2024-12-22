@@ -54,7 +54,7 @@ class Player(object):
             "intelligence": 0
         }
         self.effects = []
-        self.gameData:GameDataHandler = None
+        self.gameData:GameDataHandler = GameDataHandler()
 
     def playerMenu(self, currentQuests, completedQuests):
         """

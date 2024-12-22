@@ -116,7 +116,7 @@ def startApplication(PATH=None, args=None):
 
 	# Inital game / menu loading
 	game = Game()
-	game.initialLoad(RES_FOLDER, SETTINGS, True, args)
+	game.initialLoad(RES_FOLDER, SETTINGS, args)
 
 	appRunning = True
 	while appRunning and game.disp.window_is_open:
@@ -133,8 +133,11 @@ def startApplication(PATH=None, args=None):
 			appRunning = False
 		
 		if cmd == 1:
-			# Actually start the game
-			startGame(game)
+			# Confirmation, in case there is a long "intro event" that the player doesn't want to see
+			con = game.confirmationWindow("Are you sure you want to start a new game?", "Yes", "No")
+			if con:
+				# Actually start the game
+				startGame(game)
 		elif cmd == 3:
 			# Displays the settings menu
 			openSettings(game, SETTINGS_FILE)

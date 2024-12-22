@@ -1,0 +1,25 @@
+{
+    "id":"areaStartIntro",
+    "type":"intro",
+    "name":[
+        "Dazed and Confused"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You suddenly sit up, unable to remember why you are in the middle of the forest."
+        ],
+        "actions":[
+            {
+                "action":"Take in your surroundings",
+                "eventDo":[
+                    ["say","You stand up, looking around at the trees spread out around you."],
+                    ["say","Figuring out what you were doing and why you are in the middle of a forest should probably be your top priority.\nThere is a lightly treaded path in front of you. It could be the way to the nearest town."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

@@ -4,7 +4,7 @@
   "DELAY": 0.01,
   "EVENTDELAY": 2,
   "DISPLAYSETTINGS": {
-    "WIDTH": 1000,
+    "WIDTH": 1250,
     "HEIGHT": 600,
     "RESIZABLE": true,
     "FONTSIZE": 18,
@@ -124,37 +124,22 @@
     [
       "FULLSCREEN",
       "Fullscreen Display Mode",
-      false
-    ],
-    [
-      "MUTEBGMUSIC",
-      "Mute Background Music",
       true
     ],
     [
-      "MUTEAUDIO",
-      "Mute All Audio",
+      "TUTORIALAREA",
+      "Decides if the tutorial is enabled for new games",
       true
     ],
     [
-      "DELAYENABLED",
-      "[BROKEN] Display Effects",
-      false
-    ],
-    [
-      "EVENTDELAYENABLED",
-      "[BROKEN] Delay After Random Event",
-      false
+      "INTROEVENT",
+      "Decides if the intro event is enabled for new games",
+      true
     ],
     [
       "DISABLEFLAVOREVENTS",
       "Disable Flavor Text Events",
       false
-    ],
-    [
-      "TUTORIALAREA",
-      "Disable Tutorial Area",
-      true
     ],
     [
       "DISABLEENEMIES",

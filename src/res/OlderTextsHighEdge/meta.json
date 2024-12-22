@@ -1,0 +1,62 @@
+{
+    "name": "The Older Texts: Highedge",
+    "author": "Not Bethesda",
+    "desc": "Skyrim, but all text",
+    "packType": "standalone",
+    "version": 0.1,
+    "gameLogo": [
+        "     <b>The Older Texts I:<b>",
+        " ",
+        "   ▄█    █▄     ▄█     ▄██████▄     ▄█    █▄       ▄████████ ████████▄     ▄██████▄     ▄████████",
+        "  ███    ███   ███    ███    ███   ███    ███     ███    ███ ███   ▀███   ███    ███   ███    ███",
+        "  ███    ███   ███▌   ███    █▀    ███    ███     ███    █▀  ███    ███   ███    █▀    ███    █▀ ",
+        " ▄███▄▄▄▄███▄▄ ███▌  ▄███         ▄███▄▄▄▄███▄▄  ▄███▄▄▄     ███    ███  ▄███         ▄███▄▄▄",
+        "▀▀███▀▀▀▀███▀  ███▌ ▀▀███ ████▄  ▀▀███▀▀▀▀███▀  ▀▀███▀▀▀     ███    ███ ▀▀███ ████▄  ▀▀███▀▀▀",
+        "  ███    ███   ███    ███    ███   ███    ███     ███    █▄  ███    ███   ███    ███   ███    █▄",
+        "  ███    ███   ███    ███    ███   ███    ███     ███    ███ ███   ▄███   ███    ███   ███    ███",
+        "  ███    █▀    █▀     ████████▀    ███    █▀      ██████████ ████████▀    ████████▀    ██████████",
+        " "
+    ],
+    "gameDesc": [
+        "Fus Ro Dah",
+        "Dragonborn",
+        "I used to be an adventurer like you, then I took an arrow to the knee",
+        "Skyrim belongs to the Nords",
+        "I'm sworn to carry your burdens",
+        "Do you get to the Cloud District very often? Oh, what am I saying, of course you don't",
+        "Let me guess, someone stole your sweetroll"
+    ],
+    "audio":[],
+    "areas": [
+        "intro/area_start_1",
+        "intro/helgen_start"
+    ],
+    "armor": [],
+    "dialogue": [],
+    "effects":[],
+    "enemies": [],
+    "events": [
+        "intro/event_1",
+        "intro/the_cart"
+    ],
+    "misc": [],
+    "modifiers": [],
+    "npcs": [],
+    "quests": [],
+    "races": [
+        "race_nord"
+    ],
+    "weapons": [],
+    "tutorialArea":[
+        "intro/area_start_1"
+    ],
+    "startingArea": [
+        "intro/area_start_1"
+    ],
+    "introEvent": [
+        "intro/the_cart"
+    ],
+    "defaultRace": [
+        "nord"
+    ]
+}

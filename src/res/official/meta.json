@@ -31,11 +31,6 @@
         "You can click your actions!",
         "You can also use the keyboard!"
     ],
-    "audio":[
-        ["mainmenumusic", "Loop_The_Old_Tower_Inn"],
-        ["forestTransition", "leaves-14478"],
-        ["gateOpening","gate-heavy-openclose-wav-103288"]
-    ],
     "areas": [
         "arena/area_entrance",
         "arena/area_foyer",
@@ -53,12 +48,15 @@
         "cave_wolf/room_1b",
         "cave_wolf/room_2a",
         "cave_wolf/room_3",
+
         "area_abandoned_church",
         "area_abandoned_church_interior",
+
         "area_gen_forest_1",
         "area_gen_forest_2",
         "area_gen_forest_3",
         "area_gen_forest_4",
+
         "area_forest_trail_crossroad",
         "area_village_gate_east",
         "area_village_gate_west"
@@ -217,6 +215,9 @@
         "tutorial/area_start_1"
     ],
     "startingArea": [
-        "arena/area_foyer"
+        "tutorial/area_start_1"
+    ],
+    "defaultRace": [
+        "human"
     ]
 }

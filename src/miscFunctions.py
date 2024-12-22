@@ -33,7 +33,10 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
                     if action[0] == "say":
                         displayEventAction(areaController, disp, action[1])
                     elif action[0] == "goto":
-                        event.gotoPart(random.choice(action[1]))
+                        if type(action[1]) == list:
+                            event.gotoPart(random.choice(action[1]))
+                        else:
+                            event.gotoPart(action[1])
                     elif action[0] == "addTag":
                         player.tags.append(event.getTag(action[1]))
                     elif action[0] == "take":
