@@ -2,13 +2,14 @@
 import copy
 
 from areaClass import Area
+from gameDataHandler import GameDataHandler
 from dieClass import rollDice
 
 
 class AreaController(object):
     ''' This class generates and stores all needed data for the world. Whenever
         a new area needs generated or reloaded this class will handle it. '''
-    def __init__(self, gameData=None, startingAreaID=None, DEBUG = 0):
+    def __init__(self, startingAreaID=None, DEBUG = 0):
         self.currentArea = None
 
         self.savedAreas = {
@@ -19,7 +20,7 @@ class AreaController(object):
 
         self.areasAddedByEvents = []
 
-        self.gameData = gameData
+        self.gameData:GameDataHandler = GameDataHandler()
 
         self.generatedExits = False
         self.currentExits = []

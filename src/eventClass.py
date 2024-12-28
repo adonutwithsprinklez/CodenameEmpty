@@ -4,7 +4,7 @@ import re
 
 from armorClass import Armor
 from dialogueRules import evaluateDialogueLine
-from itemGeneration import generateWeapon
+from itemGeneration import generateItem
 from miscClass import Misc
 
 
@@ -68,20 +68,16 @@ class Event(object):
         if item == "gold":
             player.gold -= amount
 
-    def giveItem(self, itemId, amount, player, weapons, armor, misc, modifiers, effects):
+    def giveItem(self, itemId, amount, player, gameData):
         # TODO: Rewrite to use the new GameDataHandler class
         if itemId == "gold":
             player.gold += amount
             return True
-        elif itemId in weapons.keys():
-            player.inv.append(copy.copy(generateWeapon(weapons[itemId], modifiers, effects)))
-            return True
-        elif itemId in armor.keys():
-            player.inv.append(copy.copy(Armor(armor[itemId])))
-            return True
-        elif itemId in misc.keys():
-            player.inv.append(copy.copy(Misc(misc[itemId], modifiers, effects)))
-            return True
+        else:
+            item = generateItem(itemId, gameData)
+            if item:
+                player.inventory.append(copy.deepcopy(item))
+                return True
         print("Item id '{}' not found".format(itemId))
         return False
     

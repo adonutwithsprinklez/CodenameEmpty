@@ -121,36 +121,49 @@
     }
   },
   "GAMESETTINGS": [
-    [
-      "FULLSCREEN",
-      "Fullscreen Display Mode",
-      true
-    ],
-    [
-      "TUTORIALAREA",
-      "Decides if the tutorial is enabled for new games",
-      true
-    ],
-    [
-      "INTROEVENT",
-      "Decides if the intro event is enabled for new games",
-      true
-    ],
-    [
-      "DISABLEFLAVOREVENTS",
-      "Disable Flavor Text Events",
-      false
-    ],
-    [
-      "DISABLEENEMIES",
-      "Disable all enemy encounters (Used for debugging)",
-      false
-    ],
-    [
-      "DEBUGDISPLAY",
-      "Developer Display (Used for debugging)",
-      false
-    ]
+    {
+      "id": "FULLSCREEN",
+      "name": "Fullscreen Mode",
+      "description": "Fullscreen Display Mode",
+      "enabled": false
+    },
+    {
+      "id": "TUTORIALAREA",
+      "name": "Enable Tutorial",
+      "description": "Decides if the tutorial is enabled for new games",
+      "enabled": true
+    },
+    {
+      "id": "INTROEVENT",
+      "name": "Pre-Character Creation Event",
+      "description": "Decides if the intro event is enabled for new games",
+      "enabled": true
+    },
+    {
+      "id": "PREFERACTIONLIST",
+      "name": "Prefer Action List",
+      "altName": "Prefer Text Input",
+      "description": "Default focus on action list, otherwise set focus defaults to text input. Requires a restart to take effect.",
+      "enabled": true
+    },
+    {
+      "id": "DISABLEFLAVOREVENTS",
+      "name": "Flavor Text Events",
+      "description": "Disable Flavor Text Events",
+      "enabled": true
+    },
+    {
+      "id": "DISABLEENEMIES",
+      "name": "Disable All Fights",
+      "description": "Disable all enemy encounters (Used for debugging)",
+      "enabled": false
+    },
+    {
+      "id": "DEBUGDISPLAY",
+      "name": "Debug Display",
+      "description": "Developer Display (Used for debugging)",
+      "enabled": false
+    }
   ],
   "DATAPACKSETTINGS": {
     "folder": "res/",
@@ -161,6 +174,14 @@
       ],
       [
         "officialModOne",
+        false
+      ],
+      [
+        "unofficialMod",
+        false
+      ],
+      [
+        "OlderTextsHighEdge",
         false
       ]
     ],

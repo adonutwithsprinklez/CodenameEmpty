@@ -73,16 +73,15 @@ class Game(object):
         EVENTDELAY = self.settings["EVENTDELAY"]
         DEBUG = self.settings["DEBUG"]
         DISPLAYSETTINGS = self.settings["DISPLAYSETTINGS"]
-        DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]
+        DEBUGDISPLAY = self.gameSettings["DEBUGDISPLAY"]["enabled"]
 
         # Set up the display with a delay and whether or not to debug
         if not self.displayIsInitialized:
-            self.disp.initiate_window(f'Codename: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS,
-                                      DELAY, DEBUGDISPLAY)
+            self.disp.initiate_window(f'Codename: EMPTY v{self.settings["VERSION"]}', DISPLAYSETTINGS, self.gameSettings["PREFERACTIONLIST"]["enabled"], DEBUGDISPLAY)
             self.displayIsInitialized = True
         else:
             self.disp.set_settings(DISPLAYSETTINGS, DEBUGDISPLAY)
-        if "fullscreen" in self.launchArgs or self.gameSettings["FULLSCREEN"]:
+        if "fullscreen" in self.launchArgs or self.gameSettings["FULLSCREEN"]["enabled"]:
             self.disp.set_fullscreen(True)
 
         # Load the datapacks/assets
@@ -115,10 +114,10 @@ class Game(object):
         self.loaded = True
 
     def loadStartingArea(self):
-        if not self.gameSettings["TUTORIALAREA"]:
-            self.areaController = AreaController(self.gamedata, random.choice(self.gamedata.getGameData("pack",self.starter)["tutorialArea"]))
+        if self.gameSettings["TUTORIALAREA"]["enabled"]:
+            self.areaController = AreaController(random.choice(self.gamedata.getGameData("pack",self.starter)["tutorialArea"]))
         else:
-            self.areaController = AreaController(self.gamedata, random.choice(self.gamedata.getGameData("pack",self.starter)["startingArea"]))
+            self.areaController = AreaController(random.choice(self.gamedata.getGameData("pack",self.starter)["startingArea"]))
 
     def loadPlayer(self):
 
@@ -184,9 +183,9 @@ class Game(object):
     def loadGameSettings(self):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
-            self.gameSettings[setting[0]] = setting[2]
+            self.gameSettings[setting["id"]] = setting
         if not "fullscreen" in self.launchArgs:
-            self.disp.set_fullscreen(self.gameSettings["FULLSCREEN"])
+            self.disp.set_fullscreen(self.gameSettings["FULLSCREEN"]["enabled"])
 
     def loadDataPackSettings(self):
         self.dataPackSettings = {}
@@ -240,7 +239,7 @@ class Game(object):
         objectives getting updated.'''
 
         ##### Random event Code #####
-        if self.areaController.getCurrentAreaHasEvent(self.gameSettings["DISABLEFLAVOREVENTS"]):
+        if self.areaController.getCurrentAreaHasEvent(self.gameSettings["DISABLEFLAVOREVENTS"]["enabled"]):
             event = self.areaController.getCurrentAreaEvent()
             fireEvent(event, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
         else:
@@ -253,7 +252,7 @@ class Game(object):
 
     def fightEnemies(self):
         ##### Fighting Code #####
-        if self.areaController.getCurrentAreaNeedToFight() and self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]:
+        if self.areaController.getCurrentAreaNeedToFight() and self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]["enabled"]:
             self.disp.clearScreen()
             for areaEnemy in self.areaController.getCurrentAreaEnemies():
                 enemyhp = areaEnemy.getHealth()
@@ -714,7 +713,7 @@ class Game(object):
     def newGameMenu(self):
         ''' This displays all required info for a player to start a new game '''
         # Need to kick off the intro event, if there is one
-        if self.settings["INTROEVENT"] and self.settings["TUTORIALAREA"] and "introEvent" in self.gamedata.getGameData("pack",self.starter).keys():
+        if self.gameSettings["INTROEVENT"]["enabled"] and self.gameSettings["TUTORIALAREA"]["enabled"] and "introEvent" in self.gamedata.getGameData("pack",self.starter).keys():
             event = random.choice(self.gamedata.getGameData("pack",self.starter)["introEvent"])
             event = Event(event, self.gamedata)
             fireEvent(event, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
@@ -969,7 +968,7 @@ class Game(object):
                 cmd = -1
 
             if cmd in range(1, 9) and cmd-1 <= len(toggleableOptions):
-                self.settings["GAMESETTINGS"][cmd-1+9*settingsPage][2] ^= True
+                self.settings["GAMESETTINGS"][cmd-1+9*settingsPage]["enabled"] ^= True
             elif cmd == 12 and settingsPage < settingsNumOfPages:
                 settingsPage += 1
             elif cmd == 11 and settingsPage > 0:
@@ -984,15 +983,20 @@ class Game(object):
         startOptions = page*9
         endOptions = 9+(page*9)
 
-        listOfOptions = self.settings["GAMESETTINGS"][startOptions:endOptions]
-        firstOption = listOfOptions.pop(0)
-        enabled = "<green>ENABLED<green>" if firstOption[2] else "<red>DISABLED<red>"
-        self.disp.displayAction(f'1. {firstOption[1]:<50} <b>{enabled:>30}<b>', 1)
-        i = 1
+        listOfOptions:list = self.settings["GAMESETTINGS"][startOptions:endOptions]
+        i = 0
         for option in listOfOptions:
             i += 1
-            enabled = "<green>ENABLED<green>" if option[2] else "<red>DISABLED<red>"
-            self.disp.displayAction(f'{i}. {option[1]:<50} <b>{enabled:>30}<b>', i, 0)
+            # Set name, if there is an alt, use the alt name if it is disabled
+            name = option["name"]
+            enabled = "<green>ENABLED<green>" if option["enabled"] else "<red>DISABLED<red>"
+            if "altName" in option.keys():
+                if not option["enabled"]:
+                    name = option["altName"]
+                self.disp.displayAction(f'{i}. {name}', i)
+            else:
+                self.disp.displayAction(f'{i}. {name} ({enabled})', i)
+            self.disp.display(f'\t<s>{option["description"]}<s>')
         self.disp.closeDisplay()
         self.disp.display( "<s>Settings take effect on screen exit<s>")
         pagebreak = 1
@@ -1105,12 +1109,12 @@ class Game(object):
         self.disp.closeDisplay()
         pagebreak = 1
         if page < numPages:
-            self.disp.displayAction("12. for next page of data packs", 12)
+            self.disp.displayAction("12. Next", 12)
             pagebreak = 0
         if page > 0:
-            self.disp.displayAction("11. for previous page of data packs", 11, pagebreak)
+            self.disp.displayAction("11. Previous", 11, pagebreak)
             pagebreak = 0
-        self.disp.displayAction("0. to exit", 0, pagebreak)
+        self.disp.displayAction("0. Exit", 0, pagebreak)
         self.disp.closeDisplay()
 
         return listOfOptions

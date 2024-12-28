@@ -77,5 +77,23 @@
                 ]
             }
         ]
+    },
+    "#entrance":{
+        "msg":[
+            "The cart comes to a stop, and you hear the sound of a gate being opened."
+        ],
+        "actions":[
+            {
+                "action":"Look around",
+                "eventDo":[
+                    ["say", ["You look around, and see that you are at the entrance to a large city. The sign above the gate reads, \"Helgen.\"",
+                            "The cart comes to a stop, and you hear the sound of a gate being opened."
+                        ]
+                    ],
+                    ["finish"],
+                    ["goto", "#helgen"]
+                ]
+            }
+        ]
     }
 }

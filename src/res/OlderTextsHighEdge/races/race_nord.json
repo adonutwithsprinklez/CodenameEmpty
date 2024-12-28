@@ -10,17 +10,9 @@
     "shortDescription":"A generalized race that can adapt to most play styles.",
     "longDescription":[],
     "baseSkills":[],
-    "names":[
-        "Artin",
-        "John",
-        "Regin",
-        "Beinir"
-    ],
+    "names":["Adalvald", "Addvar", "Addvild", "Agmaer", "Akar", "Alding", "Aldis", "Alfarinn", "Alvor", "Andurs", "Angrenor", "Angvid", "Argis", "Arnbjorn", "Arngeir", "Arnskar", "Arrald", "Asbjorn", "Asgeir", "Aslfur", "Assur", "Atar", "Aventus", "Avulstein", "Badnir", "Balbus", "Balgruuf", "Balimund", "Bassianus†", "Beirand", "Belrand", "Benkum", "Benor", "Bersi", "Bjorlam", "Bjormund", "Bjornolfr", "Bolgeir", "Bolli", "Bolund", "Borgny", "Borri", "Borvir", "Bottar", "Briehl", "Brill", "Brunwulf", "Brynjolf", "Bulfrek", "Calder", "Christer", "Dagur", "Dengeir", "Drahff", "Drennen", "Eigorn", "Eimar", "Einarth", "Elgrim", "Embry", "Eorlund", "Erik", "Erikur", "Erlendr", "Esbern", "Faldrin", "Falk", "Farengar", "Farkas", "Felldir", "Fenrig", "Fenrik", "Filnjar", "Frodnar", "Frofnir", "Froki", "Frorkmar", "Frothar", "Galmar", "Garthar", "Garuk", "Geimund", "Geirlund", "Gestur", "Gissur", "Gjak", "Gjalund", "Gjuk", "Gloth", "Golldir", "Gonnar", "Gorm", "Gort", "Gralnach", "Gregor", "Grenwulf", "Grimvar", "Grisvar", "Gunding", "Gunmar", "Gunnar", "Gunther", "Guthrum", "Hadring", "Hadvar", "Hafnar", "Hajvarr", "Hakar", "Haknir", "Hakon", "Halvar", "Haming", "Hans", "Harald", "Hargar", "Harkon", "Harlaug", "Harrald", "Heddic", "Heimskr", "Heimvar", "Helvard", "Hemming", "Heratar", "Hern", "Hewnon", "Hjalfar", "Hjornskar", "Hjorunn", "Hod", "Hofgrir", "Hogni", "Holgeir", "Holrik", "Horgeir", "Horik", "Horm", "Hreinn", "Hroar", "Hrodulf", "Hroggar", "Hrollod", "Hrongar", "Hugin", "Hunroor", "Idolaf", "Igmund", "Irlof", "Irnskar", "Istar", "Jenssen", "Jervar", "Jesper", "Jod", "Jofthor", "Jolf", "Jon", "Jorgen", "Joric", "Jorid", "Jorleif", "Jorn", "Jurgen", "Kai", "Karl", "Kibell", "Kjar", "Kleppr", "Klimmek", "Knjakr", "Knud", "Kodlak", "Kodrir", "Korir", "Kottir", "Kraldar", "Kust", "Kvenel", "Kyr", "Lars", "Leifnarr", "Leifur", "Leigelf", "Lemkil", "Llewellyn", "Lod", "Lodi", "Lodvar", "Logrolf", "Lokil", "Lokir", "Lond", "Lorenz", "Lortheim", "Lund", "Lygrleid", "Lynoit", "Majni", "Markus", "Mathies", "Maul", "Mikael", "Miraak", "Molgrom", "Mralki", "Narfi", "Nelkir", "Niels", "Nikulas", "Nils", "Odar", "Odfel", "Oengul", "Ogmund", "Olaf", "Olfrid", "Ollrod", "Onmund", "Oren", "Orgnar", "Orthjolf", "Pactur", "Pjofr", "Raerek", "Ragnar", "Ralof", "Ranmir", "Rargal", "Rhorlak", "Rin", "Rissing", "Roggi", "Roggvir", "Rolff", "Rorik", "Rorlund", "Rulnik", "Rundi", "Rustleif", "Sabjorn", "Saerlund", "Sibbi", "Siddgeir", "Sifnar", "Sigaar", "Sigar", "Sigurd", "Sild", "Sinding", "Sinmir", "Sirgar", "Sirkjorg", "Skaggi", "Skald", "Skeggr", "Skjol", "Skjor", "Skorvild", "Skuli", "Skulnar", "Skulvar", "Smaref", "Snilf", "Snilling", "Snorreid", "Sogrlaf", "Solaf", "Stalf", "Stalleo", "Stenvar", "Stig", "Styrr", "Sune", "Svaknir", "Svarig", "Sven", "Talsgar", "Thadgeir", "Thaer", "Thalin", "Thonar", "Thongvor", "Thonjolf", "Thonnir", "Thorald", "Thorek", "Thorgar", "Thoring", "Thorygg", "Thrynn", "Tolan", "Tolfdir", "Torbjorn", "Torolf", "Torsten", "Torvar", "Torygg", "Tsun", "Tulvur", "Ulfberth", "Ulfgar", "Ulfr", "Ulfric", "Unmid", "Urval", "Vald", "Valdar", "Valdimar", "Valdr", "Vanik", "Vekel", "Verner", "Vidgrod", "Viding", "Vidrald", "Vignar", "Vilkas", "Vilod", "Vipir", "Virkmund", "Volk", "Vorstag", "Vulwulf", "Wilhelm", "Wilmuth", "Wulfgar", "Wuunferth", "Yngvar", "Yrsarald"],
     "standing":{
-        "elf":6,
-        "drakt":-4,
-        "orc":-5,
-        "dwarf":3
+        "nord":5
     },
     "playable":true,
     "playerCreationDescription":"Citizens of Skyrim, they are a tall and fair-haired people. Strong and hardy, Nords are famous for their resistance to cold and their talent as warriors.",

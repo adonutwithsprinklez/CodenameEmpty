@@ -8,7 +8,7 @@ from enemyClass import Enemy
 
 def fireEvent(event, player, areaController, disp, gameData, debug=False):
     ''' This function is used to handle random events that can occur in the game. '''
-    disp.dprint(event.name)
+    disp.dprint(f"Firing event: '{event.name}'")
     while not event.finished:
         disp.clearScreen()
         disp.displayHeader(f"{event.name}")
@@ -29,7 +29,7 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
                 cmd = -1
             if cmd > 0 and cmd <= x:
                 for action in choices[cmd-1]["eventDo"]:
-                    disp.dprint(action)
+                    disp.dprint(f"\t{action[0]}")
                     if action[0] == "say":
                         displayEventAction(areaController, disp, action[1])
                     elif action[0] == "goto":
@@ -43,8 +43,7 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
                         event.takeItem(action[1], action[2], player)
                     elif action[0] == "give":
                         for i in range(action[2]):
-                            result = event.giveItem(action[1], action[2], player, weapons,
-                                                    armor, misc, modifiers, effects)
+                            result = event.giveItem(action[1], action[2], player, gameData)
                             if debug and not result:
                                 raise Exception("Something went wrong when processing an event's 'give' command.")
                     elif action[0] == "spawnEnemy":
@@ -74,6 +73,7 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
             event.finish()
             #input("\nEnter to continue")
             disp.wait_for_enter()
+    disp.dprint(f"Event '{event.name}' finished")
 
 def displayEventAction(areaController, disp, message):
     disp.clearScreen()

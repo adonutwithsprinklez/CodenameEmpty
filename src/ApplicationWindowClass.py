@@ -9,11 +9,12 @@ from ttkbootstrap.constants import *
 from displayClass import Screen
 
 class ApplicationWindow(tk.Frame):
-    def __init__(self, pdelay=0, delay=True, debug=False):
+    def __init__(self, preferActionList=True, debug=False):
         # Setup local variables
         self.settings = {}
         self.debug = debug
         self.acceptingUserInput = False
+        self.preferActionList = preferActionList
 
         # Setup the screen object
         self.screen = Screen( debug)
@@ -29,15 +30,15 @@ class ApplicationWindow(tk.Frame):
 
         self.fullscreen = False
     
-    def initiate_window(self, windowTitle, displaySettings = {}, pdelay=0, debugdisplay=False):
+    def initiate_window(self, windowTitle, displaySettings = {}, preferActionList=True, debugdisplay=False):
         # Reset local settings
         self.settings = displaySettings
         self.fontSize = self.settings["FONTSIZE"]
         self.theme = displaySettings["THEME"]
+        self.preferActionList = preferActionList
 
         # Set the virtual screen settings:
         self.screen.debugging = debugdisplay
-        self.screen.printdelay = pdelay
 
         # Window initiation
         root = tk.Tk()
@@ -135,15 +136,26 @@ class ApplicationWindow(tk.Frame):
         for formattedLine in lines:
             self.output_box.insert(END, "{}".format(formattedLine[0]), (formattedLine[1]))
         self.output_box.insert(END, "\n")
-        # Reset focus to input line if the action list is not active
-        if not self.master.focus_get() == self.action_list:
-            self.input_line.focus_set()
-            self.input_line.focus()
-            self.input_line.focus_set()
-        # Else, reset the focus to the action list, with the first item selected
+        if not self.preferActionList:
+            # Reset focus to input line if the action list is not active
+            if not self.master.focus_get() == self.input_line:
+                self.input_line.focus_set()
+                self.input_line.focus()
+                self.input_line.focus_set()
+            # Else, reset the focus to the action list, with the first item selected
+            else:
+                self.action_list.focus_set()
+                self.action_list.select_set(0)
         else:
-            self.action_list.focus_set()
-            self.action_list.select_set(0)
+            # Reset focus to action list if the input line is not active
+            if not self.master.focus_get() == self.input_line:
+                self.action_list.focus_set()
+                self.action_list.select_set(0)
+            # Else, reset the focus to the input line
+            else:
+                self.input_line.focus_set()
+                self.input_line.focus()
+                self.input_line.focus_set()
     
     def formatLine(self, line, tags, tagsApplied = []):
         ''' Formats a line with the proper tags '''
@@ -237,8 +249,6 @@ class ApplicationWindow(tk.Frame):
         self.input_line = ttk.Entry(self.master, font=("Courier", 12), foreground=self.theme["DEFAULTTEXTCOLOR"],
                                    background=self.theme["INPUTBGCOLOR"], width=50)
         self.input_line.grid(row=1, column=3, pady=10, padx=10)
-
-        self.input_line.focus_set()
 
         # self.settings_button = tk.Button(self.master, text="+", command=self.update_font_size)
         # self.settings_button.grid(row=1, column=1, pady=10)

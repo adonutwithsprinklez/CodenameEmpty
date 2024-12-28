@@ -37,16 +37,14 @@ class GameDataHandler(object):
     def __init__(self, ds=None, dr=None, DEBUG=None):
         if DEBUG != None:
             self.DEBUG = DEBUG
-        
-        # PRINT DEBUG STATUS NO MATTER WHAT
-        print (f"Game Data Handler Debug = {self.DEBUG}")
-
-        self.dp("Initializing GameDataHandler")
 
         if ds != None and dr != None:
+            print (f"Game Data Handler Debug = {self.DEBUG}")
+
+            self.dp("Initializing GameDataHandler")
             self.refreshAssetReferences(ds, dr)
 
-        self.dp("Done")
+            self.dp("Done")
 
     def refreshAssetReferences(self, dpsettings={}, defRes={}):
         ''' Refreshes the asset references '''
