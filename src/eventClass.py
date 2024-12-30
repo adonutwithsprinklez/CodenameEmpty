@@ -1,12 +1,10 @@
+
 import copy
 import random
-import re
 
-from armorClass import Armor
 from dialogueRules import evaluateDialogueLine
 from gameDataHandler import GameDataHandler
 from itemGeneration import generateItem
-from miscClass import Misc
 
 
 class Event(object):
