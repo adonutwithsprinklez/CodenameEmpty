@@ -1,0 +1,97 @@
+{
+    "title":"A Cave of Wolves",
+    "desc":"",
+    "qID":"aCaveOfWolves",
+    "devComments":"Will start upon entering the first village, if the player has a 'caveRumor' flag from overhearing a rumor.",
+    "enabledByDefault":false,
+    "spawnConditions":[
+        ["inAreaId", "=", "area_village_gate_east", "recheck"],
+        ["playerFlags", "has", "caveRumor"]
+    ],
+    "do":"",
+    "initialStep":["#firstStep"],
+    "#firstStep":{
+        "devComments":"The player has heard the rumor and started the quest.",
+        "setDesc":"I need to find the wolf cave that has been terrorizing the village.",
+        "checks":{
+            "success":[
+                ["inAreaId", "=", "cave_wolf/entrance", "recheck"]
+            ]
+        },
+        "reactions":{
+            "success":{
+                "event":"quest/caveOfWolves/firstStepSuccessEvent",
+                "nextStep":"#secondStep"
+            }
+        }
+    },
+    "#secondStep":{
+        "devComments":"The player has made it to the entrance of the cave.",
+        "setDesc":"I have found the wolf cave. Now to exterminate the threat.",
+        "checks":{
+            "success":[
+                ["inAreaId", "=", "cave_wolf/room_3"]
+            ],
+            "leftArea1":[
+                ["inAreaId", "=", "area_gen_forest_3"]
+            ],
+            "leftArea2":[
+                ["inAreaId", "=", "area_gen_forest_4"]
+            ]
+        },
+        "reactions":{
+            "success":{
+                "nextStep":"#thirdStep"
+            },
+            "leftArea1":{
+                "event":"quest/caveOfWolves/leaveArea",
+                "nextStep":"#firstStep"
+            },
+            "leftArea2":{
+                "event":"quest/caveOfWolves/leaveArea",
+                "nextStep":"#firstStep"
+            }
+        }
+    },
+    "#thirdStep":{
+        "devComments":"The player is in the cave and must now kill the wolf at the end of the cave.",
+        "checks":{
+            "success":[
+                ["playerStat_kills_qWerewolf", ">=", 1]
+            ],
+            "fail1":[
+                ["inAreaId", "=", "area_gen_forest_3", "recheck"]
+            ],
+            "fail2":[
+                ["inAreaId", "=", "area_gen_forest_4", "recheck"]
+            ]
+        },
+        "reactions":{
+            "success":{
+                "event":"quest/caveOfWolves/thirdStepSuccessEvent",
+                "nextStep":"#fourthStep"
+            },
+            "fail1":{
+                "event":"quest/caveOfWolves/leaveArea",
+                "nextStep":"#firstStep"
+            },
+            "fail2":{
+                "event":"quest/caveOfWolves/leaveArea",
+                "nextStep":"#firstStep"
+            }
+        }
+    },
+    "#fourthStep":{
+        "devComments":"It turns out there was a werewolf in the cave. The player has killed it and now must return to the village to finish the quest.",
+        "checks":{
+            "success":[
+                ["inAreaId", "=", "area_village_gate_east"]
+            ]
+        },
+        "reactions":{
+            "success":{
+                "event":"quest/caveOfWolves/questEnd"
+            }
+        }
+    }
+}

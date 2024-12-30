@@ -185,7 +185,8 @@
         "arena/npc_weaponSmith"
     ],
     "quests": [
-        "intro/tutorial"
+        "intro/tutorial",
+        "forest/aCaveOfWolves"
     ],
     "races": [
         "race_human",

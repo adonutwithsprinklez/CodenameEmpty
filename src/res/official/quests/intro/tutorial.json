@@ -3,23 +3,24 @@
     "desc":"Who am I? Why did I wake up in the middle of nowhere? I should stick to trails until I find a village or town. I need to find someone who could help me figure this out.",
     "qID":"Beginnings",
     "devComments":"Starts immediately after exiting the starting area",
-	"enabledByDefault":true,
+    "enabledByDefault":true,
     "spawnConditions":[
         ["inAreaId", "=", "area_gen_forest_1"]
     ],
     "do":"quest/tutorial/firstStepEvent",
-	"initialStep":["#firstStep"],
+    "initialStep":["#firstStep"],
     "#firstStep":{
-		"checks":{
-			"success":[
-				["inAreaId", "=", "area_village_gate_east", "recheck"],
-                ["playerStat_kills_total", ">=", 5, "+"]
-			]
-		},
-		"reactions":{
-			"success":{
-                "event":"quest/tutorial/firstStepSuccessEvent"
+        "checks":{
+            "success":[
+                ["inAreaId", "=", "area_village_gate_east", "recheck"]
+            ]
+        },
+        "reactions":{
+            "success":{
+                "event":"quest/tutorial/firstStepSuccessEvent",
+                "enableQuest":["forest/aCaveOfWolves"],
+                "setDesc":"I have found a village, but no one seems able to help. I should keep looking around."
             }
-		}
+        }
     }
 }

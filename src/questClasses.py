@@ -71,6 +71,7 @@ class QuestStep(object):
             for condition in checks[check]:
                 self.checks[check].append(QuestStepCondition(condition, query))
         self.reactions:dict = getDataValue("reactions", stepData, {})
+        self.setDesc:str = getDataValue("setDesc", stepData, None)
 
         self.response:str = None
     
@@ -129,6 +130,8 @@ class Quest(object):
             # Reset the current step
             self.step = QuestStep(getDataValue(self.currentStep, GameDataHandler().getGameData("quest", self.id), {}), query)
             self.started = True
+            if self.step.setDesc:
+                self.desc = self.step.setDesc
             return True
         return False
     
@@ -199,7 +202,7 @@ class QuestWrangler(object):
             QuestWrangler.game_data = GameDataHandler()
 
             for quest in QuestWrangler.game_data.getListOfKeys("quest"):
-                self.enable_quest(quest)
+                self.enable_quest(quest, False)
             if QuestWrangler.debug:
                 self.print_quest_lists()
 
@@ -224,9 +227,12 @@ class QuestWrangler(object):
     def get_completed_quests(self):
         return QuestWrangler.completed_quests
     
-    def enable_quest(self, quest_id):
+    def enable_quest(self, quest_id, force=False):
         # Load the quest data into the quest list an initial time
         newQuest = Quest(quest_id)
+        if force:
+            QuestWrangler.quest_list.remove(quest_id)
+            newQuest.enabled = True
 
         if not newQuest.get_enabled():
             # Add the quest id to the list
@@ -267,15 +273,22 @@ class QuestWrangler(object):
                     if "event" in q.step.reactions[response]:
                         event = Event(q.step.reactions[response]["event"])
                         fireEvent(event, player)
+                    if "enableQuest" in q.step.reactions[response]:
+                        for enable in q.step.reactions[response]["enableQuest"]:
+                            enable_quests.append(enable)
+                    if "setDesc" in q.step.reactions[response]:
+                        q.desc = q.step.reactions[response]["setDesc"]
                     # Check for next step
                     if "nextStep" in q.step.reactions[response]:
                         q.currentStep = q.step.reactions[response]["nextStep"]
                         q.step = QuestStep(GameDataHandler().getGameData("quest", q.id)[q.currentStep], query)
-                    # Complete the quest if no next step
                     else:
+                        # Complete the quest if no next step
                         q.completed = True
                         removed.append(quest)
             for quest in removed:
+                # Remove the quest from the active list
+                QuestWrangler.completed_quests[quest] = QuestWrangler.active_quests[quest]
                 del QuestWrangler.active_quests[quest]
             
             # Confirm all quests are still active, and if not, move them to the completed list
@@ -287,7 +300,7 @@ class QuestWrangler(object):
 
             # Enable any quests that are in the enable_quests list
             for quest in enable_quests:
-                self.enable_quest(quest)
+                self.enable_quest(quest, True)
                 if QuestWrangler.debug:
                     print(f"Quest {quest} enabled.")
         
@@ -302,6 +315,8 @@ class QuestWrangler(object):
         print("\tEnabled:")
         for q in QuestWrangler.enabled_quests.keys():
             print(f"\t\t{q}")
+            for c in QuestWrangler.enabled_quests[q].spawnConditions:
+                print(f"\t\t\t{c}")
         print("\tActive:")
         for q in QuestWrangler.active_quests.keys():
             quest = QuestWrangler.active_quests[q]
