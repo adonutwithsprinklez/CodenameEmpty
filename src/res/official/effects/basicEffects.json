@@ -94,7 +94,7 @@
         "immediate": true,
         "repeat":true,
         "followUpEffects": [
-            "hunger_mostly_satified"
+            "hunger_mostly_satisfied"
         ],
         "modifiers":[],
         "hidden":false,
