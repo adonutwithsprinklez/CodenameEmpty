@@ -19,7 +19,7 @@ from itemGeneration import generateAmorSet, generateItem, generateWeapon
 from jsonDecoder import loadJson
 from miscClass import Misc
 from playerClass import Player
-from questClass import Quest
+from questClasses import QuestWrangler
 from raceClass import Race
 from miscFunctions import fireEvent
 
@@ -92,11 +92,8 @@ class Game(object):
 
         # Adds all loaded quests into a list of possible quests, as well as
         # loads thems into actual objects
-        for quest in self.quests.keys():
-            self.possibleQuests.append(Quest(self.quests[quest]))
-        if DEBUG:
-            for q in self.possibleQuests:
-                self.disp.dprint(q)
+
+        self.questHandler = QuestWrangler(True, True)
         
         self.nonRepeatableEvents = []
         self.globalRandomEvents = []
@@ -175,11 +172,6 @@ class Game(object):
         if self.gamedata != None:
             self.gamedata.clearAssetReferences()
 
-        '''
-        if self.audioController != None:
-            self.audioController.stopAll()
-        '''
-
     def loadGameSettings(self):
         self.gameSettings = {}
         for setting in self.settings["GAMESETTINGS"]:
@@ -255,6 +247,7 @@ class Game(object):
         if self.areaController.getCurrentAreaNeedToFight() and self.areaController.getCurrentAreaHasEnemies() and not self.gameSettings["DISABLEENEMIES"]["enabled"]:
             self.disp.clearScreen()
             for areaEnemy in self.areaController.getCurrentAreaEnemies():
+                self.player.increase_stat("encounters")
                 enemyhp = areaEnemy.getHealth()
                 while enemyhp > 0 and self.player.hp:
                     self.disp.dprint(
@@ -301,7 +294,6 @@ class Game(object):
                         self.disp.displayAction("0. Player Menu", 0)
                         self.disp.closeDisplay()
                         try:
-                            # cmd = int(input())
                             cmd = self.disp.get_input(False)
                             if not self.disp.window_is_open:
                                 self.player.quit = True
@@ -310,8 +302,7 @@ class Game(object):
                             cmd = -1
                         self.disp.clearScreen()
                         if cmd == "0":
-                            self.player.playerMenu(
-                                self.currentQuests, self.completedQuests)
+                            self.player.playerMenu()
                             if self.player.quit:
                                 # TODO Exit the game completely
                                 return None
@@ -349,6 +340,8 @@ class Game(object):
                                             self.player.weapon.effects.remove(effect)
                                         areaEnemy.effects.append(effect)
                                         effectsApplied.append(effect)
+                        self.player.increase_stat("attacks")
+                        self.player.increase_stat("damage_dealt", damage)
                         self.disp.displayHeader("You")
                         self.disp.display("%s You dealt %d damage." % (msg, damage), 1, 1)
                         if len(messages) > 0:
@@ -361,10 +354,14 @@ class Game(object):
                         damage = areaEnemy.getWeaponDamage()
                         damage -= self.player.getArmorDefence()
                         if damage < 0:
+                            self.player.increase_stat("deflects")
                             self.disp.display("You deflect %s's attack." % areaEnemy.name)
                         elif self.player.getDodge() - areaEnemy.getAccuracy() > random.randint(1,100):
+                            self.player.increase_stat("dodges")
                             self.disp.display("%s missed their attack." % (areaEnemy.name))
                         else:
+                            self.player.increase_stat("hits_taken")
+                            self.player.increase_stat("damage_taken", damage)
                             self.player.hp -= damage
                             self.disp.display("%s %s dealt %d damage." % (areaEnemy.weapon.getAction(), areaEnemy.name, damage))
 
@@ -387,9 +384,9 @@ class Game(object):
                         if random.randint(0, self.player.getArmorDefence() + areaEnemy.getWeaponDamage()) < 1 + areaEnemy.getArmorDefence():
                             escape = True
                         if escape:
+                            self.player.increase_stat("escapes")
                             self.disp.displayHeader("Escape Successful")
-                            self.disp.display(
-                                "You successfully escape from %s." % (areaEnemy.name))
+                            self.disp.display(f"You successfully escape from {areaEnemy.name}.")
                         else:
                             self.disp.displayHeader("Escape Failed")
                             self.disp.display("You fail to escape from %s." % (areaEnemy.name), 1, 1)
@@ -424,6 +421,8 @@ class Game(object):
                     enemyhp = areaEnemy.hp
 
                 if self.player.hp > 0 and areaEnemy.hp <= 0:
+                    self.player.increase_stat("kills_total")
+                    self.player.increase_stat(f"kills_{areaEnemy.eID}")
                     self.disp.clearScreen()
                     self.disp.displayHeader("Victory")
                     self.disp.display( "You defeated the enemy, and got %d experience." % areaEnemy.xp)
@@ -441,9 +440,9 @@ class Game(object):
                     self.player.giveXP(areaEnemy.xp)
 
                     if areaEnemy.defeatEvent:
+                        self.player.increase_stat("enemy_events")
                         # Fire the defeat event
                         fireEvent(areaEnemy.defeatEvent, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
-
 
                 # UPDATE QUEST INFO
                 self.updateQuestInfo()
@@ -498,7 +497,7 @@ class Game(object):
                     if self.chooseNewArea(True):
                         return None
                 elif cmd == 0:
-                    self.player.playerMenu(self.currentQuests, self.completedQuests)
+                    self.player.playerMenu()
                 if self.player.quit:
                     return None
         else:
@@ -568,7 +567,7 @@ class Game(object):
                 if canCancel:
                     return False
                 else:
-                    self.player.playerMenu(self.currentQuests, self.completedQuests)
+                    self.player.playerMenu()
                     if self.player.quit:
                         # TODO Exit the game completely
                         return False
@@ -640,13 +639,19 @@ class Game(object):
 
         self.updateQuestInfo()
 
-    def workOnBacklog(self):
-        '''This collects and organizes the information in the backlog of
-        actions to be carried out by the quest system.'''
+    def workOnBacklog(self, query=None):
+        if query == None:
+            query = self.generateDialogueQuery()
+            playerQuery = self.player.getPlayerQuery()
+            query = {**query, **playerQuery}
+        self.questHandler.tick(self.player, query)
+        '''
         self.disp.dprint("\nWorking on backlog...")
+        
         for collection in self.backlog:
             self.processActions(collection)
             self.backlog.remove(collection)
+        '''
 
     def processActions(self, actions):
         '''This processes all actions that were given by the quest system.'''

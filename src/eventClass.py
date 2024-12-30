@@ -4,12 +4,15 @@ import re
 
 from armorClass import Armor
 from dialogueRules import evaluateDialogueLine
+from gameDataHandler import GameDataHandler
 from itemGeneration import generateItem
 from miscClass import Misc
 
 
 class Event(object):
-    def __init__(self, eventName, gameData):
+    def __init__(self, eventName, gameData=None):
+        if not gameData:
+            gameData = GameDataHandler()
         data = gameData.getGameData("event", eventName)
         self.id = data["id"]
         self.resourceId = eventName
@@ -76,7 +79,7 @@ class Event(object):
         else:
             item = generateItem(itemId, gameData)
             if item:
-                player.inventory.append(copy.deepcopy(item))
+                player.inv.append(copy.deepcopy(item))
                 return True
         print("Item id '{}' not found".format(itemId))
         return False

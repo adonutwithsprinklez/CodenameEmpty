@@ -6,8 +6,12 @@ from enemyClass import Enemy
 
 # This file is used when putting functions into universalFunctions.py would create a circular import
 
-def fireEvent(event, player, areaController, disp, gameData, debug=False):
+def fireEvent(event, player, areaController=None, disp=None, gameData=None, debug=False):
     ''' This function is used to handle random events that can occur in the game. '''
+    if not disp:
+        disp = player.disp
+    if not gameData:
+        gameData = player.gameData
     disp.dprint(f"Firing event: '{event.name}'")
     while not event.finished:
         disp.clearScreen()
@@ -31,7 +35,7 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
                 for action in choices[cmd-1]["eventDo"]:
                     disp.dprint(f"\t{action[0]}")
                     if action[0] == "say":
-                        displayEventAction(areaController, disp, action[1])
+                        displayEventAction(disp, action[1], areaController, event.name)
                     elif action[0] == "goto":
                         if type(action[1]) == list:
                             event.gotoPart(random.choice(action[1]))
@@ -65,7 +69,7 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
                         newEffect = player.effects[-1]
                         messages = processEffect(newEffect, player, gameData)
                         for message in messages:
-                            displayEventAction(areaController, disp, message)
+                            displayEventAction(disp, message, areaController, event.name)
                     elif action[0] == "finish":
                         event.finish()
         else:
@@ -73,13 +77,21 @@ def fireEvent(event, player, areaController, disp, gameData, debug=False):
             event.finish()
             #input("\nEnter to continue")
             disp.wait_for_enter()
+    player.increase_stat("events")
     disp.dprint(f"Event '{event.name}' finished")
 
-def displayEventAction(areaController, disp, message):
+def displayEventAction(disp, message, areaController=None, eventName=None):
     disp.clearScreen()
-    event = areaController.getCurrentAreaEvent()
-    if event:
-        disp.displayHeader(event.name)
+    if areaController:
+        event = areaController.getCurrentAreaEvent()
+        if event:
+            disp.displayHeader(event.name)
+        elif eventName:
+            disp.displayHeader(eventName)
+        else:
+            disp.displayHeader("Event")
+    elif eventName:
+        disp.displayHeader(eventName)
     else:
         disp.displayHeader("Event")
     if type(message) == list:

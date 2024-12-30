@@ -1,0 +1,26 @@
+{
+    "id":"tutorialFirstStep",
+    "type":"quest",
+    "name":[
+        "Taking Note"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You hear a rustling in the trees to the right of you."
+        ],
+        "actions":[
+            {
+                "action":"Take a breather",
+                "eventDo":[
+                    ["say","You stop and take a deep breath."],
+                    ["say","You feel a sense of calm wash over you."],
+                    ["say","You continue on your way."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

@@ -263,7 +263,7 @@ def processEffect(effect, target, gameData, modifiers=[]):
                 elif currentEffect.effectID == "body_part_temp":
                     allowTempTransformation = False
             if allowTempTransformation:
-                race = Race(gameData["races"][effect.miscData["race"]])
+                race = Race(gameData.getGameData("race", effect.miscData["race"]))
                 # Make sure the race is playable
                 if not race.playable:
                     messages = [f"This form is not compatible with {target.name}'s soul."]
@@ -336,7 +336,7 @@ def processEffect(effect, target, gameData, modifiers=[]):
         # Chcek for follow up effects
         if not effect.randomFollowUpEffect:
             for followUpEffect in effect.followUpEffects:
-                newEffect = Effect(followUpEffect, target.gameData["effects"][followUpEffect])
+                newEffect = Effect(followUpEffect, target.gameData.getGameData("effect", followUpEffect))
                 target.effects.append(newEffect)
                 if "applies" in effect.effectLines.keys():
                     messages.append(copy.copy(effect.effectLines["applies"]))

@@ -121,6 +121,10 @@
     "events": [
         "intro_event_1",
         "intro_event_2",
+
+        "quest/tutorial/firstStepEvent",
+        "quest/tutorial/firstStepSuccessEvent",
+
         "event_lostItem",
         "event_forgotten_item",
         "event_flipACoin",
@@ -181,7 +185,7 @@
         "arena/npc_weaponSmith"
     ],
     "quests": [
-        "quest_beginnings"
+        "intro/tutorial"
     ],
     "races": [
         "race_human",

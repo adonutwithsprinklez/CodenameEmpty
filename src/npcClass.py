@@ -1,9 +1,10 @@
 import random
 
-from dialogueRules import getSatisfactoryDialogueLines, getAllPossibleSpeachOptions, modifyFlag
+from dialogueRules import getSatisfactoryDialogueLines, getAllPossibleSpeachOptions
 from dieClass import rollDice
 from itemGeneration import generateItem
 from raceClass import Race
+from universalFunctions import modifyFlag
 
 SELLERRATE = 1.1
 

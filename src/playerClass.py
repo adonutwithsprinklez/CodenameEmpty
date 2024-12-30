@@ -8,6 +8,7 @@ from eventClass import Event
 from dieClass import rollDice
 from gameDataHandler import GameDataHandler
 from miscFunctions import fireEvent
+from questClasses import QuestWrangler
 from raceClass import Race, Limb
 from weaponClass import Weapon
 
@@ -45,6 +46,7 @@ class Player(object):
         self.quit:bool = False
         self.tags:list = []
         self.skills:list = []
+        self.stats:dict = {}
         self.flags:list = []
         self.dialogueFlags:list = []
         self.stats:dict[str, int] = {
@@ -56,13 +58,9 @@ class Player(object):
         self.effects = []
         self.gameData:GameDataHandler = GameDataHandler()
 
-    def playerMenu(self, currentQuests, completedQuests):
+    def playerMenu(self):
         """
         Displays the player menu and handles user input for various actions.
-
-        Parameters:
-        - currentQuests (list): A list of current quests.
-        - completedQuests (list): A list of completed quests.
 
         Returns:
         - None
@@ -144,7 +142,7 @@ class Player(object):
             elif cmd == 1:
                 self.viewInventory()
             elif cmd == 3:
-                self.viewQuests(currentQuests, completedQuests)
+                self.viewQuests()
             elif cmd == 4:
                 self.viewPlayerDetails()
             elif cmd == 5:
@@ -493,24 +491,24 @@ class Player(object):
                 self.quit = True
                 return None
 
-    def viewQuests(self, currentQuests, completedQuests):
+    def viewQuests(self):
         """
         Displays the player's quests in the journal.
-
-        Args:
-            currentQuests (list): A list of current quests.
-            completedQuests (list): A list of completed quests.
 
         Returns:
             None
         """
+
+        questWrangler = QuestWrangler()
+
         cmd = -1
         while cmd != 0:
             self.disp.clearScreen()
             self.disp.displayHeader("Journal")
             self.disp.display("Quests:")
             questList = []
-            for quest in currentQuests:
+            for q in questWrangler.get_active_quests():
+                quest = questWrangler.get_quest_by_id(q)
                 if not quest.hidden:
                     questList.append(quest)
             if len(questList) > 0:
@@ -521,7 +519,8 @@ class Player(object):
                 self.disp.display("\tNo quests currently started", 0)
 
             questList = []
-            for quest in completedQuests:
+            for q in questWrangler.get_completed_quests():
+                quest = questWrangler.get_quest_by_id(q)
                 if not quest.hidden:
                     questList.append(quest)
             if len(questList) > 0:
@@ -1067,6 +1066,9 @@ class Player(object):
                 playerQuery[f"playerLimbCount_{limb.getType()}"] += 1
             else:
                 playerQuery[f"playerLimbCount_{limb.getType()}"] = 1
+
+        for stat in self.stats:
+            playerQuery[f"playerStat_{stat}"] = self.stats[stat]
         return playerQuery
     
     def giveXP(self, xp):
@@ -1398,3 +1400,19 @@ class Player(object):
         """
         effectMessages = processAppliedEffects(self, combat, travel)
         return effectMessages
+    
+    def increase_stat(self, stat, val=1):
+        """
+        Increases the specified stat by the specified value.
+
+        Args:
+            stat (str): The stat to increase.
+            val (int): The value to increase the stat by.
+
+        Returns:
+            None
+        """
+        if stat in self.stats:
+            self.stats[stat] += val
+        else:
+            self.stats[stat] = val

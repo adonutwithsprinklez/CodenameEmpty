@@ -36,7 +36,7 @@ class GameDataHandler(object):
 
     def __init__(self, ds=None, dr=None, DEBUG=None):
         if DEBUG != None:
-            self.DEBUG = DEBUG
+            GameDataHandler.DEBUG = DEBUG
 
         if ds != None and dr != None:
             print (f"Game Data Handler Debug = {self.DEBUG}")

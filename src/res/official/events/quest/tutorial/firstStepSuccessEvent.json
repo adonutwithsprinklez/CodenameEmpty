@@ -1,0 +1,25 @@
+{
+    "id":"tutorialFirstStepSuccess",
+    "type":"quest",
+    "name":[
+        "In Town"
+    ],
+    "start":[
+        "#startingPoint"
+    ],
+    "#startingPoint":{
+        "msg":[
+            "You have made it to a village. This seems like good place to start looking for answers."
+        ],
+        "actions":[
+            {
+                "action":"Check around the village",
+                "eventDo":[
+                    ["say","You look around the village, but you don't see anyone that looks like they could help you."],
+                    ["say","You will need to keep looking."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}
