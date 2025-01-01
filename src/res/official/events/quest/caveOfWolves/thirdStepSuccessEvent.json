@@ -1,0 +1,32 @@
+{
+    "id":"caveOfWolvesQuestStep3",
+    "type":"quest",
+    "name":[
+        "Collecting the head of the Werewolf"
+    ],
+    "start":[
+        "#firstStep"
+    ],
+    "#firstStep":{
+        "msg":[
+            "You have killed the beast that was causing the villagers so much trouble. Now all that is left is to collect its head as proof."
+        ],
+        "actions":[
+            {
+                "action":"Collect the Werewolf's Head",
+                "eventDo":[
+                    ["say","You kneel down and cut off the head of the werewolf. It is a gruesome task, but you know that you need to bring it back as proof."],
+                    ["give","quest/werewolf_head",1],
+                    ["finish"]
+                ]
+            },
+            {
+                "action":"Leave the head",
+                "eventDo":[
+                    ["say","You decide that you need to come back later. You have other things to do."],
+                    ["goto","#leave"]
+                ]
+            }
+        ]
+    }
+}

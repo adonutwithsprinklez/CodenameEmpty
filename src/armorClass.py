@@ -142,9 +142,8 @@ class Armor(object):
 		- data (dict): A dictionary containing the data for the armor.
 		- limb (str, optional): The limb type for the armor. Defaults to None.
 		"""
+		self.id:str = getDataValue("id", data, None)
 		self.name:str = generateString(data, "name")
-		idnum = random.randint(0,999999)
-		self.id:str = f"{self.name}-{idnum}"
 		self.t:str = "a"
 		self.desc:str = generateString(data, "desc")
 		self.defence:str = data["defence"]

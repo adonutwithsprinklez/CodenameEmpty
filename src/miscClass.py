@@ -7,6 +7,7 @@ from universalFunctions import getDataValue
 
 class Misc(object):
 	def __init__(self, data, gameData):
+		self.id = getDataValue("id", data, None)
 		self.name = random.choice(data["name"])
 		self.t = data["iType"]
 		self.desc = random.choice(data["desc"])
@@ -96,6 +97,9 @@ class Misc(object):
 				return f"[{self.t.upper()}] {self.name}"
 			return f"{self.name} [{self.t.upper()}]"
 		return self.name
+	
+	def get_id(self):
+		return self.id
 	
 	def getValue(self):
 		#TODO: Add modifiers to worth

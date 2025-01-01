@@ -2,9 +2,9 @@
     "heal_basic_potion": {
         "effectID":"heal",
         "name": "Minor Heal",
-        "desc": "Heals 1d8 HP",
+        "desc": "Heals 2d8+4 HP",
         "showDesc": "False",
-        "strength": "1d8",
+        "strength": "2d8+4",
         "duration": "+0",
         "appliable":true,
         "immediate": true,

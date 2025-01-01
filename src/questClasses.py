@@ -244,7 +244,7 @@ class QuestWrangler(object):
             if newQuest.get_repeatable():
                 QuestWrangler.quest_list.append(quest_id)
     
-    def tick(self, player, query=None):
+    def tick(self, player, query=None, areaController=None):
 
         enable_quests = []
 
@@ -257,7 +257,7 @@ class QuestWrangler(object):
                     # fire the quest start event (if it exists)
                     if QuestWrangler.active_quests[quest].do:
                         event = Event(QuestWrangler.active_quests[quest].do)
-                        fireEvent(event, player)
+                        fireEvent(event, player, areaController)
                     removed.append(quest)
             for quest in removed:
                 del QuestWrangler.enabled_quests[quest]
@@ -272,7 +272,7 @@ class QuestWrangler(object):
                     response = q.step.response
                     if "event" in q.step.reactions[response]:
                         event = Event(q.step.reactions[response]["event"])
-                        fireEvent(event, player)
+                        fireEvent(event, player, areaController)
                     if "enableQuest" in q.step.reactions[response]:
                         for enable in q.step.reactions[response]["enableQuest"]:
                             enable_quests.append(enable)

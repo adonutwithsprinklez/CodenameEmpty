@@ -2,17 +2,17 @@
     "title":"A Cave of Wolves",
     "desc":"",
     "qID":"aCaveOfWolves",
-    "devComments":"Will start upon entering the first village, if the player has a 'caveRumor' flag from overhearing a rumor.",
+    "devComments":"Will start upon entering the first village, if the player has a 'wolfCaveRumor' flag from overhearing a rumor.",
     "enabledByDefault":false,
     "spawnConditions":[
         ["inAreaId", "=", "area_village_gate_east", "recheck"],
-        ["playerFlags", "has", "caveRumor"]
+        ["playerFlags", "has", "wolfCaveRumor"]
     ],
-    "do":"",
+    "do":"quest/caveOfWolves/introductionEvent",
     "initialStep":["#firstStep"],
     "#firstStep":{
         "devComments":"The player has heard the rumor and started the quest.",
-        "setDesc":"I need to find the wolf cave that has been terrorizing the village.",
+        "setDesc":"I need to find the wolf cave that has been terrorizing the village. The old man told me it's somewhere deeper in the forest.",
         "checks":{
             "success":[
                 ["inAreaId", "=", "cave_wolf/entrance", "recheck"]
@@ -41,6 +41,7 @@
         },
         "reactions":{
             "success":{
+                "event":"quest/caveOfWolves/secondStepSuccessEvent",
                 "nextStep":"#thirdStep"
             },
             "leftArea1":{
@@ -57,7 +58,7 @@
         "devComments":"The player is in the cave and must now kill the wolf at the end of the cave.",
         "checks":{
             "success":[
-                ["playerStat_kills_qWerewolf", ">=", 1]
+                ["playerStat_kills_e_werewolf", ">=", 1]
             ],
             "fail1":[
                 ["inAreaId", "=", "area_gen_forest_3", "recheck"]
@@ -83,6 +84,7 @@
     },
     "#fourthStep":{
         "devComments":"It turns out there was a werewolf in the cave. The player has killed it and now must return to the village to finish the quest.",
+        "setDesc":"The werewolf is dead. I should return to the village to collect my reward.",
         "checks":{
             "success":[
                 ["inAreaId", "=", "area_village_gate_east"]
@@ -90,7 +92,8 @@
         },
         "reactions":{
             "success":{
-                "event":"quest/caveOfWolves/questEnd"
+                "event":"quest/caveOfWolves/questEnd",
+                "setDesc":"I have killed the werewolf, and let the village know. This adventure is over."
             }
         }
     }

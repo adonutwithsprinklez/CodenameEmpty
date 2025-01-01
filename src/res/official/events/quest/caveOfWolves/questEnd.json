@@ -1,0 +1,70 @@
+{
+    "id":"caveOfWolvesQuestEnd",
+    "type":"quest",
+    "name":[
+        "Returning to the Village"
+    ],
+    "start":[
+        "#firstStep"
+    ],
+    "#firstStep":{
+        "msg":[
+            "You return to the village."
+        ],
+        "actions":[
+            {
+                "action":"Return with the Werewolf's Head",
+                "requirements":[
+                    ["playerItems", "has", "werewolf_head"]
+                ],
+                "eventDo":[
+                    ["say", "You return to the elderly man, the werewolf's head in hand. The eyes of the villagers are on you as you approach, surprised by the head of beast."],
+                    ["say", [
+                        "You return to the elderly man who had asked for your help. He looks at you, then at the head you are carrying.",
+                        "He nods, \"<i>Thank you for taking care of the wolves. I can finally sleep soundly at night.<i>\""]
+                    ],
+                    ["goto", "#reward"]
+                ]
+            },
+            {
+                "action":"Return to the Elderly Man",
+                "requirements":[
+                    ["playerItems", "nothas", "werewolf_head"]
+                ],
+                "eventDo":[
+                    ["say", "You return to the elderly man, unsure of what to say, as you bear no proof of that you completed your task."],
+                    ["say", ""],
+                    ["finish"]
+                ]
+            }
+        ]
+    },
+    "#reward":{
+        "msg":[
+            "The old man pulls out a small pouch, ready to hand it to you. \"<i>Here is your reward, as promised.<i>\""
+        ],
+        "actions":[
+            {
+                "action":"Take the Reward, and give the Werewolf's Head",
+                "eventDo":[
+                    ["remove", "werewolf_head", 1],
+                    ["givexp", 100],
+                    ["give", "gold", 100]
+                ]
+            },
+            {
+                "action":"Refuse the Reward, and keep the Werewolf's Head",
+                "eventDo":[
+                    ["givexp", 100]
+                ]
+            },
+            {
+                "action":"Refuse the Reward, and give the Werewolf's Head",
+                "eventDo":[
+                    ["remove", "werewolf_head", 1],
+                    ["givexp", 150]
+                ]
+            }
+        ]
+    }
+}

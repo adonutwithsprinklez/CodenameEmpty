@@ -1,0 +1,11 @@
+{
+    "id":"werewolf_head",
+	"name":[
+		"Werewolf Head"
+	],
+	"desc":[
+		"The head of a werewolf. Its fiercesome appearance is enough to give you pause everytime you look at it."
+	],
+	"iType":"material",
+	"worth":50
+}

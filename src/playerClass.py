@@ -1053,7 +1053,8 @@ class Player(object):
             "playerPerks": self.getPerks(),
             "playerDialogueFlags": self.dialogueFlags,
             "playerFlags": self.getFlags(),
-            "playerLimbTypes":[]
+            "playerLimbTypes":[],
+            "playerItems": []
         }
         # Add to this query, a list with the names of each limb type the player
         # has, and one entry for each limb type with the counts of that limb
@@ -1066,9 +1067,19 @@ class Player(object):
                 playerQuery[f"playerLimbCount_{limb.getType()}"] += 1
             else:
                 playerQuery[f"playerLimbCount_{limb.getType()}"] = 1
+        
+        for item in self.inv:
+            if item.get_id() and item.get_id() not in playerQuery["playerItems"]:
+                playerQuery["playerItems"].append(item.get_id())
 
         for stat in self.stats:
             playerQuery[f"playerStat_{stat}"] = self.stats[stat]
+
+        # Add quests to the player query
+        activeQuests = QuestWrangler().get_active_quests().keys()
+        playerQuery["playerActiveQuests"] = list(activeQuests)
+        completedQuests = QuestWrangler().get_completed_quests().keys()
+        playerQuery["playerCompletedQuests"] = list(completedQuests)
         return playerQuery
     
     def giveXP(self, xp):

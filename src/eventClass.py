@@ -65,9 +65,17 @@ class Event(object):
         return evaluateDialogueLine(requirements, query)
 
     def takeItem(self, item, amount, player):
-        # TODO add support for other items
         if item == "gold":
+            print("Player gold before: " + str(player.gold))
             player.gold -= amount
+            print ("Player gold after: " + str(player.gold))
+        else:
+            count = 0
+            for i in player.inv:
+                if item == i.get_id() and count < amount:
+                    player.inv.remove(i)
+                    count += 1
+            print(f"Removed {count} {item} from player inventory")
 
     def giveItem(self, itemId, amount, player, gameData):
         # TODO: Rewrite to use the new GameDataHandler class

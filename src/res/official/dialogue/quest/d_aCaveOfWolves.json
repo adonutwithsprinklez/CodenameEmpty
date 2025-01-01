@@ -1,0 +1,14 @@
+{
+    "lines":[
+        { "dialogue":"\"Won't be able to keep the farm these wolves keep being a nuisance.\"", "criteria":[ ["isAction", "=", "idle"], ["playerCompletedQuests", "nothas", "forest/aCaveOfWolves"] ], "addPlayerFlags":["wolfCaveRumor"], "weight": 2 },
+        { "dialogue":"\"Filthy mutts need to stop bothering the livestock.\"", "criteria":[ ["isAction", "=", "idle"], ["playerCompletedQuests", "nothas", "forest/aCaveOfWolves"] ], "addPlayerFlags":["wolfCaveRumor"], "weight": 2 },
+
+        { "dialogue":"\"We all appreciate your help with the wolves.\"", "criteria":[ ["isAction", "=", "greeting"], ["playerCompletedQuests", "has", "forest/aCaveOfWolves"] ], "weight": 1 },
+        { "dialogue":"\"Aren't you supposed to be killing some wolves or something?\"", "criteria":[ ["isAction", "=", "greeting"], ["playerActiveQuests", "has", "forest/aCaveOfWolves"] ], "weight": 5 },
+
+        { "dialogue":"\"I've heard of dangerous caves full of wolves deeper in the woods. I'd avoid going too far off the trail if I were you.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerCompletedQuests", "nothas", "forest/aCaveOfWolves"]  ], "weight":3 },
+        { "dialogue":"\"Aren't you supposed to be killing some wolves or something?\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerActiveQuests", "has", "forest/aCaveOfWolves"] ], "weight": 5 },
+        { "dialogue":"\"I don't have time to talk. Wolves keep bothering my livestock.\"", "criteria":[ ["isAction", "=", "smalltalk"], ["playerCompletedQuests", "nothas", "forest/aCaveOfWolves"] ], "addPlayerFlags":["wolfCaveRumor"], "weight": 3}
+    ],
+    "flags":[]
+}

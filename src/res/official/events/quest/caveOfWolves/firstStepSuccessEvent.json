@@ -1,0 +1,16 @@
+{
+    "id":"caveOfWolvesQuestStep1",
+    "type":"quest",
+    "name":[
+        "Before the Cave"
+    ],
+    "start":[
+        "#firstStep"
+    ],
+    "#firstStep":{
+        "msg":[
+            "As you continue to walk through the forest, you see what looks like a cave entrance up ahead. This must be the cave the old man had mentioned."
+        ],
+        "actions":[]
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "id":"caveOfWolvesQuestLeave",
+    "type":"quest",
+    "name":[
+        "Come back later"
+    ],
+    "start":[
+        "#firstStep"
+    ],
+    "#firstStep":{
+        "msg":[
+            "You decide that you need to come back later. You have other things to do."
+        ],
+        "actions":[]
+    }
+}

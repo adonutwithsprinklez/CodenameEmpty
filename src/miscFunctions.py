@@ -50,7 +50,12 @@ def fireEvent(event, player, areaController=None, disp=None, gameData=None, debu
                             result = event.giveItem(action[1], action[2], player, gameData)
                             if debug and not result:
                                 raise Exception("Something went wrong when processing an event's 'give' command.")
+                    elif action[0] == "remove": # This is the same as take, but with a different name
+                        event.takeItem(action[1], action[2], player)
                     elif action[0] == "spawnEnemy":
+                        print(action[1])
+                        if type(action[1]) == str:
+                            action[1] = [action[1]]
                         for enemyid in action[1]:
                             areaController.addEnemyToCurrentArea(Enemy(enemyid, gameData))
                     elif action[0] == "addArea":

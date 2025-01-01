@@ -89,11 +89,6 @@ class Game(object):
         self.loadDataPackSettings()
         self.gamedata = GameDataHandler(self.dataPackSettings, {}, DEBUG)
         self.starter = self.dataPackSettings["start"]
-
-        # Adds all loaded quests into a list of possible quests, as well as
-        # loads thems into actual objects
-
-        self.questHandler = QuestWrangler(True, True)
         
         self.nonRepeatableEvents = []
         self.globalRandomEvents = []
@@ -103,11 +98,15 @@ class Game(object):
                 if self.events[event]["globalEvent"]:
                     self.globalRandomEvents.append([event, self.events[event]["eventChance"]])
 
+        # Adds all loaded quests into a list of possible quests, as well as
+        # loads thems into actual objects
+        self.questHandler = QuestWrangler(True, True)
         
         # loadTimeEnd = time.time()
         # print(f"Finished loading assets in {loadTimeEnd - loadTimeStart} seconds.")
         
         self.loadStartingArea()
+
         self.loaded = True
 
     def loadStartingArea(self):
@@ -167,7 +166,6 @@ class Game(object):
         self.currentQuests = []
         self.completedQuests = []
         self.backlog = []
-        self.importantQuestInfo = []
 
         if self.gamedata != None:
             self.gamedata.clearAssetReferences()
@@ -426,7 +424,6 @@ class Game(object):
                     self.disp.clearScreen()
                     self.disp.displayHeader("Victory")
                     self.disp.display( "You defeated the enemy, and got %d experience." % areaEnemy.xp)
-                    self.importantQuestInfo.append( ["isKilled", areaEnemy.eID, True, False])
                     self.disp.display("%s %s" % (areaEnemy.name, areaEnemy.deathMsg))
                     if random.randint(1, 100) < areaEnemy.itemChance:
                         self.disp.display("")
@@ -443,9 +440,6 @@ class Game(object):
                         self.player.increase_stat("enemy_events")
                         # Fire the defeat event
                         fireEvent(areaEnemy.defeatEvent, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
-
-                # UPDATE QUEST INFO
-                self.updateQuestInfo()
                 self.workOnBacklog()
     
     def areaHub(self):
@@ -456,6 +450,7 @@ class Game(object):
         if len(npcList) > 0:
             npcDialogCheck = False
             while True:
+                self.workOnBacklog()
                 self.disp.clearScreen()
                 self.disp.displayHeader(f"{self.areaController.getCurrentAreaName()}")
                 if not npcDialogCheck and random.randint(0,100) < self.areaController.getCurrentAreaIdleDialogChance():
@@ -634,17 +629,12 @@ class Game(object):
             if not self.areaController.getCurrentAreaEvent().isRepeatable:
                 self.nonRepeatableEvents.append(self.areaController.getCurrentAreaEvent().resourceId)
 
-        self.importantQuestInfo.append(["inAreaType", self.areaController.getCurrentAreaType(), True, False])
-        self.importantQuestInfo.append(["inAreaId", self.areaController.getCurrentAreaId(), True, False])
-
-        self.updateQuestInfo()
-
     def workOnBacklog(self, query=None):
         if query == None:
             query = self.generateDialogueQuery()
             playerQuery = self.player.getPlayerQuery()
             query = {**query, **playerQuery}
-        self.questHandler.tick(self.player, query)
+        self.questHandler.tick(self.player, query, self.areaController)
         '''
         self.disp.dprint("\nWorking on backlog...")
         
@@ -688,32 +678,6 @@ class Game(object):
                     self.areaController.addEnemyToCurrentArea(
                         Enemy(self.enemies[enemyid], self.weapons, self.armor, self.misc, self.modifiers))
                 self.disp.dprint("Processed spawnEnemy condition.")
-
-    def updateQuestInfo(self):
-        '''This updates all quest related variables and states.'''
-        # update any currently loaded quests to see if any requirements are met
-        self.disp.dprint("\nUnstarted quests:")
-        for quest in self.possibleQuests:
-            self.disp.dprint(quest)
-            for event in self.importantQuestInfo:
-                quest.setFlagToValue(event[0], event[1], event[2], event[3])
-            do = quest.start()
-            if do:
-                self.currentQuests.append(quest)
-                self.possibleQuests.remove(quest)
-                self.backlog.append(do)
-        self.disp.dprint("Started quests:")
-        for quest in self.currentQuests:
-            self.disp.dprint(quest)
-            for event in self.importantQuestInfo:
-                quest.setFlagToValue(event[0], event[1], event[2], event[3])
-            do = quest.doNextStep()
-            if do:
-                self.backlog.append(do)
-        self.disp.dprint("Completed Quests:")
-        for quest in self.completedQuests:
-            self.disp.dprint(quest)
-        self.importantQuestInfo = []
     
     def newGameMenu(self):
         ''' This displays all required info for a player to start a new game '''

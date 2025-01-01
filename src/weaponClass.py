@@ -10,6 +10,7 @@ from universalFunctions import getDataValue
 class Weapon(object):
 	def __init__(self, wepName=None, gameData=None):
 		data = gameData.getGameData("weapon", wepName)
+		self.id = getDataValue("id", data, None)
 		# Decides whether or not the item is generated
 		if "generated" in data.keys():
 			self.generated = data["generated"]
@@ -103,6 +104,9 @@ class Weapon(object):
 		else:
 			effects = self.effects
 		return effects
+
+	def get_id(self):
+		return self.id
 	
 	def hasEffect(self, appliableOnly):
 		return len(self.getEffects(appliableOnly)) > 0

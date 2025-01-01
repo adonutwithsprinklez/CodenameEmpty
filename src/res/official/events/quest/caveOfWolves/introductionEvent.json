@@ -1,0 +1,30 @@
+{
+    "id":"caveOfWolvesQuestIntro",
+    "type":"quest",
+    "name":[
+        "Asking About Wolves"
+    ],
+    "start":[
+        "#firstStep"
+    ],
+    "#firstStep":{
+        "msg":[
+            "You remember hearing about wolves bothering the locals. There could be gold in it for you if you can help."
+        ],
+        "actions":[
+            {
+                "action":"Ask around",
+                "eventDo":[
+                    ["say",["Interested in finding out if there is a reward for helping with the wolf problem, you begin asking around.",
+                        "At first, it is slow going, most too busy to even talk to you, but eventually you find someone who is interested in speaking to you."]
+                    ],
+                    ["say",["An elderly man nods his head, \"<i>I won't be able to feed my family if these wolves keep bothering my livestock,<i>\" he mumbles, \"<i>I already asked for the help of a nearby hunter a few days ago, but he hasn't returned. Probably figured it was not worth the trouble.<i>\"",
+                        "He looks you over, \"<i>But you look like you can handle yourself. If you can take care of the wolves, I'll make sure you are rewarded. Just bring back some proof that you killed the whole pack.<i>\""]
+                    ],
+                    ["say","You knod, and thank the man, noting down that the pack cave is somewhere deeper in the forest."],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

@@ -90,7 +90,9 @@
         "dialogue_npc_arena_guard",
         "dialogue_npc_arena_armorSmith",
         "dialogue_npc_arena_healer",
-        "dialogue_npc_arena_weaponSmith"
+        "dialogue_npc_arena_weaponSmith",
+
+        "quest/d_aCaveOfWolves"
     ],
     "effects": [
         "basicEffects",
@@ -116,7 +118,9 @@
         "arena/enemy_fighter1",
         "arena/enemy_fighter_random",
         "arena/enemy_werewolf",
-        "arena/enemy_werewolf_weak"
+        "arena/enemy_werewolf_weak",
+
+        "quest/aCaveOfWolves/werewolf"
     ],
     "events": [
         "intro_event_1",
@@ -124,6 +128,13 @@
 
         "quest/tutorial/firstStepEvent",
         "quest/tutorial/firstStepSuccessEvent",
+
+        "quest/caveOfWolves/introductionEvent",
+        "quest/caveOfWolves/firstStepSuccessEvent",
+        "quest/caveOfWolves/secondStepSuccessEvent",
+        "quest/caveOfWolves/thirdStepSuccessEvent",
+        "quest/caveOfWolves/questEnd",
+        "quest/caveOfWolves/leaveArea",
 
         "event_lostItem",
         "event_forgotten_item",
@@ -154,6 +165,8 @@
         "material_greatWolfPelt",
         "misc_pieceOfMetal",
         "misc_mysteriousOrb",
+
+        "quest/werewolf_head",
 
         "consumable/potion/trans_drakt",
         "consumable/potion/trans_dwarf",

@@ -1,0 +1,25 @@
+{
+    "id":"caveOfWolvesQuestStep2",
+    "type":"quest",
+    "name":[
+        "In the Cave"
+    ],
+    "start":[
+        "#firstStep"
+    ],
+    "#firstStep":{
+        "msg":[
+            "You've made it through the cave so far. Just a bit more to go before the wolves are all dead."
+        ],
+        "actions":[
+            {
+                "action":"Move forward",
+                "eventDo":[
+                    ["say","You move forward, deeper into the cave. You can't shake the feeling that there is something much larger and  meaner waiting within."],
+                    ["spawnEnemy","quest/aCaveOfWolves/werewolf"],
+                    ["finish"]
+                ]
+            }
+        ]
+    }
+}

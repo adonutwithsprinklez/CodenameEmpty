@@ -17,7 +17,8 @@
     ],
     "dialogue":[
         "dialogue_fallback",
-        "dialogue_npc_generic"
+        "dialogue_npc_generic",
+        "quest/d_aCaveOfWolves"
     ],
     "numItems":"1d3+5",
     "itemPool":[
