@@ -231,7 +231,8 @@ class QuestWrangler(object):
         # Load the quest data into the quest list an initial time
         newQuest = Quest(quest_id)
         if force:
-            QuestWrangler.quest_list.remove(quest_id)
+            if quest_id in QuestWrangler.quest_list:
+                QuestWrangler.quest_list.remove(quest_id)
             newQuest.enabled = True
 
         if not newQuest.get_enabled():
@@ -257,7 +258,7 @@ class QuestWrangler(object):
                     # fire the quest start event (if it exists)
                     if QuestWrangler.active_quests[quest].do:
                         event = Event(QuestWrangler.active_quests[quest].do)
-                        fireEvent(event, player, areaController)
+                        fireEvent(event, player, self, areaController)
                     removed.append(quest)
             for quest in removed:
                 del QuestWrangler.enabled_quests[quest]
@@ -272,7 +273,7 @@ class QuestWrangler(object):
                     response = q.step.response
                     if "event" in q.step.reactions[response]:
                         event = Event(q.step.reactions[response]["event"])
-                        fireEvent(event, player, areaController)
+                        fireEvent(event, player, self, areaController)
                     if "enableQuest" in q.step.reactions[response]:
                         for enable in q.step.reactions[response]["enableQuest"]:
                             enable_quests.append(enable)

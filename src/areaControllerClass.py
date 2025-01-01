@@ -19,6 +19,7 @@ class AreaController(object):
         }
 
         self.areasAddedByEvents = []
+        self.areasRemovedByEvents = []
 
         self.gameData:GameDataHandler = GameDataHandler()
 
@@ -42,6 +43,7 @@ class AreaController(object):
         self.generatedExits = False
         self.currentExits = []
         self.areasAddedByEvents = []
+        self.areasRemovedByEvents = []
     
     def setAndLoadCurrentArea(self, area):
         ''' Sets the current area and loads it in a single call'''
@@ -75,6 +77,12 @@ class AreaController(object):
     def addExitToAreaFromEvent(self, area):
         data = [area, "+1", ["required", "limited"]]
         self.areasAddedByEvents.append(data)
+    
+    def removeExitToAreaFromEvent(self, area):
+        for areaData in self.areasAddedByEvents:
+            if areaData[0] == area:
+                self.areasAddedByEvents.remove(areaData)
+        self.areasRemovedByEvents.append(area)
 
     # GETTERS
     # Getters for current Area Data
@@ -151,23 +159,33 @@ class AreaController(object):
         # Grab all required areas and throw them into a seperate list. This is to
         # guarantee that they are generated.
         areatypes = self.currentArea.newAreaTypes[::]
+
+        # Actually generate areas:
+        numAreas = self.currentArea.newArea + len(self.areasAddedByEvents) + 1
+
         required = []
         for area in areatypes:
             if len(area) > 2:
                 for flag in area[2]:
                     if flag == "required":
-                        required.append(area)
+                        if area[0] not in self.areasRemovedByEvents:
+                            required.append(area)
+                        else:
+                            numAreas -= 1
 
         # Check if all requirements are met for areas to spawn:
         # TODO
 
-        # Actually generate areas:
-        numAreas = self.currentArea.newArea + len(self.areasAddedByEvents) + 1
         for i in range(1, numAreas):
             if len(required) > 0:
                 newArea = required.pop(0)
             else:
                 areatypes = copy.copy(self.currentArea.newAreaTypes) + self.areasAddedByEvents
+                # remove area types that are in the self.areasRemovedByEvents list
+                for area in self.areasRemovedByEvents:
+                    for areaType in areatypes:
+                        if areaType[0] == area:
+                            areatypes.remove(areaType)
                 highroll = 0
                 for aType in areatypes:
                     newroll = rollDice(aType[1])

@@ -634,7 +634,7 @@ class Player(object):
                         self.effects.append(Effect(effect, self.gameData.getGameData("effect", effect)))
                 
                 if "fireEvent" in npcDialogueLine.keys():
-                    fireEvent(Event(npcDialogueLine["fireEvent"], self.gameData), self, areaController, self.disp, self.gameData, False)
+                    fireEvent(Event(npcDialogueLine["fireEvent"], self.gameData), self, QuestWrangler(), areaController, self.disp, self.gameData, False)
 
                 dialogueLine = f"{npc.getName()} - {npcDialogueLine['dialogue']}"
                 playerQuery = self.getPlayerQuery()

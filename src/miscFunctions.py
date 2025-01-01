@@ -6,7 +6,7 @@ from enemyClass import Enemy
 
 # This file is used when putting functions into universalFunctions.py would create a circular import
 
-def fireEvent(event, player, areaController=None, disp=None, gameData=None, debug=False):
+def fireEvent(event, player, questWrangler=None, areaController=None, disp=None, gameData=None, debug=False):
     ''' This function is used to handle random events that can occur in the game. '''
     if not disp:
         disp = player.disp
@@ -68,6 +68,8 @@ def fireEvent(event, player, areaController=None, disp=None, gameData=None, debu
                             player.flags.remove(action[1])
                     elif action[0] == "setName":
                         event.setName(action[1])
+                    elif action[0] == "enableQuest":
+                        QuestWrangler().enable_quest(action[1], action[2])
                     elif action[0] == "addEffect":
                         newEffect = Effect(action[1], gameData.getGameData("effect", action[1]))
                         player.effects.append(newEffect)
@@ -75,6 +77,8 @@ def fireEvent(event, player, areaController=None, disp=None, gameData=None, debu
                         messages = processEffect(newEffect, player, gameData)
                         for message in messages:
                             displayEventAction(disp, message, areaController, event.name)
+                    elif action[0] == "removeArea":
+                        areaController.removeExitToAreaFromEvent(action[1])
                     elif action[0] == "finish":
                         event.finish()
         else:

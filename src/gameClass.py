@@ -231,7 +231,7 @@ class Game(object):
         ##### Random event Code #####
         if self.areaController.getCurrentAreaHasEvent(self.gameSettings["DISABLEFLAVOREVENTS"]["enabled"]):
             event = self.areaController.getCurrentAreaEvent()
-            fireEvent(event, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
+            fireEvent(event, self.player, self.questHandler, self.areaController, self.disp, self.gamedata, DEBUG)
         else:
             self.areaController.clearEvent()
 
@@ -439,7 +439,7 @@ class Game(object):
                     if areaEnemy.defeatEvent:
                         self.player.increase_stat("enemy_events")
                         # Fire the defeat event
-                        fireEvent(areaEnemy.defeatEvent, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
+                        fireEvent(areaEnemy.defeatEvent, self.player, self.questHandler, self.areaController, self.disp, self.gamedata, DEBUG)
                 self.workOnBacklog()
     
     def areaHub(self):
@@ -685,7 +685,7 @@ class Game(object):
         if self.gameSettings["INTROEVENT"]["enabled"] and self.gameSettings["TUTORIALAREA"]["enabled"] and "introEvent" in self.gamedata.getGameData("pack",self.starter).keys():
             event = random.choice(self.gamedata.getGameData("pack",self.starter)["introEvent"])
             event = Event(event, self.gamedata)
-            fireEvent(event, self.player, self.areaController, self.disp, self.gamedata, DEBUG)
+            fireEvent(event, self.player, self.questHandler, self.areaController, self.disp, self.gamedata, DEBUG)
 
         cmd = -1
         ready = False

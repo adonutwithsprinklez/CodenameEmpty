@@ -20,6 +20,7 @@
                 "eventDo":[
                     ["say","You knock on the Arena's door. You see a light flicker behind the door for a moment before it opens up. A guard stands at the entrance to the doorway, gesturing for you to enter."],
                     ["addArea","arena/area_foyer"],
+                    ["removeArea","area_village_gate_east"],
                     ["finish"]
                 ]
             },
@@ -167,6 +168,7 @@
                     ["say","The guard laughs, \"<i>That's what we like to hear. Head right in and talk to the fight master to start your career.<i>\""],
                     ["addFlag", "arenaAccepted"],
                     ["addArea","arena/area_foyer"],
+                    ["removeArea","area_village_gate_east"],
                     ["finish"]
                 ]
             },
