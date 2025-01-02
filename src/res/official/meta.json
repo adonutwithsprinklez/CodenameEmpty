@@ -199,7 +199,8 @@
     ],
     "quests": [
         "intro/tutorial",
-        "forest/aCaveOfWolves"
+        "forest/aCaveOfWolves",
+        "forest/cultistBase"
     ],
     "races": [
         "race_human",

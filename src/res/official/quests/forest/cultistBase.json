@@ -1,0 +1,47 @@
+{
+    "title":"Infiltrating the $cultName",
+    "desc":"I seem to have fallen into a hidden entrance to a hideout used by the cult, the $cultName. I need to find a way out.",
+    "qID":"InTheCult",
+    "devComments":"If the player enters an 'abandoned church interior', and the player completed the tutorial quest, this quest will start.",
+    "enabledByDefault":true,
+    "spawnConditions":[
+        ["inAreaId", "=", "area_abandoned_church_interior"]
+    ],
+    "randomVariables":{
+        "cultName":{
+            "value":[
+                "Cult of the $var",
+                "The $var Cult",
+                "Followers of the $var"
+            ],
+            "variables":{
+                "var":{
+                    "type":"choose",
+                    "choices":[
+                        "Dragon",
+                        "Serpent",
+                        "Lizard",
+                        "Drake",
+                        "Wyrm"
+                    ]
+                }
+            }
+        }
+    },
+    "do":"quest/inTheCult/introductionEvent",
+    "initialStep":["#firstStep"],
+    "#firstStep":{
+        "checks":{
+            "success":[
+                ["inAreaId", "=", "area_village_gate_east", "recheck"]
+            ]
+        },
+        "reactions":{
+            "success":{
+                "event":"quest/tutorial/firstStepSuccessEvent",
+                "enableQuest":["forest/aCaveOfWolves"],
+                "setDesc":"I have found a village, but no one seems able to help. I should keep looking around."
+            }
+        }
+    }
+}

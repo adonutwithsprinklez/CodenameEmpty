@@ -507,28 +507,28 @@ class Player(object):
             self.disp.displayHeader("Journal")
             self.disp.display("Quests:")
             questList = []
-            for q in questWrangler.get_active_quests():
+            for q in questWrangler.get_active_quests().keys():
                 quest = questWrangler.get_quest_by_id(q)
                 if not quest.hidden:
                     questList.append(quest)
             if len(questList) > 0:
                 for quest in questList:
-                    self.disp.display("[ ] - {}".format(quest.title))
-                    self.disp.display("\t{}".format(quest.desc), 0)
+                    self.disp.display(f"\t<b>{quest.title}<b> - <i>{quest.desc}<i>", 0)
             else:
                 self.disp.display("\tNo quests currently started", 0)
 
             questList = []
-            for q in questWrangler.get_completed_quests():
+            for q in questWrangler.get_completed_quests().keys():
                 quest = questWrangler.get_quest_by_id(q)
                 if not quest.hidden:
                     questList.append(quest)
             if len(questList) > 0:
                 # revereses the array so that the most recently completed quests
                 # come up first
+                questList.reverse()
+                self.disp.display("Completed Quests:")
                 for quest in questList:
-                    self.disp.display("[X] - {}".format(quest.title))
-                    self.disp.display("\t{}".format(quest.desc), 0)
+                    self.disp.display(f"\t<b>{quest.title}<b> - <i>{quest.desc}<i>", 0)
             self.disp.displayAction("0. Exit", 0)
             self.disp.closeDisplay()
             try:

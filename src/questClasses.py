@@ -5,6 +5,7 @@ from random import choice
 from eventClass import Event
 from gameDataHandler import GameDataHandler
 from miscFunctions import fireEvent
+from textGeneration import generateStringWithVariables, replaceVariablesInString
 from universalFunctions import getDataValue, evaluate_rule
 
 
@@ -103,9 +104,23 @@ class Quest(object):
         
         quest_data = GameDataHandler().getGameData("quest", self.id)
 
+        # Generate any random variables that are needed
+        print(f"\tGenerating Quest '{self.id}'")
+        randomVariables = getDataValue("randomVariables", quest_data, {})
+        self.customVariables = {}
+        for var in randomVariables.keys():
+            newVar = generateStringWithVariables(randomVariables[var], "value")
+            self.customVariables[var] = newVar
+            print(f"\t\tVariable '{var}': '{newVar}'")
+
         self.title = getDataValue("title", quest_data, "Quest")
+        self.title = replaceVariablesInString(self.title, self.customVariables)
+        print(f"\t\tTitle: {self.title}")
         self.desc = getDataValue("desc", quest_data, "No description available.")
+        self.desc = replaceVariablesInString(self.desc, self.customVariables)
+        print(f"\t\tDescription: {self.desc}")
         self.hidden = getDataValue("hidden", quest_data, False)
+
 
         self.enabled = getDataValue("enabledByDefault", quest_data, False)
         self.started = False
@@ -208,7 +223,7 @@ class QuestWrangler(object):
 
     def get_quest_by_id(self, quest_id):
         for quest in QuestWrangler.quest_list:
-            if quest.id == quest_id:
+            if quest == quest_id:
                 return quest
         # check the enabled quests
         if quest_id in QuestWrangler.enabled_quests.keys():

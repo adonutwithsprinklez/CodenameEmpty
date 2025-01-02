@@ -31,6 +31,14 @@ def generateStringWithVariables(data=None, tag="name"):
         nameString = nameString.replace(command, replacement)
     return nameString
 
+def replaceVariablesInString(stringToModify="", variables={}):
+    result = re.findall("\\B\\$\\w+", stringToModify)
+    for command in result:
+        addition = command[1:] # removes the $ from the command
+        replacement = variables[addition]
+        stringToModify = stringToModify.replace(command, replacement)
+    return stringToModify
+
 def generateDescription(descriptors, numDescriptorsToUse = 1):
     string = ""
     for i in range(numDescriptorsToUse):

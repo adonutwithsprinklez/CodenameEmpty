@@ -1,6 +1,6 @@
 {
     "title":"A Cave of Wolves",
-    "desc":"",
+    "desc":"I need to find the wolf cave that has been terrorizing the village. The old man told me it's somewhere deeper in the forest.",
     "qID":"aCaveOfWolves",
     "devComments":"Will start upon entering the first village, if the player has a 'wolfCaveRumor' flag from overhearing a rumor.",
     "enabledByDefault":false,
@@ -12,7 +12,6 @@
     "initialStep":["#firstStep"],
     "#firstStep":{
         "devComments":"The player has heard the rumor and started the quest.",
-        "setDesc":"I need to find the wolf cave that has been terrorizing the village. The old man told me it's somewhere deeper in the forest.",
         "checks":{
             "success":[
                 ["inAreaId", "=", "cave_wolf/entrance", "recheck"]
