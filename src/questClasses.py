@@ -286,14 +286,22 @@ class QuestWrangler(object):
                     # Fire the step's response
                     q = QuestWrangler.active_quests[quest]
                     response = q.step.response
+                    # Check for all possible quest events that can fire
                     if "event" in q.step.reactions[response]:
                         event = Event(q.step.reactions[response]["event"])
-                        fireEvent(event, player, self, areaController)
+                        fireEvent(event, player, self, areaController, customVariables=q.customVariables)
                     if "enableQuest" in q.step.reactions[response]:
                         for enable in q.step.reactions[response]["enableQuest"]:
                             enable_quests.append(enable)
                     if "setDesc" in q.step.reactions[response]:
-                        q.desc = q.step.reactions[response]["setDesc"]
+                        newDesc = q.step.reactions[response]["setDesc"]
+                        newDesc = replaceVariablesInString(newDesc, q.customVariables)
+                        q.desc = newDesc
+                    if "giveXp" in q.step.reactions[response]:
+                        player.giveXP(response["giveXp"])
+                    # If items need to be given, it should be done through a quest
+                    # event, and not the quest itself.
+
                     # Check for next step
                     if "nextStep" in q.step.reactions[response]:
                         q.currentStep = q.step.reactions[response]["nextStep"]

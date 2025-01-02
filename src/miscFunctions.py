@@ -3,19 +3,29 @@ import random
 
 from effectClass import Effect, processEffect
 from enemyClass import Enemy
+from textGeneration import replaceVariablesInString
 
 # This file is used when putting functions into universalFunctions.py would create a circular import
 
-def fireEvent(event, player, questWrangler=None, areaController=None, disp=None, gameData=None, debug=False):
+def fireEvent(event, player, questWrangler=None, areaController=None, disp=None, gameData=None, debug=False, **kwargs):
     ''' This function is used to handle random events that can occur in the game. '''
     if not disp:
         disp = player.disp
     if not gameData:
         gameData = player.gameData
+
+    # Check if "customVariables" have been passed in the kwargs
+    customVariables = {}
+    if "customVariables" in kwargs:
+        customVariables = kwargs["customVariables"]
+    
+    event.name = replaceVariablesInString(event.name, customVariables)
+
     disp.dprint(f"Firing event: '{event.name}'")
     while not event.finished:
         disp.clearScreen()
         disp.displayHeader(f"{event.name}")
+        event.msg = replaceVariablesInString(event.msg, customVariables)
         disp.display(f"{event.msg}", 1)
         x = 0
         choices = event.getPossibleActions(player)
@@ -23,7 +33,7 @@ def fireEvent(event, player, questWrangler=None, areaController=None, disp=None,
             disp.displayHeader("Actions", 1, 1)
             for choice in choices:
                 x += 1
-                action = choice["action"]
+                action = replaceVariablesInString(choice["action"], customVariables)
                 disp.displayAction(f'{x}. {action}', x, 0)
             disp.closeDisplay()
             try:
@@ -35,7 +45,8 @@ def fireEvent(event, player, questWrangler=None, areaController=None, disp=None,
                 for action in choices[cmd-1]["eventDo"]:
                     disp.dprint(f"\t{action[0]}")
                     if action[0] == "say":
-                        displayEventAction(disp, action[1], areaController, event.name)
+                        text = replaceVariablesInString(action[1], customVariables)
+                        displayEventAction(disp, text, areaController, event.name)
                     elif action[0] == "goto":
                         if type(action[1]) == list:
                             event.gotoPart(random.choice(action[1]))

@@ -92,7 +92,8 @@
         "reactions":{
             "success":{
                 "event":"quest/caveOfWolves/questEnd",
-                "setDesc":"I have killed the werewolf, and let the village know. This adventure is over."
+                "setDesc":"I have killed the werewolf, and let the village know. This adventure is over.",
+                "giveXp":100
             }
         }
     }
