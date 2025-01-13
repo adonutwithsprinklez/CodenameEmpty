@@ -165,6 +165,12 @@ class AreaController(object):
         # guarantee that they are generated.
         areatypes = self.currentArea.newAreaTypes[::]
         possibleAreas = []
+        
+        # Remove the areas that were removed by events
+        for area in self.areasRemovedByEvents:
+            for areaData in areatypes:
+                if areaData[0] == area:
+                    areatypes.remove(areaData)
 
         # Go through the list of areatypes and check if there are any requirements
         for area in areatypes:
@@ -175,8 +181,6 @@ class AreaController(object):
                 # Confirm these requirements are met, otherwise remove them from the list
                 if not self.checkAreaRequirements(area[3], query):
                     cancel = True
-            if "limited" in area[2] and area[0] in usedAreas:
-                cancel = True
             if not cancel:
                 possibleAreas.append(area)
         
@@ -185,15 +189,23 @@ class AreaController(object):
                 break
             currentRoll = 0
             newArea = None
-            for area in possibleAreas:
-                if "required" in area[2]:
-                    newArea = area
-                    break
-                else:
-                    newRoll = rollDice(area[1])
-                    if newRoll > currentRoll:
-                        currentRoll = newRoll
-                        newArea = area
+
+            # Add the areas that were added by events first
+            if len(self.areasAddedByEvents) > 0:
+                newArea = self.areasAddedByEvents.pop(0)
+            else:
+                for area in possibleAreas:
+                    if "required" in area[2]:
+                        if area[0] in usedAreas and "limited" in area[2]:
+                            pass
+                        else:
+                            newArea = area
+                            break
+                    else:
+                        newRoll = rollDice(area[1])
+                        if newRoll > currentRoll:
+                            currentRoll = newRoll
+                            newArea = area
             if newArea:
                 choices.append(newArea)
                 possibleAreas.remove(newArea)
