@@ -24,7 +24,7 @@ class Weapon(object):
 		self.actionText = getDataValue("actionText", data, "")
 		minworth = getDataValue("worthMin", data, 0)
 		maxworth = getDataValue("worthMax", data, 0)
-		self.worth = random.randint(minworth,maxworth)
+		self.worth = getDataValue("worth", data, random.randint(minworth,maxworth))
 		effects = getDataValue("effects", data, [])
 		self.effects = []
 		for effect in effects:
