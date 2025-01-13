@@ -2,6 +2,7 @@
 import copy
 
 from areaClass import Area
+from dialogueRules import evaluateDialogueLine
 from gameDataHandler import GameDataHandler
 from dieClass import rollDice
 
@@ -143,65 +144,66 @@ class AreaController(object):
     def getCurrentAreaIdleDialogChance(self):
         return self.currentArea.getIdleDialogChance()
 
-    def getCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
+    def getCurrentAreaExits(self, query, repeatableEvents, globalRandomEvents):
         ''' If self.generatedExits is False, generates a list of exits for the user to travel to next, based on the current area '''
         if not self.generatedExits:
-            self.currentExits = self.generateCurrentAreaExits(repeatableEvents, globalRandomEvents)
+            self.currentExits = self.generateCurrentAreaExits(query, repeatableEvents, globalRandomEvents)
             self.generatedExits = True
         return self.currentExits
     
-    def generateCurrentAreaExits(self, repeatableEvents, globalRandomEvents):
-        ''' Generates a list of exits for the user to travel to next, based on the current area '''
-        choices = []
-        # This is to guarantee that no "limited" areas are used more than once
-        usedAreas = []
+    def checkAreaRequirements(self, rules, query)->bool:
+        ''' Checks if the area requirements are met '''
+        return evaluateDialogueLine(rules, query)
 
-        # Grab all required areas and throw them into a seperate list. This is to
+    
+    def generateCurrentAreaExits(self, query, nonRepeatableEvents, globalRandomEvents):
+        ''' Generates a list of exits for the user to travel to next, based on the current area '''
+        choices = [] # This is a list of area IDs to actually generate
+        usedAreas = [] # This is to guarantee that no "limited" areas are used more than once
+
+        # Grab all possible areas and throw them into a seperate list. This is to
         # guarantee that they are generated.
         areatypes = self.currentArea.newAreaTypes[::]
+        possibleAreas = []
 
-        # Actually generate areas:
-        numAreas = self.currentArea.newArea + len(self.areasAddedByEvents) + 1
-
-        required = []
+        # Go through the list of areatypes and check if there are any requirements
         for area in areatypes:
-            if len(area) > 2:
-                for flag in area[2]:
-                    if flag == "required":
-                        if area[0] not in self.areasRemovedByEvents:
-                            required.append(area)
-                        else:
-                            numAreas -= 1
+            cancel = False
+            if len(area)<3:
+                area.append([])
+            if len(area)>3:
+                # Confirm these requirements are met, otherwise remove them from the list
+                if not self.checkAreaRequirements(area[3], query):
+                    cancel = True
+            if "limited" in area[2] and area[0] in usedAreas:
+                cancel = True
+            if not cancel:
+                possibleAreas.append(area)
+        
+        for i in range(self.currentArea.newArea + len(self.areasAddedByEvents) + 1):
+            if len(possibleAreas) == 0:
+                break
+            currentRoll = 0
+            newArea = None
+            for area in possibleAreas:
+                if "required" in area[2]:
+                    newArea = area
+                    break
+                else:
+                    newRoll = rollDice(area[1])
+                    if newRoll > currentRoll:
+                        currentRoll = newRoll
+                        newArea = area
+            if newArea:
+                choices.append(newArea)
+                possibleAreas.remove(newArea)
+            
 
-        # Check if all requirements are met for areas to spawn:
-        # TODO
-
-        for i in range(1, numAreas):
-            if len(required) > 0:
-                newArea = required.pop(0)
-            else:
-                areatypes = copy.copy(self.currentArea.newAreaTypes) + self.areasAddedByEvents
-                # remove area types that are in the self.areasRemovedByEvents list
-                for area in self.areasRemovedByEvents:
-                    for areaType in areatypes:
-                        if areaType[0] == area:
-                            areatypes.remove(areaType)
-                highroll = 0
-                for aType in areatypes:
-                    newroll = rollDice(aType[1])
-                    alreadyUsed = False
-                    if len(aType) > 2:
-                        if "limited" in aType[2]:
-                            if aType[0] in usedAreas:
-                                alreadyUsed = True
-                    if newroll > highroll and not alreadyUsed:
-                        newArea = aType
-                        highroll = newroll
-            generatedArea = Area(self.gameData.getGameData("area", newArea[0]), repeatableEvents,
-                                 globalRandomEvents, newArea[0])
-            usedAreas.append(newArea[0])
-            choices.append(generatedArea)
-        return choices
+        exits = []
+        for area in choices:
+            newArea = Area(self.gameData.getGameData("area", area[0]), nonRepeatableEvents, globalRandomEvents, area[2])
+            exits.append(newArea)
+        return exits
     
     def getCurrentAreaRandomizeExits(self):
         return self.currentArea.getRandomizeExits()

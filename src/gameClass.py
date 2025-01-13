@@ -513,7 +513,7 @@ class Game(object):
            Returns True if travel occured, otherwise False'''
         
         # Create various area choices:
-        choices = self.areaController.getCurrentAreaExits(self.nonRepeatableEvents, self.globalRandomEvents)
+        choices = self.areaController.getCurrentAreaExits(self.generateQuery(), self.nonRepeatableEvents, self.globalRandomEvents)
         # Shuffle the choices to make sure "required" areas don't always appaear first
         if self.areaController.getCurrentAreaRandomizeExits():
             random.shuffle(choices)
@@ -629,11 +629,15 @@ class Game(object):
             if not self.areaController.getCurrentAreaEvent().isRepeatable:
                 self.nonRepeatableEvents.append(self.areaController.getCurrentAreaEvent().resourceId)
 
+    def generateQuery(self):
+        query = self.generateDialogueQuery()
+        playerQuery = self.player.getPlayerQuery()
+        query = {**query, **playerQuery}
+        return query
+    
     def workOnBacklog(self, query=None):
         if query == None:
-            query = self.generateDialogueQuery()
-            playerQuery = self.player.getPlayerQuery()
-            query = {**query, **playerQuery}
+            query = self.generateQuery()
         self.questHandler.tick(self.player, query, self.areaController)
         '''
         self.disp.dprint("\nWorking on backlog...")

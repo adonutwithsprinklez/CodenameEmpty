@@ -29,7 +29,8 @@
         "Yes, you can pet the dog.",
         "Dare to step into the arena?",
         "You can click your actions!",
-        "You can also use the keyboard!"
+        "You can also use the keyboard!",
+        "Quests! Quests! Quests!"
     ],
     "areas": [
         "arena/area_entrance",
@@ -63,11 +64,6 @@
     ],
     "armor": [
         "armor_starting_armor",
-        "armor_cultist",
-        "armor_cultistRobes",
-        "armor_ceremonial",
-        "armor_ceremonialRobes",
-        "armor_dragonSkin",
         "armor_huntersGarmets",
         "armor_kitchenApparel",
         "armor_wolfHide",
@@ -76,6 +72,12 @@
         "armor_greatWolfHide",
         "armor_orcArmor",
         "armor_orcCaptainArmor",
+        
+        "armor_cultist",
+        "armor_cultistRobes",
+        "armor_ceremonial",
+        "armor_ceremonialRobes",
+        "armor_dragonSkin",
 
         "armor_werewolfHide"
     ],

@@ -1093,6 +1093,7 @@ class Player(object):
         if self.xp >= self.getXpNeededForLevelUp():
             self.xp -= self.getXpNeededForLevelUp()
             self.level += 1
+            # TODO: Need to alert the user that they have levelled up
     
     def giveHP(self, hp):
         """
