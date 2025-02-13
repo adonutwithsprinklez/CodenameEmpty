@@ -13,7 +13,6 @@ class Area(object):
     def __init__(self,areaType,nonrepeatableevents=[],globalEvents=[],areaId="",**kwargs):
         self.name = generateString(areaType)
         self.aId = areaId
-        print(f'GENERATING AREA: {self.name}')
         self.desc = generateString(areaType, "desc")
         self.newArea = random.randint(areaType["minNewAreas"],areaType["maxNewAreas"])
         self.newAreaTypes = areaType["areas"]
@@ -46,7 +45,6 @@ class Area(object):
             c = chance
         if c<0:
             c=0
-        print("Enemy Chance: {}".format(str(c)))
         if random.randint(1,100) <= c:
             enemyPoints = self.hostility * areaType["enemyPointsPerHostility"]
             attempts = 1
@@ -118,7 +116,6 @@ class Area(object):
         if self.event:
             self.event = Event(self.event, gameData)
         if len(self.npcId) > 0:
-            print(self.npcId)
             for npcid in self.npcId:
                 npc = NPC(gameData.getGameData("npc", npcid), npcid)
                 npc.load(gameData)

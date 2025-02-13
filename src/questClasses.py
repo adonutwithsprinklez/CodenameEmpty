@@ -105,20 +105,20 @@ class Quest(object):
         quest_data = GameDataHandler().getGameData("quest", self.id)
 
         # Generate any random variables that are needed
-        print(f"\tGenerating Quest '{self.id}'")
+        # print(f"\tGenerating Quest '{self.id}'")
         randomVariables = getDataValue("randomVariables", quest_data, {})
         self.customVariables = {}
         for var in randomVariables.keys():
             newVar = generateStringWithVariables(randomVariables[var], "value")
             self.customVariables[var] = newVar
-            print(f"\t\tVariable '{var}': '{newVar}'")
+            # print(f"\t\tVariable '{var}': '{newVar}'")
 
         self.title = getDataValue("title", quest_data, "Quest")
         self.title = replaceVariablesInString(self.title, self.customVariables)
-        print(f"\t\tTitle: {self.title}")
+        # print(f"\t\tTitle: {self.title}")
         self.desc = getDataValue("desc", quest_data, "No description available.")
         self.desc = replaceVariablesInString(self.desc, self.customVariables)
-        print(f"\t\tDescription: {self.desc}")
+        # print(f"\t\tDescription: {self.desc}")
         self.hidden = getDataValue("hidden", quest_data, False)
 
 
@@ -218,8 +218,8 @@ class QuestWrangler(object):
 
             for quest in QuestWrangler.game_data.getListOfKeys("quest"):
                 self.enable_quest(quest, False)
-            if QuestWrangler.debug:
-                self.print_quest_lists()
+
+            self.print_quest_lists(override=False)
 
     def get_quest_by_id(self, quest_id):
         for quest in QuestWrangler.quest_list:
@@ -288,20 +288,27 @@ class QuestWrangler(object):
                     response = q.step.response
                     # Check for all possible quest events that can fire
                     if "event" in q.step.reactions[response]:
+                        # Fires the specified event
                         event = Event(q.step.reactions[response]["event"])
                         fireEvent(event, player, self, areaController, customVariables=q.customVariables)
                     if "enableQuest" in q.step.reactions[response]:
+                        # Enables the specified quest so that it can be started if criteria are met
                         for enable in q.step.reactions[response]["enableQuest"]:
                             enable_quests.append(enable)
                     if "setDesc" in q.step.reactions[response]:
+                        # Modifies the current description for the quest in the player's journal
                         newDesc = q.step.reactions[response]["setDesc"]
                         newDesc = replaceVariablesInString(newDesc, q.customVariables)
                         q.desc = newDesc
                     if "giveXp" in q.step.reactions[response]:
+                        # Gives the player xp
                         player.giveXP(response["giveXp"])
                     # If items need to be given, it should be done through a quest
                     # event, and not the quest itself.
-
+                    if "setVis" in q.step.reactions[response]:
+                        # hide or show the quest in the player's journal
+                        # Ideally, should only be used to unhide an initially hidden quest
+                        q.hidden = q.step.reactions[response]["setVis"]
                     # Check for next step
                     if "nextStep" in q.step.reactions[response]:
                         q.currentStep = q.step.reactions[response]["nextStep"]
@@ -329,9 +336,13 @@ class QuestWrangler(object):
                     print(f"Quest {quest} enabled.")
         
         if QuestWrangler.debug:
-            self.print_quest_lists()
+            self.print_quest_lists(override=False)
     
-    def print_quest_lists(self):
+    def print_quest_lists(self, **kwargs):
+        if not QuestWrangler.debug:
+            return
+        if "override" in kwargs.keys() and not kwargs["override"]:
+            return
         print("Quests:")
         print("\tPossible:")
         for q in QuestWrangler.quest_list:

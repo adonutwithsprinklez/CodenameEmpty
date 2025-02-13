@@ -25,8 +25,6 @@ class Misc(object):
 			["You {} the {} and wait to feels its effects.".format(self.consumeText.lower(), self.getName())])
 		self.appliable = getDataValue("appliable", data, False)
 		# Modifier logic
-		print("\n" + self.name)
-		print(data.keys())
 		self.modifier = None
 		if "modifier" in data.keys():
 			modifiers = data["modifier"]

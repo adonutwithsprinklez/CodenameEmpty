@@ -202,7 +202,7 @@ class Game(object):
             hostilityString = f"<red>Hostility: {hostility}<red>"
         title = f"{self.areaController.getCurrentAreaName()} " + \
                 f"(<yellow>{self.areaController.getCurrentAreaType()}<yellow>) - {hostilityString}"
-        print(title)
+        # print(title)
         #title = "%s (%s) - Hostility: %d" % (self.areaController.getCurrentAreaName(),
         #        self.areaController.getCurrentAreaType(), self.areaController.getCurrentAreaHostility())
         self.disp.displayHeader(title)
@@ -596,7 +596,7 @@ class Game(object):
                 choices.remove(area)
 
         while not 1 <= cmd <= len(choices):
-            print("CMD: " + str(cmd) + " | Areas: " + str(len(choices)))
+            # print("CMD: " + str(cmd) + " | Areas: " + str(len(choices)))
             self.disp.clearScreen()
             self.disp.displayHeader("Travel to %s Location" % loadedKey.capitalize())
             x = 0
@@ -739,7 +739,7 @@ class Game(object):
             self.disp.closeDisplay()
             cmd = self.disp.get_input(True)
             if ready and cmd == 9:
-                print(f"{len(self.gamedata.packs)} - GAMEENGINE")
+                # print(f"{len(self.gamedata.packs)} - GAMEENGINE")
                 self.player = Player()
                 self.player.setName(playerName)
                 r.updateLimbs()

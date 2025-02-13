@@ -64,7 +64,7 @@ def fireEvent(event, player, questWrangler=None, areaController=None, disp=None,
                     elif action[0] == "remove": # This is the same as take, but with a different name
                         event.takeItem(action[1], action[2], player)
                     elif action[0] == "spawnEnemy":
-                        print(action[1])
+                        # print(action[1])
                         if type(action[1]) == str:
                             action[1] = [action[1]]
                         for enemyid in action[1]:

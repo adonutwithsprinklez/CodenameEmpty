@@ -66,8 +66,8 @@ class Player(object):
         - None
         """
         cmd = -1
-        for effect in self.effects:
-            print(effect.name)
+        # for effect in self.effects:
+        #     print(effect.name)
         while cmd != 0 and not self.quit:
             self.disp.clearScreen()
             self.disp.displayHeader(f"Player Info: <cyan>{self.name}<cyan> ({self.getRace().getName(False)})")
@@ -91,7 +91,7 @@ class Player(object):
             limbs = self.race.getLimbsEquippableLimbs()
             limbs.extend(self.tempAddedLimbs)
             for limb in limbs:
-                print(f"{limb.name} - {limb.armor}")
+                # print(f"{limb.name} - {limb.armor}")
                 if limb.getArmor():
                     if limb.getArmor() != "Unequippable":
                         armor:Armor = limb.getArmor()
@@ -136,9 +136,9 @@ class Player(object):
                 cmd = -1
             if cmd == 0:
                 pass
-            elif cmd == -11:
-                for effect in self.effects:
-                    print(effect.name)
+            # elif cmd == -11:
+            #     for effect in self.effects:
+            #         print(effect.name)
             elif cmd == 1:
                 self.viewInventory()
             elif cmd == 3:
